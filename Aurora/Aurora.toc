@@ -1,5 +1,5 @@
 ## Interface: 50300
-## Title: |cff1784d1Aurora for Qulight UI|r
+## Title: Aurora
 ## Notes: Minimalistic window theme.
 ## Author: Haleth/Freethinker
 ## Version: 4.6.1a
@@ -43,7 +43,5 @@ AddOns\Blizzard_VoidStorageUI.lua
 AddOns\DBM-Core.lua
 AddOns\Recount.lua
 
-FrameXML\Font.lua
+
 FrameXML\PVEFrame.lua
-FrameXML\RolePoll.lua
-FrameXML\StaticPopup.lua

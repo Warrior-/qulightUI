@@ -219,14 +219,26 @@ local function Local(o)
 	if o == "QulightConfigUInameplateenable" then o = QulightL.option_nameplates_enable end
 	
 	if o == "QulightConfigUInameplatewidth" then o = QulightL.option_nameplates_width end
+	if o == "QulightConfigUInameplatead_width" then o = QulightL.option_nameplatesad_width end
+	if o == "QulightConfigUInameplateheight" then o = QulightL.option_nameplates_height end
+	if o == "QulightConfigUInameplatead_height" then o = QulightL.option_nameplatesad_height end
 	if o == "QulightConfigUInameplateshowhealth" then o = QulightL.option_nameplates_showhealth end
-	if o == "QulightConfigUInameplateenhancethreat" then o = QulightL.option_nameplates_enhancethreat end
 	if o == "QulightConfigUInameplatecombat" then o = QulightL.option_nameplates_combat end
-	if o == "QulightConfigUInameplatetrackauras" then o = QulightL.option_nameplates_trackauras end
 	if o == "QulightConfigUInameplatetrackccauras" then o = QulightL.option_nameplates_trackccauras end
 	if o == "QulightConfigUInameplateshowlevel" then o = QulightL.option_nameplates_showlevel end	
 	if o == "QulightConfigUInameplateaurasize" then o = QulightL.option_nameplates_aurasize end
-	if o == "QulightConfigUInameplateheight" then o = QulightL.option_nameplates_height end
+	if o == "QulightConfigUInameplateshow_castbar_name" then o = QulightL.option_nameplates_show_castbar_name end
+	if o == "QulightConfigUInameplateenhance_threat" then o = QulightL.option_nameplates_enhance_threat end
+	if o == "QulightConfigUInameplatehealth_value" then o = QulightL.option_nameplates_health_value end
+	if o == "QulightConfigUInameplatename_abbrev" then o = QulightL.option_nameplates_name_abbrev end
+	if o == "QulightConfigUInameplatehealer_icon" then o = QulightL.option_nameplates_healer_icon end
+	if o == "QulightConfigUInameplateclass_icon" then o = QulightL.option_nameplates_class_icon end
+	if o == "QulightConfigUInameplatetrack_auras" then o = QulightL.option_nameplates_track_auras end
+	if o == "QulightConfigUInameplateauras_size" then o = QulightL.option_nameplates_auras_size end
+	if o == "QulightConfigUInameplategood_color" then o = QulightL.option_nameplates_good_color end
+	if o == "QulightConfigUInameplatenear_color" then o = QulightL.option_nameplates_near_color end
+	if o == "QulightConfigUInameplatebad_color" then o = QulightL.option_nameplates_bad_color end
+
 		
 	if o == "QulightConfigUIminimapp" then o = QulightL.option_Minimap end
 	if o == "QulightConfigUIminimappenable" then o = QulightL.option_Minimapenable end

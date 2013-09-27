@@ -18,13 +18,17 @@ if Qulight["datatext"].crit and Qulight["datatext"].crit > 0 then
 	local int = 1
 	local function Update(self, t)
 		int = int - t
+		local playerint = select(2, UnitStat("player", 4));
+		local playeragi	= select(2, UnitStat("player", 2));
+		local base, posBuff, negBuff = UnitAttackPower("player");
+		local playerap = base + posBuff + negBuff;
 		local meleecrit = GetCritChance()
 		local spellcrit = GetSpellCritChance(1)
 		local rangedcrit = GetRangedCritChance()
 		local CritChance
 
 
-		if select(2, UnitClass("Player")) == "CASTER" or "HEAL" then
+		if (playerap < playerint) or (playeragi < playerint) then
 			CritChance = spellcrit
 		elseif select(2, UnitClass("Player")) == "HUNTER" then    
 			CritChance = rangedcrit

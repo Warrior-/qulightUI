@@ -73,7 +73,7 @@ StaticPopupDialogs.BUY_BANK_SLOT = {
 }
 
 StaticPopupDialogs.CANNOT_BUY_BANK_SLOT = {
-	text = L_BAG_NO_SLOTS,
+	text = "",
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,
@@ -1029,7 +1029,6 @@ function Stuffing:SortOnUpdate(e)
 	if (not changed and not blocked) or self.itmax > 250 then
 		self:SetScript("OnUpdate", nil)
 		self.sortList = nil
-		Print(L_BAG_SORTING_BAGS)
 	end
 end
 
@@ -1151,7 +1150,7 @@ function Stuffing:SortBags()
 
 	-- Kick off moving of stuff, if needed
 	if st == nil or next(st, nil) == nil then
-		Print(L_BAG_SORTING_BAGS)
+		Print("")
 		self:SetScript("OnUpdate", nil)
 	else
 		self.sortList = st
@@ -1218,7 +1217,7 @@ function Stuffing:Restack()
 		self:SetScript("OnUpdate", Stuffing.RestackOnUpdate)
 	else
 		self:SetScript("OnUpdate", nil)
-		Print(L_BAG_STACK_END)
+		Print("")
 	end
 end
 

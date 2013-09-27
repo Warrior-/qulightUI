@@ -484,7 +484,7 @@ local function SkinObjects(frame, nameFrame)
 	local oldhp, cb = frame:GetChildren()
 	local threat, hpborder, overlay, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
 	local oldname = nameFrame:GetRegions()
-	local _, cbborder, cbshield, cbicon = cb:GetRegions()
+	local _, cbborder, cbshield, cbicon, cbname = cb:GetRegions()
 
 	-- Health Bar
 	frame.healthOriginal = oldhp
@@ -548,14 +548,10 @@ local function SkinObjects(frame, nameFrame)
 	cb.time:SetShadowOffset(1, -1)
 	cb.time:SetTextColor(1, 1, 1)
 
-	-- Create Cast Name Text
-	if Qulight["nameplate"].show_castbar_name == true then
-		cb.name = cb:CreateFontString(nil, "ARTWORK")
-		cb.name:SetPoint("LEFT", cb, "LEFT", 3, 0)
-		cb.name:SetFont(Qulight["media"].font, 8, "THINOUTLINE")
-		cb.name:SetShadowOffset(1, -1)
-		cb.name:SetTextColor(1, 1, 1)
-	end
+	cbname:ClearAllPoints()
+	cbname:SetPoint("LEFT", cb, "LEFT", 3, 0)
+	cbname:SetFont(Qulight["media"].font, 8, "THINOUTLINE")
+
 
 	-- Create Class Icon
 	if Qulight["nameplate"].class_icons == true then

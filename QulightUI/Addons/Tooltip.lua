@@ -627,7 +627,7 @@ do
 
 		-- Two-handed weapon and Titan's Grip
 		if slot == INVSLOT_MAINHAND then
-			twoHanded = equipLoc == "INVTYPE_2HWEAPON" and 1 or not hasItem and 0
+			twoHanded = equipLoc == "INVTYPE_2HWEAPON" and 1 or equipLoc == "INVTYPE_RANGED" and 1 or equipLoc == "INVTYPE_RANGEDRIGHT" and 1 or not hasItem and 0
 		elseif slot == INVSLOT_OFFHAND then
 			twoHanded = twoHanded == 1 and not hasItem or twoHanded == 0 and equipLoc == "INVTYPE_2HWEAPON"
 		end
