@@ -86,8 +86,6 @@ C.modules["Blizzard_PVPUI"] = function()
 	BonusFrame.WorldPVPHeader:Hide()
 	BonusFrame.ShadowOverlay:Hide()
 
-	--BonusFrame.DiceButton:SetNormalTexture("")
-	--BonusFrame.DiceButton:SetPushedTexture("")
 	F.Reskin(BonusFrame.DiceButton)
 
 	for _, bu in pairs({BonusFrame.RandomBGButton, BonusFrame.CallToArmsButton, BonusFrame.WorldPVP1Button, BonusFrame.WorldPVP2Button}) do
@@ -98,8 +96,90 @@ C.modules["Blizzard_PVPUI"] = function()
 		bu.SelectedTexture:SetAllPoints()
 	end
 
-	BonusFrame.CallToArmsButton:SetPoint("TOP", BonusFrame.RandomBGButton, "BOTTOM", 0, -1)
-	BonusFrame.WorldPVP2Button:SetPoint("TOP", BonusFrame.WorldPVP1Button, "BOTTOM", 0, -1)
+	BonusFrame.BattlegroundReward1.Amount:SetPoint("RIGHT", BonusFrame.BattlegroundReward1.Icon, "LEFT", -2, 0)
+	BonusFrame.BattlegroundReward1.Icon:SetTexCoord(.08, .92, .08, .92)
+	BonusFrame.BattlegroundReward1.Icon:SetSize(16, 16)
+	F.CreateBG(BonusFrame.BattlegroundReward1.Icon)
+	BonusFrame.BattlegroundReward2.Amount:SetPoint("RIGHT", BonusFrame.BattlegroundReward2.Icon, "LEFT", -2, 0)
+	BonusFrame.BattlegroundReward2.Icon:SetTexCoord(.08, .92, .08, .92)
+	BonusFrame.BattlegroundReward2.Icon:SetSize(16, 16)
+	F.CreateBG(BonusFrame.BattlegroundReward2.Icon)
+
+	hooksecurefunc("HonorFrameBonusFrame_Update", function()
+		local canQueue, bgName, battleGroundID, hasWon, winHonorAmount, winConquestAmount = GetHolidayBGInfo()
+		local rewardIndex = 0
+		if winConquestAmount and winConquestAmount > 0 then
+			rewardIndex = rewardIndex + 1
+			local frame = HonorFrame.BonusFrame["BattlegroundReward"..rewardIndex]
+			frame.Icon:SetTexture("Interface\\Icons\\PVPCurrency-Conquest-"..englishFaction)
+		end
+		if winHonorAmount and winHonorAmount > 0 then
+			rewardIndex = rewardIndex + 1
+			local frame = HonorFrame.BonusFrame["BattlegroundReward"..rewardIndex]
+			frame.Icon:SetTexture("Interface\\Icons\\PVPCurrency-Honor-"..englishFaction)
+		end
+	end)
+
+	IncludedBattlegroundsDropDown:SetPoint("TOPRIGHT", BonusFrame.DiceButton, 40, 26)
+
+	-- Role buttons
+
+	local RoleInset = HonorFrame.RoleInset
+
+	RoleInset:DisableDrawLayer("BACKGROUND")
+	RoleInset:DisableDrawLayer("BORDER")
+
+	for _, roleButton in pairs({RoleInset.HealerIcon, RoleInset.TankIcon, RoleInset.DPSIcon}) do
+		roleButton.cover:SetTexture(C.media.roleIcons)
+		roleButton:SetNormalTexture(C.media.roleIcons)
+
+		roleButton.checkButton:SetFrameLevel(roleButton:GetFrameLevel() + 2)
+
+		for i = 1, 2 do
+			local left = roleButton:CreateTexture()
+			left:SetDrawLayer("OVERLAY", i)
+			left:SetWidth(1)
+			left:SetTexture(C.media.backdrop)
+			left:SetVertexColor(0, 0, 0)
+			left:SetPoint("TOPLEFT", roleButton, 6, -4)
+			left:SetPoint("BOTTOMLEFT", roleButton, 6, 7)
+			roleButton["leftLine"..i] = left
+
+			local right = roleButton:CreateTexture()
+			right:SetDrawLayer("OVERLAY", i)
+			right:SetWidth(1)
+			right:SetTexture(C.media.backdrop)
+			right:SetVertexColor(0, 0, 0)
+			right:SetPoint("TOPRIGHT", roleButton, -6, -4)
+			right:SetPoint("BOTTOMRIGHT", roleButton, -6, 7)
+			roleButton["rightLine"..i] = right
+
+			local top = roleButton:CreateTexture()
+			top:SetDrawLayer("OVERLAY", i)
+			top:SetHeight(1)
+			top:SetTexture(C.media.backdrop)
+			top:SetVertexColor(0, 0, 0)
+			top:SetPoint("TOPLEFT", roleButton, 6, -4)
+			top:SetPoint("TOPRIGHT", roleButton, -6, -4)
+			roleButton["topLine"..i] = top
+
+			local bottom = roleButton:CreateTexture()
+			bottom:SetDrawLayer("OVERLAY", i)
+			bottom:SetHeight(1)
+			bottom:SetTexture(C.media.backdrop)
+			bottom:SetVertexColor(0, 0, 0)
+			bottom:SetPoint("BOTTOMLEFT", roleButton, 6, 7)
+			bottom:SetPoint("BOTTOMRIGHT", roleButton, -6, 7)
+			roleButton["bottomLine"..i] = bottom
+		end
+
+		roleButton.leftLine2:Hide()
+		roleButton.rightLine2:Hide()
+		roleButton.topLine2:Hide()
+		roleButton.bottomLine2:Hide()
+
+		F.ReskinCheck(roleButton.checkButton)
+	end
 
 	-- Honor frame specific
 
@@ -167,6 +247,18 @@ C.modules["Blizzard_PVPUI"] = function()
 	local classColour = C.classcolours[select(2, UnitClass("player"))]
 	ConquestFrame.RatedBG.TeamNameText:SetText(UnitName("player"))
 	ConquestFrame.RatedBG.TeamNameText:SetTextColor(classColour.r, classColour.g, classColour.b)
+
+	ConquestFrame.ArenaReward.Amount:SetPoint("RIGHT", ConquestFrame.ArenaReward.Icon, "LEFT", -2, 0)
+	ConquestFrame.ArenaReward.Icon:SetTexCoord(.08, .92, .08, .92)
+	ConquestFrame.ArenaReward.Icon:SetSize(16, 16)
+	F.CreateBG(ConquestFrame.ArenaReward.Icon)
+	ConquestFrame.RatedBGReward.Amount:SetPoint("RIGHT", ConquestFrame.RatedBGReward.Icon, "LEFT", -2, 0)
+	ConquestFrame.RatedBGReward.Icon:SetTexCoord(.08, .92, .08, .92)
+	ConquestFrame.RatedBGReward.Icon:SetSize(16, 16)
+	F.CreateBG(ConquestFrame.RatedBGReward.Icon)
+
+	ConquestFrame.ArenaReward.Icon:SetTexture("Interface\\Icons\\PVPCurrency-Honor-"..englishFaction)
+	ConquestFrame.RatedBGReward.Icon:SetTexture("Interface\\Icons\\PVPCurrency-Conquest-"..englishFaction)
 
 	for i = 1, 4 do
 		select(i, ConquestBar:GetRegions()):Hide()
@@ -388,7 +480,7 @@ C.modules["Blizzard_PVPUI"] = function()
 			for i=1, #team do
 				if (team[i].online) then
 					local color = C.classcolours[team[i].class]
-					info.text = color..team[i].name..FONT_COLOR_CODE_CLOSE;
+					info.text = ConvertRGBtoColorString(color)..team[i].name..FONT_COLOR_CODE_CLOSE;
 					info.func = function (menu, name) InviteToGroup(name); end
 					info.arg1 = team[i].name;
 					info.disabled = nil;

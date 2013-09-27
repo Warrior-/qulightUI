@@ -36,6 +36,7 @@ C.media = {
 	["checked"] = "Interface\\AddOns\\Aurora\\media\\CheckButtonHilight",
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=],
 	["glow"] = "Interface\\AddOns\\Aurora\\media\\glow",
+	["roleIcons"] = "Interface\\Addons\\Aurora\\media\\UI-LFG-ICON-ROLES",
 }
 
 C.defaults = {
@@ -3937,7 +3938,7 @@ local function KillTex(object, kill)
 		local region = select(i, object:GetRegions())
 		if region:GetObjectType() == "Texture" then
 			if kill then
-				Kill(region)
+				region:Kill()
 			else
 				region:SetTexture(nil)
 			end
@@ -3973,6 +3974,7 @@ local function SkinCheckBox(frame)
 	
 	frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
 end
+F.SkinCheckBox = SkinCheckBox 
 
 local function SkinCloseButton(f, SetPoint)
 	for i=1, f:GetNumRegions() do
@@ -4011,8 +4013,8 @@ WorldMapLevelUpButton:SetPoint("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2,
 WorldMapLevelDownButton:SetPoint("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)
 			
 SkinCheckBox(WorldMapTrackQuest)
-SkinCheckBox(WorldMapQuestShowObjectives)
-SkinCheckBox(WorldMapShowDigSites)
+--SkinCheckBox(WorldMapQuestShowObjectives)
+--SkinCheckBox(WorldMapShowDigSites)
 			
 --Mini
 local function SmallSkin()
@@ -4117,12 +4119,12 @@ WorldMapFrame:HookScript("OnEvent", function(self, event)
 end)
 			
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
-local fontheight = select(2, WorldMapQuestShowObjectivesText:GetFont())*1.1
+local fontheight = 2*1.1
 coords:SetFrameLevel(90)
 coords.PlayerText = SetFontString(CoordsFrame, Qulight["media"].font, fontheight, "THINOUTLINE")
 coords.MouseText = SetFontString(CoordsFrame, Qulight["media"].font, fontheight, "THINOUTLINE")
-coords.PlayerText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
-coords.MouseText:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
+coords.PlayerText:SetTextColor(1, 1, 1)
+coords.MouseText:SetTextColor(1, 1, 1)
 coords.PlayerText:SetPoint("TOPLEFT", WorldMapButton, "TOPLEFT", 5, -5)
 coords.PlayerText:SetText("Player:   0, 0")
 coords.MouseText:SetPoint("TOPLEFT", coords.PlayerText, "BOTTOMLEFT", 0, -5)
