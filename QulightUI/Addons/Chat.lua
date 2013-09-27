@@ -56,41 +56,49 @@ for i = 1, 10 do
 	x[10]:SetAlpha(0)
 	x[11]:SetAlpha(0)
 end
+
+-- Function to rename channel and other stuff
+local AddMessage = function(self, text, ...)
+	if type(text) == "string" then
+		text = text:gsub("|h%[(%d+)%. .-%]|h", "|h[%1]|h")
+		text = text:gsub("|Hplayer:(.-)|h%[(.-)%]|h", Strip)
+	end
+	return origs[self](self, text, ...)
+end
+
+-- Global strings
+_G.CHAT_INSTANCE_CHAT_GET = "|Hchannel:INSTANCE_CHAT|h[".."R".."]|h %s:\32"
+_G.CHAT_INSTANCE_CHAT_LEADER_GET = "|Hchannel:INSTANCE_CHAT|h[".."RL".."]|h %s:\32"
+_G.CHAT_BN_WHISPER_GET = "Fr".." %s:\32"
+_G.CHAT_GUILD_GET = "|Hchannel:GUILD|h[".."G".."]|h %s:\32"
+_G.CHAT_OFFICER_GET = "|Hchannel:OFFICER|h[".."O".."]|h %s:\32"
+_G.CHAT_PARTY_GET = "|Hchannel:PARTY|h[".."P".."]|h %s:\32"
+_G.CHAT_PARTY_LEADER_GET = "|Hchannel:PARTY|h[".."PL".."]|h %s:\32"
+_G.CHAT_PARTY_GUIDE_GET = CHAT_PARTY_LEADER_GET
+_G.CHAT_RAID_GET = "|Hchannel:RAID|h[".."R".."]|h %s:\32"
+_G.CHAT_RAID_LEADER_GET = "|Hchannel:RAID|h[".."RL".."]|h %s:\32"
+_G.CHAT_RAID_WARNING_GET = "[".."RW".."] %s:\32"
+_G.CHAT_PET_BATTLE_COMBAT_LOG_GET = "|Hchannel:PET_BATTLE_COMBAT_LOG|h[".."PB".."]|h:\32"
+_G.CHAT_PET_BATTLE_INFO_GET = "|Hchannel:PET_BATTLE_INFO|h[".."PB".."]|h:\32"
+_G.CHAT_SAY_GET = "%s:\32"
+_G.CHAT_WHISPER_GET = "Fr".." %s:\32"
+_G.CHAT_YELL_GET = "%s:\32"
+_G.CHAT_FLAG_AFK = "|cffE7E716".."[AFK]".."|r "
+_G.CHAT_FLAG_DND = "|cffFF0000".."[DND]".."|r "
+_G.CHAT_FLAG_GM = "|cff4154F5".."[GM]".."|r "
+_G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h ".."has come |cff298F00online|r."
+_G.ERR_FRIEND_OFFLINE_S = "[%s] ".."has gone |cffff0000offline|r."
+
 for i = 1, NUM_CHAT_WINDOWS do
-    if ( i ~= 2 ) then
+	 if ( i ~= 4 ) then
       local f = _G["ChatFrame"..i]
       local am = f.AddMessage
       f.AddMessage = function(frame, text, ...)
         return am(frame, text:gsub('|h%[(%d+)%. .-%]|h', '|h[%1]|h'), ...)
       end
     end
-end 
-
-local strings = {
-	INSTANCE_CHAT = "I",
-	GUILD = "G",
-	PARTY = "P",
-	RAID = "R",
-	OFFICER = "O",
-	INSTANCE_CHAT_LEADER = "IL",
-	PARTY_LEADER = "P",
-	RAID_LEADER = "R",
-}
-local function AddMessage(frame, str, ...)
-	str = str:gsub("|Hplayer:(.-)|h%[(.-)%]|h", "|Hplayer:%1|h%2|h")
-	str = str:gsub("|HBNplayer:(.-)|h%[(.-)%]|h", "|HBNplayer:%1|h%2|h")
-	str = str:gsub("|Hchannel:(.-)|h%[(.-)%]|h", ShortChannel)
-
-	str = str:gsub("^To (.-|h)", "|cffad2424@|r%1")
-	str = str:gsub("^(.-|h) whispers", "%1")
-	str = str:gsub("^(.-|h) says", "%1")
-	str = str:gsub("^(.-|h) yells", "%1")
-	str = str:gsub("<"..AFK..">", "|cffFF0000".."|cffFF0000".."[AFK]".."|r ".."|r ")
-	str = str:gsub("<"..DND..">", "|cffE7E716".."|cffE7E716".."[DND]".."|r ".."|r ")
-	str = str:gsub("^%["..RAID_WARNING.."%]", "[W]".." %s:\32")
-
-	return origs[frame](frame, str, ...)
 end
+
 local function ShortChannel(channel)
 	return string.format("|Hchannel:%s|h[%s]|h", channel, strings[channel] or channel:gsub("channel:", ""))
 end

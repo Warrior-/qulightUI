@@ -6,31 +6,31 @@ Filger_Settings = {
 }
 
 AnchorBUFF_ICON = CreateFrame("Frame","Move_BUFF_ICON",UIParent)
-AnchorBUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -173, 23)
-CreateAnchor(AnchorBUFF_ICON, "Move BUFF_ICON", 64, 64)
+AnchorBUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -198, -80)
+CreateAnchor(AnchorBUFF_ICON, "Move BUFF_ICON", 37, 37)
 
 AnchorT_BUFF_ICON = CreateFrame("Frame","Move_T_BUFF_ICON",UIParent)
-AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 173, 23)
-CreateAnchor(AnchorT_BUFF_ICON, "Move T_BUFF_ICON", 64, 64)
+AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 198, -80)
+CreateAnchor(AnchorT_BUFF_ICON, "Move T_BUFF_ICON", 37, 37)
 
 AnchorP_PROC_ICON = CreateFrame("Frame","Move_P_PROC_ICON",UIParent)
-AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -173, 80)
-CreateAnchor(AnchorP_PROC_ICON, "Move P_PROC_ICON", 30, 30)
+AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -198, -130)
+CreateAnchor(AnchorP_PROC_ICON, "Move P_PROC_ICON", 37, 37)
 
 AnchorT_DEBUFF_ICON = CreateFrame("Frame","Move_T_DEBUFF_ICON",UIParent)
-AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 173, 80)
-CreateAnchor(AnchorT_DEBUFF_ICON, "Move T_DEBUFF_ICON", 30, 30)
+AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 198, -130)
+CreateAnchor(AnchorT_DEBUFF_ICON, "Move T_DEBUFF_ICON", 37, 37)
 
 AnchorT_SPECIAL_P_BUFF_ICON = CreateFrame("Frame","Move_SPECIAL_P_BUFF_ICON",UIParent)
-AnchorT_SPECIAL_P_BUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -173, -25)
-CreateAnchor(AnchorT_SPECIAL_P_BUFF_ICON, "Move SPECIAL_P_BUFF_ICON", 24, 24)
+AnchorT_SPECIAL_P_BUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -198, -25)
+CreateAnchor(AnchorT_SPECIAL_P_BUFF_ICON, "Move SPECIAL_P_BUFF_ICON", 37, 37)
 
 Anchor_CD = CreateFrame("Frame","Move_CD",UIParent)
-Anchor_CD:SetPoint("BOTTOM", UIParent, "BOTTOM", -167, 330)
-CreateAnchor(Anchor_CD, "Move CD", 50, 50)
+Anchor_CD:SetPoint("BOTTOM", UIParent, "BOTTOM", -168, 280)
+CreateAnchor(Anchor_CD, "Move CD", 30, 30)
 
 Anchor_PVEPVPCD = CreateFrame("Frame","Move_PVEPVPCD",UIParent)
-Anchor_PVEPVPCD:SetPoint("LEFT", UIParent, "CENTER", 172, 550)
+Anchor_PVEPVPCD:SetPoint("BOTTOM", UIParent, "BOTTOM", 230, 150)
 CreateAnchor(Anchor_PVEPVPCD, "Move PVEPVPCD", 25, 25)
 
 Anchor_PVEDEBUFF = CreateFrame("Frame","Move_PVEDEBUFF",UIParent)
@@ -2593,14 +2593,13 @@ Filger_Spells = {
 			{spellID = 109466, unitID = "target", caster = "all", filter = "DEBUFF"},
 			-- Enslave Demon
 			{spellID = 1098, unitID = "target", caster = "player", filter = "DEBUFF"},
-
-			-- CoE group
-			-- Master Poisoner (Rogue)
-			{spellID = 93068, unitID = "target", caster = "all", filter = "DEBUFF"},
-			-- Lightning Breath (Wind Serpent)
-			{spellID = 24844, unitID = "target", caster = "all", filter = "DEBUFF"},
-			-- Fire Breath (Dragonhawk)
-			{spellID = 34889, unitID = "target", caster = "all", filter = "DEBUFF"},
+			
+			{spellID = 980, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 146739, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 30108, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 48181, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 114790, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 27243, unitID = "target", caster = "player", filter = "DEBUFF"},
 		},
 		{
 			Name = "PVE/PVP_CC",
@@ -3401,7 +3400,7 @@ Filger_Spells = {
 			Mode = "ICON",
 			Interval = 3,
 			Alpha = 1,
-			IconSize = 60,
+			IconSize = 37,
 			Position = {"LEFT", AnchorT_BUFF_ICON},
 
 			-- Death knight

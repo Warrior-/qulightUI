@@ -672,8 +672,8 @@ gen_bigcastbar = function(f)
 		s:SetWidth(158)
 	end
     if f.mystyle == "player" then
-		s:SetHeight(18)
-		s:SetWidth(268)
+		s:SetHeight(Qulight["unitframes"].heightbigcastbar)
+		s:SetWidth(Qulight["unitframes"].widthbigcastbar)
 		s:SetPoint("BOTTOM", Anchorplayercastbar, 14, 0)
     elseif f.mystyle == "target" then
 	    s:SetHeight(18)
@@ -1255,7 +1255,7 @@ genShards = function(self)
 		local wb = CreateFrame("Frame", "WarlockSpecBars", self)
 		wb:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 4, -9)
 		wb:SetWidth(123)
-		wb:SetHeight(6)
+		wb:SetHeight(5)
 		wb:SetBackdrop(backdrop)
 					
 		wb:SetBackdropColor(0, 0, 0)
@@ -1264,7 +1264,7 @@ genShards = function(self)
 		wb:SetFrameLevel(6)
 			for i = 1, 4 do
 				wb[i] = CreateFrame("StatusBar", "WarlockSpecBars"..i, wb)
-				wb[i]:SetHeight(6)
+				wb[i]:SetHeight(5)
 				wb[i]:SetStatusBarTexture(statusbar_texture)
 						
 					if i == 1 then

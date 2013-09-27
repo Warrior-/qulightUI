@@ -6,7 +6,7 @@ if not Qulight["actionbar"].enable == true then return end
 ---------------------------------------------------------------------------
 
 local bar = QuBar4
-bar:SetAlpha(1)
+bar:SetAlpha(0.5)
 MultiBarLeft:SetParent(bar)
 
 for i= 1, 12 do
@@ -18,10 +18,8 @@ for i= 1, 12 do
 	b:SetFrameLevel(15)
 	
 	if i == 1 then
-		b:SetPoint("TOPLEFT", bar, buttonspacing,-buttonspacing)
-	elseif i == (Qulight.actionbar.mainbarWidth+1) then
-		b:SetPoint("TOP", UIParent, "BOTTOM", 0, -20)
+		b:SetPoint("TOPLEFT", bar, buttonspacing, -buttonspacing)
 	else
-		b:SetPoint("LEFT", b2, "RIGHT", buttonspacing, 0)
+		b:SetPoint("LEFT", b2, "RIGHT", buttonspacing*1.1, 0)
 	end
 end

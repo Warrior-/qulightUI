@@ -83,22 +83,22 @@ local function UpdateTooltip(self)
 		local point = TooltipAnchor:GetPoint()
 		if point == "TOPLEFT" then
 			self:ClearAllPoints()
-			self:SetPoint("TOPLEFT",TooltipAnchor, "BOTTOMLEFT", 0, -x)			
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)			
 		elseif point == "TOP" then
 			self:ClearAllPoints()
-			self:SetPoint("TOP", TooltipAnchor, "BOTTOM", 0, -x)			
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)			
 		elseif point == "TOPRIGHT" then
 			self:ClearAllPoints()
 			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)		
 		elseif point == "BOTTOMLEFT" or point == "LEFT" then
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMLEFT", TooltipAnchor, "TOPLEFT", 0, x)		
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)		
 		elseif point == "BOTTOMRIGHT" or point == "RIGHT" then
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT", TooltipAnchor, "TOPRIGHT", -1, -70)
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)
 		else
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOM", TooltipAnchor, "TOP", 0, x)		
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)		
 		end
 	end	
 end

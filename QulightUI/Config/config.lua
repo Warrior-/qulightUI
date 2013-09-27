@@ -26,7 +26,7 @@ Qulight["actionbar"] = {
 	["petbuttonsize"] = 32,                             -- pet & stance buttons size
 	["buttonspacing"] = 1,                              -- buttons spacing
 	["petbuttonspacing"] = 1,
-	["mainbarWidth"] = 8,		
+	["mainbarWidth"] = 10,		
 	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
 }
 
@@ -75,6 +75,8 @@ Qulight["unitframes"] = {
 	["enable"] = true,																	-- enable/disable action bars
 	["HealthcolorClass"] = false,														-- health color = class color
 	["bigcastbar"] = true,
+		["widthbigcastbar"] = 268,
+		["heightbigcastbar"] = 18,
 	["Powercolor"] = true,																-- power color = class color
 	["showtot"] = true, 																-- show target of target frame
 	["showpet"] = true,																	-- show pet frame
@@ -183,11 +185,11 @@ Qulight["cooldown"] = {
 }
 Qulight["misk"] = {
 	["addonmanager"] = true,															-- enable disable addonmanager																-- enable disable raid utility
-	["filger"] = false,																	-- enable disable filger
-	["classtimer"] = true,																-- enable disable classtimer
+	["filger"] = true,																	-- enable disable filger
+	["classtimer"] = false,																-- enable disable classtimer
 	["BuffReminderRaidBuffs"] = true,													-- enable disable raid buffs reminder
 	["Reminder"] = true,																-- enable disable reminder(self buff)
-	["CooldownFlash"] = false,															-- enable disable cooldown flash
+	["CooldownFlash"] = true,															-- enable disable cooldown flash
 	["raidcooldowns"] = false, 
 	["AutoScreen"] = true,
 	["Threatbar"] = true,
