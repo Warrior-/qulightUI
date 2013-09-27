@@ -97,7 +97,7 @@ C.modules["Blizzard_GuildBankUI"] = function()
 		local ic = _G["GuildBankTab"..i.."ButtonIconTexture"]
 		local nt = _G["GuildBankTab"..i.."ButtonNormalTexture"]
 
-		bu:SetCheckedTexture(C.media.checked)
+		bu:SetCheckedTexture("")
 		F.CreateBG(bu)
 		F.CreateSD(bu, 5, 0, 0, 0, 1, 1)
 
@@ -112,7 +112,7 @@ C.modules["Blizzard_GuildBankUI"] = function()
 	for i = 1, NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_ICON_ROWS do
 		local bu = _G["GuildBankPopupButton"..i]
 
-		bu:SetCheckedTexture(C.media.checked)
+		bu:SetCheckedTexture("")
 		select(2, bu:GetRegions()):Hide()
 
 		_G["GuildBankPopupButton"..i.."Icon"]:SetTexCoord(.08, .92, .08, .92)

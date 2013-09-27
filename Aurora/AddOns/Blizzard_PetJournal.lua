@@ -86,9 +86,9 @@ C.modules["Blizzard_PetJournal"] = function()
 			bu.name:SetParent(bg)
 
 			if bu.DragButton then
-				bu.DragButton.ActiveTexture:SetTexture(C.media.checked)
+				bu.DragButton.ActiveTexture:SetTexture("")
 			else
-				bu.dragButton.ActiveTexture:SetTexture(C.media.checked)
+				bu.dragButton.ActiveTexture:SetTexture("")
 				bu.dragButton.levelBG:SetAlpha(0)
 				bu.dragButton.level:SetFontObject(GameFontNormal)
 				bu.dragButton.level:SetTextColor(1, 1, 1)
@@ -225,7 +225,7 @@ C.modules["Blizzard_PetJournal"] = function()
 
 			spell:SetPushedTexture("")
 
-			spell.selected:SetTexture(C.media.checked)
+			spell.selected:SetTexture("")
 
 			spell:GetRegions():Hide()
 
@@ -255,7 +255,7 @@ C.modules["Blizzard_PetJournal"] = function()
 	for i = 1, 2 do
 		local bu = PetJournal.SpellSelect["Spell"..i]
 
-		bu:SetCheckedTexture(C.media.checked)
+		bu:SetCheckedTexture("")
 		bu:SetPushedTexture("")
 
 		bu.icon:SetDrawLayer("ARTWORK")

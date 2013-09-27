@@ -9,7 +9,7 @@ C.modules["Blizzard_TimeManager"] = function()
 	StopwatchTabFrameRight:Hide()
 
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
-	TimeManagerStopwatchCheck:SetCheckedTexture(C.media.checked)
+	TimeManagerStopwatchCheck:SetCheckedTexture("")
 	F.CreateBG(TimeManagerStopwatchCheck)
 
 	TimeManagerAlarmHourDropDown:SetWidth(80)

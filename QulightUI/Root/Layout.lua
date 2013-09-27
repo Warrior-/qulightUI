@@ -120,12 +120,13 @@ if Qulight["actionbar"].enable then
 	QuBar4:SetFrameLevel(2)
 
 	local QuBar5 = CreateFrame("Frame", "QuBar5", UIParent)
-	CreatePanel(QuBar5, 20, 20, "BOTTOM", minimaplol, "TOP", -65, 19)
-	QuBar5:SetWidth(20)
+	CreatePanel(QuBar5, 20, 20, "TOPLEFT", ChatPanelTwo, "TOPLEFT", -1, 38)
+	QuBar5:SetWidth((buttonsize * 12) + (buttonspacing * 13))
+	QuBar5:SetHeight(buttonsize)
 	QuBar5:SetFrameStrata("BACKGROUND")
 	QuBar5:SetFrameLevel(2)
 	QuBar5:SetAlpha(0)
-	QuBar5:SetScale(0.65)
+	QuBar5:SetScale(0.99)
 	
 	AnchorQuBar6 = CreateFrame("Frame","Move_Bar6",UIParent)
 	AnchorQuBar6:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 3)

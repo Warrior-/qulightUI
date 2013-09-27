@@ -196,7 +196,7 @@ C.modules["Blizzard_TalentUI"] = function()
 		local tab = _G["PlayerSpecTab"..i]
 		_G["PlayerSpecTab"..i.."Background"]:Hide()
 
-		tab:SetCheckedTexture(C.media.checked)
+		tab:SetCheckedTexture("")
 
 		local bg = CreateFrame("Frame", nil, tab)
 		bg:SetPoint("TOPLEFT", -1, 1)

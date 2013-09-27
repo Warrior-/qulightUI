@@ -10,4 +10,6 @@
 	<Script file="Plugins\HarmonyBar.lua"/>
 	<Script file="Plugins\AuraWatch.lua"/>
 	<Script file="Plugins\ShadowOrbsBar.lua"/>
+	<Script file="Plugins\ArcaneCharge.lua"/>
+	<Script file="Plugins\RuneOfPower.lua"/>
 </Ui>

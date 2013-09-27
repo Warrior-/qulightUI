@@ -1,4 +1,3 @@
-
 if not Qulight["actionbar"].enable == true then return end
 
 local bar = QuBar5
@@ -13,9 +12,9 @@ for i= 1, 12 do
 	b:SetFrameStrata("BACKGROUND")
 	b:SetFrameLevel(15)
 	
-	if i == 8 then
-		b:SetPoint("TOPRIGHT", bar, -buttonspacing, -buttonspacing)
+	if i == 1 then
+		b:SetPoint("TOPLEFT", bar, buttonspacing, -buttonspacing)
 	else
-		b:SetPoint("LEFT", b2, "RIGHT", buttonspacing, 0)
+		b:SetPoint("LEFT", b2, "RIGHT", buttonspacing*1.1, 0)
 	end
 end

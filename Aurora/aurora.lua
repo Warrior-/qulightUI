@@ -36,13 +36,15 @@ C.media = {
 	["checked"] = "Interface\\AddOns\\Aurora\\media\\CheckButtonHilight",
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=],
 	["glow"] = "Interface\\AddOns\\Aurora\\media\\glow",
+	["gradient"] = "Interface\\AddOns\\Aurora\\media\\gradient",
+	["roleIcons"] = "Interface\\Addons\\Aurora\\media\\UI-LFG-ICON-ROLES",
 }
 
 C.defaults = {
 	["alpha"] = 0.9,
-	["enableFont"] = false,
-	["gradientAlpha"] = {"VERTICAL", 0, 0, 0, .3, .35, .35, .35, .35},
-
+	["buttonGradientColour"] = {0, 0, 0, .3},
+	["buttonSolidColour"] = {.35, .35, .35, .35},
+	["useButtonGradientColour"] = false,
 	["useCustomColour"] = false,
 		["customColour"] = {r = 1, g = 1, b = 1},
 	["qualityColour"] = true,
@@ -102,55 +104,41 @@ end
 
 -- we assign these after loading variables for caching
 -- otherwise we call an extra unpack() every time
-local gradOr, startR, startG, startB, startAlpha, endR, endG, endB, endAlpha
+local buttonR, buttonG, buttonB, buttonA
 
 F.CreateGradient = function(f)
 	local tex = f:CreateTexture(nil, "BORDER")
 	tex:SetPoint("TOPLEFT", 1, -1)
 	tex:SetPoint("BOTTOMRIGHT", -1, 1)
-	tex:SetTexture(C.media.backdrop)
-	tex:SetGradientAlpha(gradOr, 0.1, 0.1, 0.1, 1, 0.1, 0.1, 0.1, 1)
+	tex:SetTexture(useButtonGradientColour and C.media.gradient or C.media.backdrop)
+	tex:SetVertexColor(0.11, 0.11, 0.11, 1)
 
 	return tex
 end
 
-F.CreatePulse = function(frame)
-	local speed = .05
-	local mult = 1
-	local alpha = 1
-	local last = 0
-	frame:SetScript("OnUpdate", function(self, elapsed)
-		last = last + elapsed
-		if last > speed then
-			last = 0
-			self:SetAlpha(alpha)
-		end
-		alpha = alpha - elapsed*mult
-		if alpha < 0 and mult > 0 then
-			mult = mult*-1
-			alpha = 0
-		elseif alpha > 1 and mult < 0 then
-			mult = mult*-1
-		end
-	end)
-end
-
-local function StartGlow(f)
+local function colourButton(f)
 	if not f:IsEnabled() then return end
-	f:SetBackdropColor(0, 0, 0, 0)
+
+	if useButtonGradientColour then
+		f:SetBackdropColor(r, g, b, .3)
+	else
+		f.tex:SetVertexColor(r / 4, g / 4, b / 4)
+	end
+
 	f:SetBackdropBorderColor(0, 0, 0)
-	f.glow:SetAlpha(1)
-	F.CreatePulse(f.glow)
 end
 
-local function StopGlow(f)
-	f:SetBackdropColor(0, 0, 0, 0)
+local function clearButton(f)
+	if useButtonGradientColour then
+		f:SetBackdropColor(0, 0, 0, 0)
+	else
+		f.tex:SetVertexColor(0.11, 0.11, 0.11, 1)
+	end
+
 	f:SetBackdropBorderColor(0, 0, 0)
-	f.glow:SetScript("OnUpdate", nil)
-	f.glow:SetAlpha(0)
 end
 
-F.Reskin = function(f, noGlow)
+F.Reskin = function(f, noHighlight)
 	f:SetNormalTexture("")
 	f:SetHighlightTexture("")
 	f:SetPushedTexture("")
@@ -164,21 +152,11 @@ F.Reskin = function(f, noGlow)
 
 	F.CreateBD(f, .0)
 
-	F.CreateGradient(f)
+	f.tex = F.CreateGradient(f)
 
-	if not noGlow then
-		f.glow = CreateFrame("Frame", nil, f)
-		f.glow:SetBackdrop({
-			edgeFile = C.media.glow,
-			edgeSize = 5,
-		})
-		f.glow:SetPoint("TOPLEFT", -3, 3)
-		f.glow:SetPoint("BOTTOMRIGHT", 3, -3)
-		f.glow:SetBackdropBorderColor(r, g, b)
-		f.glow:SetAlpha(0)
-
-		f:HookScript("OnEnter", StartGlow)
- 		f:HookScript("OnLeave", StopGlow)
+	if not noHighlight then
+		f:HookScript("OnEnter", colourButton)
+ 		f:HookScript("OnLeave", clearButton)
 	end
 end
 
@@ -226,11 +204,9 @@ F.ReskinScroll = function(f)
 	bu.bg:SetPoint("BOTTOMRIGHT", bu, 0, 4)
 	F.CreateBD(bu.bg, 0)
 
-	local tex = f:CreateTexture(nil, "BACKGROUND")
+	local tex = F.CreateGradient(f)
 	tex:SetPoint("TOPLEFT", bu.bg, 1, -1)
 	tex:SetPoint("BOTTOMRIGHT", bu.bg, -1, 1)
-	tex:SetTexture(C.media.backdrop)
-	tex:SetGradientAlpha(gradOr, startR, startG, startB, startAlpha, endR, endG, endB, endAlpha)
 
 	local up = _G[frame.."ScrollUpButton"]
 	local down = _G[frame.."ScrollDownButton"]
@@ -273,12 +249,12 @@ end
 
 local function colourArrow(f)
 	if f:IsEnabled() then
-		f.downtex:SetVertexColor(r, g, b)
+		f.tex:SetVertexColor(r, g, b)
 	end
 end
 
 local function clearArrow(f)
-	f.downtex:SetVertexColor(1, 1, 1)
+	f.tex:SetVertexColor(1, 1, 1)
 end
 
 F.colourArrow = colourArrow
@@ -309,12 +285,12 @@ F.ReskinDropDown = function(f)
 	dis:SetDrawLayer("OVERLAY")
 	dis:SetAllPoints()
 
-	local downtex = down:CreateTexture(nil, "ARTWORK")
-	downtex:SetTexture(C.media.arrowDown)
-	downtex:SetSize(8, 8)
-	downtex:SetPoint("CENTER")
-	downtex:SetVertexColor(1, 1, 1)
-	down.downtex = downtex
+	local tex = down:CreateTexture(nil, "ARTWORK")
+	tex:SetTexture(C.media.arrowDown)
+	tex:SetSize(8, 8)
+	tex:SetPoint("CENTER")
+	tex:SetVertexColor(1, 1, 1)
+	down.tex = tex
 
 	down:HookScript("OnEnter", colourArrow)
 	down:HookScript("OnLeave", clearArrow)
@@ -325,12 +301,16 @@ F.ReskinDropDown = function(f)
 	bg:SetFrameLevel(f:GetFrameLevel()-1)
 	F.CreateBD(bg, 0)
 
-	F.CreateGradient(bg)
+	local gradient = F.CreateGradient(f)
+	gradient:SetPoint("TOPLEFT", bg, 1, -1)
+	gradient:SetPoint("BOTTOMRIGHT", bg, -1, 1)
 end
 
 local function colourClose(f)
-	for _, pixel in pairs(f.pixels) do
-		pixel:SetVertexColor(r, g, b)
+	if f:IsEnabled() then
+		for _, pixel in pairs(f.pixels) do
+			pixel:SetVertexColor(r, g, b)
+		end
 	end
 end
 
@@ -358,6 +338,12 @@ F.ReskinClose = function(f, a1, p, a2, x, y)
 	F.CreateBD(f, 0)
 
 	F.CreateGradient(f)
+
+	f:SetDisabledTexture(C.media.backdrop)
+	local dis = f:GetDisabledTexture()
+	dis:SetVertexColor(0, 0, 0, .4)
+	dis:SetDrawLayer("OVERLAY")
+	dis:SetAllPoints()
 
 	f.pixels = {}
 
@@ -394,7 +380,9 @@ F.ReskinInput = function(f, height, width)
 	bd:SetFrameLevel(f:GetFrameLevel()-1)
 	F.CreateBD(bd, 0)
 
-	F.CreateGradient(bd)
+	local gradient = F.CreateGradient(f)
+	gradient:SetPoint("TOPLEFT", bd, 1, -1)
+	gradient:SetPoint("BOTTOMRIGHT", bd, -1, 1)
 
 	if height then f:SetHeight(height) end
 	if width then f:SetWidth(width) end
@@ -402,7 +390,7 @@ end
 
 F.ReskinArrow = function(f, direction)
 	f:SetSize(18, 18)
-	F.Reskin(f)
+	F.Reskin(f, true)
 
 	f:SetDisabledTexture(C.media.backdrop)
 	local dis = f:GetDisabledTexture()
@@ -410,10 +398,13 @@ F.ReskinArrow = function(f, direction)
 	dis:SetDrawLayer("OVERLAY")
 
 	local tex = f:CreateTexture(nil, "ARTWORK")
+	tex:SetTexture("Interface\\AddOns\\Aurora\\media\\arrow-"..direction.."-active")
 	tex:SetSize(8, 8)
 	tex:SetPoint("CENTER")
+	f.tex = tex
 
-	tex:SetTexture("Interface\\AddOns\\Aurora\\media\\arrow-"..direction.."-active")
+	f:HookScript("OnEnter", colourArrow)
+	f:HookScript("OnLeave", clearArrow)
 end
 
 F.ReskinCheck = function(f)
@@ -431,11 +422,9 @@ F.ReskinCheck = function(f)
 	bd:SetFrameLevel(f:GetFrameLevel()-1)
 	F.CreateBD(bd, 0)
 
-	local tex = f:CreateTexture(nil, "BACKGROUND")
+	local tex = F.CreateGradient(f)
 	tex:SetPoint("TOPLEFT", 5, -5)
 	tex:SetPoint("BOTTOMRIGHT", -5, 5)
-	tex:SetTexture(C.media.backdrop)
-	tex:SetGradientAlpha(gradOr, startR, startG, startB, startAlpha, endR, endG, endB, endAlpha)
 
 	local ch = f:GetCheckedTexture()
 	ch:SetDesaturated(true)
@@ -467,11 +456,9 @@ F.ReskinRadio = function(f)
 	F.CreateBD(bd, 0)
 	f.bd = bd
 
-	local tex = f:CreateTexture(nil, "BACKGROUND")
+	local tex = F.CreateGradient(f)
 	tex:SetPoint("TOPLEFT", 4, -4)
 	tex:SetPoint("BOTTOMRIGHT", -4, 4)
-	tex:SetTexture(C.media.backdrop)
-	tex:SetGradientAlpha(gradOr, startR, startG, startB, startAlpha, endR, endG, endB, endAlpha)
 
 	f:HookScript("OnEnter", colourRadio)
 	f:HookScript("OnLeave", clearRadio)
@@ -624,6 +611,14 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 	if addon == "Aurora" then
 		-- [[ Load Variables ]]
 
+		-- remove deprecated or corrupt variables
+		for key, value in pairs(AuroraConfig) do
+			if C.defaults[key] == nil then
+				AuroraConfig[key] = nil
+			end
+		end
+
+		-- load or init variables
 		for key, value in pairs(C.defaults) do
 			if AuroraConfig[key] == nil then
 				if type(value) == "table" then
@@ -638,7 +633,13 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		end
 
 		alpha = AuroraConfig.alpha
-		gradOr, startR, startG, startB, startAlpha, endR, endG, endB, endAlpha = unpack(AuroraConfig.gradientAlpha)
+		useButtonGradientColour = AuroraConfig.useButtonGradientColour
+
+		if useButtonGradientColour then
+			buttonR, buttonG, buttonB, buttonA = unpack(AuroraConfig.buttonGradientColour)
+		else
+			buttonR, buttonG, buttonB, buttonA = unpack(AuroraConfig.buttonSolidColour)
+		end
 
 		if AuroraConfig.useCustomColour then
 			r, g, b = AuroraConfig.customColour.r, AuroraConfig.customColour.g, AuroraConfig.customColour.b
@@ -681,7 +682,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Simple backdrops ]]
 
-		local bds = {"AutoCompleteBox", "BNToastFrame", "TicketStatusFrameButton", "GearManagerDialogPopup", "TokenFramePopup", "ReputationDetailFrame", "RaidInfoFrame", "ScrollOfResurrectionSelectionFrame", "ScrollOfResurrectionFrame", "VoiceChatTalkers", "ReportPlayerNameDialog", "ReportCheatingDialog", "QueueStatusFrame"}
+		local bds = {"AutoCompleteBox", "TicketStatusFrameButton", "GearManagerDialogPopup", "TokenFramePopup", "RaidInfoFrame", "ScrollOfResurrectionSelectionFrame", "ScrollOfResurrectionFrame", "VoiceChatTalkers", "ReportPlayerNameDialog", "ReportCheatingDialog", "QueueStatusFrame"}
 
 		for i = 1, #bds do
 			local bd = _G[bds[i]]
@@ -704,7 +705,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Scroll bars ]]
 
-		local scrollbars = {"FriendsFrameFriendsScrollFrameScrollBar", "CharacterStatsPaneScrollBar", "LFDQueueFrameSpecificListScrollFrameScrollBar", "HelpFrameKnowledgebaseScrollFrameScrollBar", "HelpFrameReportBugScrollFrameScrollBar", "HelpFrameSubmitSuggestionScrollFrameScrollBar", "HelpFrameTicketScrollFrameScrollBar", "PaperDollTitlesPaneScrollBar", "PaperDollEquipmentManagerPaneScrollBar", "SendMailScrollFrameScrollBar", "OpenMailScrollFrameScrollBar", "RaidInfoScrollFrameScrollBar", "ReputationListScrollFrameScrollBar", "FriendsFriendsScrollFrameScrollBar", "HelpFrameGM_ResponseScrollFrame1ScrollBar", "HelpFrameGM_ResponseScrollFrame2ScrollBar", "HelpFrameKnowledgebaseScrollFrame2ScrollBar", "WhoListScrollFrameScrollBar", "GearManagerDialogPopupScrollFrameScrollBar", "LFDQueueFrameRandomScrollFrameScrollBar", "ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar", "ChannelRosterScrollFrameScrollBar"}
+		local scrollbars = {"FriendsFrameFriendsScrollFrameScrollBar", "aload_ScrollScrollBar", "WorldMapQuestScrollFrameScrollBar", "CharacterStatsPaneScrollBar", "LFDQueueFrameSpecificListScrollFrameScrollBar", "HelpFrameKnowledgebaseScrollFrameScrollBar", "HelpFrameReportBugScrollFrameScrollBar", "HelpFrameSubmitSuggestionScrollFrameScrollBar", "HelpFrameTicketScrollFrameScrollBar", "PaperDollTitlesPaneScrollBar", "PaperDollEquipmentManagerPaneScrollBar", "SendMailScrollFrameScrollBar", "OpenMailScrollFrameScrollBar", "RaidInfoScrollFrameScrollBar", "FriendsFriendsScrollFrameScrollBar", "HelpFrameGM_ResponseScrollFrame1ScrollBar", "HelpFrameGM_ResponseScrollFrame2ScrollBar", "HelpFrameKnowledgebaseScrollFrame2ScrollBar", "WhoListScrollFrameScrollBar", "GearManagerDialogPopupScrollFrameScrollBar", "LFDQueueFrameRandomScrollFrameScrollBar", "ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar", "ChannelRosterScrollFrameScrollBar"}
 		for i = 1, #scrollbars do
 			local scrollbar = _G[scrollbars[i]]
 			if scrollbar then
@@ -728,7 +729,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Input frames ]]
 
-		local inputs = {"AddFriendNameEditBox", "SendMailNameEditBox", "SendMailSubjectEditBox", "SendMailMoneyGold", "SendMailMoneySilver", "SendMailMoneyCopper", "StaticPopup1MoneyInputFrameGold", "StaticPopup1MoneyInputFrameSilver", "StaticPopup1MoneyInputFrameCopper", "StaticPopup2MoneyInputFrameGold", "StaticPopup2MoneyInputFrameSilver", "StaticPopup2MoneyInputFrameCopper", "GearManagerDialogPopupEditBox", "HelpFrameKnowledgebaseSearchBox", "ChannelFrameDaughterFrameChannelName", "ChannelFrameDaughterFrameChannelPassword", "BagItemSearchBox", "BankItemSearchBox", "ScrollOfResurrectionSelectionFrameTargetEditBox", "ScrollOfResurrectionFrameNoteFrame"}
+		local inputs = {"AddFriendNameEditBox", "GearManagerDialogPopupEditBox", "HelpFrameKnowledgebaseSearchBox", "ChannelFrameDaughterFrameChannelName", "ChannelFrameDaughterFrameChannelPassword", "BagItemSearchBox", "BankItemSearchBox", "ScrollOfResurrectionSelectionFrameTargetEditBox", "ScrollOfResurrectionFrameNoteFrame"}
 		for i = 1, #inputs do
 			local input = _G[inputs[i]]
 			if input then
@@ -739,8 +740,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		end
 
 		F.ReskinInput(FriendsFrameBroadcastInput)
-		F.ReskinInput(StaticPopup1EditBox, 20)
-		F.ReskinInput(StaticPopup2EditBox, 20)
 
 		-- [[ Arrows ]]
 
@@ -774,29 +773,9 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 
-		F.ReskinCheck(LFDQueueFrameRoleButtonTank.checkButton)
-		F.ReskinCheck(LFDQueueFrameRoleButtonHealer.checkButton)
-		F.ReskinCheck(LFDQueueFrameRoleButtonDPS.checkButton)
-		F.ReskinCheck(LFDQueueFrameRoleButtonLeader.checkButton)
-		F.ReskinCheck(LFRQueueFrameRoleButtonTank.checkButton)
-		F.ReskinCheck(LFRQueueFrameRoleButtonHealer.checkButton)
-		F.ReskinCheck(LFRQueueFrameRoleButtonDPS.checkButton)
-		F.ReskinCheck(LFDRoleCheckPopupRoleButtonTank.checkButton)
-		F.ReskinCheck(LFDRoleCheckPopupRoleButtonHealer.checkButton)
-		F.ReskinCheck(LFDRoleCheckPopupRoleButtonDPS.checkButton)
-		F.ReskinCheck(RaidFinderQueueFrameRoleButtonTank.checkButton)
-		F.ReskinCheck(RaidFinderQueueFrameRoleButtonHealer.checkButton)
-		F.ReskinCheck(RaidFinderQueueFrameRoleButtonDPS.checkButton)
-		F.ReskinCheck(RaidFinderQueueFrameRoleButtonLeader.checkButton)
-		F.ReskinCheck(LFGInvitePopupRoleButtonTank.checkButton)
-		F.ReskinCheck(LFGInvitePopupRoleButtonHealer.checkButton)
-		F.ReskinCheck(LFGInvitePopupRoleButtonDPS.checkButton)
-		F.ReskinCheck(LFGInvitePopupRoleButtonHealer.checkButton)
-		F.ReskinCheck(LFGInvitePopupRoleButtonDPS.checkButton)
-
 		-- [[ Radio buttons ]]
 
-		local radiobuttons = {"ReportPlayerNameDialogPlayerNameCheckButton", "ReportPlayerNameDialogGuildNameCheckButton", "ReportPlayerNameDialogArenaTeamNameCheckButton", "SendMailSendMoneyButton", "SendMailCODButton"}
+		local radiobuttons = {"ReportPlayerNameDialogPlayerNameCheckButton", "ReportPlayerNameDialogGuildNameCheckButton", "SendMailSendMoneyButton", "SendMailCODButton"}
 		for i = 1, #radiobuttons do
 			local radiobutton = _G[radiobuttons[i]]
 			if radiobutton then
@@ -806,10 +785,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 
-		F.ReskinRadio(RolePollPopupRoleButtonTank.checkButton)
-		F.ReskinRadio(RolePollPopupRoleButtonHealer.checkButton)
-		F.ReskinRadio(RolePollPopupRoleButtonDPS.checkButton)
-
 		-- [[ Backdrop frames ]]
 
 		F.SetBD(DressUpFrame, 10, -12, -34, 74)
@@ -817,14 +792,12 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.SetBD(SpellBookFrame)
 		F.SetBD(RaidParentFrame)
 
-		local FrameBDs = {"StaticPopup1", "StaticPopup2", "GameMenuFrame", "InterfaceOptionsFrame", "VideoOptionsFrame", "AudioOptionsFrame", "LFGDungeonReadyStatus", "ChatConfigFrame", "StackSplitFrame", "AddFriendFrame", "FriendsFriendsFrame", "ColorPickerFrame", "ReadyCheckFrame", "LFDRoleCheckPopup", "LFGDungeonReadyDialog", "RolePollPopup", "GuildInviteFrame", "ChannelFrameDaughterFrame", "LFGInvitePopup"}
+		local FrameBDs = {"GameMenuFrame", "InterfaceOptionsFrame", "VideoOptionsFrame", "AudioOptionsFrame", "ChatConfigFrame", "StackSplitFrame", "AddFriendFrame", "FriendsFriendsFrame", "ColorPickerFrame", "ReadyCheckFrame", "GuildInviteFrame", "ChannelFrameDaughterFrame"}
 		for i = 1, #FrameBDs do
-			FrameBD = _G[FrameBDs[i]]
+			local FrameBD = _G[FrameBDs[i]]
 			F.CreateBD(FrameBD)
 			F.CreateSD(FrameBD)
 		end
-
-		LFGDungeonReadyDialog.SetBackdrop = F.dummy
 
 		-- Dropdown lists
 
@@ -835,7 +808,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 				if not backdrop.reskinned then
 					F.CreateBD(menu)
 					F.CreateBD(backdrop)
-					CreateShadow3(menu)
 					backdrop.reskinned = true
 				end
 			end
@@ -961,6 +933,10 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 						createBackdrop(bu, check)
 						hl:SetTexture(r, g, b, .2)
 						_G["DropDownList"..level.."Button"..j.."UnCheck"]:SetTexture("")
+
+						local arrow = _G["DropDownList"..level.."Button"..j.."ExpandArrow"]
+						arrow:SetNormalTexture(C.media.arrowRight)
+						arrow:SetSize(8, 8)
 					end
 
 					if not bu.notCheckable then
@@ -1020,7 +996,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 					bu.Border:Hide()
 
 					bu:SetNormalTexture("")
-					bu.Checked:SetTexture(C.media.checked)
+					bu.Checked:SetTexture("")
 
 					_G["PetStableActivePet"..i.."IconTexture"]:SetTexCoord(.08, .92, .08, .92)
 					F.CreateBD(bu, .25)
@@ -1053,7 +1029,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		end
 
 		-- Ghost frame
-
+		F.CreateSD(GhostFrame)
 		GhostFrameContentsFrameIcon:SetTexCoord(.08, .92, .08, .92)
 
 		local GhostBD = CreateFrame("Frame", nil, GhostFrameContentsFrame)
@@ -1092,6 +1068,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		bgmoney:SetFrameLevel(OpenMailMoneyButton:GetFrameLevel()-1)
 		F.CreateBD(bgmoney)
 
+		SendMailSubjectEditBox:SetPoint("TOPLEFT", SendMailNameEditBox, "BOTTOMLEFT", 0, -1)
+
 		for i = 1, INBOXITEMS_TO_DISPLAY do
 			local it = _G["MailItem"..i]
 			local bu = _G["MailItem"..i.."Button"]
@@ -1103,7 +1081,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			a:Hide()
 			b:Hide()
 
-			bu:SetCheckedTexture(C.media.checked)
+			bu:SetCheckedTexture("")
 
 			st:Hide()
 			line:Hide()
@@ -1153,6 +1131,13 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		F.ReskinPortraitFrame(MailFrame, true)
 		F.ReskinPortraitFrame(OpenMailFrame, true)
+		F.ReskinPortraitFrame(MailFrame, true)
+		F.ReskinPortraitFrame(OpenMailFrame, true)
+		F.ReskinInput(SendMailNameEditBox, 20)
+		F.ReskinInput(SendMailSubjectEditBox)
+		F.ReskinInput(SendMailMoneyGold)
+		F.ReskinInput(SendMailMoneySilver)
+		F.ReskinInput(SendMailMoneyCopper)
 
 		-- Currency frame
 
@@ -1182,6 +1167,13 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.ReskinScroll(TokenFrameContainerScrollBar)
 
 		-- Reputation frame
+
+		ReputationDetailCorner:Hide()
+		ReputationDetailDivider:Hide()
+		ReputationListScrollFrame:GetRegions():Hide()
+		select(2, ReputationListScrollFrame:GetRegions()):Hide()
+
+		ReputationDetailFrame:SetPoint("TOPLEFT", ReputationFrame, "TOPRIGHT", 1, -28)
 
 		local function UpdateFactionSkins()
 			for i = 1, GetNumFactions() do
@@ -1234,156 +1226,15 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			end
 		end)
 
-		-- LFD frame
+		F.CreateBD(ReputationDetailFrame)
+		F.ReskinClose(ReputationDetailCloseButton)
+		F.ReskinCheck(ReputationDetailAtWarCheckBox)
+		F.ReskinCheck(ReputationDetailInactiveCheckBox)
+		F.ReskinCheck(ReputationDetailMainScreenCheckBox)
+		F.ReskinCheck(ReputationDetailLFGBonusReputationCheckBox)
+		F.ReskinScroll(ReputationListScrollFrameScrollBar)
 
-		LFDQueueFrameRandomScrollFrameScrollBackgroundTopLeft:Hide()
-		LFDQueueFrameRandomScrollFrameScrollBackgroundBottomRight:Hide()
-
-		hooksecurefunc("LFDQueueFrameRandom_UpdateFrame", function()
-			for i = 1, LFD_MAX_REWARDS do
-				local button = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i]
-
-				if button and not button.styled then
-					local icon = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."IconTexture"]
-					local cta = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."ShortageBorder"]
-					local count = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."Count"]
-					local na = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."NameFrame"]
-
-					F.CreateBG(icon)
-					icon:SetTexCoord(.08, .92, .08, .92)
-					icon:SetDrawLayer("OVERLAY")
-					count:SetDrawLayer("OVERLAY")
-					na:SetTexture(0, 0, 0, .25)
-					na:SetSize(118, 39)
-					cta:SetAlpha(0)
-
-					button.bg2 = CreateFrame("Frame", nil, button)
-					button.bg2:SetPoint("TOPLEFT", na, "TOPLEFT", 10, 0)
-					button.bg2:SetPoint("BOTTOMRIGHT", na, "BOTTOMRIGHT")
-					F.CreateBD(button.bg2, 0)
-
-					button.styled = true
-				end
-			end
-		end)
-
-		hooksecurefunc("LFGDungeonListButton_SetDungeon", function(button, dungeonID)
-			if not button.expandOrCollapseButton.plus then
-				F.ReskinCheck(button.enableButton)
-				F.ReskinExpandOrCollapse(button.expandOrCollapseButton)
-			end
-			if LFGCollapseList[dungeonID] then
-				button.expandOrCollapseButton.plus:Show()
-			else
-				button.expandOrCollapseButton.plus:Hide()
-			end
-
-			button.enableButton:GetCheckedTexture():SetDesaturated(true)
-		end)
-
-		for i = 1, NUM_LFR_CHOICE_BUTTONS do
-			local bu = _G["LFRQueueFrameSpecificListButton"..i].enableButton
-			F.ReskinCheck(bu)
-			bu.SetNormalTexture = F.dummy
-			bu.SetPushedTexture = F.dummy
-
-			F.ReskinExpandOrCollapse(_G["LFRQueueFrameSpecificListButton"..i].expandOrCollapseButton)
-		end
-
-		hooksecurefunc("LFRQueueFrameSpecificListButton_SetDungeon", function(button, dungeonID)
-			if LFGCollapseList[dungeonID] then
-				button.expandOrCollapseButton.plus:Show()
-			else
-				button.expandOrCollapseButton.plus:Hide()
-			end
-
-			button.enableButton:GetCheckedTexture():SetDesaturated(true)
-		end)
-
-		F.Reskin(LFDQueueFrameRandomScrollFrameChildFrame.bonusRepFrame.ChooseButton)
-		F.Reskin(ScenarioQueueFrameRandomScrollFrameChildFrame.bonusRepFrame.ChooseButton)
-
-		-- Raid Finder
-
-		RaidFinderFrameBottomInset:DisableDrawLayer("BORDER")
-		RaidFinderFrameBottomInsetBg:Hide()
-		RaidFinderFrameBtnCornerRight:Hide()
-		RaidFinderFrameButtonBottomBorder:Hide()
-		RaidFinderQueueFrameScrollFrameScrollBackground:Hide()
-		RaidFinderQueueFrameScrollFrameScrollBackgroundTopLeft:Hide()
-		RaidFinderQueueFrameScrollFrameScrollBackgroundBottomRight:Hide()
-
-		for i = 1, LFD_MAX_REWARDS do
-			local button = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i]
-
-			if button then
-				local icon = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."IconTexture"]
-				local cta = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."ShortageBorder"]
-				local count = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."Count"]
-				local na = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."NameFrame"]
-
-				F.CreateBG(icon)
-				icon:SetTexCoord(.08, .92, .08, .92)
-				icon:SetDrawLayer("OVERLAY")
-				count:SetDrawLayer("OVERLAY")
-				na:SetTexture(0, 0, 0, .25)
-				na:SetSize(118, 39)
-				cta:SetAlpha(0)
-
-				button.bg2 = CreateFrame("Frame", nil, button)
-				button.bg2:SetPoint("TOPLEFT", na, "TOPLEFT", 10, 0)
-				button.bg2:SetPoint("BOTTOMRIGHT", na, "BOTTOMRIGHT")
-				F.CreateBD(button.bg2, 0)
-			end
-		end
-
-		F.ReskinScroll(RaidFinderQueueFrameScrollFrameScrollBar)
-
-		-- Scenario finder
-
-		ScenarioFinderFrameInset:DisableDrawLayer("BORDER")
-		ScenarioFinderFrame.TopTileStreaks:Hide()
-		ScenarioFinderFrameBtnCornerRight:Hide()
-		ScenarioFinderFrameButtonBottomBorder:Hide()
-		ScenarioQueueFrameRandomScrollFrameScrollBackground:Hide()
-		ScenarioQueueFrameRandomScrollFrameScrollBackgroundTopLeft:Hide()
-		ScenarioQueueFrameRandomScrollFrameScrollBackgroundBottomRight:Hide()
-		ScenarioQueueFrame.Bg:Hide()
-		ScenarioFinderFrameInset:GetRegions():Hide()
-
-		ScenarioQueueFrameRandomScrollFrame:SetWidth(304)
-
-		hooksecurefunc("ScenarioQueueFrameRandom_UpdateFrame", function()
-			for i = 1, 2 do
-				local button = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i]
-
-				if button and not button.styled then
-					local icon = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."IconTexture"]
-					local cta = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."ShortageBorder"]
-					local count = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."Count"]
-					local na = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."NameFrame"]
-
-					F.CreateBG(icon)
-					icon:SetTexCoord(.08, .92, .08, .92)
-					icon:SetDrawLayer("OVERLAY")
-					count:SetDrawLayer("OVERLAY")
-					na:SetTexture(0, 0, 0, .25)
-					na:SetSize(118, 39)
-					cta:SetAlpha(0)
-
-					button.bg2 = CreateFrame("Frame", nil, button)
-					button.bg2:SetPoint("TOPLEFT", na, "TOPLEFT", 10, 0)
-					button.bg2:SetPoint("BOTTOMRIGHT", na, "BOTTOMRIGHT")
-					F.CreateBD(button.bg2, 0)
-
-					button.styled = true
-				end
-			end
-		end)
-
-		F.Reskin(ScenarioQueueFrameFindGroupButton)
-		F.ReskinDropDown(ScenarioQueueFrameTypeDropDown)
-		F.ReskinScroll(ScenarioQueueFrameRandomScrollFrameScrollBar)
+		select(3, ReputationDetailFrame:GetRegions()):Hide()
 
 		-- Raid frame (social frame)
 
@@ -1414,6 +1265,25 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			select(2, tab:GetRegions()):SetTexCoord(.08, .92, .08, .92)
 		end
 
+		for i = 1, NUM_LFR_CHOICE_BUTTONS do
+			local bu = _G["LFRQueueFrameSpecificListButton"..i].enableButton
+			F.ReskinCheck(bu)
+			bu.SetNormalTexture = F.dummy
+			bu.SetPushedTexture = F.dummy
+
+			F.ReskinExpandOrCollapse(_G["LFRQueueFrameSpecificListButton"..i].expandOrCollapseButton)
+		end
+
+		hooksecurefunc("LFRQueueFrameSpecificListButton_SetDungeon", function(button, dungeonID)
+			if LFGCollapseList[dungeonID] then
+				button.expandOrCollapseButton.plus:Show()
+			else
+				button.expandOrCollapseButton.plus:Hide()
+			end
+
+			button.enableButton:GetCheckedTexture():SetDesaturated(true)
+		end)
+
 		-- Spellbook frame
 
 		for i = 1, SPELLS_PER_PAGE do
@@ -1437,19 +1307,29 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		end
 
 		hooksecurefunc("SpellButton_UpdateButton", function(self)
+			if SpellBookFrame.bookType == BOOKTYPE_PROFESSION then return end
+
 			local slot, slotType = SpellBook_GetSpellBookSlot(self);
 			local name = self:GetName();
 			local subSpellString = _G[name.."SubSpellName"]
 
+			local isOffSpec = self.offSpecID ~= 0 and SpellBookFrame.bookType == BOOKTYPE_SPELL
+
 			subSpellString:SetTextColor(1, 1, 1)
+
 			if slotType == "FUTURESPELL" then
 				local level = GetSpellAvailableLevel(slot, SpellBookFrame.bookType)
-				if (level and level > UnitLevel("player")) then
-					self.RequiredLevelString:SetTextColor(.7, .7, .7)
+				if level and level > UnitLevel("player") then
 					self.SpellName:SetTextColor(.7, .7, .7)
 					subSpellString:SetTextColor(.7, .7, .7)
 				end
+			else
+				if slotType == "SPELL" and isOffSpec then
+					subSpellString:SetTextColor(.7, .7, .7)
+				end
 			end
+
+			self.RequiredLevelString:SetTextColor(.7, .7, .7)
 
 			local ic = _G[name.."IconTexture"]
 			if not ic.bg then return end
@@ -1488,7 +1368,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 				local tab = SpellBookCoreAbilitiesFrame.SpecTabs[i]
 
 				tab:GetRegions():Hide()
-				tab:SetCheckedTexture(C.media.checked)
+				tab:SetCheckedTexture("")
 
 				F.CreateBG(tab)
 				F.CreateSD(tab, 5, 0, 0, 0, 1, 1)
@@ -1577,7 +1457,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			_G[button.."NameFrame"]:SetAlpha(0)
 
 			bu:SetPushedTexture("")
-			bu:SetCheckedTexture(C.media.checked)
+			bu:SetCheckedTexture("")
 			bu:GetHighlightTexture():Hide()
 
 			if icon then
@@ -1616,8 +1496,10 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		for i = 1, BUYBACK_ITEMS_PER_PAGE do
 			local button = _G["MerchantItem"..i]
 			local bu = _G["MerchantItem"..i.."ItemButton"]
-			local ic = _G["MerchantItem"..i.."ItemButtonIconTexture"]
 			local mo = _G["MerchantItem"..i.."MoneyFrame"]
+			local ic = bu.icon
+
+			bu:SetHighlightTexture("")
 
 			_G["MerchantItem"..i.."SlotTexture"]:Hide()
 			_G["MerchantItem"..i.."NameFrame"]:Hide()
@@ -1847,6 +1729,12 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.Reskin(FriendsFrameMutePlayerButton)
 		F.ReskinDropDown(FriendsFrameStatusDropDown)
 
+		-- Battlenet toast frame
+
+		F.CreateBD(BNToastFrame)
+		F.CreateBD(BNToastFrame.TooltipFrame)
+		BNToastFrameCloseButton:SetAlpha(0)
+
 		-- Battletag invite frame
 
 		for i = 1, 9 do
@@ -1979,7 +1867,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			local bu = _G["GearManagerDialogPopupButton"..i]
 			local ic = _G["GearManagerDialogPopupButton"..i.."Icon"]
 
-			bu:SetCheckedTexture(C.media.checked)
+			bu:SetCheckedTexture("")
 			select(2, bu:GetRegions()):Hide()
 			ic:SetPoint("TOPLEFT", 1, -1)
 			ic:SetPoint("BOTTOMRIGHT", -1, 1)
@@ -2128,7 +2016,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		end)
 
 		local npcbd = CreateFrame("Frame", nil, QuestNPCModel)
-		npcbd:SetPoint("TOPLEFT", 0, 1)
+		npcbd:SetPoint("TOPLEFT", -1, 1)
 		npcbd:SetPoint("RIGHT", 1, 0)
 		npcbd:SetPoint("BOTTOM", QuestNPCModelTextScrollFrame)
 		npcbd:SetFrameLevel(QuestNPCModel:GetFrameLevel()-1)
@@ -2222,6 +2110,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			F.CreateBD(line)
 		end
 
+		QuestDetailScrollFrame:SetWidth(302) -- else these buttons get cut off
+
 		for i = 1, MAX_NUM_ITEMS do
 			local bu = _G["QuestInfoItem"..i]
 			local ic = _G["QuestInfoItem"..i.."IconTexture"]
@@ -2272,10 +2162,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 					questLogTitle.bg:SetFrameLevel(questLogTitle:GetFrameLevel()-1)
 					F.CreateBD(questLogTitle.bg, 0)
 
-					questLogTitle.tex = questLogTitle:CreateTexture(nil, "BACKGROUND")
+					questLogTitle.tex = F.CreateGradient(questLogTitle)
 					questLogTitle.tex:SetAllPoints(questLogTitle.bg)
-					questLogTitle.tex:SetTexture(C.media.backdrop)
-					questLogTitle.tex:SetGradientAlpha(gradOr, startR, startG, startB, startAlpha, endR, endG, endB, endAlpha)
 
 					questLogTitle.minus = questLogTitle:CreateTexture(nil, "OVERLAY")
 					questLogTitle.minus:SetSize(7, 1)
@@ -2315,8 +2203,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		QuestLogScrollFrame:HookScript("OnVerticalScroll", updateQuest)
 		QuestLogScrollFrame:HookScript("OnMouseWheel", updateQuest)
 
-		hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, _, _, _, x, y)
-			QuestNPCModel:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", x+6, y)
+		hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, _, _, _, _, y)
+			QuestNPCModel:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", 2, y)
 		end)
 
 		hooksecurefunc(QuestProgressRequiredMoneyText, "SetTextColor", function(self, r, g, b)
@@ -2366,18 +2254,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.ReskinPortraitFrame(GossipFrame, true)
 		F.Reskin(GossipFrameGreetingGoodbyeButton)
 		F.ReskinScroll(GossipGreetingScrollFrameScrollBar)
-
-		-- StaticPopup
-
-		for i = 1, 2 do
-			local bu = _G["StaticPopup"..i.."ItemFrame"]
-			_G["StaticPopup"..i.."ItemFrameNameFrame"]:Hide()
-			_G["StaticPopup"..i.."ItemFrameIconTexture"]:SetTexCoord(.08, .92, .08, .92)
-
-			bu:SetNormalTexture("")
-			bu:SetPushedTexture("")
-			F.CreateBG(bu)
-		end
 
 		-- PvP cap bar
 
@@ -2431,291 +2307,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		hooksecurefunc("UIParent_ManageFramePositions", CaptureBar)
 
-		-- Achievement popup
-
-		local function fixBg(f)
-			if f:GetObjectType() == "AnimationGroup" then
-				f = f:GetParent()
-			end
-			f.bg:SetBackdropColor(0, 0, 0, AuroraConfig.alpha)
-		end
-
-		hooksecurefunc("AlertFrame_FixAnchors", function()
-			for i = 1, MAX_ACHIEVEMENT_ALERTS do
-				local frame = _G["AchievementAlertFrame"..i]
-
-				if frame then
-					frame:SetAlpha(1)
-					frame.SetAlpha = F.dummy
-
-					local ic = _G["AchievementAlertFrame"..i.."Icon"]
-					local texture = _G["AchievementAlertFrame"..i.."IconTexture"]
-					local guildName = _G["AchievementAlertFrame"..i.."GuildName"]
-
-					ic:ClearAllPoints()
-					ic:SetPoint("LEFT", frame, "LEFT", -26, 0)
-
-					if not frame.bg then
-						frame.bg = CreateFrame("Frame", nil, frame)
-						frame.bg:SetPoint("TOPLEFT", texture, -10, 12)
-						frame.bg:SetPoint("BOTTOMRIGHT", texture, "BOTTOMRIGHT", 240, -12)
-						frame.bg:SetFrameLevel(frame:GetFrameLevel()-1)
-						F.CreateBD(frame.bg)
-
-						frame:HookScript("OnEnter", fixBg)
-						frame:HookScript("OnShow", fixBg)
-						frame.animIn:HookScript("OnFinished", fixBg)
-						F.CreateBD(frame.bg)
-
-						F.CreateBG(texture)
-
-						_G["AchievementAlertFrame"..i.."Background"]:Hide()
-						_G["AchievementAlertFrame"..i.."IconOverlay"]:Hide()
-						_G["AchievementAlertFrame"..i.."GuildBanner"]:SetTexture("")
-						_G["AchievementAlertFrame"..i.."GuildBorder"]:SetTexture("")
-						_G["AchievementAlertFrame"..i.."OldAchievement"]:SetTexture("")
-
-						guildName:ClearAllPoints()
-						guildName:SetPoint("TOPLEFT", 50, -14)
-						guildName:SetPoint("TOPRIGHT", -50, -14)
-
-						_G["AchievementAlertFrame"..i.."Unlocked"]:SetTextColor(1, 1, 1)
-						_G["AchievementAlertFrame"..i.."Unlocked"]:SetShadowOffset(1, -1)
-					end
-
-					frame.glow:Hide()
-					frame.shine:Hide()
-					frame.glow.Show = F.dummy
-					frame.shine.Show = F.dummy
-
-					texture:SetTexCoord(.08, .92, .08, .92)
-
-					if guildName:IsShown() then
-						_G["AchievementAlertFrame"..i.."Shield"]:SetPoint("TOPRIGHT", -10, -22)
-					end
-				end
-			end
-		end)
-
-		-- Guild challenges
-
-		local challenge = CreateFrame("Frame", nil, GuildChallengeAlertFrame)
-		challenge:SetPoint("TOPLEFT", 8, -12)
-		challenge:SetPoint("BOTTOMRIGHT", -8, 13)
-		challenge:SetFrameLevel(GuildChallengeAlertFrame:GetFrameLevel()-1)
-		F.CreateBD(challenge)
-		F.CreateBG(GuildChallengeAlertFrameEmblemBackground)
-
-		GuildChallengeAlertFrameGlow:SetTexture("")
-		GuildChallengeAlertFrameShine:SetTexture("")
-		GuildChallengeAlertFrameEmblemBorder:SetTexture("")
-
-		-- Dungeon completion rewards
-
-		local bg = CreateFrame("Frame", nil, DungeonCompletionAlertFrame1)
-		bg:SetPoint("TOPLEFT", 6, -14)
-		bg:SetPoint("BOTTOMRIGHT", -6, 6)
-		bg:SetFrameLevel(DungeonCompletionAlertFrame1:GetFrameLevel()-1)
-		F.CreateBD(bg)
-
-		DungeonCompletionAlertFrame1DungeonTexture:SetDrawLayer("ARTWORK")
-		DungeonCompletionAlertFrame1DungeonTexture:SetTexCoord(.02, .98, .02, .98)
-		F.CreateBG(DungeonCompletionAlertFrame1DungeonTexture)
-
-		DungeonCompletionAlertFrame1.dungeonArt1:SetAlpha(0)
-		DungeonCompletionAlertFrame1.dungeonArt2:SetAlpha(0)
-		DungeonCompletionAlertFrame1.dungeonArt3:SetAlpha(0)
-		DungeonCompletionAlertFrame1.dungeonArt4:SetAlpha(0)
-		DungeonCompletionAlertFrame1.raidArt:SetAlpha(0)
-
-		DungeonCompletionAlertFrame1.dungeonTexture:SetPoint("BOTTOMLEFT", DungeonCompletionAlertFrame1, "BOTTOMLEFT", 13, 13)
-		DungeonCompletionAlertFrame1.dungeonTexture.SetPoint = F.dummy
-
-		DungeonCompletionAlertFrame1.shine:Hide()
-		DungeonCompletionAlertFrame1.shine.Show = F.dummy
-		DungeonCompletionAlertFrame1.glow:Hide()
-		DungeonCompletionAlertFrame1.glow.Show = F.dummy
-
-		hooksecurefunc("DungeonCompletionAlertFrame_ShowAlert", function()
-			for i = 1, 3 do
-				local bu = _G["DungeonCompletionAlertFrame1Reward"..i]
-				if bu and not bu.reskinned then
-					_G["DungeonCompletionAlertFrame1Reward"..i.."Border"]:Hide()
-
-					bu.texture:SetTexCoord(.08, .92, .08, .92)
-					F.CreateBG(bu.texture)
-
-					bu.rekinned = true
-				end
-			end
-		end)
-
-		-- Challenge popup
-
-		hooksecurefunc("AlertFrame_SetChallengeModeAnchors", function()
-			local frame = ChallengeModeAlertFrame1
-
-			if frame then
-				frame:SetAlpha(1)
-				frame.SetAlpha = F.dummy
-
-				if not frame.bg then
-					frame.bg = CreateFrame("Frame", nil, frame)
-					frame.bg:SetPoint("TOPLEFT", ChallengeModeAlertFrame1DungeonTexture, -12, 12)
-					frame.bg:SetPoint("BOTTOMRIGHT", ChallengeModeAlertFrame1DungeonTexture, 243, -12)
-					frame.bg:SetFrameLevel(frame:GetFrameLevel()-1)
-					F.CreateBD(frame.bg)
-
-					frame:HookScript("OnEnter", fixBg)
-					frame:HookScript("OnShow", fixBg)
-					frame.animIn:HookScript("OnFinished", fixBg)
-
-					F.CreateBG(ChallengeModeAlertFrame1DungeonTexture)
-				end
-
-				frame:GetRegions():Hide()
-
-				ChallengeModeAlertFrame1Shine:Hide()
-				ChallengeModeAlertFrame1Shine.Show = F.dummy
-				ChallengeModeAlertFrame1GlowFrame:Hide()
-				ChallengeModeAlertFrame1GlowFrame.Show = F.dummy
-				ChallengeModeAlertFrame1Border:Hide()
-				ChallengeModeAlertFrame1Border.Show = F.dummy
-
-				ChallengeModeAlertFrame1DungeonTexture:SetTexCoord(.08, .92, .08, .92)
-			end
-		end)
-
-		-- Scenario alert
-
-		hooksecurefunc("AlertFrame_SetScenarioAnchors", function()
-			local frame = ScenarioAlertFrame1
-
-			if frame then
-				frame:SetAlpha(1)
-				frame.SetAlpha = F.dummy
-
-				if not frame.bg then
-					frame.bg = CreateFrame("Frame", nil, frame)
-					frame.bg:SetPoint("TOPLEFT", ScenarioAlertFrame1DungeonTexture, -12, 12)
-					frame.bg:SetPoint("BOTTOMRIGHT", ScenarioAlertFrame1DungeonTexture, 244, -12)
-					frame.bg:SetFrameLevel(frame:GetFrameLevel()-1)
-					F.CreateBD(frame.bg)
-
-					--frame:HookScript("OnEnter", fixBg)
-					--frame:HookScript("OnShow", fixBg)
-					--frame.animIn:HookScript("OnFinished", fixBg)
-
-					F.CreateBG(ScenarioAlertFrame1DungeonTexture)
-					ScenarioAlertFrame1DungeonTexture:SetDrawLayer("OVERLAY")
-				end
-
-				frame:GetRegions():Hide()
-				select(3, frame:GetRegions()):Hide()
-
-				ScenarioAlertFrame1Shine:Hide()
-				ScenarioAlertFrame1Shine.Show = F.dummy
-				ScenarioAlertFrame1GlowFrame:Hide()
-				ScenarioAlertFrame1GlowFrame.Show = F.dummy
-
-				ScenarioAlertFrame1DungeonTexture:SetTexCoord(.08, .92, .08, .92)
-			end
-		end)
-
-		-- Loot won alert
-
-		-- I still don't know why I can't parent bg to frame
-		local function showHideBg(self)
-			self.bg:SetShown(self:IsShown())
-		end
-
-		local function onUpdate(self)
-			self.bg:SetAlpha(self:GetAlpha())
-		end
-
-		hooksecurefunc("LootWonAlertFrame_SetUp", function(frame)
-			if not frame.bg then
-				frame.bg = CreateFrame("Frame", nil, UIParent)
-				frame.bg:SetPoint("TOPLEFT", frame, 10, -10)
-				frame.bg:SetPoint("BOTTOMRIGHT", frame, -10, 10)
-				frame.bg:SetFrameStrata("DIALOG")
-				frame.bg:SetFrameLevel(frame:GetFrameLevel()-1)
-				frame.bg:SetShown(frame:IsShown())
-				F.CreateBD(frame.bg)
-
-				frame:HookScript("OnShow", showHideBg)
-				frame:HookScript("OnHide", showHideBg)
-				frame:HookScript("OnUpdate", onUpdate)
-
-				frame.Background:Hide()
-				frame.IconBorder:Hide()
-				frame.glow:SetTexture("")
-				frame.shine:SetTexture("")
-
-				frame.Icon:SetTexCoord(.08, .92, .08, .92)
-				F.CreateBG(frame.Icon)
-			end
-		end)
-
-		-- Money won alert
-
-		hooksecurefunc("MoneyWonAlertFrame_SetUp", function(frame)
-			if not frame.bg then
-				frame.bg = CreateFrame("Frame", nil, UIParent)
-				frame.bg:SetPoint("TOPLEFT", frame, 10, -10)
-				frame.bg:SetPoint("BOTTOMRIGHT", frame, -10, 10)
-				frame.bg:SetFrameStrata("DIALOG")
-				frame.bg:SetFrameLevel(frame:GetFrameLevel()-1)
-				frame.bg:SetShown(frame:IsShown())
-				F.CreateBD(frame.bg)
-
-				frame:HookScript("OnShow", showHideBg)
-				frame:HookScript("OnHide", showHideBg)
-				frame:HookScript("OnUpdate", onUpdate)
-
-				frame.Background:Hide()
-				frame.IconBorder:Hide()
-
-				frame.Icon:SetTexCoord(.08, .92, .08, .92)
-				F.CreateBG(frame.Icon)
-			end
-		end)
-
-		-- Criteria alert
-
-		hooksecurefunc("CriteriaAlertFrame_ShowAlert", function()
-			for i = 1, MAX_ACHIEVEMENT_ALERTS do
-				local frame = _G["CriteriaAlertFrame"..i]
-				if frame and not frame.bg then
-					local icon = _G["CriteriaAlertFrame"..i.."IconTexture"]
-
-					frame.bg = CreateFrame("Frame", nil, UIParent)
-					frame.bg:SetPoint("TOPLEFT", icon, -6, 5)
-					frame.bg:SetPoint("BOTTOMRIGHT", icon, 236, -5)
-					frame.bg:SetFrameStrata("DIALOG")
-					frame.bg:SetFrameLevel(frame:GetFrameLevel()-1)
-					frame.bg:SetShown(frame:IsShown())
-					F.CreateBD(frame.bg)
-
-					frame:SetScript("OnShow", showHideBg)
-					frame:SetScript("OnHide", showHideBg)
-					frame:HookScript("OnUpdate", onUpdate)
-
-					_G["CriteriaAlertFrame"..i.."Background"]:Hide()
-					_G["CriteriaAlertFrame"..i.."IconOverlay"]:Hide()
-					frame.glow:Hide()
-					frame.glow.Show = F.dummy
-					frame.shine:Hide()
-					frame.shine.Show = F.dummy
-
-					_G["CriteriaAlertFrame"..i.."Unlocked"]:SetTextColor(.9, .9, .9)
-
-					icon:SetTexCoord(.08, .92, .08, .92)
-					F.CreateBG(icon)
-				end
-			end
-		end)
-
 		-- Help frame
 
 		for i = 1, 15 do
@@ -2728,18 +2319,16 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		local function colourTab(f)
 			f.text:SetTextColor(1, 1, 1)
-			f:SetBackdropBorderColor(r, g, b)
 		end
 
 		local function clearTab(f)
 			f.text:SetTextColor(1, .82, 0)
-			f:SetBackdropBorderColor(0, 0, 0)
 		end
 
 		local function styleTab(bu)
 			bu.selected:SetTexture(r, g, b, .2)
 			bu.selected:SetDrawLayer("BACKGROUND")
-			bu.text:SetFont(C.media.font, 12)
+			bu.text:SetFont(C.media.font, 14)
 			F.Reskin(bu, true)
 			bu:SetScript("OnEnter", colourTab)
 			bu:SetScript("OnLeave", clearTab)
@@ -2750,14 +2339,39 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		end
 		styleTab(HelpFrameButton16)
 
-		HelpFrameAccountSecurityOpenTicket.text:SetFont(C.media.font, 12)
-		HelpFrameOpenTicketHelpOpenTicket.text:SetFont(C.media.font, 12)
-		HelpFrameOpenTicketHelpTopIssues.text:SetFont(C.media.font, 12)
-		HelpFrameOpenTicketHelpItemRestoration.text:SetFont(C.media.font, 12)
+		HelpFrameAccountSecurityOpenTicket.text:SetFont(C.media.font, 14)
+		HelpFrameOpenTicketHelpOpenTicket.text:SetFont(C.media.font, 14)
+		HelpFrameOpenTicketHelpTopIssues.text:SetFont(C.media.font, 14)
+		HelpFrameOpenTicketHelpItemRestoration.text:SetFont(C.media.font, 14)
 
 		HelpFrameCharacterStuckHearthstone:SetSize(56, 56)
 		F.CreateBG(HelpFrameCharacterStuckHearthstone)
 		HelpFrameCharacterStuckHearthstoneIconTexture:SetTexCoord(.08, .92, .08, .92)
+
+		F.Reskin(HelpBrowserNavHome)
+		F.Reskin(HelpBrowserNavReload)
+		F.Reskin(HelpBrowserNavStop)
+		F.Reskin(HelpBrowserBrowserSettings)
+		F.ReskinArrow(HelpBrowserNavBack, "left")
+		F.ReskinArrow(HelpBrowserNavForward, "right")
+
+		HelpBrowserNavHome:SetSize(18, 18)
+		HelpBrowserNavReload:SetSize(18, 18)
+		HelpBrowserNavStop:SetSize(18, 18)
+		HelpBrowserBrowserSettings:SetSize(18, 18)
+
+		HelpBrowserNavHome:SetPoint("BOTTOMLEFT", HelpBrowser, "TOPLEFT", 2, 4)
+		HelpBrowserBrowserSettings:SetPoint("TOPRIGHT", HelpFrameCloseButton, "BOTTOMLEFT", -4, -1)
+		LoadingIcon:ClearAllPoints()
+		LoadingIcon:SetPoint("LEFT", HelpBrowserNavStop, "RIGHT")
+
+		for i = 1, 9 do
+			select(i, BrowserSettingsTooltip:GetRegions()):Hide()
+		end
+
+		F.CreateBD(BrowserSettingsTooltip)
+		F.Reskin(BrowserSettingsTooltip.CacheButton)
+		F.Reskin(BrowserSettingsTooltip.CookiesButton)
 
 		-- Option panels
 
@@ -2799,7 +2413,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 			Graphics_Quality.SetBackdrop = F.dummy
 
-			local checkboxes = {"Advanced_UseUIScale", "Advanced_MaxFPSCheckBox", "Advanced_MaxFPSBKCheckBox", "Advanced_DesktopGamma", "NetworkOptionsPanelOptimizeSpeed", "NetworkOptionsPanelUseIPv6", "AudioOptionsSoundPanelEnableSound", "AudioOptionsSoundPanelSoundEffects", "AudioOptionsSoundPanelErrorSpeech", "AudioOptionsSoundPanelEmoteSounds", "AudioOptionsSoundPanelPetSounds", "AudioOptionsSoundPanelMusic", "AudioOptionsSoundPanelLoopMusic", "AudioOptionsSoundPanelPetBattleMusic", "AudioOptionsSoundPanelAmbientSounds", "AudioOptionsSoundPanelSoundInBG", "AudioOptionsSoundPanelReverb", "AudioOptionsSoundPanelHRTF", "AudioOptionsSoundPanelEnableDSPs", "AudioOptionsSoundPanelUseHardware", "AudioOptionsVoicePanelEnableVoice", "AudioOptionsVoicePanelEnableMicrophone", "AudioOptionsVoicePanelPushToTalkSound"}
+			local checkboxes = {"Advanced_UseUIScale", "Advanced_MaxFPSCheckBox", "Advanced_MaxFPSBKCheckBox", "Advanced_DesktopGamma", "NetworkOptionsPanelOptimizeSpeed", "NetworkOptionsPanelUseIPv6", "AudioOptionsSoundPanelEnableSound", "AudioOptionsSoundPanelSoundEffects", "AudioOptionsSoundPanelErrorSpeech", "AudioOptionsSoundPanelEmoteSounds", "AudioOptionsSoundPanelPetSounds", "AudioOptionsSoundPanelMusic", "AudioOptionsSoundPanelLoopMusic", "AudioOptionsSoundPanelPetBattleMusic", "AudioOptionsSoundPanelAmbientSounds", "AudioOptionsSoundPanelSoundInBG", "AudioOptionsSoundPanelReverb", "AudioOptionsSoundPanelHRTF", "AudioOptionsSoundPanelEnableDSPs", "AudioOptionsVoicePanelEnableVoice", "AudioOptionsVoicePanelEnableMicrophone", "AudioOptionsVoicePanelPushToTalkSound"}
 			for i = 1, #checkboxes do
 				F.ReskinCheck(_G[checkboxes[i]])
 			end
@@ -2819,7 +2433,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			line:SetPoint("LEFT", 205, 10)
 			line:SetTexture(1, 1, 1, .2)
 
-			local checkboxes = {"InterfaceOptionsControlsPanelStickyTargeting", "InterfaceOptionsControlsPanelAutoDismount", "InterfaceOptionsControlsPanelAutoClearAFK", "InterfaceOptionsControlsPanelBlockTrades", "InterfaceOptionsControlsPanelBlockGuildInvites", "InterfaceOptionsControlsPanelLootAtMouse", "InterfaceOptionsControlsPanelAutoLootCorpse", "InterfaceOptionsControlsPanelInteractOnLeftClick", "InterfaceOptionsCombatPanelAttackOnAssist", "InterfaceOptionsCombatPanelStopAutoAttack", "InterfaceOptionsNamesPanelUnitNameplatesNameplateClassColors", "InterfaceOptionsCombatPanelTargetOfTarget", "InterfaceOptionsCombatPanelShowSpellAlerts", "InterfaceOptionsCombatPanelReducedLagTolerance", "InterfaceOptionsCombatPanelActionButtonUseKeyDown", "InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait", "InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates", "InterfaceOptionsCombatPanelAutoSelfCast", "InterfaceOptionsCombatPanelLossOfControl", "InterfaceOptionsDisplayPanelShowCloak", "InterfaceOptionsDisplayPanelShowHelm", "InterfaceOptionsDisplayPanelShowAggroPercentage", "InterfaceOptionsDisplayPanelPlayAggroSounds", "InterfaceOptionsDisplayPanelShowSpellPointsAvg", "InterfaceOptionsDisplayPanelShowFreeBagSpace", "InterfaceOptionsDisplayPanelCinematicSubtitles", "InterfaceOptionsDisplayPanelRotateMinimap", "InterfaceOptionsDisplayPanelShowAccountAchievments", "InterfaceOptionsObjectivesPanelAutoQuestTracking", "InterfaceOptionsObjectivesPanelMapQuestDifficulty", "InterfaceOptionsObjectivesPanelWatchFrameWidth", "InterfaceOptionsSocialPanelProfanityFilter", "InterfaceOptionsSocialPanelSpamFilter", "InterfaceOptionsSocialPanelChatBubbles", "InterfaceOptionsSocialPanelPartyChat", "InterfaceOptionsSocialPanelChatHoverDelay", "InterfaceOptionsSocialPanelGuildMemberAlert", "InterfaceOptionsSocialPanelChatMouseScroll", "InterfaceOptionsSocialPanelWholeChatWindowClickable", "InterfaceOptionsActionBarsPanelBottomLeft", "InterfaceOptionsActionBarsPanelBottomRight", "InterfaceOptionsActionBarsPanelRight", "InterfaceOptionsActionBarsPanelRightTwo", "InterfaceOptionsActionBarsPanelLockActionBars", "InterfaceOptionsActionBarsPanelAlwaysShowActionBars", "InterfaceOptionsActionBarsPanelSecureAbilityToggle", "InterfaceOptionsNamesPanelMyName", "InterfaceOptionsNamesPanelFriendlyPlayerNames", "InterfaceOptionsNamesPanelFriendlyPets", "InterfaceOptionsNamesPanelFriendlyGuardians", "InterfaceOptionsNamesPanelFriendlyTotems", "InterfaceOptionsNamesPanelUnitNameplatesFriends", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyPets", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyGuardians", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyTotems", "InterfaceOptionsNamesPanelGuilds", "InterfaceOptionsNamesPanelGuildTitles", "InterfaceOptionsNamesPanelTitles", "InterfaceOptionsNamesPanelNonCombatCreature", "InterfaceOptionsNamesPanelEnemyPlayerNames", "InterfaceOptionsNamesPanelEnemyPets", "InterfaceOptionsNamesPanelEnemyGuardians", "InterfaceOptionsNamesPanelEnemyTotems", "InterfaceOptionsNamesPanelUnitNameplatesEnemies", "InterfaceOptionsNamesPanelUnitNameplatesEnemyPets", "InterfaceOptionsNamesPanelUnitNameplatesEnemyGuardians", "InterfaceOptionsNamesPanelUnitNameplatesEnemyTotems", "InterfaceOptionsCombatTextPanelTargetDamage", "InterfaceOptionsCombatTextPanelPeriodicDamage", "InterfaceOptionsCombatTextPanelPetDamage", "InterfaceOptionsCombatTextPanelHealing", "InterfaceOptionsCombatTextPanelTargetEffects", "InterfaceOptionsCombatTextPanelOtherTargetEffects", "InterfaceOptionsCombatTextPanelEnableFCT", "InterfaceOptionsCombatTextPanelDodgeParryMiss", "InterfaceOptionsCombatTextPanelDamageReduction", "InterfaceOptionsCombatTextPanelRepChanges", "InterfaceOptionsCombatTextPanelReactiveAbilities", "InterfaceOptionsCombatTextPanelFriendlyHealerNames", "InterfaceOptionsCombatTextPanelCombatState", "InterfaceOptionsCombatTextPanelComboPoints", "InterfaceOptionsCombatTextPanelLowManaHealth", "InterfaceOptionsCombatTextPanelEnergyGains", "InterfaceOptionsCombatTextPanelPeriodicEnergyGains", "InterfaceOptionsCombatTextPanelHonorGains", "InterfaceOptionsCombatTextPanelAuras", "InterfaceOptionsStatusTextPanelPlayer", "InterfaceOptionsStatusTextPanelPet", "InterfaceOptionsStatusTextPanelParty", "InterfaceOptionsStatusTextPanelTarget", "InterfaceOptionsStatusTextPanelAlternateResource", "InterfaceOptionsStatusTextPanelXP", "InterfaceOptionsBattlenetPanelOnlineFriends", "InterfaceOptionsBattlenetPanelOfflineFriends", "InterfaceOptionsBattlenetPanelBroadcasts", "InterfaceOptionsBattlenetPanelFriendRequests", "InterfaceOptionsBattlenetPanelConversations", "InterfaceOptionsBattlenetPanelShowToastWindow", "InterfaceOptionsCameraPanelFollowTerrain", "InterfaceOptionsCameraPanelHeadBob", "InterfaceOptionsCameraPanelWaterCollision", "InterfaceOptionsCameraPanelSmartPivot", "InterfaceOptionsMousePanelInvertMouse", "InterfaceOptionsMousePanelClickToMove", "InterfaceOptionsMousePanelWoWMouse", "InterfaceOptionsHelpPanelShowTutorials", "InterfaceOptionsHelpPanelEnhancedTooltips", "InterfaceOptionsHelpPanelShowLuaErrors", "InterfaceOptionsHelpPanelColorblindMode", "InterfaceOptionsHelpPanelMovePad", "InterfaceOptionsControlsPanelAutoOpenLootHistory", "InterfaceOptionsUnitFramePanelPartyPets", "InterfaceOptionsUnitFramePanelArenaEnemyFrames", "InterfaceOptionsUnitFramePanelArenaEnemyCastBar", "InterfaceOptionsUnitFramePanelArenaEnemyPets", "InterfaceOptionsUnitFramePanelFullSizeFocusFrame", "InterfaceOptionsBuffsPanelDispellableDebuffs", "InterfaceOptionsBuffsPanelCastableBuffs", "InterfaceOptionsBuffsPanelConsolidateBuffs", "InterfaceOptionsBuffsPanelShowAllEnemyDebuffs"}
+			local checkboxes = {"InterfaceOptionsControlsPanelStickyTargeting", "InterfaceOptionsControlsPanelAutoDismount", "InterfaceOptionsControlsPanelAutoClearAFK", "InterfaceOptionsControlsPanelBlockTrades", "InterfaceOptionsControlsPanelBlockGuildInvites", "InterfaceOptionsCombatTextPanelHealingAbsorbSelf", "InterfaceOptionsControlsPanelBlockChatChannelInvites", "InterfaceOptionsControlsPanelLootAtMouse", "InterfaceOptionsControlsPanelAutoLootCorpse", "InterfaceOptionsControlsPanelInteractOnLeftClick", "InterfaceOptionsCombatPanelAttackOnAssist", "InterfaceOptionsCombatPanelStopAutoAttack", "InterfaceOptionsNamesPanelUnitNameplatesNameplateClassColors", "InterfaceOptionsCombatPanelTargetOfTarget", "InterfaceOptionsCombatPanelShowSpellAlerts", "InterfaceOptionsCombatPanelReducedLagTolerance", "InterfaceOptionsCombatPanelActionButtonUseKeyDown", "InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait", "InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates", "InterfaceOptionsCombatPanelEnemyCastBarsOnOnlyTargetNameplates", "InterfaceOptionsCombatPanelEnemyCastBarsNameplateSpellNames", "InterfaceOptionsCombatPanelAutoSelfCast", "InterfaceOptionsCombatPanelLossOfControl", "InterfaceOptionsDisplayPanelShowCloak", "InterfaceOptionsDisplayPanelShowHelm", "InterfaceOptionsDisplayPanelShowAggroPercentage", "InterfaceOptionsDisplayPanelPlayAggroSounds", "InterfaceOptionsDisplayPanelShowSpellPointsAvg", "InterfaceOptionsDisplayPanelShowFreeBagSpace", "InterfaceOptionsDisplayPanelCinematicSubtitles", "InterfaceOptionsDisplayPanelRotateMinimap", "InterfaceOptionsDisplayPanelShowAccountAchievments", "InterfaceOptionsObjectivesPanelAutoQuestTracking", "InterfaceOptionsObjectivesPanelMapQuestDifficulty", "InterfaceOptionsObjectivesPanelWatchFrameWidth", "InterfaceOptionsSocialPanelProfanityFilter", "InterfaceOptionsSocialPanelSpamFilter", "InterfaceOptionsSocialPanelChatBubbles", "InterfaceOptionsSocialPanelPartyChat", "InterfaceOptionsSocialPanelChatHoverDelay", "InterfaceOptionsSocialPanelGuildMemberAlert", "InterfaceOptionsSocialPanelChatMouseScroll", "InterfaceOptionsSocialPanelWholeChatWindowClickable", "InterfaceOptionsActionBarsPanelBottomLeft", "InterfaceOptionsActionBarsPanelBottomRight", "InterfaceOptionsActionBarsPanelRight", "InterfaceOptionsActionBarsPanelRightTwo", "InterfaceOptionsActionBarsPanelLockActionBars", "InterfaceOptionsActionBarsPanelAlwaysShowActionBars", "InterfaceOptionsActionBarsPanelSecureAbilityToggle", "InterfaceOptionsNamesPanelMyName", "InterfaceOptionsNamesPanelFriendlyPlayerNames", "InterfaceOptionsNamesPanelFriendlyPets", "InterfaceOptionsNamesPanelFriendlyGuardians", "InterfaceOptionsNamesPanelFriendlyTotems", "InterfaceOptionsNamesPanelUnitNameplatesFriends", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyPets", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyGuardians", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyTotems", "InterfaceOptionsNamesPanelGuilds", "InterfaceOptionsNamesPanelGuildTitles", "InterfaceOptionsNamesPanelTitles", "InterfaceOptionsNamesPanelNonCombatCreature", "InterfaceOptionsNamesPanelEnemyPlayerNames", "InterfaceOptionsNamesPanelEnemyPets", "InterfaceOptionsNamesPanelEnemyGuardians", "InterfaceOptionsNamesPanelEnemyTotems", "InterfaceOptionsNamesPanelUnitNameplatesEnemies", "InterfaceOptionsNamesPanelUnitNameplatesEnemyPets", "InterfaceOptionsNamesPanelUnitNameplatesEnemyGuardians", "InterfaceOptionsNamesPanelUnitNameplatesEnemyTotems", "InterfaceOptionsCombatTextPanelTargetDamage", "InterfaceOptionsCombatTextPanelPeriodicDamage", "InterfaceOptionsCombatTextPanelPetDamage", "InterfaceOptionsCombatTextPanelHealing", "InterfaceOptionsCombatTextPanelTargetEffects", "InterfaceOptionsCombatTextPanelOtherTargetEffects", "InterfaceOptionsCombatTextPanelEnableFCT", "InterfaceOptionsCombatTextPanelDodgeParryMiss", "InterfaceOptionsCombatTextPanelDamageReduction", "InterfaceOptionsCombatTextPanelRepChanges", "InterfaceOptionsCombatTextPanelReactiveAbilities", "InterfaceOptionsCombatTextPanelFriendlyHealerNames", "InterfaceOptionsCombatTextPanelCombatState", "InterfaceOptionsCombatTextPanelComboPoints", "InterfaceOptionsCombatTextPanelLowManaHealth", "InterfaceOptionsCombatTextPanelEnergyGains", "InterfaceOptionsCombatTextPanelPeriodicEnergyGains", "InterfaceOptionsCombatTextPanelHonorGains", "InterfaceOptionsCombatTextPanelAuras", "InterfaceOptionsStatusTextPanelPlayer", "InterfaceOptionsStatusTextPanelPet", "InterfaceOptionsStatusTextPanelParty", "InterfaceOptionsStatusTextPanelTarget", "InterfaceOptionsStatusTextPanelAlternateResource", "InterfaceOptionsStatusTextPanelXP", "InterfaceOptionsBattlenetPanelOnlineFriends", "InterfaceOptionsBattlenetPanelOfflineFriends", "InterfaceOptionsBattlenetPanelBroadcasts", "InterfaceOptionsBattlenetPanelFriendRequests", "InterfaceOptionsBattlenetPanelConversations", "InterfaceOptionsBattlenetPanelShowToastWindow", "InterfaceOptionsCameraPanelFollowTerrain", "InterfaceOptionsCameraPanelHeadBob", "InterfaceOptionsCameraPanelWaterCollision", "InterfaceOptionsCameraPanelSmartPivot", "InterfaceOptionsMousePanelInvertMouse", "InterfaceOptionsMousePanelClickToMove", "InterfaceOptionsMousePanelWoWMouse", "InterfaceOptionsHelpPanelShowTutorials", "InterfaceOptionsHelpPanelEnhancedTooltips", "InterfaceOptionsHelpPanelShowLuaErrors", "InterfaceOptionsHelpPanelColorblindMode", "InterfaceOptionsHelpPanelMovePad", "InterfaceOptionsControlsPanelAutoOpenLootHistory", "InterfaceOptionsUnitFramePanelPartyPets", "InterfaceOptionsUnitFramePanelArenaEnemyFrames", "InterfaceOptionsUnitFramePanelArenaEnemyCastBar", "InterfaceOptionsUnitFramePanelArenaEnemyPets", "InterfaceOptionsUnitFramePanelFullSizeFocusFrame", "InterfaceOptionsBuffsPanelDispellableDebuffs", "InterfaceOptionsBuffsPanelCastableBuffs", "InterfaceOptionsBuffsPanelConsolidateBuffs", "InterfaceOptionsBuffsPanelShowAllEnemyDebuffs"}
 			for i = 1, #checkboxes do
 				F.ReskinCheck(_G[checkboxes[i]])
 			end
@@ -3536,32 +3150,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.Reskin(PetBattleQueueReadyFrame.AcceptButton)
 		F.Reskin(PetBattleQueueReadyFrame.DeclineButton)
 
-		-- PVP Banner Frame
-
-		for i = 1, 3 do
-			for j = 1, 2 do
-				select(i, _G["PVPBannerFrameCustomization"..j]:GetRegions()):Hide()
-			end
-		end
-
-		for i = 18, 28 do
-			select(i, PVPBannerFrame:GetRegions()):SetTexture("")
-		end
-
-		PVPBannerFrameCustomizationBorder:Hide()
-
-		F.ReskinPortraitFrame(PVPBannerFrame, true)
-		F.Reskin(select(6, PVPBannerFrame:GetChildren()))
-		F.Reskin(PVPBannerFrameAcceptButton)
-		F.Reskin(PVPColorPickerButton1)
-		F.Reskin(PVPColorPickerButton2)
-		F.Reskin(PVPColorPickerButton3)
-		F.ReskinInput(PVPBannerFrameEditBox, 20)
-		F.ReskinArrow(PVPBannerFrameCustomization1LeftButton, "left")
-		F.ReskinArrow(PVPBannerFrameCustomization1RightButton, "right")
-		F.ReskinArrow(PVPBannerFrameCustomization2LeftButton, "left")
-		F.ReskinArrow(PVPBannerFrameCustomization2RightButton, "right")
-
 		-- PVP Ready Dialog
 
 		local PVPReadyDialog = PVPReadyDialog
@@ -3570,6 +3158,37 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		PVPReadyDialogBottomArt:Hide()
 		PVPReadyDialogFiligree:Hide()
 
+		PVPReadyDialogRoleIconTexture:SetTexture(C.media.roleIcons)
+
+		do
+			local left = PVPReadyDialogRoleIcon:CreateTexture(nil, "OVERLAY")
+			left:SetWidth(1)
+			left:SetTexture(C.media.backdrop)
+			left:SetVertexColor(0, 0, 0)
+			left:SetPoint("TOPLEFT", 9, -7)
+			left:SetPoint("BOTTOMLEFT", 9, 10)
+
+			local right = PVPReadyDialogRoleIcon:CreateTexture(nil, "OVERLAY")
+			right:SetWidth(1)
+			right:SetTexture(C.media.backdrop)
+			right:SetVertexColor(0, 0, 0)
+			right:SetPoint("TOPRIGHT", -8, -7)
+			right:SetPoint("BOTTOMRIGHT", -8, 10)
+
+			local top = PVPReadyDialogRoleIcon:CreateTexture(nil, "OVERLAY")
+			top:SetHeight(1)
+			top:SetTexture(C.media.backdrop)
+			top:SetVertexColor(0, 0, 0)
+			top:SetPoint("TOPLEFT", 9, -7)
+			top:SetPoint("TOPRIGHT", -8, -7)
+
+			local bottom = PVPReadyDialogRoleIcon:CreateTexture(nil, "OVERLAY")
+			bottom:SetHeight(1)
+			bottom:SetTexture(C.media.backdrop)
+			bottom:SetVertexColor(0, 0, 0)
+			bottom:SetPoint("BOTTOMLEFT", 9, 10)
+			bottom:SetPoint("BOTTOMRIGHT", -8, 10)
+		end
 
 		F.CreateBD(PVPReadyDialog)
 		PVPReadyDialog.SetBackdrop = F.dummy
@@ -3578,7 +3197,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.Reskin(PVPReadyDialog.enterButton)
 		F.Reskin(PVPReadyDialog.leaveButton)
 		F.ReskinClose(PVPReadyDialogCloseButton)
-
 
 		-- [[ Hide regions ]]
 
@@ -3619,8 +3237,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			select(i, SideDressUpFrame:GetRegions()):Hide()
 		end
 		StackSplitFrame:GetRegions():Hide()
-		ReputationDetailCorner:Hide()
-		ReputationDetailDivider:Hide()
 		RaidInfoDetailFooter:Hide()
 		RaidInfoDetailHeader:Hide()
 		RaidInfoDetailCorner:Hide()
@@ -3668,7 +3284,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		MerchantNextPageButton:GetRegions():Hide()
 		select(2, MerchantPrevPageButton:GetRegions()):Hide()
 		select(2, MerchantNextPageButton:GetRegions()):Hide()
-		BNToastFrameCloseButton:SetAlpha(0)
 		LFDQueueFrameRandomScrollFrameScrollBackground:Hide()
 		ChannelFrameDaughterFrameCorner:Hide()
 		LFDQueueFrameSpecificListScrollFrameScrollBackgroundTopLeft:Hide()
@@ -3695,9 +3310,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 				titles = true
 			end
 		end)
-		ReputationListScrollFrame:GetRegions():Hide()
-		select(2, ReputationListScrollFrame:GetRegions()):Hide()
-		select(3, ReputationDetailFrame:GetRegions()):Hide()
 		MerchantNameText:SetDrawLayer("ARTWORK")
 		SendScrollBarBackgroundTop:Hide()
 		select(4, SendMailScrollFrame:GetRegions()):Hide()
@@ -3712,11 +3324,9 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		OpenScrollBarBackgroundTop:Hide()
 		select(2, OpenMailScrollFrame:GetRegions()):Hide()
 		HelpFrameKnowledgebaseNavBar:GetRegions():Hide()
+		WhoListScrollFrame:GetRegions():Hide()
 		select(2, WhoListScrollFrame:GetRegions()):Hide()
 		select(2, GuildChallengeAlertFrame:GetRegions()):Hide()
-		LFGDungeonReadyDialogBackground:Hide()
-		LFGDungeonReadyDialogBottomArt:Hide()
-		LFGDungeonReadyDialogFiligree:Hide()
 		InterfaceOptionsFrameTab1TabSpacer:SetAlpha(0)
 		for i = 1, 2 do
 			_G["InterfaceOptionsFrameTab"..i.."Left"]:SetAlpha(0)
@@ -3866,7 +3476,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		ChatConfigFrameDefaultButton:SetWidth(125)
 		ChatConfigFrameDefaultButton:SetPoint("TOPLEFT", ChatConfigCategoryFrame, "BOTTOMLEFT", 0, -4)
 		ChatConfigFrameOkayButton:SetPoint("TOPRIGHT", ChatConfigBackgroundFrame, "BOTTOMRIGHT", 0, -4)
-		ReputationDetailFrame:SetPoint("TOPLEFT", ReputationFrame, "TOPRIGHT", 1, -28)
 		PaperDollEquipmentManagerPaneEquipSet:SetWidth(PaperDollEquipmentManagerPaneEquipSet:GetWidth()-1)
 		PaperDollEquipmentManagerPaneSaveSet:SetPoint("LEFT", PaperDollEquipmentManagerPaneEquipSet, "RIGHT", 1, 0)
 		GearManagerDialogPopup:SetPoint("LEFT", PaperDollFrame, "RIGHT", 1, 0)
@@ -3888,10 +3497,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		MerchantFrameTab2:SetPoint("LEFT", MerchantFrameTab1, "RIGHT", -15, 0)
 		SendMailMoneySilver:SetPoint("LEFT", SendMailMoneyGold, "RIGHT", 1, 0)
 		SendMailMoneyCopper:SetPoint("LEFT", SendMailMoneySilver, "RIGHT", 1, 0)
-		StaticPopup1MoneyInputFrameSilver:SetPoint("LEFT", StaticPopup1MoneyInputFrameGold, "RIGHT", 1, 0)
-		StaticPopup1MoneyInputFrameCopper:SetPoint("LEFT", StaticPopup1MoneyInputFrameSilver, "RIGHT", 1, 0)
-		StaticPopup2MoneyInputFrameSilver:SetPoint("LEFT", StaticPopup2MoneyInputFrameGold, "RIGHT", 1, 0)
-		StaticPopup2MoneyInputFrameCopper:SetPoint("LEFT", StaticPopup2MoneyInputFrameSilver, "RIGHT", 1, 0)
 		WhoFrameWhoButton:SetPoint("RIGHT", WhoFrameAddFriendButton, "LEFT", -1, 0)
 		WhoFrameAddFriendButton:SetPoint("RIGHT", WhoFrameGroupInviteButton, "LEFT", -1, 0)
 		FriendsFrameTitleText:SetPoint("TOP", FriendsFrame, "TOP", 0, -8)
@@ -3918,13 +3523,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Buttons ]]
 
-		for i = 1, 2 do
-			for j = 1, 3 do
-				F.Reskin(_G["StaticPopup"..i.."Button"..j])
-			end
-		end
-
-		local buttons = {"GameMenuButtonAddonManager", "GameMenuButtonQulightUI","WorldMapZoomOutButton", "btn_aLoadFrame","OpenAllButton2", "OpenAllButton", "btn2_aLoadFrame", "VideoOptionsFrameOkay", "VideoOptionsFrameCancel", "VideoOptionsFrameDefaults", "VideoOptionsFrameApply", "AudioOptionsFrameOkay", "AudioOptionsFrameCancel", "AudioOptionsFrameDefaults", "InterfaceOptionsFrameDefaults", "InterfaceOptionsFrameOkay", "InterfaceOptionsFrameCancel", "ChatConfigFrameOkayButton", "ChatConfigFrameDefaultButton", "DressUpFrameCancelButton", "DressUpFrameResetButton", "WhoFrameWhoButton", "WhoFrameAddFriendButton", "WhoFrameGroupInviteButton", "SendMailMailButton", "SendMailCancelButton", "OpenMailReplyButton", "OpenMailDeleteButton", "OpenMailCancelButton", "OpenMailReportSpamButton", "ChannelFrameNewButton", "RaidFrameRaidInfoButton", "RaidFrameConvertToRaidButton", "GearManagerDialogPopupOkay", "GearManagerDialogPopupCancel", "StackSplitOkayButton", "StackSplitCancelButton", "GameMenuButtonHelp", "GameMenuButtonOptions", "GameMenuButtonUIOptions", "GameMenuButtonKeybindings", "GameMenuButtonMacros", "GameMenuButtonLogout", "GameMenuButtonQuit", "GameMenuButtonContinue", "GameMenuButtonMacOptions", "LFDQueueFrameFindGroupButton", "LFRQueueFrameFindGroupButton", "LFRQueueFrameAcceptCommentButton", "AddFriendEntryFrameAcceptButton", "AddFriendEntryFrameCancelButton", "FriendsFriendsSendRequestButton", "FriendsFriendsCloseButton", "ColorPickerOkayButton", "ColorPickerCancelButton", "LFGDungeonReadyDialogEnterDungeonButton", "LFGDungeonReadyDialogLeaveQueueButton", "LFRBrowseFrameSendMessageButton", "LFRBrowseFrameInviteButton", "LFRBrowseFrameRefreshButton", "LFDRoleCheckPopupAcceptButton", "LFDRoleCheckPopupDeclineButton", "GuildInviteFrameJoinButton", "GuildInviteFrameDeclineButton", "FriendsFramePendingButton1AcceptButton", "FriendsFramePendingButton1DeclineButton", "RaidInfoExtendButton", "RaidInfoCancelButton", "PaperDollEquipmentManagerPaneEquipSet", "PaperDollEquipmentManagerPaneSaveSet", "HelpFrameAccountSecurityOpenTicket", "HelpFrameCharacterStuckStuck", "HelpFrameOpenTicketHelpTopIssues", "HelpFrameOpenTicketHelpOpenTicket", "ReadyCheckFrameYesButton", "ReadyCheckFrameNoButton", "RolePollPopupAcceptButton", "HelpFrameTicketSubmit", "HelpFrameTicketCancel", "HelpFrameKnowledgebaseSearchButton", "GhostFrame", "HelpFrameGM_ResponseNeedMoreHelp", "HelpFrameGM_ResponseCancel", "GMChatOpenLog", "HelpFrameKnowledgebaseNavBarHomeButton", "AddFriendInfoFrameContinueButton", "LFDQueueFramePartyBackfillBackfillButton", "LFDQueueFramePartyBackfillNoBackfillButton", "ChannelFrameDaughterFrameOkayButton", "ChannelFrameDaughterFrameCancelButton", "PendingListInfoFrameContinueButton", "LFDQueueFrameNoLFDWhileLFRLeaveQueueButton", "InterfaceOptionsHelpPanelResetTutorials", "RaidFinderFrameFindRaidButton", "RaidFinderQueueFrameIneligibleFrameLeaveQueueButton", "SideDressUpModelResetButton", "LFGInvitePopupAcceptButton", "LFGInvitePopupDeclineButton", "RaidFinderQueueFramePartyBackfillBackfillButton", "RaidFinderQueueFramePartyBackfillNoBackfillButton", "ScrollOfResurrectionSelectionFrameAcceptButton", "ScrollOfResurrectionSelectionFrameCancelButton", "ScrollOfResurrectionFrameAcceptButton", "ScrollOfResurrectionFrameCancelButton", "HelpFrameReportBugSubmit", "HelpFrameSubmitSuggestionSubmit", "ReportPlayerNameDialogReportButton", "ReportPlayerNameDialogCancelButton", "ReportCheatingDialogReportButton", "ReportCheatingDialogCancelButton", "HelpFrameOpenTicketHelpItemRestoration"}
+		local buttons = {"GameMenuButtonAddonManager", "GameMenuButtonQulightUI","WorldMapZoomOutButton", "btn_aLoadFrame","OpenAllButton2", "OpenAllButton", "btn2_aLoadFrame", "VideoOptionsFrameOkay", "VideoOptionsFrameCancel", "VideoOptionsFrameDefaults", "VideoOptionsFrameApply", "AudioOptionsFrameOkay", "AudioOptionsFrameCancel", "AudioOptionsFrameDefaults", "InterfaceOptionsFrameDefaults", "InterfaceOptionsFrameOkay", "InterfaceOptionsFrameCancel", "ChatConfigFrameOkayButton", "ChatConfigFrameDefaultButton", "DressUpFrameCancelButton", "DressUpFrameResetButton", "WhoFrameWhoButton", "WhoFrameAddFriendButton", "WhoFrameGroupInviteButton", "SendMailMailButton", "SendMailCancelButton", "OpenMailReplyButton", "OpenMailDeleteButton", "OpenMailCancelButton", "OpenMailReportSpamButton", "ChannelFrameNewButton", "RaidFrameRaidInfoButton", "RaidFrameConvertToRaidButton", "GearManagerDialogPopupOkay", "GearManagerDialogPopupCancel", "StackSplitOkayButton", "StackSplitCancelButton", "GameMenuButtonHelp", "GameMenuButtonOptions", "GameMenuButtonUIOptions", "GameMenuButtonKeybindings", "GameMenuButtonMacros", "GameMenuButtonLogout", "GameMenuButtonQuit", "GameMenuButtonContinue", "GameMenuButtonMacOptions", "LFDQueueFrameFindGroupButton", "LFRQueueFrameFindGroupButton", "LFRQueueFrameAcceptCommentButton", "AddFriendEntryFrameAcceptButton", "AddFriendEntryFrameCancelButton", "FriendsFriendsSendRequestButton", "FriendsFriendsCloseButton", "ColorPickerOkayButton", "ColorPickerCancelButton", "LFRBrowseFrameSendMessageButton", "LFRBrowseFrameInviteButton", "LFRBrowseFrameRefreshButton", "GuildInviteFrameJoinButton", "GuildInviteFrameDeclineButton", "FriendsFramePendingButton1AcceptButton", "FriendsFramePendingButton1DeclineButton", "RaidInfoExtendButton", "RaidInfoCancelButton", "PaperDollEquipmentManagerPaneEquipSet", "PaperDollEquipmentManagerPaneSaveSet", "HelpFrameAccountSecurityOpenTicket", "HelpFrameCharacterStuckStuck", "HelpFrameOpenTicketHelpTopIssues", "HelpFrameOpenTicketHelpOpenTicket", "ReadyCheckFrameYesButton", "ReadyCheckFrameNoButton", "HelpFrameTicketSubmit", "HelpFrameTicketCancel", "HelpFrameKnowledgebaseSearchButton", "GhostFrame", "HelpFrameGM_ResponseNeedMoreHelp", "HelpFrameGM_ResponseCancel", "GMChatOpenLog", "HelpFrameKnowledgebaseNavBarHomeButton", "AddFriendInfoFrameContinueButton", "LFDQueueFramePartyBackfillBackfillButton", "LFDQueueFramePartyBackfillNoBackfillButton", "ChannelFrameDaughterFrameOkayButton", "ChannelFrameDaughterFrameCancelButton", "PendingListInfoFrameContinueButton", "LFDQueueFrameNoLFDWhileLFRLeaveQueueButton", "InterfaceOptionsHelpPanelResetTutorials", "RaidFinderFrameFindRaidButton", "RaidFinderQueueFrameIneligibleFrameLeaveQueueButton", "SideDressUpModelResetButton", "RaidFinderQueueFramePartyBackfillBackfillButton", "RaidFinderQueueFramePartyBackfillNoBackfillButton", "ScrollOfResurrectionSelectionFrameAcceptButton", "ScrollOfResurrectionSelectionFrameCancelButton", "ScrollOfResurrectionFrameAcceptButton", "ScrollOfResurrectionFrameCancelButton", "HelpFrameReportBugSubmit", "HelpFrameSubmitSuggestionSubmit", "ReportPlayerNameDialogReportButton", "ReportPlayerNameDialogCancelButton", "ReportCheatingDialogReportButton", "ReportCheatingDialogCancelButton", "HelpFrameOpenTicketHelpItemRestoration"}
 		for i = 1, #buttons do
 		local reskinbutton = _G[buttons[i]]
 			if reskinbutton then
@@ -3936,7 +3535,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		if IsAddOnLoaded("ACP") then F.Reskin(GameMenuButtonAddOns) end
 
-		local closebuttons = {"SpellBookFrameCloseButton", "HelpFrameCloseButton", "RaidInfoCloseButton", "RolePollPopupCloseButton", "ItemRefCloseButton", "TokenFramePopupCloseButton", "ReputationDetailCloseButton", "ChannelFrameDaughterFrameDetailCloseButton", "LFGDungeonReadyStatusCloseButton", "RaidParentFrameCloseButton", "SideDressUpModelCloseButton", "LFGDungeonReadyDialogCloseButton", "StaticPopup1CloseButton"}
+		local closebuttons = {"SpellBookFrameCloseButton", "HelpFrameCloseButton", "RaidInfoCloseButton", "ItemRefCloseButton", "TokenFramePopupCloseButton", "ChannelFrameDaughterFrameDetailCloseButton", "RaidParentFrameCloseButton", "SideDressUpModelCloseButton"}
 		for i = 1, #closebuttons do
 			local closebutton = _G[closebuttons[i]]
 			F.ReskinClose(closebutton)
@@ -3945,7 +3544,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.ReskinClose(DressUpFrameCloseButton, "TOPRIGHT", DressUpFrame, "TOPRIGHT", -38, -16)
 	end
 end)
-
 
 local function Kill(object)
 	object.Show = dummy
@@ -4019,12 +3617,12 @@ SkinCloseButton(WorldMapFrameCloseButton)
 SkinCloseButton(WorldMapFrameSizeDownButton)
 SkinCloseButton(WorldMapFrameSizeUpButton)
 									
---F.ReskinDropDown11(WorldMapLevelDropDown)
---F.ReskinDropDown11(WorldMapZoneMinimapDropDown)
---F.ReskinDropDown11(WorldMapContinentDropDown)
---F.ReskinDropDown11(WorldMapZoneDropDown)
+F.ReskinDropDown(WorldMapLevelDropDown)
+F.ReskinDropDown(WorldMapZoneMinimapDropDown)
+F.ReskinDropDown(WorldMapContinentDropDown)
+F.ReskinDropDown(WorldMapZoneDropDown)
 			
---F.Reskin(WorldMapZoomOutButton)
+F.Reskin(WorldMapZoomOutButton)
 WorldMapZoomOutButton:SetPoint("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
 WorldMapLevelUpButton:SetPoint("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2, 8)
 WorldMapLevelDownButton:SetPoint("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)

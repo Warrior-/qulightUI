@@ -159,7 +159,7 @@ Qulight["nameplate"] = {
 }
 Qulight["minimapp"] = {
 	["enable"] = true,																	-- enable/disable minimap
-	["size"] = 116,																		-- minimap size
+	["size"] = 141,																		-- minimap size
 }
 Qulight["tooltip"] = {
 	["enable"] = true,                      											-- true to enable this mod, false to disable
@@ -191,4 +191,6 @@ Qulight["misk"] = {
 	["raidcooldowns"] = false, 
 	["AutoScreen"] = true,
 	["Threatbar"] = true,
+	["raidmarker"] = true,
+	["raidutility"] = true,														-- enable disable raid utility
 }  

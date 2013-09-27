@@ -232,7 +232,7 @@ local function Local(o)
 	if o == "QulightConfigUInameplatehealth_value" then o = QulightL.option_nameplates_health_value end
 	if o == "QulightConfigUInameplatename_abbrev" then o = QulightL.option_nameplates_name_abbrev end
 	if o == "QulightConfigUInameplatehealer_icon" then o = QulightL.option_nameplates_healer_icon end
-	if o == "QulightConfigUInameplateclass_icon" then o = QulightL.option_nameplates_class_icon end
+	if o == "QulightConfigUInameplateclass_icons" then o = QulightL.option_nameplates_class_icon end
 	if o == "QulightConfigUInameplatetrack_auras" then o = QulightL.option_nameplates_track_auras end
 	if o == "QulightConfigUInameplateauras_size" then o = QulightL.option_nameplates_auras_size end
 	if o == "QulightConfigUInameplategood_color" then o = QulightL.option_nameplates_good_color end

@@ -1122,6 +1122,67 @@ if Qulight["unitframes"].TotemBars then
 	self.TotemBar = totems			
 	end
 end
+
+Magebars = function(self)
+	if myclass == "MAGE" then
+				
+				local mb = CreateFrame("Frame", "ArcaneBar", self)
+				mb:SetPoint("TOPLEFT", self, "TOPLEFT",2,-2)
+				mb:SetWidth(103)
+				mb:SetHeight(6)
+				mb:SetBackdrop(backdrop)
+				mb:SetBackdropColor(0, 0, 0)
+				mb:SetBackdropBorderColor(0, 0, 0)				
+				CreateShadowclassbar2(mb)
+				mb:SetFrameLevel(6)
+				
+				for i = 1, 4 do
+				mb[i] = CreateFrame("StatusBar", "ArcaneBar"..i, mb)
+				mb[i]:SetHeight(6)
+				mb[i]:SetStatusBarTexture(statusbar_texture)
+						
+					if i == 1 then
+						mb[i]:SetWidth(100 / 4)
+						mb[i]:SetPoint("LEFT", mb, "LEFT", 0, 0)
+					else
+						mb[i]:SetWidth(100 / 4)
+						mb[i]:SetPoint("LEFT", mb[i-1], "RIGHT", 1, 0)
+					end
+						mb[i].bg = mb[i]:CreateTexture(nil, 'ARTWORK')
+				end
+				
+				self.ArcaneChargeBar = mb
+				
+				local rp = CreateFrame("Frame", "RunePower", self)
+				rp:SetPoint("TOPLEFT", self, "TOPLEFT", 108,-2)
+				rp:SetWidth(41)
+				rp:SetHeight(6)
+				
+				rp:SetBackdrop(backdrop)
+				rp:SetBackdropColor(0, 0, 0)
+				rp:SetBackdropBorderColor(0, 0, 0)	
+				CreateShadowclassbar2(rp)
+				rp:SetFrameLevel(6)
+				for i = 1, 2 do
+					rp[i] = CreateFrame("StatusBar", "RunePower"..i, rp)
+					rp[i]:SetHeight(6)
+					rp[i]:SetStatusBarTexture(statusbar_texture)
+					
+					if i == 1 then
+						rp[i]:SetWidth(40 / 2)
+						rp[i]:SetPoint("LEFT", rp, "LEFT", 0, 0)
+					else
+						rp[i]:SetWidth(40 / 2)
+						rp[i]:SetPoint("LEFT", rp[i-1], "RIGHT", 1, 0)
+					end
+						rp[i].bg = rp[i]:CreateTexture(nil, 'ARTWORK')
+						
+				end
+				
+				self.RunePower = rp
+	end			
+end
+
 genCPoints = function(self)
 	local bars = CreateFrame("Frame", nil, self)
 	bars:SetPoint("TOPLEFT", self, "TOPLEFT",4,-3)
@@ -1376,6 +1437,7 @@ local function CreatePlayerStyle(self, unit, isSingle)
 	end
 	gen_InfoIcons(self)
 	TotemBars(self)
+	Magebars(self)
 	Experience(self)
 	Reputation(self)
 	AltPowerBar(self)

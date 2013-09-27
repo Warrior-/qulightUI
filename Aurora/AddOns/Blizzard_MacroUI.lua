@@ -39,7 +39,7 @@ C.modules["Blizzard_MacroUI"] = function()
 		local bu = _G["MacroButton"..i]
 		local ic = _G["MacroButton"..i.."Icon"]
 
-		bu:SetCheckedTexture(C.media.checked)
+		bu:SetCheckedTexture("")
 		select(2, bu:GetRegions()):Hide()
 
 		ic:SetPoint("TOPLEFT", 1, -1)
@@ -53,7 +53,7 @@ C.modules["Blizzard_MacroUI"] = function()
 		local bu = _G["MacroPopupButton"..i]
 		local ic = _G["MacroPopupButton"..i.."Icon"]
 
-		bu:SetCheckedTexture(C.media.checked)
+		bu:SetCheckedTexture("")
 		select(2, bu:GetRegions()):Hide()
 
 		ic:SetPoint("TOPLEFT", 1, -1)
