@@ -84,68 +84,66 @@ RaidDebuffs = {
 -----------------------------------------------------------------
 -- Siege of Orgrimmar
 	-- Immerseus
-	[SpellName(143436)] = 4,  -- Corrosive Blast (Tank switch)
-	[SpellName(143459)] = 3,  -- Sha Residue
+	[SpellName(143436)] = 4,	-- Corrosive Blast (Tank switch)
+	[SpellName(143459)] = 3,	-- Sha Residue
 	-- The Fallen Protectors
-	[SpellName(143198)] = 3,  -- Garrote (DoT)
-	[SpellName(143434)] = 4,  -- Shadow Word: Bane (Dispel)
-	[SpellName(147383)] = 3,  -- Debilitation (Heroic)
+	[SpellName(143198)] = 3,	-- Garrote (DoT)
+	[SpellName(143434)] = 4,	-- Shadow Word: Bane (Dispel)
+	[SpellName(147383)] = 3,	-- Debilitation (Heroic)
 	-- Norushen
-	[SpellName(146124)] = 4,  -- Self Doubt (Tank switch)
-	[SpellName(144514)] = 3,  -- Lingering Corruption (Dispel)
+	[SpellName(146124)] = 4,	-- Self Doubt (Tank switch)
+	[SpellName(144514)] = 3,	-- Lingering Corruption (Dispel)
 	-- Sha of Pride
-	[SpellName(144358)] = 4,  -- Wounded Pride (Tank switch)
-	[SpellName(144351)] = 3,  -- Mark of Arrogance (Dispel)
-	[SpellName(146594)] = 3,  -- Gift of the Titans
-	[SpellName(147207)] = 3,  -- Weakened Resolve (Heroic)
+	[SpellName(144358)] = 4,	-- Wounded Pride (Tank switch)
+	[SpellName(144351)] = 3,	-- Mark of Arrogance (Dispel)
+	[SpellName(146594)] = 3,	-- Gift of the Titans
+	[SpellName(147207)] = 3,	-- Weakened Resolve (Heroic)
 	-- Galakras
-	[SpellName(146765)] = 3,  -- Flame Arrows (DoT)
-	[SpellName(146902)] = 3,  -- Poison-Tipped Blades (Poison stacks)
+	[SpellName(146765)] = 3,	-- Flame Arrows (DoT)
+	[SpellName(146902)] = 3,	-- Poison-Tipped Blades (Poison stacks)
 	-- Iron Juggernaut
-	[SpellName(144467)] = 4,  -- Ignite Armor (Tank stacks)
-	[SpellName(144459)] = 3,  -- Laser Burn (DoT)
+	[SpellName(144467)] = 4,	-- Ignite Armor (Tank stacks)
+	[SpellName(144459)] = 3,	-- Laser Burn (DoT)
 	-- Kor'kron Dark Shaman
-	[SpellName(144215)] = 3,  -- Froststorm Strike (Tank stacks)
-	[SpellName(144089)] = 3,  -- Toxic Mist (DoT)
-	[SpellName(144330)] = 3,  -- Iron Prison (Heroic)
+	[SpellName(144215)] = 3,	-- Froststorm Strike (Tank stacks)
+	[SpellName(144089)] = 3,	-- Toxic Mist (DoT)
+	[SpellName(144330)] = 3,	-- Iron Prison (Heroic)
 	-- General Nazgrim
-	[SpellName(143494)] = 3,  -- Sundering Blow (Tank stacks)
-	[SpellName(143638)] = 3,  -- Bonecracker (DoT)
-	[SpellName(143431)] = 3,  -- Magistrike (Dispel)
+	[SpellName(143494)] = 3,	-- Sundering Blow (Tank stacks)
+	[SpellName(143638)] = 3,	-- Bonecracker (DoT)
+	[SpellName(143431)] = 3,	-- Magistrike (Dispel)
 	-- Malkorok
-	[SpellName(142990)] = 3,  -- Fatal Strike (Tank stacks)
-	[SpellName(142913)] = 3,  -- Displaced Energy (Dispel)
+	[SpellName(142990)] = 3,	-- Fatal Strike (Tank stacks)
+	[SpellName(142913)] = 3,	-- Displaced Energy (Dispel)
 	-- Spoils of Pandaria
-	[SpellName(145218)] = 3,  -- Harden Flesh (Dispel)
-	[SpellName(146235)] = 3,  -- Breath of Fire (Dispel)
+	[SpellName(145218)] = 3,	-- Harden Flesh (Dispel)
+	[SpellName(146235)] = 3,	-- Breath of Fire (Dispel)
 	-- Thok the Bloodthirsty
-	[SpellName(143766)] = 3,  -- Panic (Tank stacks)
-	[SpellName(143780)] = 3,  -- Acid Breath (Tank stacks)
-	[SpellName(143773)] = 3,  -- Freezing Breath (Tank Stacks)
-	[SpellName(143800)] = 3,  -- Icy Blood (Random Stacks)
-	[SpellName(143767)] = 3,  -- Scorching Breath (Tank Stacks)
-	[SpellName(143791)] = 3,  -- Corrosive Blood (Dispel)
+	[SpellName(143766)] = 3,	-- Panic (Tank stacks)
+	[SpellName(143780)] = 3,	-- Acid Breath (Tank stacks)
+	[SpellName(143773)] = 3,	-- Freezing Breath (Tank Stacks)
+	[SpellName(143800)] = 3,	-- Icy Blood (Random Stacks)
+	[SpellName(143767)] = 3,	-- Scorching Breath (Tank Stacks)
+	[SpellName(143791)] = 3,	-- Corrosive Blood (Dispel)
 	-- Siegecrafter Blackfuse
-	[SpellName(143385)] = 3,  -- Electrostatic Charge (Tank stacks)
-	[SpellName(144236)] = 3,  -- Pattern Recognition
+	[SpellName(143385)] = 3,	-- Electrostatic Charge (Tank stacks)
+	[SpellName(144236)] = 3,	-- Pattern Recognition
 	-- Paragons of the Klaxxi
-	[SpellName(142929)] = 3,  -- Tenderizing Strikes (Tank stacks)
-	[SpellName(143275)] = 3,  -- Hewn (Tank stacks)
-	[SpellName(143279)] = 3,  -- Genetic Alteration (Tank stacks)
-	[SpellName(143974)] = 3,  -- Shield Bash (Tank stun)
-	[SpellName(142948)] = 3,  -- Aim
+	[SpellName(142929)] = 3,	-- Tenderizing Strikes (Tank stacks)
+	[SpellName(143275)] = 3,	-- Hewn (Tank stacks)
+	[SpellName(143279)] = 3,	-- Genetic Alteration (Tank stacks)
+	[SpellName(143974)] = 3,	-- Shield Bash (Tank stun)
+	[SpellName(142948)] = 3,	-- Aim
 	-- Garrosh Hellscream
-	[SpellName(145183)] = 3,  -- Gripping Despair (Tank stacks)
-	[SpellName(145195)] = 3,  -- Empowered Gripping Despair (Tank stacks) 
-
+	[SpellName(145183)] = 3,	-- Gripping Despair (Tank stacks)
+	[SpellName(145195)] = 3,	-- Empowered Gripping Despair (Tank stacks)
 -- Throne of Thunder
 	-- Jin'rokh the Breaker
-	[SpellName(137162)] = 3,	-- Static Burst (Tank switch)
+	[SpellName(137162)] = 4,	-- Static Burst (Tank switch)
 	[SpellName(138349)] = 3,	-- Static Wound (Tank stacks)
-	[SpellName(137371)] = 3,	-- Thundering Throw (Tank stun)
+	[SpellName(137371)] = 4,	-- Thundering Throw (Tank stun)
 	[SpellName(138732)] = 3,	-- Ionization (Heroic - Dispel)
 	[SpellName(137422)] = 3,	-- Focused Lightning (Fixated - Kiting)
-	[SpellName(138006)] = 3,	-- Electrified Waters (Pool)
 	-- Horridon
 	[SpellName(136767)] = 3,	-- Triple Puncture (Tank stacks)
 	[SpellName(136708)] = 4,	-- Stone Gaze (Stun - Dispel)
@@ -169,9 +167,9 @@ RaidDebuffs = {
 	[SpellName(137731)] = 3,	-- Ignite Flesh (Tank stacks)
 	[SpellName(139843)] = 3,	-- Arctic Freeze (Tank stacks)
 	[SpellName(139840)] = 3,	-- Rot Armor (Tank stacks)
-	[SpellName(134391)] = 3,	-- Cinder (DoT - Dispell)
-	[SpellName(139857)] = 3,	-- Torrent of Ice (Fixated - Kiting)
-	[SpellName(140179)] = 3,	-- Suppression (Heroic - Dispell)
+	[SpellName(134391)] = 4,	-- Cinder (DoT - Dispell)
+	[SpellName(139857)] = 4,	-- Torrent of Ice (Fixated - Kiting)
+	[SpellName(140179)] = 4,	-- Suppression (Heroic - Dispell)
 	-- Ji-Kun
 	[SpellName(134366)] = 4,	-- Talon Rake (Tank stacks)
 	[SpellName(140092)] = 3,	-- Infected Talons (Tank DoT)
@@ -180,20 +178,14 @@ RaidDebuffs = {
 	[SpellName(133768)] = 4,	-- Arterial Cut (Tank DoT)
 	[SpellName(133767)] = 3,	-- Serious Wound (Tank stacks)
 	[SpellName(133798)] = 3,	-- Life Drain (Stun)
-	[SpellName(133792)] = 3,	-- Lingering Gaze
 	[SpellName(133597)] = 3,	-- Dark Parasite (Heroic - Dispel)
 	-- Primordius
 	[SpellName(136050)] = 3,	-- Malformed Blood (Tank stacks)
-	[SpellName(136228)] = 3,	-- Volatile Pathogen (DoT)
-	[SpellName(136185)] = 3,	-- Fragile Bones
-	[SpellName(136187)] = 3,	-- Clouded Mind
-	[SpellName(136183)] = 3,	-- Dulled Synapses
-	[SpellName(136181)] = 3,	-- Impaired Eyesight
-
+	[SpellName(136228)] = 4,	-- Volatile Pathogen (DoT)
 	-- Dark Animus
 	[SpellName(138569)] = 4,	-- Explosive Slam (Tank stacks)
+	[SpellName(138609)] = 4,	-- Matter Swap (Dispel)
 	[SpellName(138659)] = 3,	-- Touch of the Animus (DoT)
-	[SpellName(138609)] = 3,	-- Matter Swap
 	-- Iron Qon
 	[SpellName(134691)] = 3,	-- Impale (Tank stacks)
 	[SpellName(136192)] = 4,	-- Lightning Storm (Stun)
@@ -208,7 +200,12 @@ RaidDebuffs = {
 	[SpellName(136478)] = 3,	-- Fusion Slash (Tank only)
 	[SpellName(136914)] = 3,	-- Electrical Shock (Tank staks)
 	[SpellName(135695)] = 3,	-- Static Shock (Damage Split)
+	[SpellName(136295)] = 3,	-- Overcharged
+	[SpellName(139011)] = 3,	-- Helm of Command (Heroic)
 	-- Ra-den
+	[SpellName(138297)] = 3,	-- Unstable Vita
+	[SpellName(138329)] = 3,	-- Unleashed Anima
+	[SpellName(138372)] = 4,	-- Vita Sensitivity
 -- Terrace of Endless Spring
 	-- Protectors of the Endless
 	[SpellName(117519)] = 3,	-- Touch of Sha

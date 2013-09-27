@@ -808,6 +808,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 				if not backdrop.reskinned then
 					F.CreateBD(menu)
 					F.CreateBD(backdrop)
+					CreateShadow(menu)
+					CreateShadow(backdrop)
 					backdrop.reskinned = true
 				end
 			end

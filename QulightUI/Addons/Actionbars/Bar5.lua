@@ -1,7 +1,7 @@
 if not Qulight["actionbar"].enable == true then return end
 
 local bar = QuBar5
-bar:SetAlpha(0.5)
+bar:SetAlpha(1)
 MultiBarRight:SetParent(bar)
 
 for i= 1, 12 do
