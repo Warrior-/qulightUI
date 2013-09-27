@@ -133,6 +133,7 @@ Qulight["datatext"] = {
 	["haste"] = 11,
 	["mastery"] = 12,
 	["power"] = 13,
+	["crit"] = 0,
 	["Time24"] = true,            														-- set time to 24h format(if wowtime enable)
 	["Localtime"] = true,  																-- local time(if wowtime enable)
 	["classcolor"] = true,																-- class color text info
@@ -168,7 +169,8 @@ Qulight["tooltip"] = {
 	["hideuf"] = false,                     											-- hide tooltip on unitframes
 	["cursor"] = false,                     											-- tooltip via cursor only
 	["itemlevel"] = true,																-- show item level
-	["spellid"] = true, 																-- show speel id
+	["spellid"] = true,
+	["title"] = false,	-- show speel id
 }
 Qulight["bags"] = {
 	["Enable"] = true,																	-- enable/disable bags 

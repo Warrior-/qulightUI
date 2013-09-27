@@ -99,6 +99,10 @@ Filger_Spells = {
 			-- Darkmoon Cards (Proc)
 			{spellID = 128985, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Tank
+			-- Rook's Unlucky Talisman (Reduces damage, Use)
+			{spellID = 146343, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Resolve of Niuzao (Dodge, Use)
+			{spellID = 146344, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Stuff of Nightmares (Dodge, Proc)
 			{spellID = 126646, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Vial of Dragon's Blood (Dodge, Proc)
@@ -106,6 +110,16 @@ Filger_Spells = {
 			-- Jade Warlord Figurine (Mastery, Use)
 			{spellID = 126597, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Physical Strength DPS
+			-- Assurance of Consequence (Strength, Proc)
+			{spellID = 146245, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Thok's Tail Tip (Strength, Proc)
+			{spellID = 146250, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Skeer's Bloodsoaked Talisman (Strength, Proc)
+			{spellID = 146285, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Fusion-Fire Core (Strength, Proc)
+			{spellID = 148899, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Alacrity of Xuen (Haste, Proc)
+			{spellID = 146296, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Helmbreaker Medallion (Crit, Use)
 			{spellID = 136084, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Darkmist Vortex (Haste, Proc)
@@ -132,6 +146,10 @@ Filger_Spells = {
 			-- Physical Melee
 			-- Dancing Steel (Strength)
 			{spellID = 120032, unitID = "player", caster = "all", filter = "BUFF"},
+
+			-- Legendary Meta Gems
+			-- Indomitable Primal Diamond (Tank)
+			{spellID = 137593, unitID = "player", caster = "all", filter = "BUFF", absID = true},
 		},
 		{
 			Name = "COOLDOWN",
@@ -325,6 +343,10 @@ Filger_Spells = {
 			-- Darkmoon Cards (Proc)
 			{spellID = 128985, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Tank
+			-- Rook's Unlucky Talisman (Reduces damage, Use)
+			{spellID = 146343, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Resolve of Niuzao (Dodge, Use)
+			{spellID = 146344, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Stuff of Nightmares (Dodge, Proc)
 			{spellID = 126646, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Vial of Dragon's Blood (Dodge, Proc)
@@ -332,6 +354,16 @@ Filger_Spells = {
 			-- Jade Warlord Figurine (Mastery, Use)
 			{spellID = 126597, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Physical Agility DPS
+		   	-- Assurance of Consequence (Agility, Proc)
+			{spellID = 146308, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Haromm's Talisman (Agility, Proc)
+			{spellID = 148903, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Sigil of Rampage (Agility, Proc)
+			{spellID = 148896, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Ticking Ebon Detonator (Agility, Proc)
+			{spellID = 146310, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Discipline of Xuen (Crit, Proc)
+			{spellID = 146312, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Arrowflight Medallion (Crit, Use)
 			{spellID = 136086, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Terror in the Mists (Crit, Proc)
@@ -354,11 +386,27 @@ Filger_Spells = {
 			-- PvP Trinkets (Spell Power, Proc)
 			{spellID = 126705, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster DPS
+			-- Purified Bindings of Immerseus (Intellect, Proc)
+			{spellID = 146046, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Kardris' Toxic Totem (Intellect, Proc)
+			{spellID = 148906, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Frenzied Crystal of Rage (Intellect, Proc)
+			{spellID = 148897, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Black Blood of Y'Shaarj (Intellect, Proc)
+			{spellID = 146184, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Yu'lon's Bite (Crit, Proc)
+			{spellID = 146218, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Essence of Terror (Haste, Proc)
 			{spellID = 126659, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Light of the Cosmos (Intellect, Proc)
 			{spellID = 126577, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+			-- Prismatic Prison of Pride (Intellect, Proc)
+			{spellID = 146314, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Nazgrim's Burnished Insignia (Intellect, Proc)
+			{spellID = 148908, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Thok's Acid-Grooved Tooth (Intellect, Proc)
+			{spellID = 148911, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Qin-xi's Polarizing Seal (Intellect, Proc)
 			{spellID = 126588, unitID = "player", caster = "player", filter = "BUFF"},
 
@@ -379,6 +427,14 @@ Filger_Spells = {
 			-- Lightweave (Intellect)
 			{spellID = 125487, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+		
+			-- Legendary Meta Gems
+			-- Indomitable Primal Diamond (Tank)
+			{spellID = 137593, unitID = "player", caster = "all", filter = "BUFF", absID = true},
+			-- Sinister Primal Diamond (Caster DPS)
+			{spellID = 137590, unitID = "player", caster = "all", filter = "BUFF"},
+			-- Courageous Primal Diamond (Caster Heal)
+			{spellID = 137288, unitID = "player", caster = "all", filter = "BUFF"},
 		},
 		{
 			Name = "T_DEBUFF_ICON",
@@ -570,6 +626,16 @@ Filger_Spells = {
 			-- Darkmoon Cards (Proc)
 			{spellID = 128985, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Physical Agility DPS
+			-- Assurance of Consequence (Agility, Proc)
+			{spellID = 146308, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Haromm's Talisman (Agility, Proc)
+			{spellID = 148903, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Sigil of Rampage (Agility, Proc)
+			{spellID = 148896, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Ticking Ebon Detonator (Agility, Proc)
+			{spellID = 146310, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Discipline of Xuen (Crit, Proc)
+			{spellID = 146312, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Arrowflight Medallion (Crit, Use)
 			{spellID = 136086, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Terror in the Mists (Crit, Proc)
@@ -831,6 +897,16 @@ Filger_Spells = {
 			-- PvP Trinkets (Spell Power, Proc)
 			{spellID = 126705, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster DPS
+			-- Purified Bindings of Immerseus (Intellect, Proc)
+			{spellID = 146046, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Kardris' Toxic Totem (Intellect, Proc)
+			{spellID = 148906, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Frenzied Crystal of Rage (Intellect, Proc)
+			{spellID = 148897, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Black Blood of Y'Shaarj (Intellect, Proc)
+			{spellID = 146184, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Yu'lon's Bite (Crit, Proc)
+			{spellID = 146218, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Essence of Terror (Haste, Proc)
 			{spellID = 126659, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Light of the Cosmos (Intellect, Proc)
@@ -843,6 +919,10 @@ Filger_Spells = {
 			{spellID = 104993, unitID = "player", caster = "all", filter = "BUFF"},
 			-- Lightweave (Intellect)
 			{spellID = 125487, unitID = "player", caster = "player", filter = "BUFF"},
+
+			-- Legendary Meta Gems
+			-- Sinister Primal Diamond (Caster DPS)
+			{spellID = 137590, unitID = "player", caster = "all", filter = "BUFF"},
 		},
 		{
 			Name = "T_DEBUFF_ICON",
@@ -1068,6 +1148,10 @@ Filger_Spells = {
 			-- Darkmoon Cards (Proc)
 			{spellID = 128985, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Tank
+			-- Rook's Unlucky Talisman (Reduces damage, Use)
+			{spellID = 146343, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Resolve of Niuzao (Dodge, Use)
+			{spellID = 146344, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Stuff of Nightmares (Dodge, Proc)
 			{spellID = 126646, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Vial of Dragon's Blood (Dodge, Proc)
@@ -1075,6 +1159,16 @@ Filger_Spells = {
 			-- Jade Warlord Figurine (Mastery, Use)
 			{spellID = 126597, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Physical Agility DPS
+			-- Assurance of Consequence (Agility, Proc)
+			{spellID = 146308, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Haromm's Talisman (Agility, Proc)
+			{spellID = 148903, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Sigil of Rampage (Agility, Proc)
+			{spellID = 148896, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Ticking Ebon Detonator (Agility, Proc)
+			{spellID = 146310, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Discipline of Xuen (Crit, Proc)
+			{spellID = 146312, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Arrowflight Medallion (Crit, Use)
 			{spellID = 136086, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Terror in the Mists (Crit, Proc)
@@ -1097,6 +1191,12 @@ Filger_Spells = {
 			-- PvP Trinkets (Spell Power, Proc)
 			{spellID = 126705, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+			-- Prismatic Prison of Pride (Intellect, Proc)
+			{spellID = 146314, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Nazgrim's Burnished Insignia (Intellect, Proc)
+			{spellID = 148908, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Thok's Acid-Grooved Tooth (Intellect, Proc)
+			{spellID = 148911, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Qin-xi's Polarizing Seal (Intellect, Proc)
 			{spellID = 126588, unitID = "player", caster = "player", filter = "BUFF"},
 
@@ -1117,6 +1217,12 @@ Filger_Spells = {
 			-- Lightweave (Intellect)
 			{spellID = 125487, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+
+			-- Legendary Meta Gems
+			-- Indomitable Primal Diamond (Tank)
+			{spellID = 137593, unitID = "player", caster = "all", filter = "BUFF", absID = true},
+			-- Courageous Primal Diamond (Caster Heal)
+			{spellID = 137288, unitID = "player", caster = "all", filter = "BUFF"},
 		},
 		{
 			Name = "T_DEBUFF_ICON",
@@ -1290,6 +1396,10 @@ Filger_Spells = {
 			-- Darkmoon Cards (Proc)
 			{spellID = 128985, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Tank
+			-- Rook's Unlucky Talisman (Reduces damage, Use)
+			{spellID = 146343, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Resolve of Niuzao (Dodge, Use)
+			{spellID = 146344, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Stuff of Nightmares (Dodge, Proc)
 			{spellID = 126646, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Vial of Dragon's Blood (Dodge, Proc)
@@ -1297,6 +1407,16 @@ Filger_Spells = {
 			-- Jade Warlord Figurine (Mastery, Use)
 			{spellID = 126597, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Physical Strength DPS
+			-- Assurance of Consequence (Strength, Proc)
+			{spellID = 146245, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Thok's Tail Tip (Strength, Proc)
+			{spellID = 146250, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Skeer's Bloodsoaked Talisman (Strength, Proc)
+			{spellID = 146285, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Fusion-Fire Core (Strength, Proc)
+			{spellID = 148899, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Alacrity of Xuen (Haste, Proc)
+			{spellID = 146296, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Helmbreaker Medallion (Crit, Use)
 			{spellID = 136084, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Darkmist Vortex (Haste, Proc)
@@ -1321,6 +1441,12 @@ Filger_Spells = {
 			-- PvP Trinkets (Spell Power, Proc)
 			{spellID = 126705, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+			-- Prismatic Prison of Pride (Intellect, Proc)
+			{spellID = 146314, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Nazgrim's Burnished Insignia (Intellect, Proc)
+			{spellID = 148908, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Thok's Acid-Grooved Tooth (Intellect, Proc)
+			{spellID = 148911, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Qin-xi's Polarizing Seal (Intellect, Proc)
 			{spellID = 126588, unitID = "player", caster = "player", filter = "BUFF"},
 
@@ -1341,6 +1467,12 @@ Filger_Spells = {
 			-- Lightweave (Intellect)
 			{spellID = 125487, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+
+			-- Legendary Meta Gems
+			-- Indomitable Primal Diamond (Tank)
+			{spellID = 137593, unitID = "player", caster = "all", filter = "BUFF", absID = true},
+			-- Courageous Primal Diamond (Caster Heal)
+			{spellID = 137288, unitID = "player", caster = "all", filter = "BUFF"},
 		},
 		{
 			Name = "T_DEBUFF_ICON",
@@ -1525,11 +1657,27 @@ Filger_Spells = {
 			-- PvP Trinkets (Spell Power, Proc)
 			{spellID = 126705, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster DPS
+			-- Purified Bindings of Immerseus (Intellect, Proc)
+			{spellID = 146046, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Kardris' Toxic Totem (Intellect, Proc)
+			{spellID = 148906, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Frenzied Crystal of Rage (Intellect, Proc)
+			{spellID = 148897, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Black Blood of Y'Shaarj (Intellect, Proc)
+			{spellID = 146184, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Yu'lon's Bite (Crit, Proc)
+			{spellID = 146218, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Essence of Terror (Haste, Proc)
 			{spellID = 126659, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Light of the Cosmos (Intellect, Proc)
 			{spellID = 126577, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+			-- Prismatic Prison of Pride (Intellect, Proc)
+			{spellID = 146314, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Nazgrim's Burnished Insignia (Intellect, Proc)
+			{spellID = 148908, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Thok's Acid-Grooved Tooth (Intellect, Proc)
+			{spellID = 148911, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Qin-xi's Polarizing Seal (Intellect, Proc)
 			{spellID = 126588, unitID = "player", caster = "player", filter = "BUFF"},
 
@@ -1541,6 +1689,12 @@ Filger_Spells = {
 			-- Lightweave (Intellect)
 			{spellID = 125487, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+
+			-- Legendary Meta Gems
+			-- Sinister Primal Diamond (Caster DPS)
+			{spellID = 137590, unitID = "player", caster = "all", filter = "BUFF"},
+			-- Courageous Primal Diamond (Caster Heal)
+			{spellID = 137288, unitID = "player", caster = "all", filter = "BUFF"},
 		},
 		{
 			Name = "T_DEBUFF_ICON",
@@ -1750,6 +1904,16 @@ Filger_Spells = {
 			-- Darkmoon Cards (Proc)
 			{spellID = 128985, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Physical Agility DPS
+			-- Assurance of Consequence (Agility, Proc)
+			{spellID = 146308, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Haromm's Talisman (Agility, Proc)
+			{spellID = 148903, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Sigil of Rampage (Agility, Proc)
+			{spellID = 148896, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Ticking Ebon Detonator (Agility, Proc)
+			{spellID = 146310, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Discipline of Xuen (Crit, Proc)
+			{spellID = 146312, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Arrowflight Medallion (Crit, Use)
 			{spellID = 136086, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Terror in the Mists (Crit, Proc)
@@ -1967,6 +2131,16 @@ Filger_Spells = {
 			-- Darkmoon Cards (Proc)
 			{spellID = 128985, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Physical Agility DPS
+			-- Assurance of Consequence (Agility, Proc)
+			{spellID = 146308, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Haromm's Talisman (Agility, Proc)
+			{spellID = 148903, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Sigil of Rampage (Agility, Proc)
+			{spellID = 148896, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Ticking Ebon Detonator (Agility, Proc)
+			{spellID = 146310, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Discipline of Xuen (Crit, Proc)
+			{spellID = 146312, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Arrowflight Medallion (Crit, Use)
 			{spellID = 136086, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Terror in the Mists (Crit, Proc)
@@ -1989,11 +2163,27 @@ Filger_Spells = {
 			-- PvP Trinkets (Spell Power, Proc)
 			{spellID = 126705, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster DPS
+			-- Purified Bindings of Immerseus (Intellect, Proc)
+			{spellID = 146046, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Kardris' Toxic Totem (Intellect, Proc)
+			{spellID = 148906, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Frenzied Crystal of Rage (Intellect, Proc)
+			{spellID = 148897, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Black Blood of Y'Shaarj (Intellect, Proc)
+			{spellID = 146184, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Yu'lon's Bite (Crit, Proc)
+			{spellID = 146218, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Essence of Terror (Haste, Proc)
 			{spellID = 126659, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Light of the Cosmos (Intellect, Proc)
 			{spellID = 126577, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+			-- Prismatic Prison of Pride (Intellect, Proc)
+			{spellID = 146314, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Nazgrim's Burnished Insignia (Intellect, Proc)
+			{spellID = 148908, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Thok's Acid-Grooved Tooth (Intellect, Proc)
+			{spellID = 148911, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Qin-xi's Polarizing Seal (Intellect, Proc)
 			{spellID = 126588, unitID = "player", caster = "player", filter = "BUFF"},
 
@@ -2011,6 +2201,12 @@ Filger_Spells = {
 			-- Lightweave (Intellect)
 			{spellID = 125487, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster Heal
+
+			-- Legendary Meta Gems
+			-- Sinister Primal Diamond (Caster DPS)
+			{spellID = 137590, unitID = "player", caster = "all", filter = "BUFF"},
+			-- Courageous Primal Diamond (Caster Heal)
+			{spellID = 137288, unitID = "player", caster = "all", filter = "BUFF"},
 		},
 		{
 			Name = "T_DEBUFF_ICON",
@@ -2199,6 +2395,16 @@ Filger_Spells = {
 			-- PvP Trinkets (Spell Power, Proc)
 			{spellID = 126705, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Caster DPS
+			-- Purified Bindings of Immerseus (Intellect, Proc)
+			{spellID = 146046, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Kardris' Toxic Totem (Intellect, Proc)
+			{spellID = 148906, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Frenzied Crystal of Rage (Intellect, Proc)
+			{spellID = 148897, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Black Blood of Y'Shaarj (Intellect, Proc)
+			{spellID = 146184, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Yu'lon's Bite (Crit, Proc)
+			{spellID = 146218, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Essence of Terror (Haste, Proc)
 			{spellID = 126659, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Light of the Cosmos (Intellect, Proc)
@@ -2211,6 +2417,10 @@ Filger_Spells = {
 			{spellID = 104993, unitID = "player", caster = "all", filter = "BUFF"},
 			-- Lightweave (Intellect)
 			{spellID = 125487, unitID = "player", caster = "player", filter = "BUFF"},
+
+			-- Legendary Meta Gems
+			-- Sinister Primal Diamond (Caster DPS)
+			{spellID = 137590, unitID = "player", caster = "all", filter = "BUFF"},
 		},
 		{
 			Name = "T_DEBUFF_ICON",
@@ -2400,6 +2610,10 @@ Filger_Spells = {
 			-- Darkmoon Cards (Proc)
 			{spellID = 128985, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Tank
+			-- Rook's Unlucky Talisman (Reduces damage, Use)
+			{spellID = 146343, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Resolve of Niuzao (Dodge, Use)
+			{spellID = 146344, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Stuff of Nightmares (Dodge, Proc)
 			{spellID = 126646, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Vial of Dragon's Blood (Dodge, Proc)
@@ -2407,6 +2621,16 @@ Filger_Spells = {
 			-- Jade Warlord Figurine (Mastery, Use)
 			{spellID = 126597, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Physical Strength DPS
+			-- Assurance of Consequence (Strength, Proc)
+			{spellID = 146245, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Thok's Tail Tip (Strength, Proc)
+			{spellID = 146250, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Skeer's Bloodsoaked Talisman (Strength, Proc)
+			{spellID = 146285, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Fusion-Fire Core (Strength, Proc)
+			{spellID = 148899, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Alacrity of Xuen (Haste, Proc)
+			{spellID = 146296, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Helmbreaker Medallion (Crit, Use)
 			{spellID = 136084, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Darkmist Vortex (Haste, Proc)
@@ -2433,6 +2657,10 @@ Filger_Spells = {
 			-- Physical Melee
 			-- Dancing Steel (Strength)
 			{spellID = 120032, unitID = "player", caster = "all", filter = "BUFF"},
+	
+			-- Legendary Meta Gems
+			-- Indomitable Primal Diamond (Tank)
+			{spellID = 137593, unitID = "player", caster = "all", filter = "BUFF", absID = true},
 		},
 		{
 			Name = "T_DEBUFF_ICON",
