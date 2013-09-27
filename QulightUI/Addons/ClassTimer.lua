@@ -501,7 +501,7 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 18223 ), -- Curse of Exhaustion
 				CreateSpellEntry( 1714 ), -- Curse of Tongue
 				CreateSpellEntry( 702 ), -- Curse of Weakness
-				CreateSpellEntry( 172 ), -- Corruption
+				CreateSpellEntry( 146739 ), -- Corruption
 				CreateSpellEntry( 27243, false, nil, nil, 27243 ), -- Seed of Corruption
 				CreateSpellEntry( 48181, false, nil, nil, 48181 ), -- Haunt
 				CreateSpellEntry( 32389 ), -- Shadow Embrace

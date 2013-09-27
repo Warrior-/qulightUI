@@ -1,123 +1,71 @@
 if not Qulight["chatt"].enable == true then return end
 
+ToggleChatColorNamesByClassGroup(true, "SAY")
+ToggleChatColorNamesByClassGroup(true, "EMOTE")
+ToggleChatColorNamesByClassGroup(true, "YELL")
+ToggleChatColorNamesByClassGroup(true, "GUILD")
+ToggleChatColorNamesByClassGroup(true, "OFFICER")
+ToggleChatColorNamesByClassGroup(true, "GUILD_ACHIEVEMENT")
+ToggleChatColorNamesByClassGroup(true, "ACHIEVEMENT")
+ToggleChatColorNamesByClassGroup(true, "WHISPER")
+ToggleChatColorNamesByClassGroup(true, "PARTY")
+ToggleChatColorNamesByClassGroup(true, "PARTY_LEADER")
+ToggleChatColorNamesByClassGroup(true, "RAID")
+ToggleChatColorNamesByClassGroup(true, "RAID_LEADER")
+ToggleChatColorNamesByClassGroup(true, "RAID_WARNING")
+ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT")
+ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT_LEADER")	
+ToggleChatColorNamesByClassGroup(true, "CHANNEL1")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL2")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL6")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL7")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL8")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL9")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL10")
+ToggleChatColorNamesByClassGroup(true, "CHANNEL11")			
 
-ChatSetup = function()
-					
-	FCF_ResetChatWindows()
-	FCF_SetLocked(ChatFrame1, 1)
-	FCF_DockFrame(ChatFrame2)
-	FCF_SetLocked(ChatFrame2, 1)
-	FCF_OpenNewWindow("General")
-	FCF_SetLocked(ChatFrame3, 1)
-	FCF_DockFrame(ChatFrame3)
+--General
+ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255)
+--Trade
+ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255)
+--Local Defense
+ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255)
+			
+local Chat = CreateFrame("Frame")
+local tabalpha = 1
+local tabnoalpha = 0
+local _G = _G
+local origs = {}
+local type = type
+hidecombat = true
 
-	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(ChatFrame4)
-	FCF_SetLocked(ChatFrame4, 1)
-	ChatFrame4:Show()
-
-	for i = 1, NUM_CHAT_WINDOWS do
-		local frame = _G[format("ChatFrame%s", i)]
-		local id = frame:GetID()
-		FCF_SetChatWindowFontSize(nil, frame, 10)
-		frame:SetSize(410, 125)
-		SetChatWindowSavedDimensions(id, 410, 125)
-		FCF_SavePositionAndDimensions(frame)
+local function Kill(object)
+	if object.UnregisterAllEvents then
+		object:UnregisterAllEvents()
 	end
-	
-	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
-	ChatFrame_RemoveChannel(ChatFrame1, "Trade") -- erf, it seem we need to localize this now
-	ChatFrame_RemoveChannel(ChatFrame1, "General") -- erf, it seem we need to localize this now
-	ChatFrame_RemoveChannel(ChatFrame1, "LocalDefense") -- erf, it seem we need to localize this now
-	ChatFrame_RemoveChannel(ChatFrame1, "GuildRecruitment") -- erf, it seem we need to localize this now
-	ChatFrame_RemoveChannel(ChatFrame1, "LookingForGroup") -- erf, it seem we need to localize this now
-	ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD")
-	ChatFrame_AddMessageGroup(ChatFrame1, "OFFICER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "GUILD_ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
-	ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
-	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT_LEADER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_ALLIANCE")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BG_NEUTRAL")
-	ChatFrame_AddMessageGroup(ChatFrame1, "SYSTEM")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ERRORS")
-	ChatFrame_AddMessageGroup(ChatFrame1, "AFK")
-	ChatFrame_AddMessageGroup(ChatFrame1, "DND")
-	ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
-	ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
-				
-	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
-	ChatFrame_AddChannel(ChatFrame3, "Trade") -- erf, it seem we need to localize this now
-	ChatFrame_AddChannel(ChatFrame3, "General") -- erf, it seem we need to localize this now
-	ChatFrame_AddChannel(ChatFrame3, "LocalDefense") -- erf, it seem we need to localize this now
-	ChatFrame_AddChannel(ChatFrame3, "GuildRecruitment") -- erf, it seem we need to localize this now
-	ChatFrame_AddChannel(ChatFrame3, "LookingForGroup") -- erf, it seem we need to localize this now
-			
-	ChatFrame_RemoveAllMessageGroups(ChatFrame4)
-	ChatFrame_AddMessageGroup(ChatFrame4, "COMBAT_XP_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame4, "COMBAT_HONOR_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame4, "COMBAT_FACTION_CHANGE")
-	ChatFrame_AddMessageGroup(ChatFrame4, "LOOT")
-	ChatFrame_AddMessageGroup(ChatFrame4, "MONEY")
-			
-	ToggleChatColorNamesByClassGroup(true, "SAY")
-	ToggleChatColorNamesByClassGroup(true, "EMOTE")
-	ToggleChatColorNamesByClassGroup(true, "YELL")
-	ToggleChatColorNamesByClassGroup(true, "GUILD")
-	ToggleChatColorNamesByClassGroup(true, "OFFICER")
-	ToggleChatColorNamesByClassGroup(true, "GUILD_ACHIEVEMENT")
-	ToggleChatColorNamesByClassGroup(true, "ACHIEVEMENT")
-	ToggleChatColorNamesByClassGroup(true, "WHISPER")
-	ToggleChatColorNamesByClassGroup(true, "PARTY")
-	ToggleChatColorNamesByClassGroup(true, "PARTY_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "RAID")
-	ToggleChatColorNamesByClassGroup(true, "RAID_LEADER")
-	ToggleChatColorNamesByClassGroup(true, "RAID_WARNING")
-	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND")
-	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND_LEADER")	
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL1")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL2")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
-	ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
-	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT")
-	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT_LEADER")
+	object.Show = dummy
+	object:Hide()
 end
-ChatSetup()
-
-local Chat = CreateFrame("Frame", "Chat")
+dummy = function() return end
+for i = 1, 10 do
+	local x=({_G["ChatFrame"..i.."EditBox"]:GetRegions()})
+	x[9]:SetAlpha(0)
+	x[10]:SetAlpha(0)
+	x[11]:SetAlpha(0)
+end
 for i = 1, NUM_CHAT_WINDOWS do
-	 if ( i ~= 4 ) then
+    if ( i ~= 2 ) then
       local f = _G["ChatFrame"..i]
       local am = f.AddMessage
       f.AddMessage = function(frame, text, ...)
         return am(frame, text:gsub('|h%[(%d+)%. .-%]|h', '|h[%1]|h'), ...)
       end
     end
-end
+end 
 
-local tabalpha = 1
-local tabnoalpha = 0
-local _G = _G
-local origs = {}
-local type = type
 local strings = {
 	INSTANCE_CHAT = "I",
 	GUILD = "G",
@@ -128,11 +76,6 @@ local strings = {
 	PARTY_LEADER = "P",
 	RAID_LEADER = "R",
 }
-
-local function ShortChannel(channel)
-	return string.format("|Hchannel:%s|h[%s]|h", channel, strings[channel] or channel:gsub("channel:", ""))
-end
-
 local function AddMessage(frame, str, ...)
 	str = str:gsub("|Hplayer:(.-)|h%[(.-)%]|h", "|Hplayer:%1|h%2|h")
 	str = str:gsub("|HBNplayer:(.-)|h%[(.-)%]|h", "|HBNplayer:%1|h%2|h")
@@ -148,63 +91,36 @@ local function AddMessage(frame, str, ...)
 
 	return origs[frame](frame, str, ...)
 end
-
-local function Kill(object)
-	if object.UnregisterAllEvents then
-		object:UnregisterAllEvents()
-	end
-	object.Show = dummy
-	object:Hide()
+local function ShortChannel(channel)
+	return string.format("|Hchannel:%s|h[%s]|h", channel, strings[channel] or channel:gsub("channel:", ""))
 end
-dummy = function() return end
-
 Kill(FriendsMicroButton)
 Kill(ChatFrameMenuButton)
 
-local function UpdateEditBoxColor(self)
-	local type = self:GetAttribute("chatType")
-	local bd = self.backdrop
-	
-	if bd then
-		if ( type == "CHANNEL" ) then
-			local id = GetChannelName(self:GetAttribute("channelTarget"))
-			if id == 0 then
-				bd:SetBackdropBorderColor(.6,.6,.6)
-			else
-				bd:SetBackdropBorderColor(ChatTypeInfo[type..id].r,ChatTypeInfo[type..id].g,ChatTypeInfo[type..id].b)
-			end
-		else
-			bd:SetBackdropBorderColor(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
-		end	
-	end
+if hidecombat==true then
+    local EventFrame = CreateFrame("Frame");
+    EventFrame:RegisterEvent("ADDON_LOADED");
+    local function EventHandler(self, event, ...)
+        if ... == "Blizzard_CombatLog" then
+            local topbar = _G["CombatLogQuickButtonFrame_Custom"];
+            if not topbar then return end
+            topbar:Hide();
+            topbar:HookScript("OnShow", function(self) topbar:Hide(); end);
+            topbar:SetHeight(0);
+        end
+    end
+    EventFrame:SetScript("OnEvent", EventHandler);
 end
-
-hooksecurefunc("ChatEdit_UpdateHeader", function()
-	local EditBox = ChatEdit_ChooseBoxForSend()	
-	UpdateEditBoxColor(EditBox)
-end)
-
 local function SetChatStyle(frame)
 	local id = frame:GetID()
 	local chat = frame:GetName()
-	local tab = _G[chat.."Tab"]
-
-	tab:SetAlpha(1)
-	tab.SetAlpha = UIFrameFadeRemoveFrame
-
-	_G[chat.."TabText"]:SetFont(Qulight["media"].font, 10)	
-	_G[chat]:SetClampRectInsets(0,0,0,0)
-	_G[chat]:SetClampedToScreen(false)
-	_G[chat]:SetFading(false)
-	_G[chat]:SetMinResize(371,111)
-	_G[chat.."EditBox"]:ClearAllPoints()
-	_G[chat.."EditBox"]:SetPoint("TOPLEFT", DataLeftPanel, 2, -2)
-	_G[chat.."EditBox"]:SetPoint("BOTTOMRIGHT", DataLeftPanel, -2, 2)	
 	
+	_G[chat]:SetClampRectInsets(0,0,0,0)
+		
 	for j = 1, #CHAT_FRAME_TEXTURES do
 		_G[chat..CHAT_FRAME_TEXTURES[j]]:SetTexture(nil)
 	end
-				
+			
 	Kill(_G[format("ChatFrame%sTabLeft", id)])
 	Kill(_G[format("ChatFrame%sTabMiddle", id)])
 	Kill(_G[format("ChatFrame%sTabRight", id)])
@@ -220,7 +136,7 @@ local function SetChatStyle(frame)
 	Kill(_G[format("ChatFrame%sTabSelectedLeft", id)])
 	Kill(_G[format("ChatFrame%sTabSelectedMiddle", id)])
 	Kill(_G[format("ChatFrame%sTabSelectedRight", id)])
-
+		
 	Kill(_G[format("ChatFrame%sButtonFrameUpButton", id)])
 	Kill(_G[format("ChatFrame%sButtonFrameDownButton", id)])
 	Kill(_G[format("ChatFrame%sButtonFrameBottomButton", id)])
@@ -232,13 +148,7 @@ local function SetChatStyle(frame)
 	Kill(_G[format("ChatFrame%sEditBoxFocusRight", id)])
 
 	local a, b, c = select(6, _G[chat.."EditBox"]:GetRegions()); Kill (a); Kill (b); Kill (c)
-
-	if tab.conversationIcon then Kill(tab.conversationIcon) end
-	_G[chat.."EditBox"]:SetAltArrowKeyMode(false)
-	_G[chat.."EditBox"]:Hide()
-	_G[chat.."EditBox"]:HookScript("OnEditFocusLost", function(self) self:Hide() end)
-	_G[chat.."Tab"]:HookScript("OnClick", function() _G[chat.."EditBox"]:Hide() end)
-			
+				
 	_G[chat.."EditBox"]:SetAltArrowKeyMode(false)
 	_G[chat.."EditBox"]:Hide()
 	_G[chat.."EditBox"]:HookScript("OnEditFocusLost", function(self) self:Hide() end)
@@ -252,57 +162,20 @@ local function SetChatStyle(frame)
 	editbox:SetWidth(440)
 	editbox:SetHeight(15)
 	SimpleShadow(editbox)
-	
-	if _G[chat] ~= _G["ChatFrame2"] then	
-		origs[_G[chat]] = _G[chat].AddMessage
-		_G[chat].AddMessage = AddMessage
-	else
-
-		CombatLogQuickButtonFrame_CustomProgressBar:ClearAllPoints()
-		CombatLogQuickButtonFrame_CustomProgressBar:SetPoint("TOPLEFT", CombatLogQuickButtonFrame_Custom, 2, -2)
-		CombatLogQuickButtonFrame_CustomProgressBar:SetPoint("BOTTOMRIGHT", CombatLogQuickButtonFrame_Custom, -2, 2)
-		CombatLogQuickButtonFrame_CustomProgressBar:SetStatusBarTexture(Qulight["media"].texture)
-	end
-
-	frame.isSkinned = true
 end
-
 local function SetupChat(self)	
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
 		SetChatStyle(frame)
 		FCFTab_UpdateAlpha(frame)
 	end
-				
+
 	ChatTypeInfo.WHISPER.sticky = 1
 	ChatTypeInfo.BN_WHISPER.sticky = 1
 	ChatTypeInfo.OFFICER.sticky = 1
 	ChatTypeInfo.RAID_WARNING.sticky = 1
 	ChatTypeInfo.CHANNEL.sticky = 1
 end
-
-Chat:RegisterEvent("ADDON_LOADED")
-Chat:SetScript("OnEvent", function(self, event, addon)
-	if addon == "Blizzard_CombatLog" then
-		self:UnregisterEvent("ADDON_LOADED")
-		SetupChat(self)
-	end
-end)
-
-local function SetupTempChat()
-	local frame = FCF_GetCurrentChatFrame()
-		
-	if _G[frame:GetName().."Tab"]:GetText():match(PET_BATTLE_COMBAT_LOG) then
-		FCF_Close(frame)
-		return
-	end
-
-	if frame.isSkinned then return end
-	
-	frame.temp = true
-	SetChatStyle(frame)
-end
-hooksecurefunc("FCF_OpenTemporaryWindow", SetupTempChat)
 
 for i=1, BNToastFrame:GetNumRegions() do
 	if i ~= 10 then
@@ -317,28 +190,129 @@ CreateShadow(BNToastFrame)
 
 BNToastFrame:HookScript("OnShow", function(self)
 	self:ClearAllPoints()
-	self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", -4, 26)
+	self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", -6, 32)
 end)
 
-Kill(ChatConfigFrameDefaultButton)
-
-SetDefaultChatPosition = function(frame)
-	if frame then
-		local id = frame:GetID()
+local function SetupChatPosAndFont(self)	
+	for i = 1, NUM_CHAT_WINDOWS do
+		local chat = _G[format("ChatFrame%s", i)]
+		local tab = _G[format("ChatFrame%sTab", i)]
+		local id = chat:GetID()
 		local name = FCF_GetChatWindowInfo(id)
-	
-		FCF_SetChatWindowFontSize(nil, frame, 10)
-
+		local point = GetChatWindowSavedPosition(id)
+		local _, fontSize = FCF_GetChatWindowInfo(id)
+		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
+		local _, fontSize = FCF_GetChatWindowInfo(id)
 		
-		if id == 1 then
-			frame:ClearAllPoints()
-			frame:SetPoint("BOTTOMLEFT", ChatBackground, "BOTTOMLEFT", 6, 22)
+		FCF_SetChatWindowFontSize(nil, chat, 10)	
+		ChatFrame1:ClearAllPoints()
+		ChatFrame1:SetPoint("BOTTOMLEFT", ChatBackground, "BOTTOMLEFT", 6, 22)
+	end	
+end
+Chat:RegisterEvent("ADDON_LOADED")
+Chat:RegisterEvent("PLAYER_ENTERING_WORLD")
+Chat:SetScript("OnEvent", function(self, event, ...)
+	for i = 1, NUM_CHAT_WINDOWS do
+		_G["ChatFrame"..i]:SetClampRectInsets(0,0,0,0)
+		_G["ChatFrame"..i]:SetWidth(410)
+		_G["ChatFrame"..i]:SetHeight(124)
+	end		
+	local addon = ...
+	if event == "ADDON_LOADED" then
+		if addon == "Blizzard_CombatLog" then
+			self:UnregisterEvent("ADDON_LOADED")
+			SetupChat(self)
 		end
-		
-		if not frame.isLocked then FCF_SetLocked(frame, 1) end
+	elseif event == "PLAYER_ENTERING_WORLD" then
+		SetupChatPosAndFont(self)
+		Chat:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	end
+	if event == "PLAYER_LOGIN" then
+		SetupChatPosAndFont(self)
+	end
+end)
+local function SetupTempChat()
+	local frame = FCF_GetCurrentChatFrame()
+	SetChatStyle(frame)
+end
+hooksecurefunc("FCF_OpenTemporaryWindow", SetupTempChat)
+for i = 1, NUM_CHAT_WINDOWS do
+	local editBox = _G["ChatFrame"..i.."EditBox"]
+	editBox:HookScript("OnTextChanged", function(self)
+	   local text = self:GetText()
+	   if text:len() < 5 then
+		  if text:sub(1, 4) == "/tt " then
+			 local unitname, realm
+			 unitname, realm = UnitName("target")
+			 if unitname then unitname = gsub(unitname, " ", "") end
+			 if unitname and not UnitIsSameServer("player", "target") then
+				unitname = unitname .. "-" .. gsub(realm, " ", "")
+			 end
+			 ChatFrame_SendTell((unitname or "Invalid Target"), ChatFrame1)
+		  end
+	   end
+	end)
+end
+local SetItemRef_orig = SetItemRef
+function ReURL_SetItemRef(link, text, button, chatFrame)
+	if (strsub(link, 1, 3) == "url") then
+		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+		local url = strsub(link, 5);
+		if (not ChatFrameEditBox:IsShown()) then
+			ChatEdit_ActivateChat(ChatFrameEditBox)
+		end
+		ChatFrameEditBox:Insert(url)
+		ChatFrameEditBox:HighlightText()
+
+	else
+		SetItemRef_orig(link, text, button, chatFrame)
 	end
 end
-hooksecurefunc("FCF_RestorePositionAndDimensions", SetDefaultChatPosition)
+SetItemRef = ReURL_SetItemRef
+function ReURL_AddLinkSyntax(chatstring)
+	if (type(chatstring) == "string") then
+		local extraspace;
+		if (not strfind(chatstring, "^ ")) then
+			extraspace = true;
+			chatstring = " "..chatstring;
+		end
+		chatstring = gsub (chatstring, " www%.([_A-Za-z0-9-]+)%.(%S+)%s?", ReURL_Link("www.%1.%2"))
+		chatstring = gsub (chatstring, " (%a+)://(%S+)%s?", ReURL_Link("%1://%2"))
+		chatstring = gsub (chatstring, " ([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", ReURL_Link("%1@%2%3%4"))
+		chatstring = gsub (chatstring, " (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?", ReURL_Link("%1.%2.%3.%4:%5"))
+		chatstring = gsub (chatstring, " (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", ReURL_Link("%1.%2.%3.%4"))
+		if (extraspace) then
+			chatstring = strsub(chatstring, 2);
+		end
+	end
+	return chatstring
+end
+
+REURL_COLOR = "16FF5D"
+ReURL_Brackets = false
+ReUR_CustomColor = true
+
+function ReURL_Link(url)
+	if (ReUR_CustomColor) then
+		if (ReURL_Brackets) then
+			url = " |cff"..REURL_COLOR.."|Hurl:"..url.."|h["..url.."]|h|r "
+		else
+			url = " |cff"..REURL_COLOR.."|Hurl:"..url.."|h"..url.."|h|r "
+		end
+	else
+		if (ReURL_Brackets) then
+			url = " |Hurl:"..url.."|h["..url.."]|h "
+		else
+			url = " |Hurl:"..url.."|h"..url.."|h "
+		end
+	end
+	return url
+end
+for i=1, NUM_CHAT_WINDOWS do
+	local frame = getglobal("ChatFrame"..i)
+	local addmessage = frame.AddMessage
+	frame.AddMessage = function(self, text, ...) addmessage(self, ReURL_AddLinkSyntax(text), ...) end
+end
 
 local Fane = CreateFrame'Frame'
 local inherit = GameFontNormalSmall
@@ -460,6 +434,9 @@ Fane:RegisterEvent'ADDON_LOADED'
 Fane:SetScript('OnEvent', function(self, event, ...)
 	return self[event](self, event, ...)
 end)
+-----------------------------------------------------------------------------
+-- Copy Chat (by Shestak)
+-----------------------------------------------------------------------------
 
 local lines = {}
 local frame = nil

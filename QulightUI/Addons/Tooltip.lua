@@ -368,19 +368,16 @@ local BorderColor = function(self)
 		local class = select(2, UnitClass(unit))
 		local c = oUF_colors.class[class]
 		r, g, b = c[1], c[2], c[3]
-		healthBarBG:SetBackdropBorderColor(r, g, b)
 		healthBar:SetStatusBarColor(r, g, b)
 	elseif reaction then
 		local c = oUF_colors.reaction[reaction]
 		r, g, b = c[1], c[2], c[3]
-		healthBarBG:SetBackdropBorderColor(r, g, b)
 		healthBar:SetStatusBarColor(r, g, b)
 	else
 		local _, link = self:GetItem()
 		local quality = link and select(3, GetItemInfo(link))
 		if quality and quality >= 2 then
 			local r, g, b = GetItemQualityColor(quality)
-			healthBarBG:SetBackdropBorderColor(.15,.15,.15,0)
 			healthBar:SetStatusBarColor(.15,.15,.15,0)
 		end
 	end

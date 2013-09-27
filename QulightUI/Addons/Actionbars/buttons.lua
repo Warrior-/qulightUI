@@ -9,9 +9,13 @@ panelcolor = ("|cff%.2x%.2x%.2x"):format(dr * 255, dg * 255, db * 255)
 local r, g, b = unpack(Qulight["datatext"].color)
 qColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
 
+Anchorvehicleleft = CreateFrame("Frame","Move_vehiclebutton",UIParent)
+Anchorvehicleleft:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 80)
+CreateAnchor(Anchorvehicleleft, "Move vehicle button", 20, 20)
+
 -- exit vehicle button on left side of bottom action bar
 local vehicleleft = CreateFrame("Button", "QuExitVehicleButtonLeft", UIParent, "SecureHandlerClickTemplate")
-CreatePanel(vehicleleft, 20, 20, "BOTTOM", QuBar1, "BOTTOM", 0, -65)
+CreatePanel(vehicleleft, 20, 20, "BOTTOM", Anchorvehicleleft)
 CreateShadow(vehicleleft)
 
 vehicleleft:RegisterForClicks("AnyUp")

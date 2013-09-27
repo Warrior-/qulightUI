@@ -31,7 +31,6 @@ Qulight["actionbar"] = {
 }
 
 Qulight["raidframes"] = {
-	-- Main
 	["aggro_border"] = true,					-- Aggro border
 	["deficit_health"] = false,					-- Raid deficit health
 	["vertical_health"] = false,				-- Vertical orientation of health
@@ -42,20 +41,19 @@ Qulight["raidframes"] = {
 	["hp_value"] = true,						
 	["width"] = 84,						
 	["height"] = 35,						
-	
-	-- Frames
+
 	["show_party"] = true,						-- Show party frames
 	["show_raid"] = true,						-- Show raid frames
 	["solo_mode"] = false,					-- Show player frame always
 	["player_in_party"] = true,					-- Show player frame in party
 	["raid_groups"] = 5,						-- Number of groups in raid
 	["raid_groups_vertical"] = false,			-- Vertical raid groups(only for heal layout)
-	-- Icons
+
 	["icons_role"] = true,						-- Role icon on frames
 	["icons_raid_mark"] = true,					-- Raid mark icons on frames
 	["icons_ready_check"] = true,				-- Ready check icons on frames
 	["icons_leader"] = true,					-- Leader icon, assistant icon, master loot icon on frames
-	-- Plugins
+
 	["plugins_debuffhighlight_icon"] = false,	-- Debuff highlight texture + icon
 	["plugins_aura_watch"] = true,				-- Raid debuff icons
 	["plugins_aura_watch_timer"] = true,		-- Timer on raid debuff icons
@@ -193,6 +191,6 @@ Qulight["misk"] = {
 	["raidcooldowns"] = false, 
 	["AutoScreen"] = true,
 	["Threatbar"] = true,
-	["raidmarker"] = true,
-	["raidutility"] = true,														-- enable disable raid utility
+	["raidmarker"] = false,
+	["raidutility"] = false,														-- enable disable raid utility
 }  
