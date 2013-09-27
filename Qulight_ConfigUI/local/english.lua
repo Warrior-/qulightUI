@@ -118,6 +118,10 @@
 	QulightL.option_datatext_Localtime = "Use Local Time instead of Server Time"
 	QulightL.option_datatext_classcolor = "Class color data text"
 	QulightL.option_datatext_color = "If Class color data text false then choose color: "
+	QulightL.option_datatext_power = "Attack Power\Spell Power position (0 for disabled)"
+	QulightL.option_datatext_mastery = "Mastery position (0 for disabled)"
+	QulightL.option_datatext_haste = "Haste position (0 for disabled)"
+	QulightL.option_datatext_crit = "Crit position (0 for disabled)"
 	--loot
 	QulightL.option_loot = "Loot"
 	QulightL.option_loot_lootframe = "Enable loot window"
@@ -192,8 +196,8 @@
 	QulightL.option_Map = "Map"
 	QulightL.option_mapenable = "Enable"
 	
-	QulightL.option_markbar = "Mark bar"
-	QulightL.option_markbarenable = "Enable mark bar"
+	QulightL.option_raidmarker = "Enable Mark Bar"
+
 	
 	-- tooltip
 	QulightL.option_tooltip = "Tooltip"
@@ -205,6 +209,7 @@
 	QulightL.option_tooltip_itemlevel = "Enable Target Item level on tooltip"
 	QulightL.option_tooltip_spellid = "Enable Target SpellID on tooltip"
 	QulightL.option_tooltip_talents = "Enable Target talents on tooltip"
+	QulightL.option_tooltip_title = "Disable show title in tooltip"
 	
 	-- action bar
 	QulightL.option_actionbar = "Action Bars"

@@ -101,9 +101,6 @@ C.modules["Blizzard_TalentUI"] = function()
 		PlayerTalentFrameSpecialization["specButton"..i].specIcon:SetTexture(icon)
 	end
 
-	PlayerTalentFrameSpecializationLearnButton.Flash:SetTexture("")
-	PlayerTalentFrameTalentsLearnButton.Flash:SetTexture("")
-
 	local buttons = {"PlayerTalentFrameSpecializationSpecButton", "PlayerTalentFramePetSpecializationSpecButton"}
 
 	for _, name in pairs(buttons) do
@@ -114,7 +111,9 @@ C.modules["Blizzard_TalentUI"] = function()
 			bu.ring:Hide()
 			bu.learnedTex:SetPoint("TOPLEFT", 1, -1)
 			bu.learnedTex:SetPoint("BOTTOMRIGHT", -1, 1)
-			_G[name..i.."Glow"]:SetTexture("")
+			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"]:Hide()
+			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"].Show = F.dummy
+			bu.animLearn.Play = F.dummy
 
 			F.Reskin(bu, true)
 
@@ -196,7 +195,7 @@ C.modules["Blizzard_TalentUI"] = function()
 		local tab = _G["PlayerSpecTab"..i]
 		_G["PlayerSpecTab"..i.."Background"]:Hide()
 
-		tab:SetCheckedTexture(C.media.checked)
+		tab:SetCheckedTexture("")
 
 		local bg = CreateFrame("Frame", nil, tab)
 		bg:SetPoint("TOPLEFT", -1, 1)
@@ -218,6 +217,11 @@ C.modules["Blizzard_TalentUI"] = function()
 	PlayerTalentFrameTalentsTutorialButton:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", -12, 12)
 	PlayerTalentFrameSpecializationTutorialButton.Ring:Hide()
 	PlayerTalentFrameSpecializationTutorialButton:SetPoint("TOPLEFT", PlayerTalentFrame, "TOPLEFT", -12, 12)
+
+	PlayerTalentFrameSpecializationLearnButton.FlashAnim.Play = F.dummy
+	PlayerTalentFrameSpecializationLearnButton.Flash:SetTexture("")
+	PlayerTalentFrameTalentsLearnButton.FlashAnim.Play = F.dummy
+	PlayerTalentFrameTalentsLearnButton.Flash:SetTexture("")
 
 	F.ReskinPortraitFrame(PlayerTalentFrame, true)
 	F.Reskin(PlayerTalentFrameSpecializationLearnButton)

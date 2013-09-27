@@ -17,13 +17,14 @@ if Qulight["datatext"].haste and Qulight["datatext"].haste > 0 then
 		local rangedhaste = GetRangedHaste()
 		local attackhaste = GetMeleeHaste()
 		
-		if attackhaste > spellhaste and select(2, UnitClass("Player")) ~= "HUNTER" then
-			haste = attackhaste
-		elseif select(2, UnitClass("Player")) == "HUNTER" then
-			haste = rangedhaste
-		else
+		if select(2, UnitClass("Player")) == "CASTER" or "HEAL" then
 			haste = spellhaste
+		elseif select(2, UnitClass("Player")) == "HUNTER" then 
+			haste = rangedhaste
+		else 
+			haste = attackhaste
 		end
+
 		
 		int = int - t
 		if int < 0 then

@@ -229,7 +229,7 @@ GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 
 	_G["GameTooltipTextLeft1"]:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
 
-	if title then
+	if title and Qulight["tooltip"].title == true then
         local text = GameTooltipTextLeft1:GetText()
         title = title:gsub(name, "")
         text = text:gsub(title, "")
@@ -524,6 +524,7 @@ if Qulight["tooltip"].itemlevel then
 --	Equipped average item level(EquippedItemLevel by Villiv)
 ----------------------------------------------------------------------------------------
 -- Additional strings
+local UPDATED = CANNOT_COOPERATE_LABEL -- '*'
 local WAITING = CONTINUED
 local PENDING = CONTINUED..CONTINUED
 
@@ -663,7 +664,8 @@ do
 
 		if isReady then
 			cache[guid] = level
-			return SetTipText(level.." ("..((myLevel > 0) and "|cff00ff00+" or "|cffff0000")..myLevel.."|r|cffffffff)|r")
+		return SetTipText(UPDATED and level .. UPDATED or level)
+--			return SetTipText(level.." ("..((myLevel > 0) and "|cff00ff00+" or "|cffff0000")..myLevel.."|r|cffffffff)|r")
 		end
 
 		level = cachedLevel or level

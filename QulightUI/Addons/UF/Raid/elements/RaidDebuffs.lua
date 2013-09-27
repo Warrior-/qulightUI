@@ -46,7 +46,7 @@ do
 			["Curse"] = true,
 		},
 		["MONK"] = {
-			["Magic"] = false,
+			["Magic"] = true,
 			["Poison"] = true,
 			["Disease"] = true,
 		},

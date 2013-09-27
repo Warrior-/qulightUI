@@ -75,7 +75,7 @@ local function Local(o)
 	if o == "QulightConfigUIunitframesshowPartyFrames" then o = QulightL.option_unitframes_showPartyFrames end
 	if o == "QulightConfigUIunitframesHealthcolorClass" then o = QulightL.option_unitframes_HealthcolorClass end
 	if o == "QulightConfigUIunitframesPowercolor" then o = QulightL.option_unitframes_Powercolor end
-    if o == "QulightConfigUIunitframesbigcastbar" then o = QulightL.option_unitframes_bigcastbar end
+	if o == "QulightConfigUIunitframesbigcastbar" then o = QulightL.option_unitframes_bigcastbar end
 	
 	--raidframes
 	if o == "QulightConfigUIraidframes" then o = QulightL.option_raidframes end
@@ -99,6 +99,9 @@ local function Local(o)
 	if o == "QulightConfigUIraidframesplayer_in_party" then o = QulightL.option_raidframes_player_in_party end
 	if o == "QulightConfigUIraidframesraid_groups" then o = QulightL.option_raidframes_raid_groups end
 	if o == "QulightConfigUIraidframesraid_groups_vertical" then o = QulightL.option_raidframes_raid_groups_vertical end
+	if o == "QulightConfigUIraidframesparty_heal" then o = QulightL.option_raidframes_party_heal end
+	if o == "QulightConfigUIraidframesraid_heal" then o = QulightL.option_raidframes_raid_heal end
+
 	-- Icons
 	if o == "QulightConfigUIraidframesicons_role" then o = QulightL.option_raidframes_icons_role end
 	if o == "QulightConfigUIraidframesicons_raid_mark" then o = QulightL.option_raidframes_icons_raid_mark end
@@ -151,6 +154,13 @@ local function Local(o)
 	if o == "QulightConfigUIdatatextLocaltime" then o = QulightL.option_datatext_Localtime end
 	if o == "QulightConfigUIdatatextclasscolor" then o = QulightL.option_datatext_classcolor end
 	if o == "QulightConfigUIdatatextcolor" then o = QulightL.option_datatext_color end
+	if o == "QulightConfigUIdatatextpower" then o = QulightL.option_datatext_power end
+	if o == "QulightConfigUIdatatextmastery" then o = QulightL.option_datatext_mastery end
+	if o == "QulightConfigUIdatatexthaste" then o = QulightL.option_datatext_haste end
+	if o == "QulightConfigUIdatatextcrit" then o = QulightL.option_datatext_crit end
+
+
+
 	--loot
 	if o == "QulightConfigUIloot" then o = QulightL.option_loot end
 	if o == "QulightConfigUIlootlootframe" then o = QulightL.option_loot_lootframe end
@@ -188,6 +198,7 @@ local function Local(o)
 	if o == "QulightConfigUItooltiphidebuttons" then o = QulightL.option_tooltip_hidebuttons end
 	if o == "QulightConfigUItooltiphideuf" then o = QulightL.option_tooltip_hideuf end
 	if o == "QulightConfigUItooltipcursor" then o = QulightL.option_tooltip_cursor end
+	if o == "QulightConfigUItooltiptitle" then o = QulightL.option_tooltip_title end
 	
 	if o == "QulightConfigUItooltipitemlevel" then o = QulightL.option_tooltip_itemlevel end
 	if o == "QulightConfigUItooltipspellid" then o = QulightL.option_tooltip_spellid end
@@ -248,7 +259,7 @@ local function Local(o)
 	if o == "QulightConfigUImiskCooldownFlash" then o = QulightL.option_CooldownFlash end
 	if o == "QulightConfigUImiskraidcooldowns" then o = QulightL.option_raidcooldowns end
 	if o == "QulightConfigUImiskAutoScreen" then o = QulightL.option_AutoScreen end
-	if o == "QulightConfigUImiskmarkbar" then o = QulightL.option_markbar end
+	if o == "QulightConfigUImiskraidmarker" then o = QulightL.option_raidmarker end
 	if o == "QulightConfigUImiskThreatbar" then o = QulightL.option_Threatbar end
 	Qulight.option = o
 end

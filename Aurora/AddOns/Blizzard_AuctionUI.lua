@@ -56,15 +56,8 @@ C.modules["Blizzard_AuctionUI"] = function()
 		_G["AuctionFilterButton"..i]:SetNormalTexture("")
 	end
 
-	do
-		local i = 1
-		local tab = _G["AuctionFrameTab"..i]
-
-		while tab do
-			F.ReskinTab(tab)
-			i = i + 1
-			tab = _G["AuctionFrameTab"..i]
-		end
+	for i = 1, 3 do
+		F.ReskinTab(_G["AuctionFrameTab"..i])
 	end
 
 	local abuttons = {"BrowseBidButton", "BrowseBuyoutButton", "BrowseCloseButton", "BrowseSearchButton", "BrowseResetButton", "BidBidButton", "BidBuyoutButton", "BidCloseButton", "AuctionsCloseButton", "AuctionsCancelAuctionButton", "AuctionsCreateAuctionButton", "AuctionsNumStacksMaxButton", "AuctionsStackSizeMaxButton"}
@@ -230,12 +223,12 @@ C.modules["Blizzard_AuctionUI"] = function()
 	BrowseDropDownButton:SetSize(16, 16)
 	F.Reskin(BrowseDropDownButton, true)
 
-	local tex = BrowseDropDownButton:CreateTexture(nil, "OVERLAY")
-	tex:SetTexture(C.media.arrowDown)
-	tex:SetSize(8, 8)
-	tex:SetPoint("CENTER")
-	tex:SetVertexColor(1, 1, 1)
-	BrowseDropDownButton.tex = tex
+	local downtex = BrowseDropDownButton:CreateTexture(nil, "OVERLAY")
+	downtex:SetTexture(C.media.arrowDown)
+	downtex:SetSize(8, 8)
+	downtex:SetPoint("CENTER")
+	downtex:SetVertexColor(1, 1, 1)
+	BrowseDropDownButton.downtex = downtex
 
 	local bg = CreateFrame("Frame", nil, BrowseDropDown)
 	bg:SetPoint("TOPLEFT", 16, -5)

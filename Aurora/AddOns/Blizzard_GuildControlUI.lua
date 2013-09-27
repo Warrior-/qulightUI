@@ -73,9 +73,11 @@ C.modules["Blizzard_GuildControlUI"] = function()
 					check:SetDesaturated(true)
 					check:SetVertexColor(r, g, b)
 
-					local tex = F.CreateGradient(ch)
+					local tex = ch:CreateTexture(nil, "BACKGROUND")
 					tex:SetPoint("TOPLEFT", 5, -5)
 					tex:SetPoint("BOTTOMRIGHT", -5, 5)
+					tex:SetTexture(C.media.backdrop)
+					tex:SetGradientAlpha(unpack(AuroraConfig.gradientAlpha))
 
 					local left = ch:CreateTexture(nil, "BACKGROUND")
 					left:SetWidth(1)

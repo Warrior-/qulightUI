@@ -119,10 +119,11 @@ C.modules["Blizzard_AchievementUI"] = function()
 		check:SetDesaturated(true)
 		check:SetVertexColor(r, g, b)
 
-		local tex = F.CreateGradient(ch)
+		local tex = ch:CreateTexture(nil, "BACKGROUND")
 		tex:SetPoint("TOPLEFT", 4, -4)
 		tex:SetPoint("BOTTOMRIGHT", -4, 4)
 		tex:SetTexture(C.media.backdrop)
+		tex:SetGradientAlpha(gradOr, startR, startG, startB, startAlpha, endR, endG, endB, endAlpha)
 
 		local left = ch:CreateTexture(nil, "BACKGROUND")
 		left:SetWidth(1)
@@ -148,8 +149,6 @@ C.modules["Blizzard_AchievementUI"] = function()
 		bottom:SetPoint("BOTTOMLEFT", tex, -1, -1)
 		bottom:SetPoint("BOTTOMRIGHT", tex, 1, -1)
 	end
-
-	AchievementFrameAchievementsContainerButton1.background:SetPoint("TOPLEFT", AchievementFrameAchievementsContainerButton1, "TOPLEFT", 2, -3)
 
 	hooksecurefunc("AchievementButton_DisplayAchievement", function(button, category, achievement)
 		local _, _, _, completed = GetAchievementInfo(category, achievement)

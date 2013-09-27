@@ -36,7 +36,6 @@ C.media = {
 	["checked"] = "Interface\\AddOns\\Aurora\\media\\CheckButtonHilight",
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=],
 	["glow"] = "Interface\\AddOns\\Aurora\\media\\glow",
-	["roleIcons"] = "Interface\\Addons\\Aurora\\media\\UI-LFG-ICON-ROLES",
 }
 
 C.defaults = {
@@ -89,7 +88,7 @@ end
 
 F.CreateSD = function(parent, size, r, g, b, alpha, offset)
 	local sd = CreateFrame("Frame", nil, parent)
-	sd.size = size or 5
+	sd.size = size or 5	
 	sd.offset = offset or 0
 	sd:SetBackdrop({
 		edgeFile = C.media.glow,
@@ -100,7 +99,6 @@ F.CreateSD = function(parent, size, r, g, b, alpha, offset)
 	sd:SetBackdropBorderColor(r or 0, g or 0, b or 0)
 	sd:SetAlpha(alpha or 1)
 end
-
 
 -- we assign these after loading variables for caching
 -- otherwise we call an extra unpack() every time
@@ -766,7 +764,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Check boxes ]]
 
-		local checkboxes = {"TokenFramePopupInactiveCheckBox", "TokenFramePopupBackpackCheckBox", "ReputationDetailAtWarCheckBox", "ReputationDetailInactiveCheckBox", "ReputationDetailMainScreenCheckBox"}
+		local checkboxes = {"TokenFramePopupInactiveCheckBox", "TokenFramePopupBackpackCheckBox"}
 		for i = 1, #checkboxes do
 			local checkbox = _G[checkboxes[i]]
 			if checkbox then
@@ -791,6 +789,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.ReskinCheck(RaidFinderQueueFrameRoleButtonDPS.checkButton)
 		F.ReskinCheck(RaidFinderQueueFrameRoleButtonLeader.checkButton)
 		F.ReskinCheck(LFGInvitePopupRoleButtonTank.checkButton)
+		F.ReskinCheck(LFGInvitePopupRoleButtonHealer.checkButton)
+		F.ReskinCheck(LFGInvitePopupRoleButtonDPS.checkButton)
 		F.ReskinCheck(LFGInvitePopupRoleButtonHealer.checkButton)
 		F.ReskinCheck(LFGInvitePopupRoleButtonDPS.checkButton)
 
@@ -3562,6 +3562,24 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.ReskinArrow(PVPBannerFrameCustomization2LeftButton, "left")
 		F.ReskinArrow(PVPBannerFrameCustomization2RightButton, "right")
 
+		-- PVP Ready Dialog
+
+		local PVPReadyDialog = PVPReadyDialog
+
+		PVPReadyDialogBackground:Hide()
+		PVPReadyDialogBottomArt:Hide()
+		PVPReadyDialogFiligree:Hide()
+
+
+		F.CreateBD(PVPReadyDialog)
+		PVPReadyDialog.SetBackdrop = F.dummy
+		F.CreateSD(PVPReadyDialog)
+
+		F.Reskin(PVPReadyDialog.enterButton)
+		F.Reskin(PVPReadyDialog.leaveButton)
+		F.ReskinClose(PVPReadyDialogCloseButton)
+
+
 		-- [[ Hide regions ]]
 
 		local bglayers = {"SpellBookFrame", "LFDParentFrame", "LFDParentFrameInset", "WhoFrameColumnHeader1", "WhoFrameColumnHeader2", "WhoFrameColumnHeader3", "WhoFrameColumnHeader4", "RaidInfoInstanceLabel", "RaidInfoIDLabel", "CharacterFrameInsetRight", "LFRQueueFrame", "LFRBrowseFrame", "HelpFrameMainInset", "CharacterModelFrame", "HelpFrame", "HelpFrameLeftInset", "EquipmentFlyoutFrameButtons", "VideoOptionsFrameCategoryFrame", "InterfaceOptionsFrameCategories", "InterfaceOptionsFrameAddOns", "RaidParentFrame"}
@@ -3938,7 +3956,7 @@ local function KillTex(object, kill)
 		local region = select(i, object:GetRegions())
 		if region:GetObjectType() == "Texture" then
 			if kill then
-				region:Kill()
+				Kill(region)
 			else
 				region:SetTexture(nil)
 			end
@@ -3974,7 +3992,6 @@ local function SkinCheckBox(frame)
 	
 	frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
 end
-F.SkinCheckBox = SkinCheckBox 
 
 local function SkinCloseButton(f, SetPoint)
 	for i=1, f:GetNumRegions() do
@@ -4013,7 +4030,7 @@ WorldMapLevelUpButton:SetPoint("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2,
 WorldMapLevelDownButton:SetPoint("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)
 			
 SkinCheckBox(WorldMapTrackQuest)
---SkinCheckBox(WorldMapQuestShowObjectives)
+--SkinCheckBox(WorldMapShowDropDown)
 --SkinCheckBox(WorldMapShowDigSites)
 			
 --Mini
@@ -4119,16 +4136,16 @@ WorldMapFrame:HookScript("OnEvent", function(self, event)
 end)
 			
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
-local fontheight = 2*1.1
+local fontheight = 10*1.1
 coords:SetFrameLevel(90)
-coords.PlayerText = SetFontString(CoordsFrame, Qulight["media"].font, fontheight, "THINOUTLINE")
-coords.MouseText = SetFontString(CoordsFrame, Qulight["media"].font, fontheight, "THINOUTLINE")
+coords.PlayerText = SetFontString(CoordsFrame, Qulight["media"].font, fontheight, "OUTLINE")
+coords.MouseText = SetFontString(CoordsFrame, Qulight["media"].font, fontheight, "OUTLINE")
 coords.PlayerText:SetTextColor(1, 1, 1)
 coords.MouseText:SetTextColor(1, 1, 1)
-coords.PlayerText:SetPoint("TOPLEFT", WorldMapButton, "TOPLEFT", 5, -5)
 coords.PlayerText:SetText("Player:   0, 0")
-coords.MouseText:SetPoint("TOPLEFT", coords.PlayerText, "BOTTOMLEFT", 0, -5)
 coords.MouseText:SetText("Mouse:   0, 0")
+coords.PlayerText:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", 5, 0)
+coords.MouseText:SetPoint("TOPRIGHT", coords.PlayerText, "BOTTOMRIGHT", 0, -5)
 local int = 0
 			
 WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)

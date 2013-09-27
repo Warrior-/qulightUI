@@ -19,7 +19,7 @@ local shadows = {
 }
 
 Anchorflash = CreateFrame("Frame","Move_flash_icon",UIParent)
-Anchorflash:SetPoint("CENTER", UIParent) 
+Anchorflash:SetPoint("TOP", UIParent, 0, -20) 
 CreateAnchor(Anchorflash, "Move flash icon", 80, 80)
 
 local flash = CreateFrame("Frame", nil, UIParent)

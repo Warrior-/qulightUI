@@ -57,6 +57,7 @@
 	<Script file="Addons\Infotext\haste.lua"/>
 	<Script file="Addons\Infotext\power.lua"/>
 	<Script file="Addons\Infotext\mastery.lua"/>
+	<Script file="Addons\Infotext\crit.lua"/>
 	
 	<Script file="Addons\AddonManager.lua"/>
 	<Script file="Addons\Bags.lua"/>
@@ -83,5 +84,5 @@
 	<Script file="Addons\RaidCooldowns.lua"/>
 	<Script file="Addons\Filger.lua"/>
 	<Script file="Addons\Threatbar.lua"/>
-	<Script file="Addons\MarkBar.lua"/>
+	<Script file="Addons\raidmarker.lua"/>
 </Ui>

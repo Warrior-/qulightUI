@@ -6,6 +6,30 @@ C.modules["Blizzard_PetJournal"] = function()
 	local PetJournal = PetJournal
 	local MountJournal = MountJournal
 
+	if IsAddOnLoaded("BattlePetTabs") then
+			PetJournal:HookScript("OnShow", function(self)
+				if not self.styledTabs then
+					BattlePetTabsTab1:SetPoint("TOPLEFT", "$parent", "BOTTOMLEFT", 10, 0)
+					for i = 1, 8 do
+						local bu = _G["BattlePetTabsTab"..i.."Button"]
+
+						_G["BattlePetTabsTab"..i]:GetRegions():Hide()
+
+						bu:SetNormalTexture("")
+						bu:SetPushedTexture("")
+						bu:SetCheckedTexture(C.media.checked)
+
+						F.CreateBG(bu)
+						F.CreateSD(bu, 5, 0, 0, 0, 1, 1)
+
+						_G["BattlePetTabsTab"..i.."ButtonIconTexture"]:SetTexCoord(.08, .92, .08, .92)
+					end
+
+					self.styledTabs = true
+				end
+			end)
+		end
+
 	for i = 1, 14 do
 		if i ~= 8 then
 			select(i, PetJournalParent:GetRegions()):Hide()
@@ -121,14 +145,13 @@ C.modules["Blizzard_PetJournal"] = function()
 	hooksecurefunc("MountJournal_UpdateMountList", updateScroll)
 	hooksecurefunc(MountJournalListScrollFrame, "update", updateScroll)
 
-	if C.shouldStyleTooltips then
-		for _, f in pairs({PetJournalPrimaryAbilityTooltip, PetJournalSecondaryAbilityTooltip}) do
-			f:DisableDrawLayer("BACKGROUND")
-			local bg = CreateFrame("Frame", nil, f)
-			bg:SetAllPoints()
-			bg:SetFrameLevel(0)
-			F.CreateBD(bg)
-		end
+	local tooltips = {PetJournalPrimaryAbilityTooltip, PetJournalSecondaryAbilityTooltip}
+	for _, f in pairs(tooltips) do
+		f:DisableDrawLayer("BACKGROUND")
+		local bg = CreateFrame("Frame", nil, f)
+		bg:SetAllPoints()
+		bg:SetFrameLevel(0)
+		F.CreateBD(bg)
 	end
 
 	PetJournalLoadoutBorderSlotHeaderText:SetParent(PetJournal)
@@ -190,7 +213,7 @@ C.modules["Blizzard_PetJournal"] = function()
 		_G["PetJournalLoadoutPet"..i.."BG"]:Hide()
 
 		bu.iconBorder:SetAlpha(0)
-		bu.qualityBorder:SetTexture("")
+		bu.qualityBorder:SetAlpha(0)
 		bu.levelBG:SetAlpha(0)
 		bu.helpFrame:GetRegions():Hide()
 
@@ -198,7 +221,11 @@ C.modules["Blizzard_PetJournal"] = function()
 		bu.level:SetTextColor(1, 1, 1)
 
 		bu.icon:SetTexCoord(.08, .92, .08, .92)
-		bu.icon.bg = F.CreateBDFrame(bu.icon, .25)
+		bu.icon.bg = CreateFrame("Frame", nil, bu)
+		bu.icon.bg:SetPoint("TOPLEFT", bu.icon, -1, 1)
+		bu.icon.bg:SetPoint("BOTTOMRIGHT", bu.icon, 1, -1)
+		bu.icon.bg:SetFrameLevel(bu:GetFrameLevel()-1)
+		F.CreateBD(bu.icon.bg, .25)
 
 		bu.setButton:GetRegions():SetPoint("TOPLEFT", bu.icon, -5, 5)
 		bu.setButton:GetRegions():SetPoint("BOTTOMRIGHT", bu.icon, 5, -5)

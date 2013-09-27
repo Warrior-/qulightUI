@@ -26,11 +26,11 @@ AnchorT_SPECIAL_P_BUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -173, -25)
 CreateAnchor(AnchorT_SPECIAL_P_BUFF_ICON, "Move SPECIAL_P_BUFF_ICON", 24, 24)
 
 Anchor_CD = CreateFrame("Frame","Move_CD",UIParent)
-Anchor_CD:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 210)
-CreateAnchor(Anchor_CD, "Move CD", 30, 30)
+Anchor_CD:SetPoint("BOTTOM", UIParent, "BOTTOM", -167, 330)
+CreateAnchor(Anchor_CD, "Move CD", 50, 50)
 
 Anchor_PVEPVPCD = CreateFrame("Frame","Move_PVEPVPCD",UIParent)
-Anchor_PVEPVPCD:SetPoint("LEFT", UIParent, "CENTER", 172, 150)
+Anchor_PVEPVPCD:SetPoint("LEFT", UIParent, "CENTER", 172, 550)
 CreateAnchor(Anchor_PVEPVPCD, "Move PVEPVPCD", 25, 25)
 
 Anchor_PVEDEBUFF = CreateFrame("Frame","Move_PVEDEBUFF",UIParent)
@@ -1141,10 +1141,12 @@ Filger_Spells = {
 			Mode = "ICON",
 			Interval = 3,
 			Alpha = 1,
-			IconSize = 30,
+			IconSize = 50,
 			Position = {"LEFT", Anchor_CD},
 
 			-- Self
+			-- Renewing Mists
+			{spellID = 119611, filter = "CD"},
 			-- Detox
 			{spellID = 115450, filter = "CD"},
 			-- Spear Hand Strike
@@ -1175,6 +1177,7 @@ Filger_Spells = {
 			{spellID = 115080, filter = "CD"},
 			-- Life Cocoon
 			{spellID = 116849, filter = "CD"},
+
 
 			-- Racial
 			-- Every Man for Himself (Human)
@@ -2647,6 +2650,9 @@ Filger_Spells = {
 			{spellID = 121557, unitID = "player", caster = "all", filter = "BUFF"},
 			-- Fear Ward
 			{spellID = 6346, unitID = "player", caster = "all", filter = "BUFF"},
+			-- Gnevion Meta Gem
+			-- Heal 
+			{spellID = 137331, unitID = "player", caster = "player", filter = "BUFF"},
 		},
 		{
 			Name = "PVE/PVP_DEBUFF",

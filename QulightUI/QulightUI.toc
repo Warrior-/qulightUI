@@ -1,5 +1,5 @@
-## Interface: 50200
-## Title: QulightUI
+## Interface: 50300
+## Title: |cff1784d1QulightUI|r
 ## Notes: QulightUI
 ## Credits to: Shestak, Haste, Roth, P3lim, Monolit, AlleyKat, Tukz.
 ## Author: Qulight

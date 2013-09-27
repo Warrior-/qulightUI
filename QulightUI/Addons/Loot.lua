@@ -339,18 +339,40 @@ addon:Hide()
 LootFrame:UnregisterAllEvents()
 table.insert(UISpecialFrames, "Butsu")
 
-function _G.GroupLootDropDown_GiveLoot(self)
-	if ( sq >= MASTER_LOOT_THREHOLD ) then
-		local dialog = StaticPopup_Show("CONFIRM_LOOT_DISTRIBUTION", ITEM_QUALITY_COLORS[sq].hex..sn..FONT_COLOR_CODE_CLOSE, self:GetText())
-		if (dialog) then
-			dialog.data = self.value
+local hexColors = {}
+for k, v in pairs(RAID_CLASS_COLORS) do
+	hexColors[k] = "|c"..v.colorStr
+end
+hexColors["UNKNOWN"] = string.format("|cff%02x%02x%02x", 0.6 * 255, 0.6 * 255, 0.6 * 255)
+
+if CUSTOM_CLASS_COLORS then
+	local function update()
+		for k, v in pairs(CUSTOM_CLASS_COLORS) do
+			hexColors[k] = "|c"..v.colorStr
 		end
+	end
+	CUSTOM_CLASS_COLORS:RegisterCallback(update)
+	update()
+end
+
+local playerName = UnitName("player")
+local classesInRaid = {}
+local players, player_indices = {}, {}
+local randoms = {}
+local wipe = table.wipe
+
+local function MasterLoot_RequestRoll(frame)
+	DoMasterLootRoll(frame.value)
+end
+
+local function MasterLoot_GiveLoot(frame)
+	MasterLooterFrame.slot = LootFrame.selectedSlot
+	MasterLooterFrame.candidateId = frame.value
+	if LootFrame.selectedQuality >= MASTER_LOOT_THREHOLD then
+		StaticPopup_Show("CONFIRM_LOOT_DISTRIBUTION", ITEM_QUALITY_COLORS[LootFrame.selectedQuality].hex..LootFrame.selectedItemName..FONT_COLOR_CODE_CLOSE, frame:GetText() or UNKNOWN, "LootWindow")
 	else
-		GiveMasterLoot(ss, self.value)
+		GiveMasterLoot(LootFrame.selectedSlot, frame.value)
 	end
 	CloseDropDownMenus()
 end
 
-StaticPopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].OnAccept = function(self, data)
-	GiveMasterLoot(ss, data)
-end

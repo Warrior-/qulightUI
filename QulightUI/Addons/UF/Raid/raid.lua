@@ -16,7 +16,7 @@ RaidBuffs = {
 	},
 	MONK = {
 		{119611, "TOPRIGHT", {0.2, 0.7, 0.7}},				-- Renewing Mist
-		{132120, "BOTTOMLEFT", {0.4, 0.8, 0.2}},			-- Enveloping Mist
+		{132120, "TOPLEFT", {0.4, 0.8, 0.2}},			-- Enveloping Mist
 		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}},				-- Zen Sphere
 		{116849, "LEFT", {0.81, 0.85, 0.1}, true},			-- Life Cocoon
 	},
@@ -124,13 +124,20 @@ RaidDebuffs = {
 	[SpellName(133768)] = 4,	-- Arterial Cut (Tank DoT)
 	[SpellName(133767)] = 3,	-- Serious Wound (Tank stacks)
 	[SpellName(133798)] = 3,	-- Life Drain (Stun)
+	[SpellName(133792)] = 3,	-- Lingering Gaze
 	[SpellName(133597)] = 3,	-- Dark Parasite (Heroic - Dispel)
 	-- Primordius
 	[SpellName(136050)] = 3,	-- Malformed Blood (Tank stacks)
 	[SpellName(136228)] = 3,	-- Volatile Pathogen (DoT)
+	[SpellName(136185)] = 3,	-- Fragile Bones
+	[SpellName(136187)] = 3,	-- Clouded Mind
+	[SpellName(136183)] = 3,	-- Dulled Synapses
+	[SpellName(136181)] = 3,	-- Impaired Eyesight
+
 	-- Dark Animus
 	[SpellName(138569)] = 4,	-- Explosive Slam (Tank stacks)
 	[SpellName(138659)] = 3,	-- Touch of the Animus (DoT)
+	[SpellName(138609)] = 3,	-- Matter Swap
 	-- Iron Qon
 	[SpellName(134691)] = 3,	-- Impale (Tank stacks)
 	[SpellName(136192)] = 4,	-- Lightning Storm (Stun)
@@ -802,7 +809,7 @@ CompactRaidFrameManager:UnregisterAllEvents()
 			"point", "LEFT"
 		)
 		if Qulight.raidframes.player_in_party == true then
-			party:SetPoint("TOP", Anchorraid)
+			party:SetPoint("TOP", Anchorraid, Qulight.raidframes.party_heal)
 		else
 			party:SetPoint(Qulight.raidframes.party_heal[1], Qulight.raidframes.party_heal[2], Qulight.raidframes.party_heal[3], Qulight.raidframes.party_heal[4] + 32, Qulight.raidframes.party_heal[5])
 		end
@@ -832,7 +839,7 @@ CompactRaidFrameManager:UnregisterAllEvents()
 					"columnAnchorPoint", "TOP"
 				)
 				if i == 1 then
-					raidgroup:SetPoint("TOP", Anchorraid)
+					raidgroup:SetPoint("TOP", Anchorraid, Qulight.raidframes.raid_heal)
 				else
 					raidgroup:SetPoint("TOPLEFT", raid[i-1], "TOPRIGHT", 5, 0)
 				end
@@ -860,7 +867,7 @@ CompactRaidFrameManager:UnregisterAllEvents()
 					"columnAnchorPoint", "LEFT"
 				)
 				if i == 1 then
-					raidgroup:SetPoint("TOP", Anchorraid)
+					raidgroup:SetPoint("TOP", Anchorraid, Qulight.raidframes.raid_heal)
 				else
 					raidgroup:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -5)
 				end

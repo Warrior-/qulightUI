@@ -55,7 +55,7 @@
 	--raidframes
 	QulightL.option_raidframes = "Рейд фреймы"
 	QulightL.option_raidframes_aggro_border = "Отображение угрозы"
-	QulightL.option_raidframes_deficit_health = "Значение здоровья по дефициту"
+	QulightL.option_raidframes_deficit_health = "Значение здоровья по дефициту текстом"
 	QulightL.option_raidframes_power = "Отображение панели маны"
 	QulightL.option_raidframes_vertical_health = "Вертикальное направление полосы здоровья"
 	QulightL.option_raidframes_alpha_health = "Прозрачность полосы здоровья, если 100%"
@@ -89,6 +89,8 @@
 	QulightL.option_raidframes_show_timer = "Отображать таймер перезарядки аур"
 	QulightL.option_raidframes_show_spiral = "Спираль перезарядки на аурах"
 	QulightL.option_raidframes_debuff_color_type = "Цвета краёв отрицательных эффектов по их типу"
+	QulightL.option_raidframes_party_heal = "Цвет отхиливаемого фрейма в группе"
+	QulightL.option_raidframes_raid_heal = "Цвет отхиливаемого фрейма в рейде"
 	
 	--media
 	QulightL.option_media = "Media" 	
@@ -118,6 +120,10 @@
 	QulightL.option_datatext_Localtime = "Использовать локальное время вместо серверного"
 	QulightL.option_datatext_classcolor = "Включить цвет текста под цвет класса"
 	QulightL.option_datatext_color = "Если цвет текста под цвет класса выключен, то выберите цвет:"
+	QulightL.option_datatext_power = "Сила атаки или Сила заклинаний"
+	QulightL.option_datatext_mastery = "Искусность"
+	QulightL.option_datatext_haste = "Скорость атаки или Скорость заклинаний"
+	QulightL.option_datatext_crit = "Крит"
 	--loot
 	QulightL.option_loot = "Лут"
 	QulightL.option_loot_lootframe = "Включить окно добычи"
@@ -201,8 +207,9 @@
 	QulightL.option_tooltip_itemlevel = "Отображать уровень предмета"
 	QulightL.option_tooltip_spellid = "Отображать спелл ид"
 	QulightL.option_tooltip_talents = "Отображать таланты цели на тултипе"
-	QulightL.option_markbar = "Панель меток"
-	QulightL.option_markbarenable = "Включить панель меток"
+	QulightL.option_tooltip_title = "Отключить отображение званий в тултипе"
+	QulightL.option_raidmarker = "Включение панели меток"
+
 	
 	-- action bar
 	QulightL.option_actionbar = "Панели кнопок"

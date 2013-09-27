@@ -283,7 +283,7 @@ function AltPowerBarPostUpdate(self, min, cur, max)
 	local unit = self:GetParent().unit or self:GetParent():GetParent().unit	
 	local type = select(10, UnitAlternatePowerInfo(unit))
 end	
-gen_hpbar = function(f)
+gen_hpbar = function(f) 
     local s = CreateFrame("StatusBar", nil, f)
     s:SetStatusBarTexture(statusbar_texture)
 	s:GetStatusBarTexture():SetHorizTile(true)
@@ -291,7 +291,7 @@ gen_hpbar = function(f)
 	fixStatusbar(s)
 	s:SetHeight(retVal(f,38,28,34,22))
 	if not Qulight["unitframes"].HealthcolorClass then
-	s:SetStatusBarColor(.07,.07,.07,1)
+	s:SetStatusBarColor(.09,.09,.09,1) -- HealthBar Transparensy
 	end
     s:SetWidth(f:GetWidth())
     s:SetPoint("TOP",0,0)
@@ -308,17 +308,18 @@ gen_hpbar = function(f)
 	CreateShadow0(h)
     local b = s:CreateTexture(nil, "BACKGROUND")
     b:SetTexture(statusbar_texture)
-	b:SetVertexColor(.3,.3,.3,.9)
+	b:SetVertexColor(.5,.5,.5,.9)
     b:SetAllPoints(s)
 	f.Health = s
 end
 gen_hpstrings = function(f)
-    local name = gen_fontstring(f.Health, Qulight["media"].font, 10, retVal(f,17,12,12,15), "OUTLINE")
-    name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,3,3,3,3), retVal(f,-17,-11,-15,-10))
+	-- Change Font and Coord name on unitframe
+    local name = gen_fontstring(f.Health, Qulight["media"].font, 9, retVal(f,17,12,12,15), "OUTLINE")
+    name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,1,1,1,1), retVal(f,-17,-11,-15,-10))
     name:SetJustifyH("LEFT")
-	
-    local hpval = gen_fontstring(f.Health, Qulight["media"].font, 9, retVal(f,17,12,10,12), "OUTLINE")
-    hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", retVal(f,-3,-3,-1,-3), retVal(f,-10,-11,-15,-9))
+	-- Change Font and Coord health on unitframe
+    local hpval = gen_fontstring(f.Health, Qulight["media"].font, 8, retVal(f,17,12,10,12), "OUTLINE")
+    hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", retVal(f,0,-3,-1,-3), retVal(f,-7,-11,-15,-9))
     hpval.frequentUpdates = 0.1
 	
 	if f.mystyle == "player" then
