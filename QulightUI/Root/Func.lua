@@ -152,19 +152,7 @@ function CreateShadowclassbar2(f) --
 	f.shadow = shadow
 	return shadow
 end
-function CreateShadowclassbar3(f) --
-	if f.shadow then return end
-	local shadow = CreateFrame("Frame", nil, f)
-	shadow:SetFrameLevel(0)
-	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetPoint("TOPLEFT", -4, 4)
-	shadow:SetPoint("BOTTOMRIGHT", 4, -4)
-	shadow:SetBackdrop(shadows)
-	shadow:SetBackdropColor(.05,.05,.05, .9)
-	shadow:SetBackdropBorderColor(0, 0, 0, 0.6)
-	f.shadow = shadow
-	return shadow
-end
+
 function CreateShadowclassbar4(f) --
 	if f.shadow then return end
 	local shadow = CreateFrame("Frame", nil, f)
@@ -253,19 +241,7 @@ function CreateShadowNameplates(f)
 	f.shadow = shadow
 	return shadow
 end
-function CreateShadowNameplatesicon(f)--
-	if f.shadow then return end
-	local shadow = CreateFrame("Frame", nil, f)
-	shadow:SetFrameLevel(0)
-	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetPoint("TOPLEFT", -1, 1)
-	shadow:SetPoint("BOTTOMRIGHT", 1, -1)
-	shadow:SetBackdrop(shadows)
-	shadow:SetBackdropColor( .05,.05,.05, .9)
-	shadow:SetBackdropBorderColor(0, 0, 0, 1)
-	f.shadow = shadow
-	return shadow
-end
+
 function CreateShadow2(f)--
 	if f.shadow then return end
 	local shadow = CreateFrame("Frame", nil, f)

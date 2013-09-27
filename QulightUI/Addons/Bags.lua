@@ -282,7 +282,9 @@ function Stuffing:SlotNew(bag, slot)
 	if not ret.frame then
 		ret.frame = CreateFrame("Button", "StuffingBag" .. bag .. "_" .. slot, self.bags[bag], tpl)
 	end
-
+	
+	--for 5.4      _G[ret.frame:GetName().."NewItemTexture"]:SetAlpha(0)
+	
 	ret.bag = bag
 	ret.slot = slot
 	ret.frame:SetID(slot)

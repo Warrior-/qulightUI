@@ -594,6 +594,7 @@ gen_castbar = function(f)
 	
     s:SetStatusBarTexture(statusbar_texture)
     s:SetStatusBarColor(95/255, 182/255, 255/255,1)
+	s.colorClass = true
     s:SetFrameLevel(1)
     s.CastingColor = cbColor
     s.CompleteColor = {20/255, 208/255, 0/255}

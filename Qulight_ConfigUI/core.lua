@@ -623,7 +623,7 @@ function CreateQulightConfigUI()
 				label:SetJustifyH("LEFT")
 				label:SetPoint("TOPLEFT", 5, -(offset))
 				
-				colorbuttonname = (label:GetText().."ColorPicker")
+				--colorbuttonname = (label:GetText().."ColorPicker")
 				local colorbutton = CreateFrame("Button", colorbuttonname, frame)
 				colorbutton:SetHeight(18)
 				colorbutton:SetWidth(60)

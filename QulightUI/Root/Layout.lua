@@ -59,7 +59,7 @@ CreateShadowforInfoPanel(RightInfoPanel)
 RightInfoPanel:SetFrameLevel(2)	
 if Qulight["general"].centerpanel then
 	AnchorCenterDPSPanel = CreateFrame("Frame","Move_CenterDPSPanel",UIParent)
-	AnchorCenterDPSPanel:SetPoint("BOTTOM", 1, 256)
+	AnchorCenterDPSPanel:SetPoint("BOTTOM", 1, 305)
 	CreateAnchor(AnchorCenterDPSPanel, "Move CenterDPSPanel", 295, 18)
 
 	local CenterDPSPanel = CreateFrame("Frame", "CenterDPSPanel", UIParent)
