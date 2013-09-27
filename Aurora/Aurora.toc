@@ -1,5 +1,5 @@
 ## Interface: 50300
-## Title: |cff1784d1Aurora|r
+## Title: |cff1784d1Aurora for Qulight UI|r
 ## Notes: Minimalistic window theme.
 ## Author: Haleth/Freethinker
 ## Version: 4.6.1a

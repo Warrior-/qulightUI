@@ -314,12 +314,12 @@ gen_hpbar = function(f)
 end
 gen_hpstrings = function(f)
 	-- Change Font and Coord name on unitframe
-    local name = gen_fontstring(f.Health, Qulight["media"].font, 9, retVal(f,17,12,12,15), "OUTLINE")
+    local name = gen_fontstring(f.Health, Qulight["media"].font, 10, retVal(f,17,12,12,15), "OUTLINE")
     name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,1,1,1,1), retVal(f,-17,-11,-15,-10))
     name:SetJustifyH("LEFT")
 	-- Change Font and Coord health on unitframe
-    local hpval = gen_fontstring(f.Health, Qulight["media"].font, 8, retVal(f,17,12,10,12), "OUTLINE")
-    hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", retVal(f,0,-3,-1,-3), retVal(f,-7,-11,-15,-9))
+    local hpval = gen_fontstring(f.Health, Qulight["media"].font, 10, retVal(f,17,12,10,12), "OUTLINE")
+    hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", retVal(f,0,-3,-1,-3), retVal(f,-9,-11,-15,-9))
     hpval.frequentUpdates = 0.1
 	
 	if f.mystyle == "player" then
@@ -334,8 +334,8 @@ gen_hpstrings = function(f)
 	f:Tag(hpval, retVal(f,"[hp][color]","","[hp][color]","[hp][color]"))
 	
 	local per = f.Health:CreateFontString(nil, "OVERLAY")
-	per:SetPoint("RIGHT", -3, retVal(f, -3, 4, -3, -3))
-	per:SetFont(Qulight["media"].font, 9, "OUTLINE")
+	per:SetPoint("RIGHT", 0, retVal(f, -3, 4, -3, -3))
+	per:SetFont(Qulight["media"].font, 10, "OUTLINE")
 	f:Tag(per, retVal(f,'[color][power] | [perpp]%','[hp]','','' ))		
 end
 gen_ppbar = function(f)
