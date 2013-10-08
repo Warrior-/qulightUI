@@ -4,7 +4,7 @@ Stat:SetFrameStrata("BACKGROUND")
 Stat:SetFrameLevel(3)
  
 local Text = DataRightPanel:CreateFontString(nil, "OVERLAY")
-Text:SetFont(Qulight["media"].font, 10,  "OVERLAY")
+Text:SetFont(Qulight["media"].pxfont, 10,  "OVERLAY")
 PP(Qulight["datatext"].specswitcher, Text)
  
 local function Update(self)
@@ -13,7 +13,7 @@ local function Update(self)
 	else
 		local tree = GetSpecialization()
 		local spec = select(2,GetSpecializationInfo(tree)) or ""
-		Text:SetText(qColor.."S:|r "..spec.."|r")
+		Text:SetText(qColor.."Talents:|r "..spec.."|r")
 	end
 	self:SetAllPoints(Text)
 end

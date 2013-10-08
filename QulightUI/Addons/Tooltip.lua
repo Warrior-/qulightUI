@@ -173,7 +173,7 @@ local function StatusBarOnValueChanged(self, value)
 		self.text = self:CreateFontString(nil, "OVERLAY")
 		self.text:SetPoint("CENTER", GameTooltipStatusBar, 0, 0)
 
-		self.text:SetFont(Qulight["media"].font, 10, "THINOUTLINE")
+		self.text:SetFont(Qulight["media"].pxfont, 10, "THINOUTLINE")
 		self.text:Show()
 		if unit then
 			min, max = UnitHealth(unit), UnitHealthMax(unit)

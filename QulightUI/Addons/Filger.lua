@@ -2521,6 +2521,11 @@ Filger_Spells = {
 			{spellID = 34936, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Demonic Rebirth
 			{spellID = 108559, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Demonic Rebirth
+			{spellID = 1949, unitID = "player", caster = "player", filter = "BUFF"},
+			{spellID = 104025, unitID = "player", caster = "player", filter = "BUFF"},
+			{spellID = 104232, unitID = "player", caster = "player", filter = "BUFF"},
+			{spellID = 80240, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Trinkets
 			-- General
@@ -2600,6 +2605,10 @@ Filger_Spells = {
 			{spellID = 48181, unitID = "target", caster = "player", filter = "DEBUFF"},
 			{spellID = 114790, unitID = "target", caster = "player", filter = "DEBUFF"},
 			{spellID = 27243, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 348, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 47960, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 603, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 124915, unitID = "target", caster = "player", filter = "DEBUFF"},
 		},
 		{
 			Name = "PVE/PVP_CC",

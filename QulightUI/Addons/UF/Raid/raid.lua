@@ -87,9 +87,10 @@ RaidDebuffs = {
 	[SpellName(143436)] = 4,	-- Corrosive Blast (Tank switch)
 	[SpellName(143459)] = 3,	-- Sha Residue
 	-- The Fallen Protectors
-	[SpellName(143198)] = 3,	-- Garrote (DoT)
 	[SpellName(143434)] = 4,	-- Shadow Word: Bane (Dispel)
-	[SpellName(147383)] = 3,	-- Debilitation (Heroic)
+	[SpellName(143198)] = 3,	-- Garrote (DoT)
+	[SpellName(143842)] = 5,	-- Mark of Anguish
+	[SpellName(147383)] = 3,	-- Debilitation
 	-- Norushen
 	[SpellName(146124)] = 4,	-- Self Doubt (Tank switch)
 	[SpellName(144514)] = 3,	-- Lingering Corruption (Dispel)
@@ -99,6 +100,7 @@ RaidDebuffs = {
 	[SpellName(146594)] = 3,	-- Gift of the Titans
 	[SpellName(147207)] = 3,	-- Weakened Resolve (Heroic)
 	-- Galakras
+	[SpellName(147029)] = 3,	-- Flames of Galakrond (DoT)
 	[SpellName(146765)] = 3,	-- Flame Arrows (DoT)
 	[SpellName(146902)] = 3,	-- Poison-Tipped Blades (Poison stacks)
 	-- Iron Juggernaut
@@ -114,6 +116,8 @@ RaidDebuffs = {
 	[SpellName(143431)] = 3,	-- Magistrike (Dispel)
 	-- Malkorok
 	[SpellName(142990)] = 3,	-- Fatal Strike (Tank stacks)
+	[SpellName(142864)] = 3,	-- Ancient Barrier
+	[SpellName(142865)] = 3,	-- Strong Ancient Barrier
 	[SpellName(142913)] = 3,	-- Displaced Energy (Dispel)
 	-- Spoils of Pandaria
 	[SpellName(145218)] = 3,	-- Harden Flesh (Dispel)

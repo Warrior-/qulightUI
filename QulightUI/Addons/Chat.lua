@@ -90,7 +90,7 @@ _G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h ".."has come |cff298F00online|r."
 _G.ERR_FRIEND_OFFLINE_S = "[%s] ".."has gone |cffff0000offline|r."
 
 for i = 1, NUM_CHAT_WINDOWS do
-	 if ( i ~= 4 ) then
+	 if ( i ~= 6 ) then
       local f = _G["ChatFrame"..i]
       local am = f.AddMessage
       f.AddMessage = function(frame, text, ...)
@@ -329,7 +329,7 @@ local updateFS = function(self, inc, flags, ...)
 	local fstring = self:GetFontString()
 
 	local font, fontSize = inherit:GetFont()
-	fstring:SetFont(font, 10, flags)
+	fstring:SetFont(Qulight["media"].pxfont, 10, flags)
 	if((...)) then
 		fstring:SetTextColor(...)
 	end

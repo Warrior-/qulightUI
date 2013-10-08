@@ -5,7 +5,7 @@ if Qulight["datatext"].power and Qulight["datatext"].power > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = CenterDPSPanel:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
+	Text:SetFont(Qulight["media"].pxfont, 10, "OVERLAY")
 	PP(Qulight["datatext"].power, Text)
 
 	local int = 1

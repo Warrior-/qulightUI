@@ -8,7 +8,7 @@ if Qulight["datatext"].System and Qulight["datatext"].System > 0 then
 	Stat:EnableMouse(true)
 	
 	local Text  = DataLeftPanel:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
+	Text:SetFont(Qulight["media"].pxfont, 10, "OVERLAY")
 	PP(Qulight["datatext"].System, Text)
 	local colorme = string.format("%02x%02x%02x", 1*255, 1*255, 1*255)
 	

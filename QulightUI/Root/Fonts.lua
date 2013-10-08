@@ -24,7 +24,7 @@ Fonts:RegisterEvent("ADDON_LOADED")
 Fonts:SetScript("OnEvent", function(self, event, addon)
 	
 	local NORMAL     =  Qulight["media"].font
-	local COMBAT     =  Qulight["media"].font
+	local COMBAT     =  Qulight["media"].pxfont
 	local NUMBER     =  Qulight["media"].font
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 	
@@ -40,7 +40,7 @@ Fonts:SetScript("OnEvent", function(self, event, addon)
 	SetFont(NumberFont_OutlineThick_Mono_Small, NUMBER, Qulight["media"].fontsize, "OUTLINE")
 	SetFont(NumberFont_Outline_Huge,            NUMBER, 28, "THICKOUTLINE", 28)
 	SetFont(NumberFont_Outline_Large,           NUMBER, 15, "OUTLINE")
-	SetFont(NumberFont_Outline_Med,             NUMBER, Qulight["media"].fontsize*1.1, "OUTLINE")
+	SetFont(NumberFont_Outline_Med,             Qulight["media"].pxfont, Qulight["media"].fontsize, "OUTLINE")
 	SetFont(NumberFont_Shadow_Med,              NORMAL, Qulight["media"].fontsize+1) --chat editbox uses this
 	SetFont(NumberFont_Shadow_Small,            NORMAL, Qulight["media"].fontsize)
 	SetFont(QuestFont,                          NORMAL, Qulight["media"].fontsize)

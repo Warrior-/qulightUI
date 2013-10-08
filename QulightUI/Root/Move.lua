@@ -239,15 +239,15 @@ Anchortarget:SetPoint("TOPLEFT", UIParent, "BOTTOM", 200, 389)
 CreateAnchor(Anchortarget, "Move target", 220, 38)
 
 Anchorraid = CreateFrame("Frame","Move_raid",UIParent)
-Anchorraid:SetPoint("BOTTOM", 0, 105)
+Anchorraid:SetPoint("TOPLEFT", -5, -5)
 CreateAnchor(Anchorraid, "Move raid", 370, 170)
 
 Anchortot = CreateFrame("Frame","Move_tot",UIParent)
-Anchortot:SetPoint("TOPLEFT", UIParent, "BOTTOM", 425, 379) 
+Anchortot:SetPoint("TOPLEFT", UIParent, "BOTTOM", 425, 389) 
 CreateAnchor(Anchortot, "Move tot", 100, 28)
 
 Anchorpet = CreateFrame("Frame","Move_pet",UIParent)
-Anchorpet:SetPoint("TOPRIGHT", UIParent, "BOTTOM", -425, 379) 
+Anchorpet:SetPoint("TOPRIGHT", UIParent, "BOTTOM", -425, 389) 
 CreateAnchor(Anchorpet, "Move pet", 100, 28)
 
 if Qulight["unitframes"].bigcastbar then

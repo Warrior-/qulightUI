@@ -56,7 +56,7 @@ gen_fontstring = function(f, name, size, outline)
 end
 PortraitUpdate = function(self, unit) 
 
-	self:SetAlpha(0) self:SetAlpha(0.1)
+	self:SetAlpha(0) self:SetAlpha(0.3)
 	if self:GetModel() and self:GetModel().find and self:GetModel():find("worgenmale") then
 		self:SetCamera(1)
 	end	
@@ -289,7 +289,7 @@ gen_hpbar = function(f)
 	s:GetStatusBarTexture():SetHorizTile(true)
 	s.Smooth = true
 	fixStatusbar(s)
-	s:SetHeight(retVal(f,38,28,34,22))
+	s:SetHeight(retVal(f,42,28,34,22))
 	if not Qulight["unitframes"].HealthcolorClass then
 	s:SetStatusBarColor(.09,.09,.09,1) -- HealthBar Transparensy
 	end
@@ -315,11 +315,11 @@ end
 gen_hpstrings = function(f)
 	-- Change Font and Coord name on unitframe
     local name = gen_fontstring(f.Health, Qulight["media"].font, 10, retVal(f,17,12,12,15), "OUTLINE")
-    name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,1,1,1,1), retVal(f,-17,-11,-15,-10))
+    name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,2,1,1,1), retVal(f,-19,-11,-15,-10))
     name:SetJustifyH("LEFT")
 	-- Change Font and Coord health on unitframe
     local hpval = gen_fontstring(f.Health, Qulight["media"].font, 9, retVal(f,17,12,10,12), "OUTLINE")
-    hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", retVal(f,0,-3,-1,-3), retVal(f,-9,-11,-15,-9))
+    hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", retVal(f,0,-3,-1,-3), retVal(f,-7,-11,-15,-9))
     hpval.frequentUpdates = 0.1
 	
 	if f.mystyle == "player" then
@@ -334,7 +334,7 @@ gen_hpstrings = function(f)
 	f:Tag(hpval, retVal(f,"[hp][color]","","[hp][color]","[hp][color]"))
 	
 	local per = f.Health:CreateFontString(nil, "OVERLAY")
-	per:SetPoint("RIGHT", 0, retVal(f, -3, 4, -3, -3))
+	per:SetPoint("RIGHT", 0, retVal(f, 4, 4, -3, -3))
 	per:SetFont(Qulight["media"].font, 9, "OUTLINE")
 	f:Tag(per, retVal(f,'[color][power] | [perpp]%','[hp]','','' ))		
 end
@@ -350,7 +350,7 @@ gen_ppbar = function(f)
 	
 	if f.mystyle == "player" then
 		local h = CreateFrame("Frame", nil, s)
-		s:SetPoint("BOTTOM",f,"BOTTOM",0,4)
+		s:SetPoint("BOTTOM",f,"BOTTOM", 0, 0)
 		h:SetFrameLevel(3)
 		s:SetWidth(212)
 		h:SetPoint("TOPLEFT",-5,5)
@@ -359,7 +359,7 @@ gen_ppbar = function(f)
 	end
 	if f.mystyle == "target" then
 		local h = CreateFrame("Frame", nil, s)
-		s:SetPoint("BOTTOM",f,"BOTTOM",0,4)
+		s:SetPoint("BOTTOM",f,"BOTTOM", 0, 0)
 		h:SetFrameLevel(3)
 		s:SetWidth(212)
 		h:SetPoint("TOPLEFT",-5,5)
@@ -463,7 +463,7 @@ gen_InfoIcons = function(f)
     if f.mystyle == 'player' then
       f.Combat = h:CreateTexture(nil, 'OVERLAY')
       f.Combat:SetSize(12,12)
-      f.Combat:SetPoint('TOPRIGHT', 0, 0)
+      f.Combat:SetPoint('BOTTOMRIGHT', -4, 5)
       f.Combat:SetTexture('Interface\\CharacterFrame\\UI-StateIcon')
       f.Combat:SetTexCoord(0.58, 0.90, 0.08, 0.41)
     end
@@ -567,7 +567,7 @@ local UpdateThreat = function(self, event, unit)
 end
 gen_castbar = function(f)
 	if not Qulight["unitframes"].Castbars then return end
-	local cbColor = {95/255, 182/255, 255/255}
+	local cbColor = {.15,.15,.15}
     local s = CreateFrame("StatusBar", "oUF_Castbar"..f.mystyle, f)
     s:SetHeight(13)
     s:SetWidth(f:GetWidth()-22)
@@ -593,7 +593,7 @@ gen_castbar = function(f)
 	end
 	
     s:SetStatusBarTexture(statusbar_texture)
-    s:SetStatusBarColor(95/255, 182/255, 255/255,1)
+    s:SetStatusBarColor(.15,.15,.15,1)
 	s.colorClass = true
     s:SetFrameLevel(1)
     s.CastingColor = cbColor
@@ -664,7 +664,7 @@ end
 
 gen_bigcastbar = function(f)
 	if not Qulight["unitframes"].Castbars then return end
-	local cbColor = {95/255, 182/255, 255/255}
+	local cbColor = {.15,.15,.15}
     local s = CreateFrame("StatusBar", "oUF_Castbar"..f.mystyle, f)
     s:SetHeight(13)
     s:SetWidth(f:GetWidth()-22)
@@ -690,7 +690,7 @@ gen_bigcastbar = function(f)
 	end
 	
     s:SetStatusBarTexture(statusbar_texture)
-    s:SetStatusBarColor(95/255, 182/255, 255/255,1)
+    s:SetStatusBarColor(.15,.15,.15,1)
     s:SetFrameLevel(1)
     s.CastingColor = cbColor
     s.CompleteColor = {20/255, 208/255, 0/255}
@@ -866,7 +866,7 @@ createAuras = function(f)
 	Auras:SetWidth(f:GetWidth())
 	Auras.spacing = 7
 	if f.mystyle == "target" then
-		Auras:SetPoint("BOTTOM", f, "BOTTOM", 0, -22)
+		Auras:SetPoint("BOTTOM", f, "BOTTOM", 0, -26)
 		Auras.numBuffs = 10
 		Auras.numDebuffs = 10
 		Auras.size = 18	
@@ -953,7 +953,7 @@ createDebuffs = function(f)
 		b["growth-y"] = "UP"
 	elseif f.mystyle == "player" then
 	    b.size = 30
-		b:SetPoint("BOTTOM", f, "BOTTOM", 0, -33)
+		b:SetPoint("BOTTOM", f, "BOTTOM", 0, -43)
 		b.initialAnchor = "BOTTOMLEFT"
 		b["growth-x"] = "RIGHT"
 		b["growth-y"] = "DOWN"
@@ -1124,62 +1124,59 @@ if Qulight["unitframes"].TotemBars then
 end
 
 Magebars = function(self)
-	if myclass == "MAGE" then
+	if myclass == "MAGE" then	
+		local mb = CreateFrame("Frame", "ArcaneBar", self)
+		mb:SetPoint("TOPLEFT", self, "TOPLEFT",2,-2)
+		mb:SetWidth(103)
+		mb:SetHeight(6)
+		mb:SetBackdrop(backdrop)
+		mb:SetBackdropColor(0, 0, 0)
+		mb:SetBackdropBorderColor(0, 0, 0)				
+		CreateShadowclassbar2(mb)
+		mb:SetFrameLevel(6)
 				
-				local mb = CreateFrame("Frame", "ArcaneBar", self)
-				mb:SetPoint("TOPLEFT", self, "TOPLEFT",2,-2)
-				mb:SetWidth(103)
-				mb:SetHeight(6)
-				mb:SetBackdrop(backdrop)
-				mb:SetBackdropColor(0, 0, 0)
-				mb:SetBackdropBorderColor(0, 0, 0)				
-				CreateShadowclassbar2(mb)
-				mb:SetFrameLevel(6)
-				
-				for i = 1, 4 do
-				mb[i] = CreateFrame("StatusBar", "ArcaneBar"..i, mb)
-				mb[i]:SetHeight(6)
-				mb[i]:SetStatusBarTexture(statusbar_texture)
+		for i = 1, 4 do
+		mb[i] = CreateFrame("StatusBar", "ArcaneBar"..i, mb)
+		mb[i]:SetHeight(6)
+		mb[i]:SetStatusBarTexture(statusbar_texture)
 						
-					if i == 1 then
-						mb[i]:SetWidth(100 / 4)
-						mb[i]:SetPoint("LEFT", mb, "LEFT", 0, 0)
-					else
-						mb[i]:SetWidth(100 / 4)
-						mb[i]:SetPoint("LEFT", mb[i-1], "RIGHT", 1, 0)
-					end
-						mb[i].bg = mb[i]:CreateTexture(nil, 'ARTWORK')
-				end
+			if i == 1 then
+				mb[i]:SetWidth(100 / 4)
+				mb[i]:SetPoint("LEFT", mb, "LEFT", 0, 0)
+			else
+				mb[i]:SetWidth(100 / 4)
+				mb[i]:SetPoint("LEFT", mb[i-1], "RIGHT", 1, 0)
+			end
+				mb[i].bg = mb[i]:CreateTexture(nil, 'ARTWORK')
+		end
 				
-				self.ArcaneChargeBar = mb
+		self.ArcaneChargeBar = mb
 				
-				local rp = CreateFrame("Frame", "RunePower", self)
-				rp:SetPoint("TOPLEFT", self, "TOPLEFT", 108,-2)
-				rp:SetWidth(41)
-				rp:SetHeight(6)
+		local rp = CreateFrame("Frame", "RunePower", self)
+		rp:SetPoint("TOPLEFT", self, "TOPLEFT", 108,-2)
+		rp:SetWidth(41)
+		rp:SetHeight(6)
 				
-				rp:SetBackdrop(backdrop)
-				rp:SetBackdropColor(0, 0, 0)
-				rp:SetBackdropBorderColor(0, 0, 0)	
-				CreateShadowclassbar2(rp)
-				rp:SetFrameLevel(6)
-				for i = 1, 2 do
-					rp[i] = CreateFrame("StatusBar", "RunePower"..i, rp)
-					rp[i]:SetHeight(6)
-					rp[i]:SetStatusBarTexture(statusbar_texture)
+		rp:SetBackdrop(backdrop)
+		rp:SetBackdropColor(0, 0, 0)
+		rp:SetBackdropBorderColor(0, 0, 0)	
+		CreateShadowclassbar2(rp)
+		rp:SetFrameLevel(6)
+		for i = 1, 2 do
+			rp[i] = CreateFrame("StatusBar", "RunePower"..i, rp)
+			rp[i]:SetHeight(6)
+			rp[i]:SetStatusBarTexture(statusbar_texture)
 					
-					if i == 1 then
-						rp[i]:SetWidth(40 / 2)
-						rp[i]:SetPoint("LEFT", rp, "LEFT", 0, 0)
-					else
-						rp[i]:SetWidth(40 / 2)
-						rp[i]:SetPoint("LEFT", rp[i-1], "RIGHT", 1, 0)
-					end
-						rp[i].bg = rp[i]:CreateTexture(nil, 'ARTWORK')
-						
-				end
-				
-				self.RunePower = rp
+			if i == 1 then
+				rp[i]:SetWidth(40 / 2)
+				rp[i]:SetPoint("LEFT", rp, "LEFT", 0, 0)
+			else
+				rp[i]:SetWidth(40 / 2)
+				rp[i]:SetPoint("LEFT", rp[i-1], "RIGHT", 1, 0)
+			end
+				rp[i].bg = rp[i]:CreateTexture(nil, 'ARTWORK')		
+		end			
+		self.RunePower = rp
 	end			
 end
 
@@ -1254,7 +1251,7 @@ genShards = function(self)
 	if myclass == "WARLOCK" then
 		local wb = CreateFrame("Frame", "WarlockSpecBars", self)
 		wb:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 4, -9)
-		wb:SetWidth(123)
+		wb:SetWidth(120)
 		wb:SetHeight(5)
 		wb:SetBackdrop(backdrop)
 					
@@ -1268,10 +1265,10 @@ genShards = function(self)
 				wb[i]:SetStatusBarTexture(statusbar_texture)
 						
 					if i == 1 then
-						wb[i]:SetWidth(120 / 4, 6)
+						wb[i]:SetWidth((123 / 4))
 						wb[i]:SetPoint("LEFT", wb, "LEFT", 0, 0)
 					else
-						wb[i]:SetWidth(120 / 4, 6)
+						wb[i]:SetWidth((123 / 4))
 						wb[i]:SetPoint("LEFT", wb[i-1], "RIGHT", 1, 0)
 					end
 						wb[i].bg = wb[i]:CreateTexture(nil, 'ARTWORK')

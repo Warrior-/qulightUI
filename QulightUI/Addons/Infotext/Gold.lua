@@ -9,7 +9,7 @@ if Qulight["datatext"].Gold and Qulight["datatext"].Gold > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = DataLeftPanel:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
+	Text:SetFont(Qulight["media"].pxfont, 10, "OVERLAY")
 	PP(Qulight["datatext"].Gold, Text)
 
 	local Profit	= 0

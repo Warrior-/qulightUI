@@ -22,7 +22,7 @@ if Qulight["datatext"].Durability and Qulight["datatext"].Durability > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = DataLeftPanel:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
+	Text:SetFont(Qulight["media"].pxfont, 10, "OVERLAY")
 	PP(Qulight["datatext"].Durability, Text)
 
 	local Total = 0
@@ -41,9 +41,9 @@ if Qulight["datatext"].Durability and Qulight["datatext"].Durability > 0 then
 		table.sort(localSlots, function(a, b) return a[3] < b[3] end)
 		
 		if Total > 0 then
-			Text:SetText("Armor "..qColor..floor(localSlots[1][3]*100).."%" )
+			Text:SetText("Armor: "..qColor..floor(localSlots[1][3]*100).."%" )
 		else
-			Text:SetText("Armor "..qColor..": 100%".."Armor")
+			Text:SetText("Armor: "..qColor..": 100%".."Armor")
 		end
 		-- Setup Durability Tooltip
 		self:SetAllPoints(Text)
