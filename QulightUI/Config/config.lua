@@ -12,7 +12,7 @@ Qulight["general"] = {
 	["AutoRepair"] = true,																-- auto repair
 	["AutoGreed"] = false,
 	["topbottompanel"] = true,
-	["centerpanel"] = false,
+	["centerpanel"] = true,
 	["autoinvite"] = true,	
 	["AutoDisenchant"] = false,															-- auto dis green items
 	["BlizzardsErrorFrameHiding"] = true,												-- hide blizzard red errors
@@ -122,14 +122,14 @@ Qulight["addonskins"] = {
 	["CoolLine"] = true,
 }
 Qulight["datatext"] = {
-	["Durability"] = 2,                													-- show your equipment durability on panels.
-	["System"] = 1,                														-- show fps and ms on panels, and total addon memory in tooltip
+	["Durability"] = 8,                													-- show your equipment durability on panels.
+	["System"] = 14,                														-- show fps and ms on panels, and total addon memory in tooltip
 	["Gold"] = 4,                														-- show your current gold on panels
-	["Guild"] = 3,       			  													-- show guild info
-	["Wowtime"] = 8,              														-- show time on panels
-	["Friends"] = 7,                													-- show number of friends connected.
+	["Guild"] = 1,       			  													-- show guild info
+	["Wowtime"] = 0,              														-- show time on panels
+	["Friends"] = 2,                													-- show number of friends connected.
 	["Bags"] = 6,                														-- show space used in bags on panels
-	["specswitcher"] = 9,
+	["specswitcher"] = 7,
 	["haste"] = 11,
 	["mastery"] = 12,
 	["power"] = 13,
@@ -160,7 +160,6 @@ Qulight["nameplate"] = {
 }
 Qulight["minimapp"] = {
 	["enable"] = true,																	-- enable/disable minimap
-	["size"] = 141,																		-- minimap size
 }
 Qulight["tooltip"] = {
 	["enable"] = true,                      											-- true to enable this mod, false to disable

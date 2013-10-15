@@ -318,7 +318,7 @@ gen_hpstrings = function(f)
     name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,2,1,1,1), retVal(f,-19,-11,-15,-10))
     name:SetJustifyH("LEFT")
 	-- Change Font and Coord health on unitframe
-    local hpval = gen_fontstring(f.Health, Qulight["media"].font, 9, retVal(f,17,12,10,12), "OUTLINE")
+    local hpval = gen_fontstring(f.Health, Qulight["media"].pxfont, 10, retVal(f,17,12,10,12), "OUTLINE")
     hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", retVal(f,0,-3,-1,-3), retVal(f,-7,-11,-15,-9))
     hpval.frequentUpdates = 0.1
 	
@@ -335,7 +335,7 @@ gen_hpstrings = function(f)
 	
 	local per = f.Health:CreateFontString(nil, "OVERLAY")
 	per:SetPoint("RIGHT", 0, retVal(f, 4, 4, -3, -3))
-	per:SetFont(Qulight["media"].font, 9, "OUTLINE")
+	per:SetFont(Qulight["media"].pxfont, 10, "OUTLINE")
 	f:Tag(per, retVal(f,'[color][power] | [perpp]%','[hp]','','' ))		
 end
 gen_ppbar = function(f)

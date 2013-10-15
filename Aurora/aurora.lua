@@ -3925,6 +3925,9 @@ hooksecurefunc("LossOfControlFrame_SetUpDisplay", function(self)
 	end
 end)
 
+----------------------------------------------------------------------------------------
+--	Item level on slot buttons in Character/InspectFrame(by Tukz)
+----------------------------------------------------------------------------------------
 local time = 3
 local slots = {
 	"HeadSlot", "NeckSlot", "ShoulderSlot", "BackSlot", "ChestSlot", "ShirtSlot", "TabardSlot",
@@ -3933,10 +3936,12 @@ local slots = {
 }
 
 local upgrades = {
-	["0"] = 0, ["1"] = 8, ["373"] = 4, ["374"] = 8, ["375"] = 4, ["376"] = 4,
-	["377"] = 4, ["379"] = 4, ["380"] = 4, ["445"] = 0, ["446"] = 4, ["447"] = 8,
-	["451"] = 0, ["452"] = 8, ["453"] = 0, ["454"] = 4, ["455"] = 8, ["456"] = 0,
-	["457"] = 8, ["458"] = 0, ["459"] = 4, ["460"] = 8, ["461"] = 12, ["462"] = 16
+	["1"] = 8, ["373"] = 4, ["374"] = 8, ["375"] = 4, ["376"] = 4, ["377"] = 4,
+	["379"] = 4, ["380"] = 4, ["446"] = 4, ["447"] = 8, ["452"] = 8, ["454"] = 4,
+	["455"] = 8, ["457"] = 8, ["459"] = 4, ["460"] = 8, ["461"] = 12, ["462"] = 16,
+	["466"] = 4, ["467"] = 8, ["469"] = 4, ["470"] = 8, ["471"] = 12, ["472"] = 16,
+	["477"] = 4, ["478"] = 8, ["480"] = 8, ["492"] = 4, ["493"] = 8, ["495"] = 4,
+	["496"] = 8, ["497"] = 12, ["498"] = 16
 }
 
 local function CreateButtonsText(frame)
@@ -3967,8 +3972,7 @@ local function UpdateButtonsText(frame)
 			text:SetText("")
 		elseif item then
 			local oldilevel = text:GetText()
-			local ilevel = select(4, GetItemInfo(item))
-			local heirloom = select(3, GetItemInfo(item))
+			local _, _, heirloom, ilevel = GetItemInfo(item)
 			local upgrade = item:match(":(%d+)\124h%[")
 
 			if ilevel then

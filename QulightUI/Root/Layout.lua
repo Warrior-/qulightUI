@@ -63,19 +63,24 @@ if Qulight["general"].centerpanel then
 	CreateAnchor(AnchorCenterDPSPanel, "Move CenterDPSPanel", 295, 18)
 
 	local CenterDPSPanel = CreateFrame("Frame", "CenterDPSPanel", UIParent)
-	CreatePanel(CenterDPSPanel, 295, 18, "CENTER", AnchorCenterDPSPanel)
+	CreatePanel(CenterDPSPanel, 369, 18, "CENTER", AnchorCenterDPSPanel)
 	CreateShadow(CenterDPSPanel)
 	CenterDPSPanel:SetFrameLevel(2)
 end
+
 Anchorminimaplol = CreateFrame("Frame","Move_minimaplol",UIParent)
-Anchorminimaplol:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -7, 25)
-CreateAnchor(Anchorminimaplol, "Move Minimap", Qulight["minimapp"].size+4, Qulight["minimapp"].size+4)
+Anchorminimaplol:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 3, -21)
+CreateAnchor(Anchorminimaplol, "Move Minimap", 184, 138)
 	
 local minimaplol = CreateFrame("Frame", "minimaplol", UIParent)
-CreatePanel(minimaplol, Qulight["minimapp"].size+4, Qulight["minimapp"].size+4, "BOTTOMRIGHT", Anchorminimaplol)
+CreatePanel(minimaplol, 184, 138, "BOTTOMRIGHT", Anchorminimaplol)
 CreateShadow(minimaplol)
 minimaplol:SetFrameLevel(2)
 
+local minimaplol2 = CreateFrame("Frame", "minimaplol2", UIParent)
+CreatePanel(minimaplol2, 184, 17, "TOPLEFT", UIParent, "TOPLEFT", 3, -3)
+CreateShadow(minimaplol2)
+minimaplol2:SetFrameLevel(2)
 ---------------------
 --Acton Bar Panels
 ---------------------

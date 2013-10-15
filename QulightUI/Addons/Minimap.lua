@@ -1,45 +1,86 @@
 if not Qulight["minimapp"].enable == true then return end
 
+local font = Qulight["media"].pxfont
+local fontsize = 10
+local fontflag = "OUTLINE"
+local Scale = 1
+local classcolors = true -- class color text
+
 Minimap:ClearAllPoints()
 Minimap:SetPoint("CENTER", minimaplol, "CENTER", 0, 0)
-Minimap:SetSize(Qulight["minimapp"].size,Qulight["minimapp"].size)
-local dummy = function() end
-local _G = getfenv(0)
-
-MinimapBorder:Hide()
-MinimapBorderTop:Hide()
-MinimapZoomIn:Hide()
-MinimapZoomOut:Hide()
-MiniMapVoiceChatFrame:Hide()
-MinimapNorthTag:SetTexture(nil)
-MinimapZoneTextButton:Hide()
-
-MiniMapTracking:Show()
-local trackborder = CreateFrame("Frame", nil, UIParent)
-trackborder:SetFrameLevel(4)
-trackborder:SetFrameStrata("BACKGROUND")
-trackborder:SetHeight(20)
-trackborder:SetWidth(20)
-trackborder:SetPoint("BOTTOMLEFT", minimaplol, "BOTTOMLEFT", 2, 2)
-CreateShadow(trackborder)
-
-MiniMapTrackingBackground:Hide()
-MiniMapTracking:ClearAllPoints()
-MiniMapTracking:SetPoint("CENTER", trackborder, 2, -2)
-MiniMapTrackingButton:SetHighlightTexture(nil)
-MiniMapTrackingButtonBorder:Hide()
-MiniMapTrackingIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-MiniMapTrackingIcon:SetWidth(16)
-MiniMapTrackingIcon:SetHeight(16)
-	
-GameTimeFrame:Hide()
 MinimapCluster:EnableMouse(false)
+Minimap:SetSize(180*Scale, 180*Scale)
+Minimap:SetMaskTexture('Interface\\AddOns\\QulightUI\\Root\\Media\\picomenu\\rectangle')
+Minimap:SetHitRectInsets(0, 0, 24*Scale, 24*Scale)
+Minimap:SetFrameLevel(4)
+Minimap:SetScale(Scale)
+Minimap:SetArchBlobRingScalar(0);
+Minimap:SetQuestBlobRingScalar(0);
 
-MiniMapTrackingBackground:SetAlpha(0)
-MiniMapTrackingButton:SetAlpha(0)
-MiniMapTracking:ClearAllPoints()
-MiniMapTracking:SetPoint("BOTTOMRIGHT", Minimap, 0, 0)
-MiniMapTracking:SetScale(.9)
+if(IsAddOnLoaded('!ClassColors') and CUSTOM_CLASS_COLORS) then
+	color = CUSTOM_CLASS_COLORS[select(2, UnitClass("player"))]
+end
+
+if classcolors == true then
+	color = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2,UnitClass("player"))]
+else
+	color = {r=255/255, g=255/255, b=255/255 } -- own textcolor
+end	
+
+local oldOnClick = Minimap:GetScript("OnMouseUp")
+Minimap:SetScript("OnMouseUp", function(self,click)
+	if(click=="RightButton") then
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor", 0, 0)
+	elseif(click=="MiddleButton") then
+		if (not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end Calendar_Toggle() 
+	else 
+		oldOnClick(self)
+	end
+end)
+
+local rd = CreateFrame("Frame", nil, Minimap)
+rd:SetSize(24, 8)
+rd:RegisterEvent("PLAYER_ENTERING_WORLD")
+rd:RegisterEvent("PLAYER_DIFFICULTY_CHANGED")
+rd:RegisterEvent("GUILD_PARTY_STATE_UPDATED")
+
+local rdt = rd:CreateFontString(nil, "OVERLAY")
+rdt:SetPoint("TOP", Minimap, "TOP", 0, -27)
+rdt:SetFont(font, fontsize, fontflag)
+
+rd:SetScript("OnEvent", function()
+	local _, _, difficulty, _, maxPlayers = GetInstanceInfo()
+
+	if difficulty == 0 then
+		rdt:SetText("")
+	elseif maxPlayers == 3 then
+		rdt:SetText("3")
+	elseif difficulty == 1 then
+		rdt:SetText("5")
+	elseif difficulty == 2 then
+		rdt:SetText("5H")
+	elseif difficulty == 3 then
+		rdt:SetText("10")
+	elseif difficulty == 4 then
+		rdt:SetText("25")
+	elseif difficulty == 5 then
+		rdt:SetText("10H")
+	elseif difficulty == 6 then
+		rdt:SetText("25H")
+	elseif difficulty == 7 then
+		rdt:SetText("LFR")
+	elseif difficulty == 8 then
+		rdt:SetText("5CM")
+	elseif difficulty == 9 then
+		rdt:SetText("40")
+	end
+
+	if GuildInstanceDifficulty:IsShown() then
+		rdt:SetTextColor(color.r, color.g, color.b)
+	else
+		rdt:SetTextColor(color.r, color.g, color.b)
+	end
+end)
 
 local function StripTextures(object, kill)
 	for i=1, object:GetNumRegions() do
@@ -53,10 +94,11 @@ local function StripTextures(object, kill)
 		end
 	end		
 end
+--[[ BG icon ]]
 
 QueueStatusMinimapButton:SetParent(Minimap)
 QueueStatusMinimapButton:ClearAllPoints()
-QueueStatusMinimapButton:SetPoint("BOTTOMRIGHT", 0, 0)
+QueueStatusMinimapButton:SetPoint("TOPRIGHT", 0, -20)
 QueueStatusMinimapButtonBorder:Hide()
 StripTextures(QueueStatusFrame)
 CreateShadow(QueueStatusFrame)
@@ -64,75 +106,174 @@ CreateShadow(QueueStatusFrame)
 MiniMapWorldMapButton:Hide()
 
 local function UpdateLFGTooltip()
-QueueStatusFrame:ClearAllPoints()
-QueueStatusFrame:SetPoint("TOPRIGHT", QueueStatusMinimapButton, "TOPLEFT", 0, 0)
+	QueueStatusFrame:ClearAllPoints()
+	QueueStatusFrame:SetPoint("TOPRIGHT", QueueStatusMinimapButton, "TOPLEFT", 0, 0)
 end
 QueueStatusFrame:HookScript("OnShow", UpdateLFGTooltip)
 QueueStatusFrame:SetFrameStrata("TOOLTIP")
 
 MiniMapMailFrame:ClearAllPoints()
-MiniMapMailFrame:SetPoint("TOPRIGHT", Minimap, 0, 0)
+MiniMapMailFrame:SetPoint("BOTTOMRIGHT", Minimap, 0, 16)
 MiniMapMailFrame:SetFrameStrata("LOW")
 MiniMapMailIcon:SetTexture("Interface\\AddOns\\QulightUI\\Root\\Media\\mail.tga")
 MiniMapMailBorder:Hide()
 
-MiniMapInstanceDifficulty:ClearAllPoints()
-MiniMapInstanceDifficulty:Hide()
+MiniMapTracking:ClearAllPoints()
+MiniMapTracking:SetParent(Minimap)
+MiniMapTracking:SetPoint('TOPLEFT', 0, -25)
+MiniMapTracking:SetAlpha(0)
+MiniMapTrackingBackground:Hide()
+MiniMapTrackingButtonBorder:SetTexture(nil)
+MiniMapTrackingButton:SetHighlightTexture(nil)
+MiniMapTrackingIconOverlay:SetTexture(nil)
+MiniMapTrackingIcon:SetTexCoord(0.065, 0.935, 0.065, 0.935)
+MiniMapTrackingIcon:SetWidth(20)
+MiniMapTrackingIcon:SetHeight(20)
 
-Minimap:EnableMouseWheel(true)
-Minimap:SetScript("OnMouseWheel", function(self, d)
-	if d > 0 then
-		_G.MinimapZoomIn:Click()
-	elseif d < 0 then
-		_G.MinimapZoomOut:Click()
-	end
+qMap = CreateFrame("Frame", "qMap", UIParent)
+qMap:RegisterEvent("ADDON_LOADED")
+qMap:SetScript("OnEvent", function(self, event, addon)
+
+    qMap.tracking = CreateFrame("Frame", nil, Minimap)
+	
+	MiniMapTrackingButton:SetScript("OnEnter",function()
+		MiniMapTracking:SetAlpha(1)
+        qMap.tracking:SetAlpha(1)
+	end)
+
+    Minimap:SetScript("OnLeave", function()
+        MiniMapTracking:SetAlpha(0)
+        qMap.tracking:SetAlpha(0)
+    end)
+	
+	MiniMapTrackingButton:SetScript("OnLeave", function()
+        MiniMapTracking:SetAlpha(0)
+        qMap.tracking:SetAlpha(0)
+    end)
+	
+	MiniMapTrackingButton:SetScript("OnMouseUp", function(self,click)
+	    if(click=="RightButton") then
+		    ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor", 0, 0)
+		elseif(click=="MiddleButton") then
+			if (not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end Calendar_Toggle() 
+		end
+	end)
+	qMap.tracking.text = t
+
+    self:UnregisterEvent(event)
 end)
 
-MiniMapInstanceDifficulty:SetParent(Minimap)
-MiniMapInstanceDifficulty:ClearAllPoints()
-MiniMapInstanceDifficulty:SetPoint("TOPRIGHT", Minimap, 0, 0)
-MiniMapInstanceDifficulty:SetScale(0.75)
+function GetMinimapShape() return "SQUARE" end
 
-GuildInstanceDifficulty:SetParent(Minimap)
-GuildInstanceDifficulty:ClearAllPoints()
-GuildInstanceDifficulty:SetPoint("TOPRIGHT", Minimap, 0, 0)
-GuildInstanceDifficulty:SetScale(0.75)
+--[[ Hiding ugly things	]]
+local dummy = function() end
+local frames = {
+    "MiniMapVoiceChatFrame",
+    "MiniMapWorldMapButton",
+    "MinimapZoneTextButton",
+    "MiniMapMailBorder",
+    "MiniMapInstanceDifficulty",
+    "MinimapNorthTag",
+    "MinimapZoomOut",
+    "MinimapZoomIn",
+    "MinimapBackdrop",
+    "GameTimeFrame",
+    "GuildInstanceDifficulty",
+	"MiniMapChallengeMode",
+	"MinimapBorderTop",
+}
+GameTimeFrame:SetAlpha(0)
+GameTimeFrame:EnableMouse(false)
+GameTimeCalendarInvitesTexture:SetParent("Minimap")
 
-MiniMapTrackingBackground:SetAlpha(1)
-MiniMapTrackingButton:SetAlpha(1)
-MiniMapTracking:ClearAllPoints()
-MiniMapTracking:SetPoint("TOPLEFT", Minimap, 0, 0)
-MiniMapTracking:SetScale(.9)
+for i in pairs(frames) do
+    _G[frames[i]]:Hide()
+    _G[frames[i]].Show = dummy
+end
 
+Minimap:SetScript('OnMouseUp', function(self, button)
+Minimap:StopMovingOrSizing()
+    if (button == 'RightButton') then
+        ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self, - (Minimap:GetWidth() * 0.7), -3)
+    elseif (button == 'MiddleButton') then
+        ToggleCalendar()
+    else
+        Minimap_OnClick(self)
+    end
+end)
 
-level = UnitLevel("player")
+--[[ Mousewheel zoom ]]
+Minimap:EnableMouseWheel(true)
+Minimap:SetScript("OnMouseWheel", function(_, zoom)
+    if zoom > 0 then
+        Minimap_ZoomIn()
+    else
+        Minimap_ZoomOut()
+    end
+end)
 
-----------------------------------------------------------------------------------------
--- Mouseover map, displaying zone and coords
-----------------------------------------------------------------------------------------
+--[[ Clock ]]
+if not IsAddOnLoaded("Blizzard_TimeManager") then
+	LoadAddOn("Blizzard_TimeManager")
+end
+local clockFrame, clockTime = TimeManagerClockButton:GetRegions()
+clockFrame:Hide()
+clockTime:SetFont(Qulight["media"].pxfont, fontsize, fontflag)
+clockTime:SetShadowOffset(0,0)
+clockTime:SetTextColor(color.r, color.g, color.b)
+TimeManagerClockButton:ClearAllPoints()
+TimeManagerClockButton:SetPoint("BOTTOM", Minimap, "BOTTOM", -1, 16)
+TimeManagerClockButton:SetScript('OnShow', nil)
+TimeManagerClockButton:Show()
+TimeManagerClockButton:SetScript('OnClick', function(self, button)
+	if(button=="RightButton") then
+		if(self.alarmFiring) then
+			PlaySound('igMainMenuQuit')
+			TimeManager_TurnOffAlarm()
+		else
+			ToggleTimeManager()
+		end
+	else
+		ToggleCalendar()
+	end
+end)  
+TimeManagerFrame:ClearAllPoints()
+TimeManagerFrame:SetPoint("CENTER", Minimap, "CENTER", 0, 0)
+TimeManagerFrame:SetClampedToScreen(true)
+TimeManagerFrame:SetToplevel(true)
+
+SlashCmdList["CALENDAR"] = function()
+	ToggleCalendar()
+end
+SLASH_CALENDAR1 = "/cl"
+SLASH_CALENDAR2 = "/calendar"
+
+local cal = CreateFrame("Frame", nil, Minimap)
+GameTimeFrame:HookScript("OnShow", cal.Show)
+GameTimeFrame:SetScript("OnEvent", function(self, event, addon)
+	
+	
+end)
+
+if CalendarGetNumPendingInvites() ~= 0 then
+		clockTime:SetTextColor(.67,.35,.35)
+	else
+		clockTime:SetTextColor(color.r, color.g, color.b)
+end
 
 local m_coord = CreateFrame("Frame","QuMinimapCoord",minimap)
 m_coord:SetSize(30,15)
-m_coord:SetPoint("TOP", minimaplol, "TOP", 0,0)
+m_coord:SetPoint("TOP", minimaplol2, "TOP", 0,0)
 m_coord:SetFrameLevel(3)
 m_coord:SetFrameStrata("MEDIUM")
-m_coord:SetAlpha(0)
+m_coord:SetAlpha(1)
 
 local m_coord_text = m_coord:CreateFontString("QuMinimapCoordText","minimap")
-m_coord_text:SetFont(Qulight["media"].font, 8, "OUTLINE")
-m_coord_text:SetPoint("BOTTOMRIGHT", minimaplol, "BOTTOMRIGHT", -25,0)
-m_coord_text:SetAlpha(0)
+m_coord_text:SetFont(Qulight["media"].pxfont, fontsize-3, fontflag)
+m_coord_text:SetPoint("BOTTOMRIGHT", minimaplol2, "BOTTOMRIGHT", -2, 3)
+m_coord_text:SetTextColor(color.r, color.g, color.b)
+m_coord_text:SetAlpha(1)
 m_coord_text:SetText("00,00")
-
-Minimap:SetScript("OnEnter",function()
-	m_coord:SetAlpha(1)
-	m_coord_text:SetAlpha(1)
-end)
-
-Minimap:SetScript("OnLeave",function()
-	m_coord:SetAlpha(0)
-	m_coord_text:SetAlpha(0)
-end)
  
 local ela = 0
 local coord_Update = function(self,t)
@@ -159,121 +300,209 @@ local coord_Update = function(self,t)
 	end
 	ela = .2
 end
-m_coord:SetScript("OnUpdate",coord_Update)
-----------------------------------------------------------------------------------------
---	Right click menu
-----------------------------------------------------------------------------------------
-local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", UIParent, "UIDropDownMenuTemplate")
-local micromenu = {
-	{text = CHARACTER_BUTTON, notCheckable = 1, func = function()
-		ToggleCharacter("PaperDollFrame")
-	end},
-	{text = SPELLBOOK_ABILITIES_BUTTON, notCheckable = 1, func = function()
-		if InCombatLockdown() then
-			print("|cffffff00"..ERR_NOT_IN_COMBAT..".|r") return
-		end
-		ToggleSpellBook(BOOKTYPE_SPELL)
-	end},
-	{text = TALENTS_BUTTON, notCheckable = 1, func = function()
-		if not PlayerTalentFrame then
-			TalentFrame_LoadUI()
-		end
-		if level >= SHOW_TALENT_LEVEL then
-			ToggleTalentFrame()
-		else
-			print("|cffffff00"..format(FEATURE_BECOMES_AVAILABLE_AT_LEVEL, SHOW_TALENT_LEVEL).."|r")
-		end
-	end},
-	{text = ACHIEVEMENT_BUTTON, notCheckable = 1, func = function()
-		ToggleAchievementFrame()
-	end},
-	{text = QUESTLOG_BUTTON, notCheckable = 1, func = function()
-		ToggleFrame(QuestLogFrame)
-	end},
-	{text = ACHIEVEMENTS_GUILD_TAB, notCheckable = 1, func = function()
-		if IsInGuild() then
-			if not GuildFrame then
-				LoadAddOn("Blizzard_GuildUI")
-			end
-			ToggleGuildFrame()
-			GuildFrame_TabClicked(GuildFrameTab2)
-		else
-			if not LookingForGuildFrame then
-				LoadAddOn("Blizzard_LookingForGuildUI")
-			end
-			if not LookingForGuildFrame then return end
-			LookingForGuildFrame_Toggle()
-		end
-	end},
-	{text = SOCIAL_BUTTON, notCheckable = 1, func = function()
-		ToggleFriendsFrame(1)
-	end},
-	{text = PLAYER_V_PLAYER, notCheckable = 1, func = function()
-		if level >= SHOW_PVP_LEVEL then
-			TogglePVPUI()
-		else
-			print("|cffffff00"..format(FEATURE_BECOMES_AVAILABLE_AT_LEVEL, SHOW_PVP_LEVEL).."|r")
-		end
-	end},
-	{text = DUNGEONS_BUTTON, notCheckable = 1, func = function()
-		if level >= SHOW_LFD_LEVEL then
-			PVEFrame_ToggleFrame()
-		else
-			print("|cffffff00"..format(FEATURE_BECOMES_AVAILABLE_AT_LEVEL, SHOW_LFD_LEVEL).."|r")
-		end
-	end},
-	{text = LOOKING_FOR_RAID, notCheckable = 1, func = function()
-		ToggleRaidFrame(3)
-	end},
-	{text = MOUNTS_AND_PETS, notCheckable = 1, func = function()
-		TogglePetJournal()
-	end},
-	{text = ENCOUNTER_JOURNAL, notCheckable = 1, func = function()
-		if not IsAddOnLoaded("Blizzard_EncounterJournal") then
-			LoadAddOn("Blizzard_EncounterJournal")
-		end
-		ToggleEncounterJournal()
-	end},
-	{text = HELP_BUTTON, notCheckable = 1, func = function()
-		ToggleHelpFrame()
-	end},
-	{text = L_MINIMAP_CALENDAR, notCheckable = 1, func = function()
-		if not CalendarFrame then
-			LoadAddOn("Blizzard_Calendar")
-		end
-		Calendar_Toggle()
-	end},
-	{text = BATTLEFIELD_MINIMAP, notCheckable = true, func = function()
-		ToggleBattlefieldMinimap()
-	end},
-
+m_coord:SetScript("OnUpdate",coord_Update)	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+local config = {
+["showPicomenu"] = true,
 }
 
-Minimap:SetScript("OnMouseUp", function(self, btn)
-	if btn == "RightButton" then
-		EasyMenu(micromenu, menuFrame, "cursor", 0, 0, "MENU", 2)
-	
-	else
-		Minimap_OnClick(self)
-	end
+
+if config.showPicomenu == true then
+local menuFrame = CreateFrame('Frame', 'picomenuDropDownMenu', MainMenuBar, 'UIDropDownMenuTemplate')
+
+local menuList = {
+    {
+        text = MAINMENU_BUTTON,
+        isTitle = true,
+        notCheckable = true,
+    },
+    {
+        text = CHARACTER_BUTTON,
+        icon = 'Interface\\PaperDollInfoFrame\\UI-EquipmentManager-Toggle',
+        func = function() 
+            securecall(ToggleCharacter, 'PaperDollFrame') 
+        end,
+                tooltipTitle = 'MOOO',
+        notCheckable = true,
+    },
+    {
+        text = SPELLBOOK_ABILITIES_BUTTON,
+        icon = 'Interface\\MINIMAP\\TRACKING\\Class',
+        func = function() 
+            securecall(ToggleSpellBook, BOOKTYPE_SPELL)
+        end,
+        notCheckable = true,
+    },
+    {
+        text = TALENTS_BUTTON,
+        icon = 'Interface\\MINIMAP\\TRACKING\\Ammunition',
+        func = function() 
+			if (not PlayerTalentFrame) then 
+                LoadAddOn('Blizzard_TalentUI') 
+            end
+
+			if (not GlyphFrame) then 
+                LoadAddOn('Blizzard_GlyphUI') 
+            end 
+
+			PlayerTalentFrame_Toggle()
+        end,
+        notCheckable = true,
+    },
+    {
+        text = ACHIEVEMENT_BUTTON,
+        icon = 'Interface\\AddOns\\QulightUI\\Root\\Media\\picomenu\\picomenuAchievement',
+        func = function() 
+            securecall(ToggleAchievementFrame) 
+        end,
+        notCheckable = true,
+    },
+    {
+        text = QUESTLOG_BUTTON,
+        icon = 'Interface\\GossipFrame\\ActiveQuestIcon',
+        func = function() 
+            securecall(ToggleFrame, QuestLogFrame) 
+        end,
+        notCheckable = true,
+    },
+    {
+        text = GUILD,
+        icon = 'Interface\\GossipFrame\\TabardGossipIcon',
+        arg1 = IsInGuild('player'),
+        func = function() 
+            ToggleGuildFrame()
+        end,
+        notCheckable = true,
+    },
+    {
+        text = SOCIAL_BUTTON,
+        icon = 'Interface\\FriendsFrame\\PlusManz-BattleNet',
+        func = function() 
+            securecall(ToggleFriendsFrame, 1) 
+        end,
+        notCheckable = true,
+    },
+    {
+        text = PLAYER_V_PLAYER,
+        icon = 'Interface\\MINIMAP\\TRACKING\\BattleMaster',
+        func = function() 
+            securecall(ToggleFrame, PVPFrame) 
+        end,
+        notCheckable = true,
+    },
+    {
+        text = DUNGEONS_BUTTON,
+        icon = 'Interface\\MINIMAP\\TRACKING\\None',
+        func = function() 
+            securecall(ToggleLFDParentFrame)
+        end,
+        notCheckable = true,
+    },
+    {
+        text = MOUNTS_AND_PETS,
+        icon = 'Interface\\MINIMAP\\TRACKING\\StableMaster',
+        func = function() 
+            securecall(TogglePetJournal)
+        end,
+        notCheckable = true,
+    },
+    {
+        text = RAID,
+        icon = 'Interface\\TARGETINGFRAME\\UI-TargetingFrame-Skull',
+        func = function() 
+            securecall(ToggleFriendsFrame, 4)
+        end,
+        notCheckable = true,
+    },
+    {
+        text = ENCOUNTER_JOURNAL,
+        icon = 'Interface\\MINIMAP\\TRACKING\\Profession',
+        func = function() 
+            securecall(ToggleEncounterJournal)
+        end,
+        notCheckable = true,
+    },
+    {
+        text = GM_EMAIL_NAME,
+        icon = 'Interface\\CHATFRAME\\UI-ChatIcon-Blizz',
+        func = function() 
+            securecall(ToggleHelpFrame) 
+        end,
+        notCheckable = true,
+    },
+    {
+        text = BATTLEFIELD_MINIMAP,
+        colorCode = '|cff999999',
+        func = function() 
+            securecall(ToggleBattlefieldMinimap) 
+        end,
+        notCheckable = true,
+    },
+}
+
+
+local f = CreateFrame('Button', nil, PicoMenuBar)
+f:SetSize(11,8)
+f:SetPoint('BOTTOMLEFT', Minimap, 'BOTTOMLEFT', -.5,18)
+f:RegisterForClicks('Anyup')
+f:RegisterEvent('ADDON_LOADED')
+
+f:SetNormalTexture('Interface\\AddOns\\QulightUI\\Root\\Media\\picomenu\\picomenuNormal')
+f:GetNormalTexture():SetSize(11,8)
+
+f:SetHighlightTexture('Interface\\AddOns\\QulightUI\\Root\\Media\\picomenu\\picomenuHighlight')
+f:GetHighlightTexture():SetAllPoints(f:GetNormalTexture())
+
+f:SetScript('OnMouseDown', function(self)
+    self:GetNormalTexture():ClearAllPoints()
+    self:GetNormalTexture():SetPoint('CENTER', 1, -1)
 end)
 
-Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
+f:SetScript('OnMouseUp', function(self, button)
+    self:GetNormalTexture():ClearAllPoints()
+    self:GetNormalTexture():SetPoint('CENTER')
 
-if not IsAddOnLoaded("Blizzard_TimeManager") then
-	LoadAddOn("Blizzard_TimeManager")
+    if (button == 'LeftButton') then
+        if (self:IsMouseOver()) then
+            if (DropDownList1:IsShown()) then
+                DropDownList1:Hide()
+            else
+                securecall(EasyMenu, menuList, menuFrame, self, 27, 190, 'MENU', 8)
+                -- DropDownList1:ClearAllPoints()
+                -- DropDownList1:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
+            end
+        end
+    else
+        if (self:IsMouseOver()) then
+            ToggleFrame(GameMenuFrame)
+        end
+    end
+
+    GameTooltip:Hide()
+end)
+
+f:SetScript('OnEnter', function(self) 
+    GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 25, -5)
+    GameTooltip:AddLine(MAINMENU_BUTTON)
+    GameTooltip:Show()
+end)
+
+f:SetScript('OnLeave', function() 
+    GameTooltip:Hide()
+end)
 end
-local function Kill(object)
-	if object.UnregisterAllEvents then
-		object:UnregisterAllEvents()
-	end
-	object.Show = dummy
-	object:Hide()
-end
-local clockFrame, clockTime = TimeManagerClockButton:GetRegions()
-clockFrame:Hide()
-clockTime:SetFont("Fonts\\FRIZQT__.ttf", 10, "OUTLINE")
-clockTime:SetTextColor(1,1,1)
-TimeManagerClockButton:SetPoint("BOTTOM", Minimap, "BOTTOM", 0, -1)
-clockTime:Hide()
-TimeManagerClockButton:Hide()
+HelpOpenTicketButton:ClearAllPoints()
+HelpOpenTicketButton:SetPoint('TOPLEFT', f, 'BOTTOMRIGHT', -26, 26)
+HelpOpenTicketButton:SetScale(0.6)
+HelpOpenTicketButton:SetParent(f)

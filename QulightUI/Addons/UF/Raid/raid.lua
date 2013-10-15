@@ -806,12 +806,12 @@ local function Shared(self, unit)
 		self.RaidDebuffs.icon:SetPoint("BOTTOMRIGHT", -2, 2)
 
 		if Qulight.raidframes.plugins_aura_watch_timer == true then
-			self.RaidDebuffs.time = SetFontString(self.RaidDebuffs, Qulight["media"].font, Qulight["raidframes"].fontsize, Qulight["raidframes"].outline)
+			self.RaidDebuffs.time = SetFontString(self.RaidDebuffs, Qulight["media"].pxfont, Qulight["raidframes"].fontsize, Qulight["raidframes"].outline)
 			self.RaidDebuffs.time:SetPoint("CENTER", 1, 1)
 			self.RaidDebuffs.time:SetTextColor(1, 1, 1)
 		end
 
-		self.RaidDebuffs.count = SetFontString(self.RaidDebuffs, Qulight["media"].font, Qulight["raidframes"].fontsize, Qulight["raidframes"].outline)
+		self.RaidDebuffs.count = SetFontString(self.RaidDebuffs, Qulight["media"].pxfont, Qulight["raidframes"].fontsize, Qulight["raidframes"].outline)
 		self.RaidDebuffs.count:SetPoint("BOTTOMRIGHT", self.RaidDebuffs, "BOTTOMRIGHT", 3, -1)
 		self.RaidDebuffs.count:SetTextColor(1, 1, 1)
 
