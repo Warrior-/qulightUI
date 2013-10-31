@@ -1,7 +1,7 @@
 Qulight = { }
 
 _, myclass = UnitClass("player") 
-myname, _ = UnitName("player")
+local myPlayerName  = UnitName("player")
 resolution = GetCurrentResolution()
 getscreenresolution = select(resolution, GetScreenResolutions())
 version = GetAddOnMetadata("QulightUI", "Version")
@@ -10,4 +10,4 @@ client = GetLocale()
 incombat = UnitAffectingCombat("player")
 patch = GetBuildInfo()
 level = UnitLevel("player")
-myrealm = GetRealmName()
+local myPlayerRealm = GetRealmName()

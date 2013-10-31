@@ -53,7 +53,7 @@ Stat:SetFrameLevel(3)
 
 
 local Text  = DataLeftPanel:CreateFontString(nil, "OVERLAY")
-Text:SetFont(Qulight["media"].pxfont, 10, "OVERLAY")
+Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
 PP(Qulight["datatext"].Guild, Text)
 Stat:SetAllPoints(Text)
 Stat:SetParent(Text:GetParent())

@@ -15,7 +15,7 @@ if Qulight["datatext"].Wowtime and Qulight["datatext"].Wowtime > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = DataLeftPanel:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(Qulight["media"].pxfont, 10, "OVERLAY")
+	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
 	PP(Qulight["datatext"].Wowtime, Text)
 	Text:SetShadowColor(0,0,0,1)
     Text:SetShadowOffset(0.5,-0.5)
@@ -32,7 +32,7 @@ if Qulight["datatext"].Wowtime and Qulight["datatext"].Wowtime > 0 then
 					if pendingCalendarInvites > 0 then
 					Text:SetText("|cffFF0000"..Hr24..":"..Min)
 				else
-					Text:SetText(Hr24..":"..Min)
+					Text:SetText(qColor..Hr24..":"..qColor..Min)
 				end
 			else
 				if Hr24>=12 then

@@ -4,7 +4,7 @@ Stat:SetFrameStrata("BACKGROUND")
 Stat:SetFrameLevel(3)
  
 local Text = DataRightPanel:CreateFontString(nil, "OVERLAY")
-Text:SetFont(Qulight["media"].pxfont, 10,  "OVERLAY")
+Text:SetFont(Qulight["media"].font, 10,  "OVERLAY")
 PP(Qulight["datatext"].specswitcher, Text)
  
 local function Update(self)

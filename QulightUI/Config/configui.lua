@@ -1,4 +1,4 @@
-local myPlayerRealm = GetCVar("realmName")
+local myPlayerRealm = GetRealmName()
 local myPlayerName  = UnitName("player")
 
 if not IsAddOnLoaded("Qulight_ConfigUI") then return end

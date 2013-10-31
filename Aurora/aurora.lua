@@ -3689,7 +3689,7 @@ local function QuestSkin()
 		WorldMapQuestScrollFrame.backdrop:SetPoint("BOTTOMRIGHT", 24, -3)				
 	end
 end			
-			
+setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G }))			
 local function FixSkin()
 	KillTex(WorldMapFrame)
 	if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then

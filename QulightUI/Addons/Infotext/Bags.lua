@@ -9,7 +9,7 @@ if Qulight["datatext"].Bags and Qulight["datatext"].Bags > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = DataLeftPanel:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(Qulight["media"].pxfont, 10, "OVERLAY")
+	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
 	PP(Qulight["datatext"].Bags, Text)
 
 	local function OnEvent(self, event, ...)

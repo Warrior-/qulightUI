@@ -329,7 +329,7 @@ local updateFS = function(self, inc, flags, ...)
 	local fstring = self:GetFontString()
 
 	local font, fontSize = inherit:GetFont()
-	fstring:SetFont(Qulight["media"].pxfont, 10, flags)
+	fstring:SetFont(Qulight["media"].font, 10, flags)
 	if((...)) then
 		fstring:SetTextColor(...)
 	end

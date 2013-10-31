@@ -1,6 +1,6 @@
 if not Qulight["minimapp"].enable == true then return end
 
-local font = Qulight["media"].pxfont
+local font = Qulight["media"].font
 local fontsize = 10
 local fontflag = "OUTLINE"
 local Scale = 1
@@ -9,8 +9,8 @@ local classcolors = true -- class color text
 Minimap:ClearAllPoints()
 Minimap:SetPoint("CENTER", minimaplol, "CENTER", 0, 0)
 MinimapCluster:EnableMouse(false)
-Minimap:SetSize(180*Scale, 180*Scale)
-Minimap:SetMaskTexture('Interface\\AddOns\\QulightUI\\Root\\Media\\picomenu\\rectangle')
+Minimap:SetSize(150*Scale, 150*Scale)
+Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 Minimap:SetHitRectInsets(0, 0, 24*Scale, 24*Scale)
 Minimap:SetFrameLevel(4)
 Minimap:SetScale(Scale)
@@ -45,7 +45,7 @@ rd:RegisterEvent("PLAYER_DIFFICULTY_CHANGED")
 rd:RegisterEvent("GUILD_PARTY_STATE_UPDATED")
 
 local rdt = rd:CreateFontString(nil, "OVERLAY")
-rdt:SetPoint("TOP", Minimap, "TOP", 0, -27)
+rdt:SetPoint("TOP", Minimap, "TOP", 0, -5)
 rdt:SetFont(font, fontsize, fontflag)
 
 rd:SetScript("OnEvent", function()
@@ -98,7 +98,7 @@ end
 
 QueueStatusMinimapButton:SetParent(Minimap)
 QueueStatusMinimapButton:ClearAllPoints()
-QueueStatusMinimapButton:SetPoint("TOPRIGHT", 0, -20)
+QueueStatusMinimapButton:SetPoint("TOPRIGHT", 0, 0)
 QueueStatusMinimapButtonBorder:Hide()
 StripTextures(QueueStatusFrame)
 CreateShadow(QueueStatusFrame)
@@ -113,14 +113,14 @@ QueueStatusFrame:HookScript("OnShow", UpdateLFGTooltip)
 QueueStatusFrame:SetFrameStrata("TOOLTIP")
 
 MiniMapMailFrame:ClearAllPoints()
-MiniMapMailFrame:SetPoint("BOTTOMRIGHT", Minimap, 0, 16)
+MiniMapMailFrame:SetPoint("BOTTOMRIGHT", Minimap, 0, 0)
 MiniMapMailFrame:SetFrameStrata("LOW")
 MiniMapMailIcon:SetTexture("Interface\\AddOns\\QulightUI\\Root\\Media\\mail.tga")
 MiniMapMailBorder:Hide()
 
 MiniMapTracking:ClearAllPoints()
 MiniMapTracking:SetParent(Minimap)
-MiniMapTracking:SetPoint('TOPLEFT', 0, -25)
+MiniMapTracking:SetPoint('TOPLEFT', 0, 0)
 MiniMapTracking:SetAlpha(0)
 MiniMapTrackingBackground:Hide()
 MiniMapTrackingButtonBorder:SetTexture(nil)
@@ -218,13 +218,13 @@ if not IsAddOnLoaded("Blizzard_TimeManager") then
 end
 local clockFrame, clockTime = TimeManagerClockButton:GetRegions()
 clockFrame:Hide()
-clockTime:SetFont(Qulight["media"].pxfont, fontsize, fontflag)
+clockTime:SetFont(Qulight["media"].font, fontsize, fontflag)
 clockTime:SetShadowOffset(0,0)
 clockTime:SetTextColor(color.r, color.g, color.b)
 TimeManagerClockButton:ClearAllPoints()
-TimeManagerClockButton:SetPoint("BOTTOM", Minimap, "BOTTOM", -1, 16)
+TimeManagerClockButton:SetPoint("BOTTOM", Minimap, "BOTTOM", 0, -9)
 TimeManagerClockButton:SetScript('OnShow', nil)
-TimeManagerClockButton:Show()
+TimeManagerClockButton:Hide()
 TimeManagerClockButton:SetScript('OnClick', function(self, button)
 	if(button=="RightButton") then
 		if(self.alarmFiring) then
@@ -260,58 +260,6 @@ if CalendarGetNumPendingInvites() ~= 0 then
 	else
 		clockTime:SetTextColor(color.r, color.g, color.b)
 end
-
-local m_coord = CreateFrame("Frame","QuMinimapCoord",minimap)
-m_coord:SetSize(30,15)
-m_coord:SetPoint("TOP", minimaplol2, "TOP", 0,0)
-m_coord:SetFrameLevel(3)
-m_coord:SetFrameStrata("MEDIUM")
-m_coord:SetAlpha(1)
-
-local m_coord_text = m_coord:CreateFontString("QuMinimapCoordText","minimap")
-m_coord_text:SetFont(Qulight["media"].pxfont, fontsize-3, fontflag)
-m_coord_text:SetPoint("BOTTOMRIGHT", minimaplol2, "BOTTOMRIGHT", -2, 3)
-m_coord_text:SetTextColor(color.r, color.g, color.b)
-m_coord_text:SetAlpha(1)
-m_coord_text:SetText("00,00")
- 
-local ela = 0
-local coord_Update = function(self,t)
-	ela = ela - t
-	if ela > 0 then return end
-	local x,y = GetPlayerMapPosition("player")
-	local xt,yt
-	x = math.floor(100 * x)
-	y = math.floor(100 * y)
-	if x == 0 and y == 0 then
-		m_coord_text:SetText("X _ X")
-	else
-		if x < 10 then
-			xt = "0"..x
-		else
-			xt = x
-		end
-		if y < 10 then
-			yt = "0"..y
-		else
-			yt = y
-		end
-		m_coord_text:SetText(xt..","..yt)
-	end
-	ela = .2
-end
-m_coord:SetScript("OnUpdate",coord_Update)	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 local config = {
 ["showPicomenu"] = true,
@@ -454,7 +402,7 @@ local menuList = {
 
 local f = CreateFrame('Button', nil, PicoMenuBar)
 f:SetSize(11,8)
-f:SetPoint('BOTTOMLEFT', Minimap, 'BOTTOMLEFT', -.5,18)
+f:SetPoint('BOTTOMLEFT', Minimap, 'BOTTOMLEFT', 0, 0)
 f:RegisterForClicks('Anyup')
 f:RegisterEvent('ADDON_LOADED')
 

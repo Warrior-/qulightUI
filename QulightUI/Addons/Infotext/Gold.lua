@@ -9,7 +9,7 @@ if Qulight["datatext"].Gold and Qulight["datatext"].Gold > 0 then
 	Stat:SetFrameLevel(3)
 
 	local Text  = DataLeftPanel:CreateFontString(nil, "OVERLAY")
-	Text:SetFont(Qulight["media"].pxfont, 10, "OVERLAY")
+	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
 	PP(Qulight["datatext"].Gold, Text)
 
 	local Profit	= 0
@@ -54,12 +54,13 @@ if Qulight["datatext"].Gold and Qulight["datatext"].Gold > 0 then
 		-- Setup Money Tooltip
 		self:SetAllPoints(Text)
 
-		local myPlayerRealm = GetCVar("realmName");
-		local myPlayerName  = UnitName("player");				
+		local myPlayerRealm = GetRealmName()
+		local myPlayerName  = UnitName("player")
+			
 		if (Data == nil) then Data = {}; end
 		if (Data.gold == nil) then Data.gold = {}; end
 		if (Data.gold[myPlayerRealm]==nil) then Data.gold[myPlayerRealm]={}; end
-		Data.gold[myPlayerRealm][myPlayerName] = GetMoney();
+	    Data.gold[myPlayerRealm][myPlayerName] = GetMoney();
 		
 		self:SetScript("OnEnter", function()
 			

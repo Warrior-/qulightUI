@@ -10,7 +10,7 @@ function PP(p, obj)
 		obj:SetPoint("LEFT", DataLeftPanel, "LEFT", 10, 0)
 	elseif p == 2 then
 		obj:SetHeight(DataLeftPanel:GetHeight())
-		obj:SetPoint("CENTER", DataLeftPanel, "CENTER", 0, 0)
+		obj:SetPoint("CENTER", DataLeftPanel, "CENTER", -40, 0)
 	elseif p == 3 then
 		obj:SetHeight(DataLeftPanel:GetHeight())
 		obj:SetPoint("RIGHT", DataLeftPanel, "RIGHT", -110, 0)
@@ -22,7 +22,7 @@ function PP(p, obj)
 		obj:SetPoint("CENTER", DataRightPanel,"CENTER", -20, 0)
 	elseif p == 6 then
 		obj:SetHeight(DataRightPanel:GetHeight())
-		obj:SetPoint("CENTER", DataRightPanel,"CENTER", 0, 0)
+		obj:SetPoint("CENTER", DataRightPanel,"CENTER", -40, 0)
 	elseif p == 7 then
 		obj:SetHeight(DataLeftPanel:GetHeight())
 		obj:SetPoint("RIGHT", DataLeftPanel,"RIGHT", -10, 0)
@@ -44,8 +44,5 @@ function PP(p, obj)
 	elseif p == 13 then
 		obj:SetHeight(CenterDPSPanel:GetHeight())
 		obj:SetPoint("CENTER", CenterDPSPanel,"CENTER", 0, 0)			
-	elseif p == 14 then
-		obj:SetHeight(minimaplol2:GetHeight())
-		obj:SetPoint("LEFT", minimaplol2, "LEFT", 7, 1)			
 	end
 end
