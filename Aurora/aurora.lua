@@ -1786,7 +1786,10 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 			navButtonFrameLevel(self)
 		end)
-
+setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G }))
+setfenv(FriendsFrame_OnShow, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
+setfenv(SpellBookFrame_OnShow, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
+setfenv(SpellBookFrame_OnHide, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
 		-- Character frame
 
 		F.ReskinPortraitFrame(CharacterFrame, true)

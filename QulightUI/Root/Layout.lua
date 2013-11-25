@@ -70,10 +70,10 @@ end
 
 Anchorminimaplol = CreateFrame("Frame","Move_minimaplol",UIParent)
 Anchorminimaplol:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 3, -3)
-CreateAnchor(Anchorminimaplol, "Move Minimap", 153, 153)
+CreateAnchor(Anchorminimaplol, "Move Minimap", Qulight["minimapp"].size+4, Qulight["minimapp"].size+4)
 	
 local minimaplol = CreateFrame("Frame", "minimaplol", UIParent)
-CreatePanel(minimaplol, 153, 153, "BOTTOMRIGHT", Anchorminimaplol)
+CreatePanel(minimaplol, Qulight["minimapp"].size+4, Qulight["minimapp"].size+4, "BOTTOMRIGHT", Anchorminimaplol)
 CreateShadow(minimaplol)
 minimaplol:SetFrameLevel(2)
 

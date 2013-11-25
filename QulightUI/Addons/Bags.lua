@@ -774,7 +774,6 @@ local function StuffingSlashCmd(Cmd)
 		if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
 			local cnt, full = GetNumBankSlots()
 			if full then
-				Print("No slot")
 				return
 			end
 
@@ -782,11 +781,7 @@ local function StuffingSlashCmd(Cmd)
 				PurchaseSlot()
 				return
 			end
-
-			Print(string.format("Cost: %.2f gold", GetBankSlotCost() / 10000))
-			Print("Buy new slot with /bags purchase yes")
 		else
-			Print("You need to open your bank first.")
 		end
 	end
 end
@@ -1073,13 +1068,11 @@ function Stuffing:SortBags()
 	end
 
 	if total == 0 then
-		print("|cffff0000"..ERROR_CAPS.." - "..ERR_INV_FULL.."|r")
 		return
 	end
 
 	local bs = self.sortBags
 	if #bs < 1 then
-		Print ("Nothing to sort.")
 		return
 	end
 
@@ -1153,7 +1146,6 @@ function Stuffing:SortBags()
 
 	-- Kick off moving of stuff, if needed
 	if st == nil or next(st, nil) == nil then
-		Print("")
 		self:SetScript("OnUpdate", nil)
 	else
 		self.sortList = st
@@ -1220,7 +1212,6 @@ function Stuffing:Restack()
 		self:SetScript("OnUpdate", Stuffing.RestackOnUpdate)
 	else
 		self:SetScript("OnUpdate", nil)
-		Print("")
 	end
 end
 

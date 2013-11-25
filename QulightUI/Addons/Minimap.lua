@@ -9,7 +9,7 @@ local classcolors = true -- class color text
 Minimap:ClearAllPoints()
 Minimap:SetPoint("CENTER", minimaplol, "CENTER", 0, 0)
 MinimapCluster:EnableMouse(false)
-Minimap:SetSize(150*Scale, 150*Scale)
+Minimap:SetSize(Qulight["minimapp"].size,Qulight["minimapp"].size)
 Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 Minimap:SetHitRectInsets(0, 0, 24*Scale, 24*Scale)
 Minimap:SetFrameLevel(4)

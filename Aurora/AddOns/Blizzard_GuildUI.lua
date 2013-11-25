@@ -1,5 +1,5 @@
 local F, C = unpack(select(2, ...))
-
+ 
 C.modules["Blizzard_GuildUI"] = function()
 	local r, g, b = C.r, C.g, C.b
 
@@ -179,7 +179,7 @@ C.modules["Blizzard_GuildUI"] = function()
 	GuildXPBar.bg:SetPoint("BOTTOMRIGHT", GuildXPBar, 0, 1)
 	GuildXPBar.bg:SetFrameLevel(0)
 	F.CreateBD(GuildXPBar.bg, .25)
-
+setfenv(GuildFrame_OnShow, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
 	local perkbuttons = {"GuildLatestPerkButton", "GuildNextPerkButton"}
 	for _, button in pairs(perkbuttons) do
 		local bu = _G[button]

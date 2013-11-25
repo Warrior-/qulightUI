@@ -160,6 +160,7 @@ Qulight["nameplate"] = {
 }
 Qulight["minimapp"] = {
 	["enable"] = true,																	-- enable/disable minimap
+	["size"] = 140,																		-- minimap size
 }
 Qulight["tooltip"] = {
 	["enable"] = true,                      											-- true to enable this mod, false to disable

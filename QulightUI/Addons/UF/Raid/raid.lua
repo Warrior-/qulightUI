@@ -16,7 +16,7 @@ RaidBuffs = {
 	},
 	MONK = {
 		{119611, "TOPRIGHT", {0.2, 0.7, 0.7}},				-- Renewing Mist
-		{132120, "TOPLEFT", {0.4, 0.8, 0.2}},			-- Enveloping Mist
+		{132120, "BOTTOMLEFT", {0.4, 0.8, 0.2}},			-- Enveloping Mist
 		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}},				-- Zen Sphere
 		{116849, "LEFT", {0.81, 0.85, 0.1}, true},			-- Life Cocoon
 	},
@@ -63,9 +63,9 @@ RaidBuffs = {
 		{3411, "TOPRIGHT", {0.89, 0.1, 0.1}},				-- Intervene
 	},
 	ALL = {
-	--	{23333, "LEFT", {1, 0, 0}, true}, 					-- Warsong flag, Horde
-	--	{23335, "LEFT", {0, 0, 1}, true},					-- Warsong flag, Alliance
-	---	{34976, "LEFT", {1, 0, 0}, true}, 					-- Netherstorm Flag
+		{23333, "LEFT", {1, 0, 0}, true}, 					-- Warsong flag, Horde
+		{23335, "LEFT", {0, 0, 1}, true},					-- Warsong flag, Alliance
+		{34976, "LEFT", {1, 0, 0}, true}, 					-- Netherstorm Flag
 	},
 }
 
@@ -84,8 +84,7 @@ RaidDebuffs = {
 -----------------------------------------------------------------
 -- Siege of Orgrimmar
 	-- Immerseus
-	[SpellName(143436)] = 4,	-- Corrosive Blast (Tank switch)
-	[SpellName(143459)] = 3,	-- Sha Residue
+	[SpellName(143436)] = 3,	-- Corrosive Blast (Tank switch)
 	-- The Fallen Protectors
 	[SpellName(143434)] = 4,	-- Shadow Word: Bane (Dispel)
 	[SpellName(143198)] = 3,	-- Garrote (DoT)
@@ -101,7 +100,6 @@ RaidDebuffs = {
 	[SpellName(147207)] = 3,	-- Weakened Resolve (Heroic)
 	-- Galakras
 	[SpellName(147029)] = 3,	-- Flames of Galakrond (DoT)
-	[SpellName(146765)] = 3,	-- Flame Arrows (DoT)
 	[SpellName(146902)] = 3,	-- Poison-Tipped Blades (Poison stacks)
 	-- Iron Juggernaut
 	[SpellName(144467)] = 4,	-- Ignite Armor (Tank stacks)
@@ -115,10 +113,10 @@ RaidDebuffs = {
 	[SpellName(143638)] = 3,	-- Bonecracker (DoT)
 	[SpellName(143431)] = 3,	-- Magistrike (Dispel)
 	-- Malkorok
-	[SpellName(142990)] = 3,	-- Fatal Strike (Tank stacks)
+	[SpellName(142990)] = 4,	-- Fatal Strike (Tank stacks)
 	[SpellName(142864)] = 3,	-- Ancient Barrier
 	[SpellName(142865)] = 3,	-- Strong Ancient Barrier
-	[SpellName(142913)] = 3,	-- Displaced Energy (Dispel)
+	[SpellName(142913)] = 4,	-- Displaced Energy (Dispel)
 	-- Spoils of Pandaria
 	[SpellName(145218)] = 3,	-- Harden Flesh (Dispel)
 	[SpellName(146235)] = 3,	-- Breath of Fire (Dispel)
@@ -133,10 +131,9 @@ RaidDebuffs = {
 	[SpellName(143385)] = 3,	-- Electrostatic Charge (Tank stacks)
 	[SpellName(144236)] = 3,	-- Pattern Recognition
 	-- Paragons of the Klaxxi
-	[SpellName(142929)] = 3,	-- Tenderizing Strikes (Tank stacks)
-	[SpellName(143275)] = 3,	-- Hewn (Tank stacks)
-	[SpellName(143279)] = 3,	-- Genetic Alteration (Tank stacks)
-	[SpellName(143974)] = 3,	-- Shield Bash (Tank stun)
+	[SpellName(143974)] = 4,	-- Shield Bash (Tank stun)
+	[SpellName(142315)] = 4,	-- Caustic Blood (Tank stacks)
+	[SpellName(143701)] = 3,	-- Whirling (DoT)
 	[SpellName(142948)] = 3,	-- Aim
 	-- Garrosh Hellscream
 	[SpellName(145183)] = 3,	-- Gripping Despair (Tank stacks)
@@ -283,15 +280,18 @@ RaidDebuffs = {
 	[SpellName(116525)] = 3,	-- Focused Assault
 -- Sha of Anger
 	[SpellName(119626)] = 3,	-- Aggressive Behavior
+-- Other
+	[SpellName(87023)] = 4,		-- Cauterize
+	[SpellName(94794)] = 4,		-- Rocket Fuel Leak
 -----------------------------------------------------------------
 -- PvP
 -----------------------------------------------------------------
 	-- Death Knight
 	[SpellName(115001)] = 3,	-- Remorseless Winter
 	[SpellName(108194)] = 3,	-- Asphyxiate
-	[SpellName(47476)] = 3,		-- Strangulate
-	[SpellName(91800)] = 3,		-- Gnaw (Ghoul)
 	[SpellName(91797)] = 3,		-- Monstrous Blow (Mutated Ghoul)
+	[SpellName(91800)] = 3,		-- Gnaw (Ghoul)
+	[SpellName(47476)] = 3,		-- Strangulate
 	-- Druid
 	[SpellName(33786)] = 3,		-- Cyclone
 	[SpellName(2637)] = 3,		-- Hibernate
@@ -299,16 +299,17 @@ RaidDebuffs = {
 	[SpellName(78675)] = 3,		-- Solar Beam
 	-- Hunter
 	[SpellName(3355)] = 3,		-- Freezing Trap
+	[SpellName(19386)] = 3,		-- Wyvern Sting
 	[SpellName(117526)] = 3,	-- Binding Shot
+	[SpellName(24394)] = 3,		-- Intimidation
 	[SpellName(1513)] = 3,		-- Scare Beast
 	[SpellName(19503)] = 3,		-- Scatter Shot
 	[SpellName(34490)] = 3,		-- Silence Shot
-	[SpellName(19386)] = 3,		-- Wyvern Sting
 	-- Mage
-	[SpellName(31661)] = 3,		-- Dragon's Breath
+	[SpellName(61305)] = 3,		-- Polymorph
 	[SpellName(82691)] = 3,		-- Ring of Frost
 	[SpellName(44572)] = 3,		-- Deep Freeze
-	[SpellName(61305)] = 3,		-- Polymorph
+	[SpellName(31661)] = 3,		-- Dragon's Breath
 	[SpellName(102051)] = 3,	-- Frostjaw
 	[SpellName(55021)] = 3,		-- Improved Counterspell
 	[SpellName(122)] = 2,		-- Frost Nova
@@ -327,7 +328,6 @@ RaidDebuffs = {
 	[SpellName(113792)] = 3,	-- Psychic Terror
 	[SpellName(64044)] = 3,		-- Psychic Horror
 	[SpellName(15487)] = 3,		-- Silence
-	--[SpellName(6788)] = 3,		-- Silence
 	-- Rogue
 	[SpellName(6770)] = 3,		-- Sap
 	[SpellName(2094)] = 3,		-- Blind
@@ -347,7 +347,7 @@ RaidDebuffs = {
 	-- Warrior
 	[SpellName(46968)] = 3,		-- Shockwave
 	[SpellName(132169)] = 3,	-- Storm Bolt
-	[SpellName(20511)] = 3,		-- Intimidating Shout]]
+	[SpellName(20511)] = 3,		-- Intimidating Shout
 }
 
 RaidDebuffsReverse = {

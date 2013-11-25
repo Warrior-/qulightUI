@@ -1,4 +1,4 @@
-local myPlayerRealm = GetCVar("realmName")
+local myPlayerRealm = GetRealmName()
 local myPlayerName  = UnitName("player")
 
 local ALLOWED_GROUPS = {
