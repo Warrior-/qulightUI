@@ -737,6 +737,7 @@ Filger_Spells = {
 			{spellID = 54706, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Pin (Crab)
 			{spellID = 50245, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 1130, unitID = "target", caster = "player", filter = "DEBUFF"},
 		},
 		{
 			Name = "PVE/PVP_CC",

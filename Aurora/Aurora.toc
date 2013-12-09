@@ -2,11 +2,12 @@
 ## Title: |cff1784d1Aurora for QulightUI|r
 ## Notes: Minimalistic window theme.
 ## Author: Haleth/Freethinker
-## Version: 4.7
+## Version: 5.0.4
 ## SavedVariables: AuroraConfig
 ## RequiredDeps: QulightUI
 
 aurora.lua
+
 
 AddOns\Blizzard_AchievementUI.lua
 AddOns\Blizzard_ArchaeologyUI.lua
@@ -46,9 +47,16 @@ FrameXML\FlexRaidFrame.lua
 FrameXML\Fonts.lua
 FrameXML\LFDFrame.lua
 FrameXML\LFGFrame.lua
+FrameXML\LootHistory.lua
+FrameXML\ModelPreviewFrame.lua
+FrameXML\ProductChoiceFrame.lua
 FrameXML\PVEFrame.lua
 FrameXML\QueueStatusFrame.lua
 FrameXML\RaidFinder.lua
+FrameXML\RecruitAFriendFrame.lua
 FrameXML\RolePoll.lua
 FrameXML\ScenarioFinder.lua
+FrameXML\SpellBookFrame.lua
 FrameXML\StaticPopup.lua
+FrameXML\TaxiFrame.lua
+FrameXML\WorldStateFrame.lua

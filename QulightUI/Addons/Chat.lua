@@ -212,7 +212,7 @@ local function SetupChatPosAndFont(self)
 		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
 		local _, fontSize = FCF_GetChatWindowInfo(id)
 		
-		FCF_SetChatWindowFontSize(nil, chat, 10)	
+		FCF_SetChatWindowFontSize(nil, chat, Qulight["media"].fontsize)	
 		ChatFrame1:ClearAllPoints()
 		ChatFrame1:SetPoint("BOTTOMLEFT", ChatBackground, "BOTTOMLEFT", 6, 22)
 	end	
@@ -329,7 +329,7 @@ local updateFS = function(self, inc, flags, ...)
 	local fstring = self:GetFontString()
 
 	local font, fontSize = inherit:GetFont()
-	fstring:SetFont(Qulight["media"].font, 10, flags)
+	fstring:SetFont(Qulight["media"].font, Qulight["media"].fontsize, flags)
 	if((...)) then
 		fstring:SetTextColor(...)
 	end

@@ -941,7 +941,7 @@ end
 createDebuffs = function(f)
     b = CreateFrame("Frame", nil, f)
     b.size = 20
-	b.num = 12
+	b.num = 7
 	b.onlyShowPlayer = debuffsOnlyShowPlayer
     b.spacing = 5
     b:SetHeight((b.size+b.spacing)*4)
@@ -1810,15 +1810,10 @@ SlashCmdList.TEST_UF = function(msg)
 				_G["oUF_Arena"..i.."Target"].unit = "player"
 				_G["oUF_Arena"..i.."Target"]:Show()
 				_G["oUF_Arena"..i.."Target"]:UpdateAllElements()
-
 				
 					_G["oUF_Arena"..i].Talents:SetText(TALENTS)
-			
-
 				
 			end
-		
-
 		
 			for i = 1, MAX_BOSS_FRAMES do
 				_G["oUF_Boss"..i].Hide = function() end

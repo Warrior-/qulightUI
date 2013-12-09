@@ -31,18 +31,27 @@ function PP(p, obj)
 		obj:SetPoint("RIGHT", DataRightPanel,"RIGHT", -10, 0)
 	elseif p == 9 then
 		obj:SetHeight(DataRightPanel:GetHeight())
-		obj:SetPoint("RIGHT", DataRightPanel,"RIGHT", -90, 0)
+		obj:SetPoint("RIGHT", DataRightPanel,"RIGHT", -70, 0)
 	elseif p == 10 then
 		obj:SetHeight(DataRightPanel:GetHeight())
 		obj:SetPoint("LEFT", righttabpanel,"LEFT", 10, 0)
 	elseif p == 11 then
-		obj:SetHeight(CenterDPSPanel:GetHeight())
-		obj:SetPoint("LEFT", CenterDPSPanel,"LEFT", 10, 0)
+		obj:SetHeight(RightUpInfoPanel:GetHeight())
+		obj:SetPoint("LEFT", RightUpInfoPanel,"LEFT", 10, 0)
 	elseif p == 12 then
-		obj:SetHeight(CenterDPSPanel:GetHeight())
-		obj:SetPoint("RIGHT", CenterDPSPanel,"RIGHT", -10, 0)
+		obj:SetHeight(RightUpInfoPanel:GetHeight())
+		obj:SetPoint("RIGHT", RightUpInfoPanel,"RIGHT", -10, 0)
 	elseif p == 13 then
-		obj:SetHeight(CenterDPSPanel:GetHeight())
-		obj:SetPoint("CENTER", CenterDPSPanel,"CENTER", 0, 0)			
+		obj:SetHeight(RightUpInfoPanel:GetHeight())
+		obj:SetPoint("CENTER", RightUpInfoPanel,"CENTER", 0, 0)
+	elseif p == 14 then
+		obj:SetHeight(LeftUpInfoPanel:GetHeight())
+		obj:SetPoint("LEFT", LeftUpInfoPanel,"LEFT", 10, 0)	
+	elseif p == 15 then
+		obj:SetHeight(LeftUpInfoPanel:GetHeight())
+		obj:SetPoint("RIGHT", LeftUpInfoPanel,"RIGHT", -10, 0)
+	elseif p == 16 then
+		obj:SetHeight(LeftUpInfoPanel:GetHeight())
+		obj:SetPoint("CENTER", LeftUpInfoPanel,"CENTER", 0, 0)			
 	end
 end

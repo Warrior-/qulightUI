@@ -9,7 +9,7 @@ C.modules["Blizzard_TimeManager"] = function()
 	StopwatchTabFrameRight:Hide()
 
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
-	TimeManagerStopwatchCheck:SetCheckedTexture("")
+	TimeManagerStopwatchCheck:SetCheckedTexture(C.media.checked)
 	F.CreateBG(TimeManagerStopwatchCheck)
 
 	TimeManagerAlarmHourDropDown:SetWidth(80)
@@ -17,7 +17,6 @@ C.modules["Blizzard_TimeManager"] = function()
 	TimeManagerAlarmAMPMDropDown:SetWidth(90)
 
 	F.ReskinPortraitFrame(TimeManagerFrame, true)
-	select(9, TimeManagerFrame:GetChildren()):Hide()
 
 	F.CreateBD(StopwatchFrame)
 	F.ReskinDropDown(TimeManagerAlarmHourDropDown)

@@ -294,3 +294,22 @@ if Qulight["general"].autoinvite then
 		end
 end)
 end
+
+local function ForceTaintPopupHide()
+ if GetBuildInfo == "5.4.1" then
+  hooksecurefunc("StaticPopup_Show", function(which)
+   if (which == "ADDON_ACTION_FORBIDDEN") then
+    StaticPopup_Hide(which)
+   end
+  end)
+ end
+end
+
+local Fixes = CreateFrame("Frame")
+Fixes:RegisterEvent("PLAYER_ENTERING_WORLD")
+Fixes:SetScript("OnEvent", function(self, event, ...)
+ if event == "PLAYER_ENTERING_WORLD" then
+  ForceTaintPopupHide()
+  self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+ end
+end)

@@ -4,7 +4,7 @@ if Qulight["datatext"].power and Qulight["datatext"].power > 0 then
 	Stat:SetFrameStrata("BACKGROUND")
 	Stat:SetFrameLevel(3)
 
-	local Text  = CenterDPSPanel:CreateFontString(nil, "OVERLAY")
+	local Text  = LeftUpInfoPanel:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
 	PP(Qulight["datatext"].power, Text)
 

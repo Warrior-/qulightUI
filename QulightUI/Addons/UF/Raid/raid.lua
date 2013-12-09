@@ -793,8 +793,8 @@ local function Shared(self, unit)
 
 		-- Raid debuffs
 		self.RaidDebuffs = CreateFrame("Frame", nil, self)
-		self.RaidDebuffs:SetHeight(30)
-		self.RaidDebuffs:SetWidth(30)
+		self.RaidDebuffs:SetHeight(25)
+		self.RaidDebuffs:SetWidth(25)
 		self.RaidDebuffs:SetPoint("CENTER", self, 0, 1)
 		self.RaidDebuffs:SetFrameStrata("MEDIUM")
 		self.RaidDebuffs:SetFrameLevel(10)

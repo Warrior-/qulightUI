@@ -345,7 +345,7 @@ local menuList = {
         text = PLAYER_V_PLAYER,
         icon = 'Interface\\MINIMAP\\TRACKING\\BattleMaster',
         func = function() 
-            securecall(ToggleFrame, PVPFrame) 
+            securecall(TogglePVPUI, 1) 
         end,
         notCheckable = true,
     },

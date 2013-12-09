@@ -47,7 +47,7 @@ ShiftBarUpdate = function(self)
 end
 
 AnchorShift = CreateFrame("Frame","Move_Shift",UIParent)
-AnchorShift:SetPoint("BOTTOMLEFT", UIParent, 3, 175)
+AnchorShift:SetPoint("BOTTOMLEFT", UIParent, 3, 191)
 CreateAnchor(AnchorShift, "Move Shift", petbuttonsize, petbuttonsize)
 
 -- used for anchor totembar or STANCEbar

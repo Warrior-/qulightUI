@@ -26,7 +26,7 @@ Qulight["actionbar"] = {
 	["petbuttonsize"] = 32,                             -- pet & stance buttons size
 	["buttonspacing"] = 1,                              -- buttons spacing
 	["petbuttonspacing"] = 1,
-	["mainbarWidth"] = 10,		
+	["mainbarWidth"] = 5,		
 	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
 }
 
@@ -39,8 +39,8 @@ Qulight["raidframes"] = {
 	["show_range"] = true,						-- Show range opacity for raidframes
 	["range_alpha"] = 0.5,						-- Alpha of unitframes when unit is out of range
 	["hp_value"] = true,						
-	["width"] = 84,						
-	["height"] = 35,						
+	["width"] = 70,						
+	["height"] = 24,						
 
 	["show_party"] = true,						-- Show party frames
 	["show_raid"] = true,						-- Show raid frames
@@ -75,8 +75,8 @@ Qulight["unitframes"] = {
 	["enable"] = true,																	-- enable/disable action bars
 	["HealthcolorClass"] = false,														-- health color = class color
 	["bigcastbar"] = true,
-		["widthbigcastbar"] = 268,
-		["heightbigcastbar"] = 18,
+		["widthbigcastbar"] = 280,
+		["heightbigcastbar"] = 20,
 	["Powercolor"] = true,																-- power color = class color
 	["showtot"] = true, 																-- show target of target frame
 	["showpet"] = true,																	-- show pet frame
@@ -134,6 +134,8 @@ Qulight["datatext"] = {
 	["mastery"] = 12,
 	["power"] = 13,
 	["crit"] = 0,
+	["hps"] = 0,
+	["dps"] = 16,
 	["Time24"] = true,            														-- set time to 24h format(if wowtime enable)
 	["Localtime"] = true,  																-- local time(if wowtime enable)
 	["classcolor"] = true,																-- class color text info

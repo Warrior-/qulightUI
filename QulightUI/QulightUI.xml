@@ -58,6 +58,8 @@
 	<Script file="Addons\Infotext\power.lua"/>
 	<Script file="Addons\Infotext\mastery.lua"/>
 	<Script file="Addons\Infotext\crit.lua"/>
+	<Script file="Addons\Infotext\dps.lua"/>
+	<Script file="Addons\Infotext\hps.lua"/>
 	
 	<Script file="Addons\AddonManager.lua"/>
 	<Script file="Addons\Bags.lua"/>

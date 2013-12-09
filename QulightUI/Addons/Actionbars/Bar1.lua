@@ -2,6 +2,8 @@ if not Qulight["actionbar"].enable == true then return end
 
 local bar = QuBar1
 local shd = 7
+
+
 if Qulight.actionbar.ownshdbar then shd = 10 end
 
 local Page = {
