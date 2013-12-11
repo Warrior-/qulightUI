@@ -893,10 +893,10 @@ CompactRaidFrameManager:UnregisterAllEvents()
 					"maxColumns", 5,
 					"unitsPerColumn", 1,
 					"columnSpacing", 5,
-					"columnAnchorPoint", "TOP"
+					"columnAnchorPoint", "LEFT"
 				)
 				if i == 1 then
-					raidgroup:SetPoint("TOP", Anchorraid, Qulight.raidframes.raid_heal)
+					raidgroup:SetPoint("TOPLEFT", Anchorraid, Qulight.raidframes.raid_heal)
 				else
 					raidgroup:SetPoint("TOPLEFT", raid[i-1], "TOPRIGHT", 5, 0)
 				end
@@ -924,7 +924,7 @@ CompactRaidFrameManager:UnregisterAllEvents()
 					"columnAnchorPoint", "LEFT"
 				)
 				if i == 1 then
-					raidgroup:SetPoint("TOP", Anchorraid, Qulight.raidframes.raid_heal)
+					raidgroup:SetPoint("TOPLEFT", Anchorraid, Qulight.raidframes.raid_heal)
 				else
 					raidgroup:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -5)
 				end

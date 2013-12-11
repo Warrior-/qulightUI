@@ -435,6 +435,30 @@ gen_ppbar = function(f)
     f.Power = s
     f.Power.bg = b
 end
+
+gen_focusbar = function(f)
+  --[[  local s1 = CreateFrame("StatusBar", nil, f)
+    s1:SetStatusBarTexture(powerbar_texture)
+	s1:GetStatusBarTexture():SetHorizTile(true)
+	fixStatusbar(s1)
+	s1.Smooth = true
+	s1:SetHeight(4)
+	s1:SetFrameLevel(4)
+    s1:SetPoint("BOTTOM", UIParent,"BOTTOM",0,1)
+	local h = CreateFrame("Frame", nil, s1)
+	s1:SetPoint("BOTTOM",UIParent,"BOTTOM", 0, 330)
+	h:SetFrameLevel(3)
+	s1:SetWidth(212)
+	h:SetPoint("TOPLEFT",-5,5)
+	h:SetPoint("BOTTOMRIGHT",5,-5)
+	CreateShadow00(h)
+
+    local b1 = s1:CreateTexture(nil, "BACKGROUND")
+    b1:SetTexture(powerbar_texture)
+    b1:SetAllPoints(s1)
+    f.Power = s1
+    f.Power.bg = b1 --]]
+end
 gen_portrait = function(f)
 	local portrait = CreateFrame("PlayerModel", nil, f)
 	portrait.PostUpdate = function(f) f:SetAlpha(0) f:SetAlpha(1) end 
@@ -1410,6 +1434,7 @@ local function CreatePlayerStyle(self, unit, isSingle)
 	gen_hpstrings(self)
 	gen_highlight(self)
 	gen_ppbar(self)
+	gen_focusbar(self)
 	gen_RaidMark(self)
 	createDebuffs(self)
 	if Qulight["unitframes"].showPlayerAuras then
@@ -1435,6 +1460,7 @@ local function CreatePlayerStyle(self, unit, isSingle)
 	gen_InfoIcons(self)
 	TotemBars(self)
 	Magebars(self)
+	
 	Experience(self)
 	Reputation(self)
 	AltPowerBar(self)
