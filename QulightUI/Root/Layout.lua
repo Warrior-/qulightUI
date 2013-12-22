@@ -3,10 +3,6 @@ buttonspacing = Qulight["actionbar"].buttonspacing
 petbuttonsize = Qulight["actionbar"].petbuttonsize
 petbuttonspacing = Qulight["actionbar"].petbuttonspacing
 
----------------------
---Panels
----------------------
-
 if Qulight["general"].topbottompanel then
 	local BottomPanel = CreateFrame("Frame", "BottomPanel", UIParent)
 	CreatePanel(BottomPanel, 4000, 25, "BOTTOM", 0, -5)

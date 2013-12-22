@@ -1,0 +1,57 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+		
+	<Script file='aurora.lua' />
+
+	<Script file='AddOns\Blizzard_AchievementUI.lua' />
+	<Script file='AddOns\Blizzard_ArchaeologyUI.lua' />
+	<Script file='AddOns\Blizzard_AuctionUI.lua' />
+	<Script file='AddOns\Blizzard_BarbershopUI.lua' />
+	<Script file='AddOns\Blizzard_BattlefieldMinimap.lua' />
+	<Script file='AddOns\Blizzard_BindingUI.lua' />
+	<Script file='AddOns\Blizzard_BlackMarketUI.lua' />
+	<Script file='AddOns\Blizzard_Calendar.lua' />
+	<Script file='AddOns\Blizzard_ChallengesUI.lua' />
+	<Script file='AddOns\Blizzard_DebugTools.lua' />
+	<Script file='AddOns\Blizzard_EncounterJournal.lua' />
+	<Script file='AddOns\Blizzard_GlyphUI.lua' />
+	<Script file='AddOns\Blizzard_GMSurveyUI.lua' />
+	<Script file='AddOns\Blizzard_GuildBankUI.lua' />
+	<Script file='AddOns\Blizzard_GuildControlUI.lua' />
+	<Script file='AddOns\Blizzard_GuildUI.lua' />
+	<Script file='AddOns\Blizzard_InspectUI.lua' />
+	<Script file='AddOns\Blizzard_ItemAlterationUI.lua' />
+	<Script file='AddOns\Blizzard_ItemSocketingUI.lua' />
+	<Script file='AddOns\Blizzard_ItemUpgradeUI.lua' />
+	<Script file='AddOns\Blizzard_LookingForGuildUI.lua' />
+	<Script file='AddOns\Blizzard_MacroUI.lua' />
+	<Script file='AddOns\Blizzard_PetJournal.lua' />
+	<Script file='AddOns\Blizzard_PVPUI.lua' />
+	<Script file='AddOns\Blizzard_QuestChoice.lua' />
+	<Script file='AddOns\Blizzard_ReforgingUI.lua' />
+	<Script file='AddOns\Blizzard_TalentUI.lua' />
+	<Script file='AddOns\Blizzard_TimeManager.lua' />
+	<Script file='AddOns\Blizzard_TradeSkillUI.lua' />
+	<Script file='AddOns\Blizzard_TrainerUI.lua' />
+	<Script file='AddOns\Blizzard_VoidStorageUI.lua' />
+	<Script file='AddOns\Recount.lua' />
+
+	<Script file='FrameXML\AlertFrames.lua' />
+	<Script file='FrameXML\FlexRaidFrame.lua' />
+	<Script file='FrameXML\Fonts.lua' />
+	<Script file='FrameXML\LFDFrame.lua' />
+	<Script file='FrameXML\LFGFrame.lua' />
+	<Script file='FrameXML\LootHistory.lua' />
+	<Script file='FrameXML\ModelPreviewFrame.lua' />
+	<Script file='FrameXML\ProductChoiceFrame.lua' />
+	<Script file='FrameXML\PVEFrame.lua' />
+	<Script file='FrameXML\QueueStatusFrame.lua' />
+	<Script file='FrameXML\RaidFinder.lua' />
+	<Script file='FrameXML\RecruitAFriendFrame.lua' />
+	<Script file='FrameXML\RolePoll.lua' />
+	<Script file='FrameXML\ScenarioFinder.lua' />
+	<Script file='FrameXML\SpellBookFrame.lua' />
+	<Script file='FrameXML\StaticPopup.lua' />
+	<Script file='FrameXML\TaxiFrame.lua' />
+	<Script file='FrameXML\WorldStateFrame.lua' />
+	
+</Ui>

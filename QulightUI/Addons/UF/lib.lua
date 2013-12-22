@@ -965,7 +965,7 @@ end
 createDebuffs = function(f)
     b = CreateFrame("Frame", nil, f)
     b.size = 20
-	b.num = 7
+	b.num = 6
 	b.onlyShowPlayer = debuffsOnlyShowPlayer
     b.spacing = 5
     b:SetHeight((b.size+b.spacing)*4)

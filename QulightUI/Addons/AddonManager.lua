@@ -156,7 +156,7 @@ end
 
 local showb = CreateFrame("Button", "GameMenuButtonAddonManager", GameMenuFrame, "GameMenuButtonTemplate")
 showb:SetText(ADDONS)
-showb:SetPoint("TOP", "GameMenuButtonOptions", "BOTTOM", 0, -1)
+showb:SetPoint("TOP", "GameMenuFrame", "TOP", 0, -47)
 
 GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + showb:GetHeight())
 GameMenuButtonUIOptions:SetPoint("TOP", showb, "BOTTOM", 0, -1)

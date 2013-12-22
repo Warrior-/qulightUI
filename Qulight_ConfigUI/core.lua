@@ -76,6 +76,8 @@ local function Local(o)
 	if o == "QulightConfigUIunitframesHealthcolorClass" then o = QulightL.option_unitframes_HealthcolorClass end
 	if o == "QulightConfigUIunitframesPowercolor" then o = QulightL.option_unitframes_Powercolor end
 	if o == "QulightConfigUIunitframesbigcastbar" then o = QulightL.option_unitframes_bigcastbar end
+	if o == "QulightConfigUIunitframeswidthbigcastbar" then o = QulightL.option_unitframes_widthbigcastbar end
+	if o == "QulightConfigUIunitframesheightbigcastbar" then o = QulightL.option_unitframes_heightbigcastbar end	
 	
 	--raidframes
 	if o == "QulightConfigUIraidframes" then o = QulightL.option_raidframes end
@@ -125,7 +127,6 @@ local function Local(o)
 	if o == "QulightConfigUIraidframesshow_spiral" then o = QulightL.option_raidframes_show_spiral end
 	if o == "QulightConfigUIraidframesdebuff_color_type" then o = QulightL.option_raidframes_debuff_color_type end
 	
-	
 	--media
 	if o == "QulightConfigUImedia" then o = QulightL.option_media end
 	if o == "QulightConfigUImediafont" then o = QulightL.option_media_font end
@@ -158,8 +159,6 @@ local function Local(o)
 	if o == "QulightConfigUIdatatextmastery" then o = QulightL.option_datatext_mastery end
 	if o == "QulightConfigUIdatatexthaste" then o = QulightL.option_datatext_haste end
 	if o == "QulightConfigUIdatatextcrit" then o = QulightL.option_datatext_crit end
-
-
 
 	--loot
 	if o == "QulightConfigUIloot" then o = QulightL.option_loot end
@@ -214,6 +213,8 @@ local function Local(o)
 	if o == "QulightConfigUIaddonskinsQuartz" then o = QulightL.option_addonsskins_Quartz end		
 	if o == "QulightConfigUIaddonskinsBigwigs" then o = QulightL.option_addonsskins_Bigwigs end	
 	if o == "QulightConfigUIaddonskinsDXE" then o = QulightL.option_addonsskins_DXE end	
+	if o == "QulightConfigUIaddonskinsAurora" then o = QulightL.option_addonsskins_Aurora end	
+	if o == "QulightConfigUIaddonskinsCoolLine" then o = QulightL.option_addonsskins_CoolLine end	
 	--nameplates
 	if o == "QulightConfigUInameplate" then o = QulightL.option_nameplates end
 	if o == "QulightConfigUInameplateenable" then o = QulightL.option_nameplates_enable end
@@ -737,10 +738,9 @@ end
 
 local quuuu = CreateFrame("Button", "GameMenuButtonQulightUI", GameMenuFrame, "GameMenuButtonTemplate")
 quuuu:SetText("Qulight UI")
-quuuu:SetPoint("TOP", "GameMenuButtonHelp", "BOTTOM", 0, -1)
+quuuu:SetPoint("TOP", "GameMenuFrame", "TOP", 0, -25)
 
 GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + quuuu:GetHeight())
-GameMenuButtonOptions:SetPoint("TOP", quuuu, "BOTTOM", 0, -1)
 
 quuuu:SetScript("OnClick", function()
 	HideUIPanel(GameMenuFrame)

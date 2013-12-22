@@ -1,8 +1,7 @@
 ## Interface: 50400
 ## Title: |cff1784d1Qulight Config UI|r
 ## Notes: Someday there is only pantesaur left.
-## Author: Tohveli
-## Editor: Qulight
+## Author: Qulight
 ## SavedVariables: QulightConfigAll, QulightConfigSettings
 ## SavedVariablesPerCharacter: QulightConfig
 ## RequiredDeps: QulightUI

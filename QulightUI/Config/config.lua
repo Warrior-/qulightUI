@@ -109,7 +109,8 @@ Qulight["buffdebuff"] = {
 	["timeYoffset"] = -2, 																-- verticall offset value for time text field
 	["BUFFS_PER_ROW"] = 15,
 }
-Qulight["addonskins"] = {				 
+Qulight["addonskins"] = {
+	["Aurora"] = true, 			 
 	["DBM"] = true, 																	-- Deadly Boss Mod skinning
 	["PallyPower"] = true, 																-- Pally Power skinning
 	["Skada"] = true, 																	-- Skada skinning

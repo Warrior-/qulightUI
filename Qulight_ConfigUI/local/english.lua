@@ -12,7 +12,7 @@
 	QulightL.option_general_BlizzardsErrorFrameHiding = "Hide spamming error at the middle of your screen"
 	QulightL.option_general_topbottompanel = "Top/Bottom panels"
 	QulightL.option_general_autoinvite = "Autoinvite"
-		QulightL.option_general_centerpanel = "DPS Info Stats"
+	QulightL.option_general_centerpanel = "DPS Info Stats"
 	
 	-- Unitframes
 	QulightL.option_unitframes = "Unit Frames"
@@ -173,6 +173,8 @@
 	QulightL.option_addonsskins_Quartz = "Quartz"		
 	QulightL.option_addonsskins_Bigwigs = "Bigwigs(/bigwigstest apply)"
 	QulightL.option_addonsskins_DXE = "DXE(Deus Vox Encounters)"
+	QulightL.option_addonsskins_Aurora = "Aurora"
+	QulightL.option_addonsskins_CoolLine = "CoolLine"
 	--nameplates
 	--nameplates
 	QulightL.option_nameplates = "Nameplates"

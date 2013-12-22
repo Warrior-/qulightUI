@@ -164,17 +164,17 @@
 	QulightL.option_buffs_BUFFS_PER_ROW = "Количество бафов в ряду" 
 	--addonskinning
 	QulightL.option_addonsskins = "Скининг Аддонов"
-	QulightL.option_addonsskins_DBM = "DBM(/dbmskin apply)"
+	QulightL.option_addonsskins_DBM = "DBM (/dbmskin apply)"
 	QulightL.option_addonsskins_PallyPower = "PallyPower" 
 	QulightL.option_addonsskins_Skada = "Skada" 
 	QulightL.option_addonsskins_Recount = "Recount"
 	QulightL.option_addonsskins_Omen = "Omen"
 	QulightL.option_addonsskins_KLE = "KLE"	
 	QulightL.option_addonsskins_Quartz = "Quartz"		
-	QulightL.option_addonsskins_Bigwigs = "Bigwigs(/bigwigstest apply)"
-	QulightL.option_addonsskins_DXE = "DXE(Deus Vox Encounters)"
-	
-	
+	QulightL.option_addonsskins_Bigwigs = "Bigwigs (/bigwigstest apply)"
+	QulightL.option_addonsskins_DXE = "DXE (Deus Vox Encounters)"
+	QulightL.option_addonsskins_Aurora = "Aurora"
+	QulightL.option_addonsskins_CoolLine = "CoolLine"
 	--nameplates
 	QulightL.option_nameplates = "Неймплейты"
 	QulightL.option_nameplates_enable  = "Включить неймплейты"

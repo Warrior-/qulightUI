@@ -198,7 +198,7 @@ CreateShadow(BNToastFrame)
 
 BNToastFrame:HookScript("OnShow", function(self)
 	self:ClearAllPoints()
-	self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", -6, 32)
+	self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", -6, 82)
 end)
 
 local function SetupChatPosAndFont(self)	

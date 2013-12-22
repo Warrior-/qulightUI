@@ -26,7 +26,9 @@
 	<Script file="Root\Tweaks.lua"/>
 	<Script file="Root\TimeTracker.lua"/>
 	<Script file="Root\Mirror.lua"/>
-			
+
+	<Include file="Addons\Aurora\Aurora.xml"/>		
+	
 	<Script file="Addons\Actionbars\Hide.lua"/>
 	<Script file="Addons\Actionbars\Bar1.lua"/>
 	<Script file="Addons\Actionbars\Bar2.lua"/>
