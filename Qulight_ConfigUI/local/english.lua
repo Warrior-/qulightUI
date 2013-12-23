@@ -12,7 +12,7 @@
 	QulightL.option_general_BlizzardsErrorFrameHiding = "Hide spamming error at the middle of your screen"
 	QulightL.option_general_topbottompanel = "Top/Bottom panels"
 	QulightL.option_general_autoinvite = "Autoinvite"
-	QulightL.option_general_centerpanel = "DPS Info Stats"
+	QulightL.option_general_centerpanel = "Left, Right DPS Info Stats"
 	
 	-- Unitframes
 	QulightL.option_unitframes = "Unit Frames"

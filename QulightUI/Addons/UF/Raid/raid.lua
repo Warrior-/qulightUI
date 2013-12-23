@@ -1,10 +1,4 @@
-----------------------------------------------------------------------------------------
 
-----------------------------------------------------------------------------------------
---	The best way to add or delete spell is to go at www.wowhead.com, search for a spell.
---	Example: Weakened Soul -> http://www.wowhead.com/spell=6788
---	Take the number ID at the end of the URL, and add it to the list
-----------------------------------------------------------------------------------------
 RaidBuffs = {
 	DRUID = {
 		{774, "TOPRIGHT", {0.8, 0.4, 0.8}},					-- Rejuvenation
@@ -375,7 +369,6 @@ SpawnMenu = function(self)
 	end
 end
 
-
 PostUpdateRaidHealth = function(health, unit, min, max)
 	local self = health:GetParent()
 	local power = self.Power
@@ -476,9 +469,6 @@ UpdateThreat = function(self, event, unit)
 	local threat = UnitThreatSituation(self.unit)
 	if threat and threat > 1 then
 		r, g, b = GetThreatStatusColor(threat)
-		
-	else
-
 	end
 end
 
@@ -652,11 +642,14 @@ local function Shared(self, unit)
 		if Qulight.raidframes.power == true then
 		-- Power bar
 		self.Power = CreateFrame("StatusBar", nil, self)
-		self.Power:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 0, 0)
-		self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, 0)
-		self.Power:SetPoint("TOP", self, "BOTTOM", 0, 3)
+		self.Power:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT", 3, 3)
+		self.Power:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -3, 3)
+		self.Power:SetPoint("TOP", self, "BOTTOM", 0, 6)
 		self.Power:SetStatusBarTexture(Qulight.media.texture)
 		self.Power:SetFrameStrata("MEDIUM")
+		
+		self.Power:SetWidth(unit_width)
+		
 		self.Power:SetFrameLevel(10)
 		self.Power.frequentUpdates = true
 		self.Power.colorDisconnected = true
@@ -866,7 +859,7 @@ CompactRaidFrameManager:UnregisterAllEvents()
 			"point", "LEFT"
 		)
 		if Qulight.raidframes.player_in_party == true then
-			party:SetPoint("TOP", Anchorraid, Qulight.raidframes.party_heal)
+			party:SetPoint("TOPLEFT", Anchorraid, Qulight.raidframes.party_heal)
 		else
 			party:SetPoint(Qulight.raidframes.party_heal[1], Qulight.raidframes.party_heal[2], Qulight.raidframes.party_heal[3], Qulight.raidframes.party_heal[4] + 32, Qulight.raidframes.party_heal[5])
 		end
@@ -893,7 +886,7 @@ CompactRaidFrameManager:UnregisterAllEvents()
 					"maxColumns", 5,
 					"unitsPerColumn", 1,
 					"columnSpacing", 5,
-					"columnAnchorPoint", "LEFT"
+					"columnAnchorPoint", "TOP"
 				)
 				if i == 1 then
 					raidgroup:SetPoint("TOPLEFT", Anchorraid, Qulight.raidframes.raid_heal)

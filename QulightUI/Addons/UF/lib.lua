@@ -565,30 +565,6 @@ function ChangedTarget(self, event, unit)
 		self.TargetBorder:Hide()
 	end
 end
-function CreateThreatBorder(self)
-	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 2}
-	self.Thtborder = CreateFrame("Frame", nil, self)
-	self.Thtborder:SetPoint("TOPLEFT", self, "TOPLEFT", -2, 2)
-	self.Thtborder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 2, -2)
-	self.Thtborder:SetBackdrop(glowBorder)
-	self.Thtborder:SetFrameLevel(1)
-	self.Thtborder:Hide()	
-end
-local UpdateThreat = function(self, event, unit)
-    if(unit ~= self.unit) then return end
-
-    local status = UnitThreatSituation(unit)
-
-    if(status and status > 1) then
-        local r, g, b = GetThreatStatusColor(status)
-        self.Threat:SetBackdropBorderColor(r, g, b, 1)
-        self.border:SetBackdropColor(r, g, b, 1)
-    else
-        self.Threat:SetBackdropBorderColor(0, 0, 0, 1)
-        self.border:SetBackdropColor(0, 0, 0, 1)
-    end
-    self.Threat:Show()
-end
 gen_castbar = function(f)
 	if not Qulight["unitframes"].Castbars then return end
 	local cbColor = {.15,.15,.15}

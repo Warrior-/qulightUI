@@ -2,6 +2,8 @@
 -- SUPPORT FOR DPS Feed... 
 --------------------------------------------------------------------
 
+if Qulight["general"].centerpanel then
+
 if Qulight["datatext"].dps and Qulight["datatext"].dps > 0 then
 	local events = {SWING_DAMAGE = true, RANGE_DAMAGE = true, SPELL_DAMAGE = true, SPELL_PERIODIC_DAMAGE = true, DAMAGE_SHIELD = true, DAMAGE_SPLIT = true, SPELL_EXTRA_ATTACKS = true}
 	local DPS_FEED = CreateFrame("Frame")
@@ -95,4 +97,5 @@ if Qulight["datatext"].dps and Qulight["datatext"].dps > 0 then
 		dmg_total = 0
 		last_dmg_amount = 0
 	end)
+end
 end

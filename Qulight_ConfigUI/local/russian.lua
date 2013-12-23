@@ -14,7 +14,7 @@
 	QulightL.option_general_BlizzardsErrorFrameHiding = "Прятать сообщения об ошибках посреди экрана"
 	QulightL.option_general_topbottompanel = "Вкл/выкл верхнию и нижнюю панельку"
 	QulightL.option_general_autoinvite = "Вкл/выкл автопринятие инвайта от друзей/согильдейцев"
-	QulightL.option_general_centerpanel = "Вкл/выкл центральной панели под дпс статы"
+	QulightL.option_general_centerpanel = "Вкл/выкл боковые панели под дпс статы"
 	-- Unitframes
 	QulightL.option_unitframes = "Юнитфреймы"
 	QulightL.option_unitframes_enable = "Включить рамки юнитов"
