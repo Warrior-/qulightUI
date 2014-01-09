@@ -663,6 +663,8 @@ Filger_Spells = {
 			-- Mend Pet
 			{spellID = 136, unitID = "pet", caster = "player", filter = "BUFF"},
 
+			{spellID = 137596, unitID = "player", caster = "player", filter = "BUFF"},
+			
 			-- Trinkets
 			-- General
 			-- Darkmoon Cards (Proc)

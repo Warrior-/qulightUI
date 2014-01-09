@@ -647,7 +647,7 @@ local function Shared(self, unit)
 		self.Power:SetPoint("TOP", self, "BOTTOM", 0, 6)
 		self.Power:SetStatusBarTexture(Qulight.media.texture)
 		self.Power:SetFrameStrata("MEDIUM")
-		
+		CreateShadowforInfoPanel(self.Power)
 		self.Power:SetWidth(unit_width)
 		
 		self.Power:SetFrameLevel(10)

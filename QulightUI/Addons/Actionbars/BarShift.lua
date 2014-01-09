@@ -58,6 +58,7 @@ bar:SetHeight(petbuttonsize/2)
 bar:SetFrameStrata("MEDIUM")
 bar:SetMovable(true)
 bar:SetClampedToScreen(true)
+bar:SetAlpha(0.5)
 
 -- hide it if not needed and stop executing code
 if Qulight.actionbar.hideSTANCE then bar:Hide() return end

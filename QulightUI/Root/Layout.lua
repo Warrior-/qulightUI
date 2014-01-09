@@ -83,7 +83,7 @@ if Qulight["actionbar"].enable then
 	local mbWidth = Qulight.actionbar.mainbarWidth
 	
 	AnchorQuBar1 = CreateFrame("Frame","Move_Bar1",UIParent)
-	AnchorQuBar1:SetPoint("TOPRIGHT", UIParent, "BOTTOM", -239, 289)
+	AnchorQuBar1:SetPoint("TOPRIGHT", UIParent, "BOTTOM", -202, 289)
 	CreateAnchor(AnchorQuBar1, "Move Bar1", (buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)), buttonsize)
 
 	local QuBar1 = CreateFrame("Frame", "QuBar1", UIParent, "SecureHandlerStateTemplate")
@@ -108,7 +108,7 @@ if Qulight["actionbar"].enable then
 	QuBar3:SetFrameLevel(2)
 
 	AnchorQuBar5 = CreateFrame("Frame","Move_Bar5",UIParent)
-	AnchorQuBar5:SetPoint("TOPRIGHT", UIParent, "BOTTOM", -239, 254)
+	AnchorQuBar5:SetPoint("TOPRIGHT", UIParent, "BOTTOM", -202, 254)
 	CreateAnchor(AnchorQuBar5, "Move Bar5", (buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)), buttonsize)
 	
 	local QuBar5 = CreateFrame("Frame", "QuBar5", UIParent)

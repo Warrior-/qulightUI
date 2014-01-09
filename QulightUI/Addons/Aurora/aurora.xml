@@ -40,6 +40,7 @@
 	<Script file='FrameXML\Fonts.lua' />
 	<Script file='FrameXML\LFDFrame.lua' />
 	<Script file='FrameXML\LFGFrame.lua' />
+	<Script file='FrameXML\LFRFrame.lua' />
 	<Script file='FrameXML\LootHistory.lua' />
 	<Script file='FrameXML\ModelPreviewFrame.lua' />
 	<Script file='FrameXML\ProductChoiceFrame.lua' />

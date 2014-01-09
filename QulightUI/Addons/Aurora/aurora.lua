@@ -2,8 +2,6 @@ if not Qulight["addonskins"].Aurora == true then return end
 
 local alpha, useButtonGradientColour
 
--- [[ Core ]]
-
 setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G }))
 setfenv(FriendsFrame_OnShow, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
 setfenv(SpellBookFrame_OnShow, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
@@ -1301,6 +1299,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		end)
 
 		F.CreateBD(ReputationDetailFrame)
+		F.CreateSD(ReputationDetailFrame)
 		F.ReskinClose(ReputationDetailCloseButton)
 		F.ReskinCheck(ReputationDetailAtWarCheckBox)
 		F.ReskinCheck(ReputationDetailInactiveCheckBox)
@@ -3320,14 +3319,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		end
 
 		F.ReskinClose(DressUpFrameCloseButton, "TOPRIGHT", DressUpFrame, "TOPRIGHT", -38, -16)
-	
-	GameMenuButtonHelp:ClearAllPoints()
-	GameMenuButtonHelp:SetPoint("TOP", "GameMenuFrame", "TOP", 0, -69)
-	
-	GameMenuButtonStore:ClearAllPoints()
-	GameMenuButtonStore:SetPoint("TOP", "GameMenuFrame", "TOP", 0, -91)
-	
-	GameMenuButtonContinue:ClearAllPoints()
 	end
 end)
 
@@ -3415,9 +3406,7 @@ WorldMapLevelUpButton:SetPoint("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2,
 WorldMapLevelDownButton:SetPoint("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)
 			
 SkinCheckBox(WorldMapTrackQuest)
---SkinCheckBox(WorldMapShowDropDown)
---SkinCheckBox(WorldMapShowDigSites)
-			
+
 --Mini
 local function SmallSkin()
 	WorldMapLevelDropDown:ClearAllPoints()
@@ -3591,9 +3580,6 @@ local Delay = CreateFrame("Frame")
 Delay:RegisterEvent("PLAYER_ENTERING_WORLD")
 Delay:SetScript("OnEvent", function()
 	Delay:UnregisterEvent("PLAYER_ENTERING_WORLD")
-
-	
-		-- pet battle stuff
 
 		local tooltips = {PetBattlePrimaryAbilityTooltip, PetBattlePrimaryUnitTooltip, FloatingBattlePetTooltip, BattlePetTooltip, FloatingPetBattleAbilityTooltip}
 		for _, f in pairs(tooltips) do

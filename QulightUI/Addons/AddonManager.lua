@@ -161,6 +161,14 @@ showb:SetPoint("TOP", "GameMenuFrame", "TOP", 0, -47)
 GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + showb:GetHeight())
 GameMenuButtonUIOptions:SetPoint("TOP", showb, "BOTTOM", 0, -1)
 
+GameMenuButtonHelp:ClearAllPoints()
+GameMenuButtonHelp:SetPoint("TOP", "GameMenuFrame", "TOP", 0, -69)
+	
+GameMenuButtonStore:ClearAllPoints()
+GameMenuButtonStore:SetPoint("TOP", "GameMenuFrame", "TOP", 0, -91)
+	
+GameMenuButtonContinue:ClearAllPoints()
+	
 showb:SetScript("OnClick", function()
 	PlaySound("igMainMenuOption")
 	HideUIPanel(GameMenuFrame)

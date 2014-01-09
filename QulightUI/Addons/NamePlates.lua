@@ -562,7 +562,7 @@ local function SkinObjects(frame, nameFrame)
 		frame.class = cIconTex
 
 		frame.class.Glow = CreateFrame("Frame", nil, frame)
-		frame.class.Glow:SetTemplate("Transparent")
+		CreateShadow(frame.class.Glow)
 		frame.class.Glow:SetScale(noscalemult)
 		frame.class.Glow:SetPoint("TOPLEFT", frame.class, "TOPLEFT", 0, 0)
 		frame.class.Glow:SetPoint("BOTTOMRIGHT", frame.class, "BOTTOMRIGHT", 0, 0)
