@@ -26,7 +26,7 @@ Qulight["actionbar"] = {
 	["petbuttonsize"] = 32,                             -- pet & stance buttons size
 	["buttonspacing"] = 1,                              -- buttons spacing
 	["petbuttonspacing"] = 1,
-	["mainbarWidth"] = 5,		
+	["mainbarWidth"] = 10,		
 	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
 }
 
@@ -39,8 +39,8 @@ Qulight["raidframes"] = {
 	["show_range"] = true,						-- Show range opacity for raidframes
 	["range_alpha"] = 0.5,						-- Alpha of unitframes when unit is out of range
 	["hp_value"] = false,						
-	["width"] = 82,						
-	["height"] = 27,						
+	["width"] = 80,						
+	["height"] = 32.9,						
 
 	["show_party"] = true,						-- Show party frames
 	["show_raid"] = true,						-- Show raid frames
@@ -75,7 +75,7 @@ Qulight["unitframes"] = {
 	["enable"] = true,																	-- enable/disable action bars
 	["HealthcolorClass"] = false,														-- health color = class color
 	["bigcastbar"] = true,
-		["widthbigcastbar"] = 280,
+		["widthbigcastbar"] = 340,
 		["heightbigcastbar"] = 20,
 	["Powercolor"] = true,																-- power color = class color
 	["showtot"] = true, 																-- show target of target frame

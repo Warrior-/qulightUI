@@ -539,13 +539,23 @@ end
 
 
 if Qulight["tooltip"].itemlevel then
-
-local UPDATED = CANNOT_COOPERATE_LABEL -- '*'
+----------------------------------------------------------------------------------------
+--	Equipped average item level(EquippedItemLevel by Villiv)
+----------------------------------------------------------------------------------------
+-- Additional strings
 local WAITING = CONTINUED
 local PENDING = CONTINUED..CONTINUED
 
+local upgrades = {
+	["1"] = 8, ["373"] = 4, ["374"] = 8, ["375"] = 4, ["376"] = 4, ["377"] = 4,
+	["379"] = 4, ["380"] = 4, ["446"] = 4, ["447"] = 8, ["452"] = 8, ["454"] = 4,
+	["455"] = 8, ["457"] = 8, ["459"] = 4, ["460"] = 8, ["461"] = 12, ["462"] = 16,
+	["466"] = 4, ["467"] = 8, ["469"] = 4, ["470"] = 8, ["471"] = 12, ["472"] = 16,
+	["477"] = 4, ["478"] = 8, ["480"] = 8, ["492"] = 4, ["493"] = 8, ["495"] = 4,
+	["496"] = 8, ["497"] = 12, ["498"] = 16
+}
 -- Output prefix
-local PREFIX = STAT_FORMAT:format(STAT_AVERAGE_ITEM_LEVEL).."|Heqppditmlvl|h |h"..HIGHLIGHT_FONT_COLOR_CODE
+local PREFIX = HIGHLIGHT_FONT_COLOR_CODE.."ItemLvl: "..HIGHLIGHT_FONT_COLOR_CODE
 
 local f = CreateFrame("Frame")
 f:SetScript("OnEvent", function(self, event, ...) return self[event](self, event, ...)end)
@@ -636,6 +646,12 @@ do
 		if link then
 			repeat
 				_, _, _, level, _, _, _, _, equipLoc = GetItemInfo(link)
+				if level and level >= 458 then
+					local upgrade = link:match(":(%d+)\124h%[")
+					if (upgrade and upgrades[upgrade]) then
+						level = level + upgrades[upgrade]
+					end
+				end
 			until level and equipLoc
 
 			total = total + level
@@ -680,7 +696,7 @@ do
 
 		if isReady then
 			cache[guid] = level
-		return SetTipText(UPDATED and level .. UPDATED or level)
+			return SetTipText(level.." ("..((myLevel > 0) and "|cff00ff00+" or "|cffff0000")..myLevel.."|r|cffffffff)|r")
 		end
 
 		level = cachedLevel or level
@@ -902,149 +918,3 @@ end
 
 hooksecurefunc(GameTooltip, "SetHyperlink", SetHyperlink)
 hooksecurefunc(ItemRefTooltip, "SetHyperlink", SetHyperlink)
-
-----------------------------------------------------------------------------------------
---	Displays items can not be transmogrified(Will It Mog by Nathanyel)
-----------------------------------------------------------------------------------------
--- Slots
-local locs = {
-	["INVTYPE_HEAD"] = 1,
-	["INVTYPE_SHOULDER"] = 1,
-	["INVTYPE_CHEST"] = 1,
-	["INVTYPE_ROBE"] = 1,
-	["INVTYPE_WAIST"] = 1,
-	["INVTYPE_LEGS"] = 1,
-	["INVTYPE_FEET"] = 1,
-	["INVTYPE_WRIST"] = 1,
-	["INVTYPE_HAND"] = 1,
-	["INVTYPE_CLOAK"] = 1,
-	["INVTYPE_WEAPON"] = 1,
-	["INVTYPE_SHIELD"] = 1,
-	["INVTYPE_2HWEAPON"] = 1,
-	["INVTYPE_HOLDABLE"] = 1,
-	["INVTYPE_WEAPONMAINHAND"] = 1,
-	["INVTYPE_WEAPONOFFHAND"] = 1,
-	["INVTYPE_RANGED"] = 1,
-	["INVTYPE_THROWN"] = 1,
-	["INVTYPE_RANGEDRIGHT"] = 1,
-}
-
--- White items that are a source for Transmogrify
-local wx = {
-	[41746] = 1,
-	[43600] = 1,
-	[43601] = 1,
-	[78340] = 1,
-	[78341] = 1,
-}
-
-local WIMtooltip = function(tooltip)
-	local _, link = tooltip:GetItem()
-	if not link then return end
-
-	GetItemInfo(link)
-	local _, _, quality, _, _, itemType, subType, _, slot = GetItemInfo(link)
-	-- No weapon or armor, or misc 'weapon', or invalid slot
-	if not itemType or (quality < 2 and not wx[tonumber(link:match("item:(%d+):"))]) or not (itemType == ARMOR or itemType == ENCHSLOT_WEAPON) or (subType == MISCELLANEOUS and not slot == "INVTYPE_HOLDABLE") or not locs[slot] then return end
-	local canBeChanged, noChangeReason, canBeSource, noSourceReason = GetItemTransmogrifyInfo(link)
-
-	if not (canBeChanged or canBeSource) then return end
-
-	if noChangeReason or noSourceReason then
-		GameTooltip:AddLine(" ")
-	end
-
-	if noChangeReason then
-		tooltip:AddLine(gsub("|cffff0000"..(_G["ERR_TRANSMOGRIFY_"..noChangeReason] or noChangeReason), "%%s", ""), nil, nil, nil, true)
-	end
-
-	if noSourceReason and noSourceReason ~= noChangeReason then
-		tooltip:AddLine(gsub("|cffff0000"..(_G["ERR_TRANSMOGRIFY_"..noSourceReason] or noSourceReason), "%%s", ""), nil, nil, nil, true)
-	end
-
-	tooltip:Show()
-end
-
-GameTooltip:HookScript("OnTooltipSetItem", WIMtooltip)
-ItemRefTooltip:HookScript("OnTooltipSetItem", WIMtooltip)
-
-
-----------------------------------------------------------------------------------------
---	Symbiosis info(module from bTooltip by Fernir)
-----------------------------------------------------------------------------------------
-local symbiosis = {
-	gain = {
-		["DEATHKNIGHT"] = {["DK_BLOOD"] = 113072, ["DK_FROST"] = 113516, ["DK_UNHOLY"] = 113516},
-		["HUNTER"] = {["HUNTER_BM"] = 113073, ["HUNTER_MM"] = 113073, ["HUNTER_SV"] = 113073},
-		["MAGE"] = {["MAGE_ARCANE"] = 113074, ["MAGE_FIRE"] = 113074, ["MAGE_FROST"] = 113074},
-		["MONK"] = {["MONK_BREW"] = 113306, ["MONK_MIST"] = 127361, ["MONK_WIND"] = 113275},
-		["PALADIN"] = {["PALADIN_HOLY"] = 113269, ["PALADIN_PROT"] = 113075, ["PALADIN_RET"] = 122287},
-		["PRIEST"] = {["PRIEST_DISC"] = 113506, ["PRIEST_HOLY"] = 113506, ["PRIEST_SHADOW"] = 113277},
-		["ROGUE"] = {["ROGUE_ASS"] = 113613, ["ROGUE_COMBAT"] = 113613, ["ROGUE_SUB"] = 113613},
-		["SHAMAN"] = {["SHAMAN_ELE"] = 113286, ["SHAMAN_ENHANCE"] = 113286, ["SHAMAN_RESTO"] = 113289},
-		["WARLOCK"] = {["WARLOCK_AFFLICTION"] = 113295, ["WARLOCK_DEMO"] = 113295, ["WARLOCK_DESTRO"] = 113295},
-		["WARRIOR"] = {["WARRIOR_ARMS"] = 122294, ["WARRIOR_FURY"] = 122294, ["WARRIOR_PROT"] = 122286}
-	},
-	grant = {
-		["DEATHKNIGHT"] = {["DRUID_BALANCE"] = 110570, ["DRUID_FERAL"] = 122282, ["DRUID_GUARDIAN"] = 122285, ["DRUID_RESTO"] = 110575},
-		["HUNTER"] = {["DRUID_BALANCE"] = 110588, ["DRUID_FERAL"] = 110597, ["DRUID_GUARDIAN"] = 110600, ["DRUID_RESTO"] = 19263},
-		["MAGE"] = {["DRUID_BALANCE"] = 110621, ["DRUID_FERAL"] = 110693, ["DRUID_GUARDIAN"] = 110694, ["DRUID_RESTO"] = 110696},
-		["MONK"] = {["DRUID_BALANCE"] = 126458, ["DRUID_FERAL"] = 128844, ["DRUID_GUARDIAN"] = 126453, ["DRUID_RESTO"] = 126456},
-		["PALADIN"] = {["DRUID_BALANCE"] = 110698, ["DRUID_FERAL"] = 110700, ["DRUID_GUARDIAN"] = 110701, ["DRUID_RESTO"] = 122288},
-		["PRIEST"] = {["DRUID_BALANCE"] = 110707, ["DRUID_FERAL"] = 110715, ["DRUID_GUARDIAN"] = 110717, ["DRUID_RESTO"] = 110718},
-		["ROGUE"] = {["DRUID_BALANCE"] = 110788, ["DRUID_FERAL"] = 110730, ["DRUID_GUARDIAN"] = 122289, ["DRUID_RESTO"] = 110791},
-		["SHAMAN"] = {["DRUID_BALANCE"] = 110802, ["DRUID_FERAL"] = 110807, ["DRUID_GUARDIAN"] = 110803, ["DRUID_RESTO"] = 110806},
-		["WARLOCK"] = {["DRUID_BALANCE"] = 122291, ["DRUID_FERAL"] = 110810, ["DRUID_GUARDIAN"] = 122290, ["DRUID_RESTO"] = 112970},
-		["WARRIOR"] = {["DRUID_BALANCE"] = 122292, ["DRUID_FERAL"] = 112997, ["DRUID_GUARDIAN"] = 113002, ["DRUID_RESTO"] = 113004}
-	}
-}
-
-GameTooltip:HookScript("OnTooltipSetUnit", function(self)
-	local unit = (select(2, self:GetUnit())) or (GetMouseFocus() and GetMouseFocus():GetAttribute("unit")) or (UnitExists("mouseover") and "mouseover") or nil
-	if unit then
-		if UnitIsPlayer(unit) and not UnitIsEnemy(unit, "player") then
-			for i = 1, 40 do
-				if select(11, UnitAura(unit, i, "HELPFUL")) == 110309 then return end
-			end
-			local _, uclass = UnitClass(unit)
-			local ulevel = UnitLevel(unit)
-			local uspec = GetSpecialization()
-			if not uspec then return end
-			local spec = SPEC_CORE_ABILITY_TEXT[GetSpecializationInfo(uspec)]
-			local spellID
-			if class == "DRUID" and level >= 87 and uclass ~= "DRUID" then
-				spellID = symbiosis.grant[uclass][spec]
-			elseif class ~= "DRUID" and (uclass == "DRUID" and ulevel >= 87) then
-				spellID = symbiosis.gain[class][spec]
-			end
-			local name = GetSpellInfo(spellID)
-			if name then
-				GameTooltip:AddLine(GetSpellInfo(110309)..": |cffffffff"..name.."|r")
-			end
-		end
-	end
-end)
-
-----------------------------------------------------------------------------------------
---	Displays a players LFD/LFR role(gTooltipRoles by g0st)
-----------------------------------------------------------------------------------------
-local function GetLFDRole(unit)
-	local role = UnitGroupRolesAssigned(unit)
-
-	if role == "NONE" then
-		return "|cFFB5B5B5"..NO_ROLE.."|r"
-	elseif role == "TANK" then
-		return "|cFF0070DE"..TANK.."|r"
-	elseif role == "HEALER" then
-		return "|cFF00CC12"..HEALER.."|r"
-	else
-		return "|cFFFF3030"..DAMAGER.."|r"
-	end
-end
-
-GameTooltip:HookScript("OnTooltipSetUnit", function(self, ...)
-	local _, unit = GameTooltip:GetUnit()
-	if unit and UnitIsPlayer(unit) and ((UnitInParty(unit) and GetNumGroupMembers() > 0) or (UnitInRaid(unit) and GetNumGroupMembers() > 0)) then
-		GameTooltip:AddLine(ROLE..": "..GetLFDRole(unit))
-	end
-end)

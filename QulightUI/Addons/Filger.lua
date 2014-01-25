@@ -6,31 +6,31 @@ Filger_Settings = {
 }
 
 AnchorBUFF_ICON = CreateFrame("Frame","Move_BUFF_ICON",UIParent)
-AnchorBUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -198, -80)
+AnchorBUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -198, -177)
 CreateAnchor(AnchorBUFF_ICON, "Move BUFF_ICON", 37, 37)
 
 AnchorT_BUFF_ICON = CreateFrame("Frame","Move_T_BUFF_ICON",UIParent)
-AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 198, -80)
+AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 198, -177)
 CreateAnchor(AnchorT_BUFF_ICON, "Move T_BUFF_ICON", 37, 37)
 
 AnchorP_PROC_ICON = CreateFrame("Frame","Move_P_PROC_ICON",UIParent)
-AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -198, -130)
+AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -198, -219)
 CreateAnchor(AnchorP_PROC_ICON, "Move P_PROC_ICON", 37, 37)
 
 AnchorT_DEBUFF_ICON = CreateFrame("Frame","Move_T_DEBUFF_ICON",UIParent)
-AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 198, -130)
+AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 198, -219)
 CreateAnchor(AnchorT_DEBUFF_ICON, "Move T_DEBUFF_ICON", 37, 37)
 
 AnchorT_SPECIAL_P_BUFF_ICON = CreateFrame("Frame","Move_SPECIAL_P_BUFF_ICON",UIParent)
-AnchorT_SPECIAL_P_BUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -198, -25)
+AnchorT_SPECIAL_P_BUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -198, -136)
 CreateAnchor(AnchorT_SPECIAL_P_BUFF_ICON, "Move SPECIAL_P_BUFF_ICON", 37, 37)
 
 Anchor_CD = CreateFrame("Frame","Move_CD",UIParent)
-Anchor_CD:SetPoint("BOTTOM", UIParent, "BOTTOM", -168, 280)
+Anchor_CD:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, -100)
 CreateAnchor(Anchor_CD, "Move CD", 30, 30)
 
 Anchor_PVEPVPCD = CreateFrame("Frame","Move_PVEPVPCD",UIParent)
-Anchor_PVEPVPCD:SetPoint("BOTTOM", UIParent, "BOTTOM", 230, 150)
+Anchor_PVEPVPCD:SetPoint("LEFT", UIParent, "CENTER", 198, -69)
 CreateAnchor(Anchor_PVEPVPCD, "Move PVEPVPCD", 25, 25)
 
 Anchor_PVEDEBUFF = CreateFrame("Frame","Move_PVEDEBUFF",UIParent)
@@ -731,6 +731,8 @@ Filger_Spells = {
 			{spellID = 3674, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Explosive Shot
 			{spellID = 53301, unitID = "target", caster = "player", filter = "DEBUFF"},
+				-- Explosive Shot
+			{spellID = 131894, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Narrow Escape
 			{spellID = 136634, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Web (Spider)

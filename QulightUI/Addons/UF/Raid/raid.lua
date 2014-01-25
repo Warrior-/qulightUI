@@ -696,7 +696,7 @@ local function Shared(self, unit)
 	if Qulight.raidframes.icons_ready_check == true and not (self:GetAttribute("unitsuffix") == "target" or self:GetAttribute("unitsuffix") == "targettarget") then
 		self.ReadyCheck = self.Health:CreateTexture(nil, "OVERLAY")
 		self.ReadyCheck:SetSize(12, 12)
-		self.ReadyCheck:SetPoint("BOTTOMRIGHT", self.Health, 2, 1)
+		self.ReadyCheck:SetPoint("BOTTOMRIGHT", self.Health, 2, 5)
 	end
 
 	-- Leader/Assistant/ML icons
@@ -786,8 +786,8 @@ local function Shared(self, unit)
 
 		-- Raid debuffs
 		self.RaidDebuffs = CreateFrame("Frame", nil, self)
-		self.RaidDebuffs:SetHeight(25)
-		self.RaidDebuffs:SetWidth(25)
+		self.RaidDebuffs:SetHeight(28)
+		self.RaidDebuffs:SetWidth(28)
 		self.RaidDebuffs:SetPoint("CENTER", self, 0, 1)
 		self.RaidDebuffs:SetFrameStrata("MEDIUM")
 		self.RaidDebuffs:SetFrameLevel(10)

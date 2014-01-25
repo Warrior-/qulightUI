@@ -6,8 +6,8 @@
 	<Script file="Root\Log.lua"/>
 	
 	<Script file="Root\Move.lua"/>
-	<Include file="Addons\Skins\load_addonskins.xml"/>
 	<Include file="Root\Libs\oUF\oUF.xml"/>
+	<Include file="Addons\Skins\load_addonskins.xml"/>
 	<Include file="Addons\UF\uf.xml"/>
 	<Include file="Addons\UF\template.xml"/>
 	<Include file="Addons\UF\Raid\load.xml"/>
@@ -16,12 +16,10 @@
 	
 	<Script file="Root\Libs\LibStub.lua"/>
 	<Script file="Root\Libs\LibCooldown.lua"/>
-	
-	
+
 	<Script file="Root\Func.lua"/>
 	<Script file="Root\Scripts.lua"/>
 	<Script file="Root\Fonts.lua"/>
-	
 	<Script file="Root\Layout.lua"/>
 	<Script file="Root\Tweaks.lua"/>
 	<Script file="Root\TimeTracker.lua"/>

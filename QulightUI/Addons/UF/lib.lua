@@ -953,7 +953,7 @@ createDebuffs = function(f)
 		b["growth-y"] = "UP"
 	elseif f.mystyle == "player" then
 	    b.size = 30
-		b:SetPoint("BOTTOM", f, "BOTTOM", 0, -43)
+		b:SetPoint("BOTTOM", f, "BOTTOM", 0, -39)
 		b.initialAnchor = "BOTTOMLEFT"
 		b["growth-x"] = "RIGHT"
 		b["growth-y"] = "DOWN"
