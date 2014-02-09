@@ -7,79 +7,6 @@ local ST_NORMAL = 1
 local ST_FISHBAG = 2
 local ST_SPECIAL = 3
 local bag_bars = 0
-local unusable
-local Tclass = select(2, UnitClass("player"))
-
-if Tclass == "DEATHKNIGHT" then
-	unusable = {{3, 4, 10, 11, 13, 14, 15, 16}, {6}}
-elseif Tclass == "DRUID" then
-	unusable = {{1, 2, 3, 4, 8, 9, 14, 15, 16}, {4, 5, 6}, true}
-elseif Tclass == "HUNTER" then
-	unusable = {{5, 6, 16}, {5, 6}}
-elseif Tclass == "MAGE" then
-	unusable = {{1, 2, 3, 4, 5, 6, 7, 9, 11, 14, 15}, {3, 4, 5, 6}, true}
-elseif Tclass == "PALADIN" then
-	unusable = {{3, 4, 10, 11, 13, 14, 15, 16}, {}, true}
-elseif Tclass == "PRIEST" then
-	unusable = {{1, 2, 3, 4, 6, 7, 8, 9, 11, 14, 15}, {3, 4, 5, 6}, true}
-elseif Tclass == "ROGUE" then
-	unusable = {{2, 6, 7, 9, 10, 16}, {4, 5, 6}}
-elseif Tclass == "SHAMAN" then
-	unusable = {{3, 4, 7, 8, 9, 14, 15, 16}, {5}}
-elseif Tclass == "WARLOCK" then
-	unusable = {{1, 2, 3, 4, 5, 6, 7, 9, 11, 14, 15}, {3, 4, 5, 6}, true}
-elseif Tclass == "WARRIOR" then
-	unusable = {{16}, {}}
-elseif Tclass == "MONK" then
-	unusable = {{2, 3, 4, 6, 9, 13, 14, 15, 16}, {4, 5, 6}}
-end
-
-for class = 1, 2 do
-	local subs = {GetAuctionItemSubClasses(class)}
-	for i, subclass in ipairs(unusable[class]) do
-		unusable[subs[subclass]] = true
-	end
-	unusable[class] = nil
-	subs = nil
-end
-
-local function IsClassUnusable(subclass, slot)
-	if subclass then
-		return unusable[subclass] or slot == "INVTYPE_WEAPONOFFHAND" and unusable[3]
-	end
-end
-
-local function IsItemUnusable(...)
-	if ... then
-		local subclass, _, slot = select(7, GetItemInfo(...))
-		return IsClassUnusable(subclass, slot)
-	end
-end
-
-StaticPopupDialogs.BUY_BANK_SLOT = {
-	text = CONFIRM_BUY_BANK_SLOT,
-	button1 = YES,
-	button2 = NO,
-	OnAccept = function(self)
-		PurchaseSlot()
-	end,
-	OnShow = function(self)
-		MoneyFrame_Update(self.moneyFrame, GetBankSlotCost())
-	end,
-	hasMoneyFrame = 1,
-	timeout = 0,
-	hideOnEscape = 1,
-	preferredIndex = 5,
-}
-
-StaticPopupDialogs.CANNOT_BUY_BANK_SLOT = {
-	text = "",
-	button1 = ACCEPT,
-	timeout = 0,
-	whileDead = 1,
-	preferredIndex = 5,
-}
-
 
 -- Hide bags options in default interface
 InterfaceOptionsDisplayPanelShowFreeBagSpace:Hide()
@@ -170,12 +97,6 @@ function Stuffing:SlotUpdate(b)
 
 	if clink then
 		b.name, _, b.rarity, _, b.level = GetItemInfo(clink)
-
-		if (IsItemUnusable(clink) or b.level and b.level > Tlevel) and not locked then
-			_G[b.frame:GetName().."IconTexture"]:SetVertexColor(1, 0.1, 0.1)
-		else
-			_G[b.frame:GetName().."IconTexture"]:SetVertexColor(1, 1, 1)
-		end
 
 		-- Color slot according to item quality
 		if not b.frame.lock and b.rarity and b.rarity > 1 and not (isQuestItem or questId) then

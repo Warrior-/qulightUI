@@ -32,9 +32,11 @@ QulightOnLogon:SetScript("OnEvent", function(self, event)
 		if Qulight["general"].UiScale > 1 then Qulight["general"].UiScale = 1 end
 		if Qulight["general"].UiScale < 0.64 then Qulight["general"].UiScale = 0.64 end
 		SetCVar("uiScale", Qulight["general"].UiScale)
-	
+
+	print(" ")
 	print("Welcome to |cFF00A2FFQulight UI|r")
-	print("|cFF00A2FFhttp://QulightUI.omniscience.ru |r - Site UI;")
+	print(" ")
+	print("|cFF00A2FFhttp://QulightUI.org |r - Site UI;")
 	print(" ")
 	print("|cFF00A2FF/config |r - Config Qulight UI;")
 	print("|cFF00A2FF/ui |r - Command for change all UI positions.")

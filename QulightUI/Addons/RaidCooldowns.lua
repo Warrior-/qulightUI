@@ -135,23 +135,14 @@ local CreateBar = function()
 end
 raid_spells = {
 		[20484] = 600,	-- Rebirth
+		[113269] = 600,	-- Rebirth (Symbiosis)
 		[61999] = 600,	-- Raise Ally
-		[20707] = 900,	-- Soulstone
-		[6346] = 180,	-- Fear Ward
+		[20707] = 600,	-- Soulstone
+		[126393] = 600,	-- Eternal Guardian
+		[64901] = 360,	-- Hymn of Hope
 		[29166] = 180,	-- Innervate
-		[32182] = 300,	-- Heroism
-		[2825] = 300,	-- Bloodlust
-		[80353] = 300,	-- Time Warp
-		[90355] = 300,	-- Ancient Hysteria
-			-- Сейвы
-		[64843] = 480,  -- Divine Hymn (Божественный гимн)
-		[33206] = 180,  -- Pain Suppression (Подавление боли)
-		[62618] = 180,  -- Power Word: Barrier (Купол)
-		[97462] = 180,  -- Rallying Cry (Ободряющий клич)
-		[31821] = 120,  -- Aura Mastery (Мастер Аур)
-		[70940] = 180,  -- Divine Guardian (Масс Сакра)
-		[98008] = 180,  -- Spirit Link Totem (Тотем духовной связи)
-		[6940] = 120,   -- Hand of Sacrifice (Сакра)
+		[16190] = 180,	-- Mana Tide Totem
+		[108280] = 180,	-- Healing Tide Totem
 }
 local StartTimer = function(name, spellId)
 	local bar = CreateBar()

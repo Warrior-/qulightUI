@@ -265,10 +265,19 @@ if IsAddOnLoaded("DBM-Core") then
 	DBT_SavedOptions["DBM"].Scale=1
 	DBT_SavedOptions["DBM"].HugeScale=1
 	DBT_SavedOptions["DBM"].BarXOffset=0
+	DBT_SavedOptions["DBM"].Width = 189
+	DBT_SavedOptions["DBM"].TimerX = 143
+	DBT_SavedOptions["DBM"].TimerPoint = "BOTTOMLEFT"
+	DBT_SavedOptions["DBM"].FillUpBars = true
+	DBT_SavedOptions["DBM"].IconLeft = true
+	DBT_SavedOptions["DBM"].ExpandUpwards = true
+	DBT_SavedOptions["DBM"].IconRight = false
+	DBT_SavedOptions["DBM"].HugeBarXOffset = 0
+	DBT_SavedOptions["DBM"].HugeBarsEnabled = false
 	DBT_SavedOptions["DBM"].BarYOffset=5
 	DBT_SavedOptions["DBM"].IconLeft=true
 	DBT_SavedOptions["DBM"].ExpandUpwards=true
-	DBT_SavedOptions["DBM"].Texture= "Interface\\Buttons\\WHITE8x8"
+	DBT_SavedOptions["DBM"].Texture= Qulight["media"].texture
 	DBT_SavedOptions["DBM"].IconRight=false
 end	
 end
