@@ -146,8 +146,7 @@ tinsert(C.modules["QulightUI"], function()
 			bu.Title:SetTextColor(1, 1, 1)
 		end
 	end)
-	setfenv(SpellBookFrame_OnShow, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
-	setfenv(SpellBookFrame_OnHide, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
+	
 	SpellBookFrameTutorialButton.Ring:Hide()
 	SpellBookFrameTutorialButton:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", -12, 12)
 end)

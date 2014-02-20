@@ -262,23 +262,30 @@ if IsAddOnLoaded("DBM-Core") then
 	DBM_SavedOptions.Enabled=true
 	DBM_SavedOptions.WarningIconLeft=false
 	DBM_SavedOptions.WarningIconRight=false
-	DBT_SavedOptions["DBM"].Scale=1
-	DBT_SavedOptions["DBM"].HugeScale=1
-	DBT_SavedOptions["DBM"].BarXOffset=0
-	DBT_SavedOptions["DBM"].Width = 189
-	DBT_SavedOptions["DBM"].TimerX = 143
-	DBT_SavedOptions["DBM"].TimerPoint = "BOTTOMLEFT"
-	DBT_SavedOptions["DBM"].FillUpBars = true
-	DBT_SavedOptions["DBM"].IconLeft = true
-	DBT_SavedOptions["DBM"].ExpandUpwards = true
-	DBT_SavedOptions["DBM"].IconRight = false
-	DBT_SavedOptions["DBM"].HugeBarXOffset = 0
-	DBT_SavedOptions["DBM"].HugeBarsEnabled = false
-	DBT_SavedOptions["DBM"].BarYOffset=5
-	DBT_SavedOptions["DBM"].IconLeft=true
-	DBT_SavedOptions["DBM"].ExpandUpwards=true
-	DBT_SavedOptions["DBM"].Texture= Qulight["media"].texture
-	DBT_SavedOptions["DBM"].IconRight=false
+	DBM_SavedOptions.ShowSpecialWarnings = true
+	DBM_SavedOptions.ShowMinimapButton = true
+	DBT_PersistentOptions["DBM"].Scale = 1
+	DBT_PersistentOptions["DBM"].HugeScale = 1
+	DBT_PersistentOptions["DBM"].BarXOffset = 0
+	DBT_PersistentOptions["DBM"].Width = 189
+	DBT_PersistentOptions["DBM"].TimerX = 143
+	DBT_PersistentOptions["DBM"].TimerPoint = "BOTTOMLEFT"
+	DBT_PersistentOptions["DBM"].FillUpBars = true
+	DBT_PersistentOptions["DBM"].IconLeft = true
+	DBT_PersistentOptions["DBM"].ExpandUpwards = true
+	DBT_PersistentOptions["DBM"].IconRight = false
+	DBT_PersistentOptions["DBM"].IconLeft = true
+	DBT_PersistentOptions["DBM"].HugeBarsEnabled = true
+	DBT_PersistentOptions["DBM"].HugeBarXOffset = 0
+	DBT_PersistentOptions["DBM"].HugeBarXOffset = 0
+	DBT_PersistentOptions["DBM"].HugeWidth = 189
+	DBT_PersistentOptions["DBM"].HugeTimerX = 7
+	DBT_PersistentOptions["DBM"].HugeTimerPoint = "CENTER"
+	DBT_PersistentOptions["DBM"].HugeBarYOffset = 7
+	DBT_PersistentOptions["DBM"].BarYOffset = 5
+	DBT_PersistentOptions["DBM"].Texture = Qulight["media"].texture
+	DBT_PersistentOptions["DBM"].FillUpBars = true
+
 end	
 end
 
