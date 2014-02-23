@@ -119,7 +119,11 @@ if Qulight["actionbar"].enable then
 	QuBar5:SetFrameLevel(2)
 	
 	AnchorQuBar4 = CreateFrame("Frame","Move_Bar4",UIParent)
-	AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 54)
+		if Qulight["general"].centerpanel then
+			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 54)
+		else
+			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 38)
+		end
 	CreateAnchor(AnchorQuBar4, "Move Bar4", (buttonsize * 12) + (buttonspacing * 13), buttonsize)
 	
 	local QuBar4 = CreateFrame("Frame", "QuBar4", UIParent)
@@ -156,7 +160,11 @@ if Qulight["actionbar"].enable then
 	QuBar7:SetAlpha(0)
 
 	Anchorpetbg = CreateFrame("Frame","Move_petbar",UIParent)
-	Anchorpetbg:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 113, 193)
+		if Qulight["general"].centerpanel then
+			Anchorpetbg:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 113, 193)
+		else
+			Anchorpetbg:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 113, 177)
+		end
 	CreateAnchor(Anchorpetbg, "Move petbar", (petbuttonsize * 10) + (petbuttonspacing * 11), petbuttonsize)
 	
 	local petbg = CreateFrame("Frame", "QuPetBar", UIParent, "SecureHandlerStateTemplate")

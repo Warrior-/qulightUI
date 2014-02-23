@@ -55,7 +55,11 @@ anchor:SetAlpha(0)
 anchor:SetPoint("TOPRIGHT", minimaplol)
 
 AnchorTooltips = CreateFrame("Frame","Move_Tooltip",UIParent)
-AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 235)
+if Qulight["general"].centerpanel then
+		AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 235)
+	else
+		AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 219)
+end
 CreateAnchor(AnchorTooltips, "Move tooltips", 100, 110)
 
 local function UpdateTooltip(self)

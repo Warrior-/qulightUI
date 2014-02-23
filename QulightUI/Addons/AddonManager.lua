@@ -1,5 +1,5 @@
 if not Qulight["misk"].addonmanager == true then return end
-
+local F, C = unpack(select(2, ...))
 local loadf = CreateFrame("frame", "aLoadFrame", UIParent)
 loadf:SetWidth(300)
 loadf:SetHeight(450)
@@ -13,9 +13,6 @@ loadf:SetScript("OnMouseUp", function(self) self:StopMovingOrSizing() end)
 loadf:SetFrameStrata("DIALOG")
 tinsert(UISpecialFrames, "aLoadFrame")
 
-local stylef = function(f)
-CreateShadow(f)
-end
 
 local RLButton = function(text,parent)
 	local result = CreateFrame("Button", "btn_"..parent:GetName(), parent, "UIPanelButtonTemplate")
@@ -29,7 +26,6 @@ local CloseButton = function(text,parent)
 	return result
 end
 
-stylef(loadf)
 loadf:Hide()
 loadf:SetScript("OnHide", function(self) end)
 
@@ -56,10 +52,12 @@ end)
 
 local title = loadf:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 title:SetPoint("TOPLEFT", 10, -8)
-title:SetText("AddOn Manager")
+title:SetText(qColor.."AddOn Manager")
 
 local scrollf = CreateFrame("ScrollFrame", "aload_Scroll", loadf, "UIPanelScrollFrameTemplate")
 local mainf = CreateFrame("frame", "aloadmainf", scrollf)
+
+F.ReskinScroll(aload_ScrollScrollBar)
 
 scrollf:SetPoint("TOPLEFT", loadf, "TOPLEFT", 10, -30)
 scrollf:SetPoint("BOTTOMRIGHT", loadf, "BOTTOMRIGHT", -28, 40)
@@ -79,10 +77,10 @@ closeb:SetScript("OnClick", function() loadf:Hide() end)
 
 local makeList = function()
 	local self = mainf
-	stylef(scrollf)
-   self:SetPoint("TOPLEFT")
-   self:SetWidth(scrollf:GetWidth())
-   self:SetHeight(scrollf:GetHeight())
+	F.CreateBD(scrollf, 0)
+    self:SetPoint("TOPLEFT")
+    self:SetWidth(scrollf:GetWidth())
+    self:SetHeight(scrollf:GetHeight())
 	self.addons = {}
 	for i=1, GetNumAddOns() do
 		self.addons[i] = select(1, GetAddOnInfo(i))
@@ -113,9 +111,6 @@ local makeList = function()
 			else
 				bf:SetPoint("TOP", oldb, "BOTTOM", 0, 6)
 			end
-			
-			bf:SetBackdrop({ bgFile = "Interface\\Buttons\\WHITE8x8", })
-			bf:SetBackdropColor(0,0,0,0)
 	
 			bf:SetScript("OnEnter", function(self)
 				GameTooltip:ClearLines()
@@ -139,7 +134,7 @@ local makeList = function()
 			bf:SetChecked(enabled)
 			
 			_G[v.."_cbfText"]:SetText(title) 
-
+			F.ReskinCheck(bf)
 			oldb = bf
 		end
 	end

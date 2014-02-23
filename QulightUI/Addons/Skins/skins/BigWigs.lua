@@ -76,13 +76,13 @@ local applystyle = function(bar)
 		bar:Set("bigwigs:bigwigs:bg", ibg)
 	end
 	-- setup timer and bar name fonts and positions
-	bar.candyBarLabel:SetFont(Qulight["media"].font, 12, "OUTLINE")
+	bar.candyBarLabel:SetFont(Qulight["media"].font, 10, "OUTLINE")
 	bar.candyBarLabel:ClearAllPoints()
-	bar.candyBarLabel:SetPoint("BOTTOMLEFT", bar, "TOPLEFT", -2, 4)
+	bar.candyBarLabel:SetPoint("BOTTOMLEFT", bar, "TOPLEFT", 2, -14)
 
-	bar.candyBarDuration:SetFont(Qulight["media"].font, 12, "OUTLINE")
+	bar.candyBarDuration:SetFont(Qulight["media"].font, 10, "OUTLINE")
 	bar.candyBarDuration:ClearAllPoints()
-	bar.candyBarDuration:SetPoint("BOTTOMRIGHT", bar, "TOPRIGHT", 2, 4)
+	bar.candyBarDuration:SetPoint("BOTTOMRIGHT", bar, "TOPRIGHT", -2, -14)
 	-- setup bar positions and look
 	bar.candyBarBar:ClearAllPoints()
 	bar.candyBarBar:SetAllPoints(bar)
@@ -114,12 +114,12 @@ local function registerStyle()
 			GetStyleName = function() return "BigWigs" end,
 		})
 	end
-	
-		hooksecurefunc(BigWigs.pluginCore.modules.Proximity, "RestyleWindow", function()
-			if drawshadow then
-				CreateShadow(BigWigsProximityAnchor)
-			end
+	bars.db.profile.barStyle = "BigWigs"
+	if prox and bars.db.profile.barStyle == "BigWigs" then
+		hooksecurefunc(prox, "RestyleWindow", function()
+			CreateShadow(BigWigsProximityAnchor)
 		end)
+	end
 	
 end
 f:RegisterEvent("ADDON_LOADED")
@@ -131,39 +131,3 @@ f:SetScript("OnEvent", function(self, event, msg)
 		end
 	end
 end)
-local pr = function(msg)
-    print("BigWigs", tostring(msg))
-end
-SLASH_BW1 = "/bigwigstest"
-SlashCmdList["BW"] = function(msg)
-	if(msg=="apply") then
-		SlashCmdList["BigWigs"]()
-		HideUIPanel(InterfaceOptionsFrame)
-		StaticPopup_Show("BW")        
-	elseif(msg=="test") then
-		SlashCmdList["BigWigs"]()
-		BigWigs.pluginCore.modules.Proximity.Test(BigWigs.pluginCore.modules.Proximity)
-		HideUIPanel(InterfaceOptionsFrame)
-		BigWigs:Test()
-		BigWigs:Test()
-		BigWigs:Test()
-		BigWigs:Test()
-		BigWigs:Test()
-		
-	else
-		pr("use /bigwigstest apply to apply BigWigs settings.")
-		pr("use /bigwigstest test to launch BigWigs testmode.")
-	end
-end
-StaticPopupDialogs["BW"] = {
-	text = "We need to set some BigWigs options to apply BigWigs skin.\nMost of your settings will remain untouched.",
-	button1 = ACCEPT,
-	button2 = CANCEL,
-	OnAccept = function()
-		BigWigs.pluginCore.modules.Bars.db.profile.barStyle="BigWigs"
-		if InCombatLockdown() then pr(ERR_NOT_IN_COMBAT) pr("Reload your UI to apply skin.") else ReloadUI() end
-	end,
-    timeout = 0,
-    whileDead = 1,
-    hideOnEscape = true,
-}

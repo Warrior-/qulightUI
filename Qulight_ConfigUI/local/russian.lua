@@ -1,6 +1,6 @@
 ﻿if GetLocale() == "ruRU" then
 	-- general
-	QulightL.option_general = "Общее"
+	QulightL.option_general = "Общие"
 	QulightL.option_general_uiscale = "Автоматически масштабировать интерфейс"
 	QulightL.option_general_override = "Использовать раскладку для высокого разрешения при низком разрешении"
 	QulightL.option_general_multisample = "Ровные края шириной 1 пиксель"
@@ -16,7 +16,7 @@
 	QulightL.option_general_autoinvite = "Вкл/выкл автопринятие инвайта от друзей/согильдейцев"
 	QulightL.option_general_centerpanel = "Вкл/выкл боковые панели под дпс статы"
 	-- Unitframes
-	QulightL.option_unitframes = "Юнитфреймы"
+	QulightL.option_unitframes = "Рамки портретов"
 	QulightL.option_unitframes_enable = "Включить рамки юнитов"
  	QulightL.option_unitframes_HealFrames = "Хил рейд фреймы" 
 	QulightL.option_unitframes_showIndicators = "Индикаторы бафов для хил рейд фреймов" 
@@ -51,9 +51,10 @@
 	QulightL.option_unitframes_Powercolor = "Повер панель под цвет типа повера %)"
 	QulightL.option_unitframes_showPartyFrames = " Отображение пати фреймов"
 	QulightL.option_unitframes_bigcastbar = "Большой кастбар"
-	
+	QulightL.option_unitframes_widthbigcastbar = "Ширина большого кастбара"
+	QulightL.option_unitframes_heightbigcastbar = "Высота большого кастбара"
 	--raidframes
-	QulightL.option_raidframes = "Рейд фреймы"
+	QulightL.option_raidframes = "Рамки рейда"
 	QulightL.option_raidframes_aggro_border = "Отображение угрозы"
 	QulightL.option_raidframes_deficit_health = "Значение здоровья по дефициту текстом"
 	QulightL.option_raidframes_power = "Отображение панели маны"
@@ -81,7 +82,7 @@
 	QulightL.option_raidframes_plugins_auto_resurrection = "Автовоскрешение средней кнопкой мыши (не работает с Clique)"
 	QulightL.option_raidframes_own_color = "Использовать свой цвет для полос здоровья"
 	QulightL.option_raidframes_fontsize = "Размер шрифта"
-    QulightL.option_raidframes_fontsizeEdge = "хз"
+    QulightL.option_raidframes_fontsizeEdge = "Размер дополнительного шрифта"
     QulightL.option_raidframes_outline = "Стиль шрифта"
 	QulightL.option_raidframes_bar_color_value = "Цвет полосы здоровья по его значению"
 	QulightL.option_raidframes_color_value = "Цветное значение здоровья/энергии"
@@ -92,21 +93,12 @@
 	QulightL.option_raidframes_party_heal = "Цвет отхиливаемого фрейма в группе"
 	QulightL.option_raidframes_raid_heal = "Цвет отхиливаемого фрейма в рейде"
 	
-	--media
-	QulightL.option_media = "Media" 	
-	QulightL.option_media_font = "Основной шрифт для Qulight UI" 
-	QulightL.option_media_pxfont = "1 px шрифт для Qulight UI" 
-	QulightL.option_media_fontsize = "Размер шрифта" 
-	QulightL.option_media_bordercolor = "Цвет бордюров" 
-	QulightL.option_media_backdropcolor = "Цвет фона" 
-	QulightL.option_media_texture = "Тектура для полосок" 
-	QulightL.option_media_blank = "Текстура для фона" 
 	--bags
 	QulightL.option_bags = "Cумки"	
 	QulightL.option_bags_Enable = "Включить сумки"
 	QulightL.option_bags_BagBars = "Включить панель сумок"
 	--datatext
-	QulightL.option_datatext = "Текст панелей"
+	QulightL.option_datatext = "Тексты"
 	QulightL.option_datatext_Durability = "Прочность"
 	QulightL.option_datatext_System = "Память/ФПС/Пинг"
 	QulightL.option_datatext_Gold = "Золото"
@@ -124,8 +116,11 @@
 	QulightL.option_datatext_mastery = "Искусность"
 	QulightL.option_datatext_haste = "Скорость атаки или Скорость заклинаний"
 	QulightL.option_datatext_crit = "Крит"
+	QulightL.option_datatext_dps = "ДПС"
+	QulightL.option_datatext_hps = "ХПС"
+	
 	--loot
-	QulightL.option_loot = "Лут"
+	QulightL.option_loot = "Окно добычи"
 	QulightL.option_loot_lootframe = "Включить окно добычи"
 	QulightL.option_loot_rolllootframe = "Включить окно розыгрыша"
 	QulightL.option_loot_position = "Позиция окна розыгрыша"
@@ -152,7 +147,7 @@
 	QulightL.option_chat_tabtextcolor = "Цвет закладок чата"
 	QulightL.option_chat_ChatFrame = "Позиция чата"
     --buffs
-	QulightL.option_buffs = "Бафы/Дебафы"
+	QulightL.option_buffs = "Эффекты и ауры"
 	QulightL.option_buffs_enable = "Включить"
 	QulightL.option_buffs_iconsize = "Размер бафов"
 	QulightL.option_buffs_iconsizede = "Размер дебафов"
@@ -163,20 +158,20 @@
 	QulightL.option_buffs_timeYoffset = "Отступ по вертикали" 
 	QulightL.option_buffs_BUFFS_PER_ROW = "Количество бафов в ряду" 
 	--addonskinning
-	QulightL.option_addonsskins = "Скининг Аддонов"
-	QulightL.option_addonsskins_DBM = "DBM (/dbmskin apply)"
+	QulightL.option_addonsskins = "Стилизация"
+	QulightL.option_addonsskins_DBM = "DBM"
 	QulightL.option_addonsskins_PallyPower = "PallyPower" 
 	QulightL.option_addonsskins_Skada = "Skada" 
 	QulightL.option_addonsskins_Recount = "Recount"
 	QulightL.option_addonsskins_Omen = "Omen"
 	QulightL.option_addonsskins_KLE = "KLE"	
 	QulightL.option_addonsskins_Quartz = "Quartz"		
-	QulightL.option_addonsskins_Bigwigs = "Bigwigs (/bigwigstest apply)"
-	QulightL.option_addonsskins_DXE = "DXE (Deus Vox Encounters)"
+	QulightL.option_addonsskins_Bigwigs = "Bigwigs"
+	QulightL.option_addonsskins_DXE = "DXE"
 	QulightL.option_addonsskins_Aurora = "Aurora"
 	QulightL.option_addonsskins_CoolLine = "CoolLine"
 	--nameplates
-	QulightL.option_nameplates = "Неймплейты"
+	QulightL.option_nameplates = "Индикаторы здоровья"
 	QulightL.option_nameplates_enable  = "Включить неймплейты"
 	QulightL.option_nameplates_showlevel = "Отображать уровень на неймплейтах"
 	QulightL.option_nameplates_width = "Ширина неймплейтов"
@@ -200,13 +195,13 @@
 	QulightL.option_nameplates_track_auras = "Отображать отрицательные эффекты"
 	QulightL.option_nameplates_auras_size = "Размер отрицательных эффектов"
 	
-	QulightL.option_Minimap = "Минимапа"
+	QulightL.option_Minimap = "Миникарта"
 	QulightL.option_Minimapenable = "Включить"
 	QulightL.option_Minimapminimapsize = "Размер Минимапы"
 	QulightL.option_Map = "Карта"
 	QulightL.option_mapenable = "Включить"
 		
-	QulightL.option_tooltip = "Тултип"
+	QulightL.option_tooltip = "Подсказки"
 	QulightL.option_tooltip_enable = "Включить подсказку"
 	QulightL.option_tooltip_hidecombat = "Прятать подсказку в бою"
 	QulightL.option_tooltip_hidebuttons = "Прятать подсказку для кнопок панели действий"
@@ -220,7 +215,7 @@
 
 	
 	-- action bar
-	QulightL.option_actionbar = "Панели кнопок"
+	QulightL.option_actionbar = "Панели команд"
 	QulightL.option_actionbar_enable = "Включить панели кнопок"
 	QulightL.option_actionbar_hotkey = "Отображать назначений клавишь на кнопках"
 	QulightL.option_actionbar_hideSTANCE = "Скрыть шифтбар(тотемы, аспекты, ауры, стойки, формы)"
@@ -242,7 +237,7 @@
 	QulightL.option_actionbar_lowversion = "Другая версия экшен баров"
 	QulightL.option_actionbar_sidebarWidth = "Количество кнопок у боковых панелей, данная опция работает если Другая версия экшен баров отключена"
 	
-	QulightL.option_misk = "Разное"
+	QulightL.option_misk = "Еще аддоны"
 	QulightL.option_raidutility = "Утилиты для рейда"
 	QulightL.option_BuffReminderRaidBuffs = "Панель рейд бафов на игроке(Напоминалка)"
 	QulightL.option_Reminder = "Панель соло бафов на игроке(Напоминалка)"

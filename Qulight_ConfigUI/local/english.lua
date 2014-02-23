@@ -50,6 +50,8 @@
 	QulightL.option_unitframes_Powercolor = "Power bar by power color oO"
 	QulightL.option_unitframes_showPartyFrames	 = "Show party frames"
 	QulightL.option_unitframes_bigcastbar = "Big castbar"
+	QulightL.option_unitframes_widthbigcastbar = "Width big castbar"
+	QulightL.option_unitframes_heightbigcastbar = "Height big castbar"
 	
 	--raidframes
 	QulightL.option_raidframes = "Raid Frames"
@@ -81,7 +83,7 @@
 	QulightL.option_raidframes_plugins_auto_resurrection = "Auto cast resurrection on middle click when the unit is dead (doesn't work with Clique enabled)"
 	QulightL.option_raidframes_own_color = "Set your color for health bars"
 	QulightL.option_raidframes_fontsize = "Font size"
-    QulightL.option_raidframes_fontsizeEdge = "Font style"
+    QulightL.option_raidframes_fontsizeEdge = "Add Font size"
     QulightL.option_raidframes_outline = "Font style"
 	QulightL.option_raidframes_bar_color_value = "Health bar color by current health remaining"
 	QulightL.option_raidframes_color_value = "Health/mana value is colored"
@@ -122,6 +124,11 @@
 	QulightL.option_datatext_mastery = "Mastery position (0 for disabled)"
 	QulightL.option_datatext_haste = "Haste position (0 for disabled)"
 	QulightL.option_datatext_crit = "Crit position (0 for disabled)"
+	QulightL.option_datatext_dps = "DPS position (0 for disabled)"
+	QulightL.option_datatext_hps = "HPS position (0 for disabled)"
+	
+	
+	
 	--loot
 	QulightL.option_loot = "Loot"
 	QulightL.option_loot_lootframe = "Enable loot window"
@@ -164,18 +171,17 @@
 	QulightL.option_buffs_DEBUFFpos = "Debuffs positions" 
 	--addonskinning
 	QulightL.option_addonsskins = "Addon Skins"
-	QulightL.option_addonsskins_DBM = "DBM(/dbmskin apply)"
+	QulightL.option_addonsskins_DBM = "DBM"
 	QulightL.option_addonsskins_PallyPower = "PallyPower" 
 	QulightL.option_addonsskins_Skada = "Skada" 
 	QulightL.option_addonsskins_Recount = "Recount"
 	QulightL.option_addonsskins_Omen = "Omen"
 	QulightL.option_addonsskins_KLE = "KLE"	
 	QulightL.option_addonsskins_Quartz = "Quartz"		
-	QulightL.option_addonsskins_Bigwigs = "Bigwigs(/bigwigstest apply)"
-	QulightL.option_addonsskins_DXE = "DXE(Deus Vox Encounters)"
+	QulightL.option_addonsskins_Bigwigs = "Bigwigs"
+	QulightL.option_addonsskins_DXE = "DXE"
 	QulightL.option_addonsskins_Aurora = "Aurora"
 	QulightL.option_addonsskins_CoolLine = "CoolLine"
-	--nameplates
 	--nameplates
 	QulightL.option_nameplates = "Nameplates"
 	QulightL.option_nameplates_enable  = "Enable"

@@ -23,6 +23,11 @@ function StyleButton(self)
 	Flash:SetTexture("")
 	Button:SetNormalTexture("")
  
+	if float then
+		float:Hide()
+		float = dummy
+	end
+ 
 	if Border then
 		Border:Hide()
 		Border = dummy
@@ -64,7 +69,7 @@ function StyleButton(self)
 		HotKey:SetText("")
 		HotKey:Hide()
 	end
- 
+	
 	if normal then
 		normal:ClearAllPoints()
 		normal:SetPoint("TOPLEFT")
@@ -180,7 +185,12 @@ function StyleActionBarButton(self)
 		Border:Hide()
 		Border = dummy
 	end
- 
+	
+	if float then
+		float:Hide()
+		float = dummy
+	end
+	
 	Count:ClearAllPoints()
 	Count:SetPoint("BOTTOMRIGHT", 0, 2)
 	Count:SetFont(Qulight["media"].pxfont, 10, "OUTLINE")
@@ -293,26 +303,32 @@ function StylePet()
 end
 
 function UpdateActionBarHotKey(self, actionButtonType)
-	local hotkey = _G[self:GetName() .. 'HotKey']
+	local hotkey = _G[self:GetName().."HotKey"]
 	local text = hotkey:GetText()
-	
-	text = replace(text, '(s%-)', 'S')
-	text = replace(text, '(a%-)', 'A')
-	text = replace(text, '(c%-)', 'C')
-	text = replace(text, '(Mouse Button )', 'M')
-	text = replace(text, '(Middle Mouse)', 'M3')
-	text = replace(text, '(Mouse Wheel Up)', 'MU')
-	text = replace(text, '(Mouse Wheel Down)', 'MD')
-	text = replace(text, '(Num Pad )', 'N')
-	text = replace(text, '(Page Up)', 'PU')
-	text = replace(text, '(Page Down)', 'PD')
-	text = replace(text, '(Spacebar)', 'SpB')
-	text = replace(text, '(Insert)', 'Ins')
-	text = replace(text, '(Home)', 'Hm')
-	text = replace(text, '(Delete)', 'Del')
-	
-	if hotkey:GetText() == _G['RANGE_INDICATOR'] then
-		hotkey:SetText('')
+
+	text = string.gsub(text, "(s%-)", "S")
+	text = string.gsub(text, "(a%-)", "A")
+	text = string.gsub(text, "(c%-)", "C")
+	text = string.gsub(text, "(Mouse Button )", "M")
+	text = string.gsub(text, "(Кнопка мыши )", "M")
+	text = string.gsub(text, KEY_BUTTON3, "M3")
+	text = string.gsub(text, KEY_PAGEUP, "PU")
+	text = string.gsub(text, KEY_PAGEDOWN, "PD")
+	text = string.gsub(text, KEY_SPACE, "SpB")
+	text = string.gsub(text, KEY_INSERT, "Ins")
+	text = string.gsub(text, KEY_HOME, "Hm")
+	text = string.gsub(text, KEY_DELETE, "Del")
+	text = string.gsub(text, KEY_NUMPADDECIMAL, "Nu.")
+	text = string.gsub(text, KEY_NUMPADDIVIDE, "Nu/")
+	text = string.gsub(text, KEY_NUMPADMINUS, "Nu-")
+	text = string.gsub(text, KEY_NUMPADMULTIPLY, "Nu*")
+	text = string.gsub(text, KEY_NUMPADPLUS, "Nu+")
+	text = string.gsub(text, KEY_NUMLOCK, "NuL")
+	text = string.gsub(text, KEY_MOUSEWHEELDOWN, "MWD")
+	text = string.gsub(text, KEY_MOUSEWHEELUP, "MWU")
+
+	if hotkey:GetText() == _G["RANGE_INDICATOR"] then
+		hotkey:SetText("")
 	else
 		hotkey:SetText(text)
 	end
@@ -605,7 +621,6 @@ local function StyleTotemSpellButton(button, index)
 end
 hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) StyleTotemSpellButton(self,0) end)
 hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) StyleTotemSpellButton(self,5) end)
-
 
 ------------------------------------------------------------------------------------------
 --	Make ExtraActionBarFrame movable(use macro /click ExtraActionButton1)

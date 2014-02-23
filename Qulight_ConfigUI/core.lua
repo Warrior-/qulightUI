@@ -4,7 +4,7 @@ local myPlayerName  = UnitName("player")
 local ALLOWED_GROUPS = {
 	["general"]=1,
 	["unitframes"]=1,
-	["media"]=1,
+	--["media"]=1,
 	["actionbar"]=1,
 	["chatt"]=1,
 	["buffdebuff"]=1,
@@ -22,7 +22,6 @@ local ALLOWED_GROUPS = {
 
 --List of "Table Names" that we do not want to show in the config
 local TableFilter = {
-	["filter"]=1,
 }
 
 local function Local(o)
@@ -159,6 +158,8 @@ local function Local(o)
 	if o == "QulightConfigUIdatatextmastery" then o = QulightL.option_datatext_mastery end
 	if o == "QulightConfigUIdatatexthaste" then o = QulightL.option_datatext_haste end
 	if o == "QulightConfigUIdatatextcrit" then o = QulightL.option_datatext_crit end
+	if o == "QulightConfigUIdatatextdps" then o = QulightL.option_datatext_dps end
+	if o == "QulightConfigUIdatatexthps" then o = QulightL.option_datatext_hps end
 
 	--loot
 	if o == "QulightConfigUIloot" then o = QulightL.option_loot end
@@ -218,22 +219,27 @@ local function Local(o)
 	--nameplates
 	if o == "QulightConfigUInameplate" then o = QulightL.option_nameplates end
 	if o == "QulightConfigUInameplateenable" then o = QulightL.option_nameplates_enable end
-	
+	if o == "QulightConfigUInameplatecombat" then o = QulightL.option_nameplates_combat end
+	if o == "QulightConfigUInameplatehealth_value" then o = QulightL.option_nameplates_health_value end
+	if o == "QulightConfigUInameplateshow_castbar_name" then o = QulightL.option_nameplates_show_castbar_name end
+	if o == "QulightConfigUInameplateenhance_threat" then o = QulightL.option_nameplates_enhance_threat end
+	if o == "QulightConfigUInameplateclass_icons" then o = QulightL.option_nameplates_class_icon end
+		
 	if o == "QulightConfigUInameplatewidth" then o = QulightL.option_nameplates_width end
 	if o == "QulightConfigUInameplatead_width" then o = QulightL.option_nameplatesad_width end
 	if o == "QulightConfigUInameplateheight" then o = QulightL.option_nameplates_height end
 	if o == "QulightConfigUInameplatead_height" then o = QulightL.option_nameplatesad_height end
 	if o == "QulightConfigUInameplateshowhealth" then o = QulightL.option_nameplates_showhealth end
-	if o == "QulightConfigUInameplatecombat" then o = QulightL.option_nameplates_combat end
+	
 	if o == "QulightConfigUInameplatetrackccauras" then o = QulightL.option_nameplates_trackccauras end
 	if o == "QulightConfigUInameplateshowlevel" then o = QulightL.option_nameplates_showlevel end	
 	if o == "QulightConfigUInameplateaurasize" then o = QulightL.option_nameplates_aurasize end
-	if o == "QulightConfigUInameplateshow_castbar_name" then o = QulightL.option_nameplates_show_castbar_name end
-	if o == "QulightConfigUInameplateenhance_threat" then o = QulightL.option_nameplates_enhance_threat end
-	if o == "QulightConfigUInameplatehealth_value" then o = QulightL.option_nameplates_health_value end
+	
+	
+	
 	if o == "QulightConfigUInameplatename_abbrev" then o = QulightL.option_nameplates_name_abbrev end
 	if o == "QulightConfigUInameplatehealer_icon" then o = QulightL.option_nameplates_healer_icon end
-	if o == "QulightConfigUInameplateclass_icons" then o = QulightL.option_nameplates_class_icon end
+
 	if o == "QulightConfigUInameplatetrack_auras" then o = QulightL.option_nameplates_track_auras end
 	if o == "QulightConfigUInameplateauras_size" then o = QulightL.option_nameplates_auras_size end
 	if o == "QulightConfigUInameplategood_color" then o = QulightL.option_nameplates_good_color end
@@ -276,12 +282,198 @@ local function Local(o)
 	if o == "QulightConfigUImiskThreatbar" then o = QulightL.option_Threatbar end
 	Qulight.option = o
 end
+classcolours = {
+	["HUNTER"] = { r = 0.58, g = 0.86, b = 0.49 },
+	["WARLOCK"] = { r = 0.6, g = 0.47, b = 0.85 },
+	["PALADIN"] = { r = 1, g = 0.22, b = 0.52 },
+	["PRIEST"] = { r = 0.8, g = 0.87, b = .9 },
+	["MAGE"] = { r = 0, g = 0.76, b = 1 },
+	["MONK"] = {r = 0.0, g = 1.00 , b = 0.59},
+	["ROGUE"] = { r = 1, g = 0.91, b = 0.2 },
+	["DRUID"] = { r = 1, g = 0.49, b = 0.04 },
+	["SHAMAN"] = { r = 0, g = 0.6, b = 0.6 };
+	["WARRIOR"] = { r = 0.9, g = 0.65, b = 0.45 },
+	["DEATHKNIGHT"] = { r = 0.77, g = 0.12 , b = 0.23 },
+}
+local _, class = UnitClass("player")
+
+if CUSTOM_CLASS_COLORS then
+	classcolours = CUSTOM_CLASS_COLORS
+end
+
+local r, g, b = classcolours[class].r, classcolours[class].g, classcolours[class].b
+
+media = {
+	["backdrop"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
+	["gradient"] = "Interface\\Addons\\QulightUI\\Root\\Media\\gradient",
+	["arrowUp"] = "Interface\\Addons\\QulightUI\\Root\\Media\\arrow-up-active",
+	["arrowDown"] = "Interface\\Addons\\QulightUI\\Root\\Media\\arrow-down-active",
+}
+
+frames = {}
+
+CreateBD = function(f)
+	f:SetBackdrop({
+		bgFile = media.backdrop,
+		edgeFile = media.backdrop,
+		edgeSize = 1,
+	})
+	f:SetBackdropColor(.05,.05,.05, 1)
+	f:SetBackdropBorderColor(0, 0, 0)
+	if not a then tinsert(frames, f) end
+end
+
+CreateGradient = function(f)
+	local tex = f:CreateTexture(nil, "BORDER")
+	tex:SetPoint("TOPLEFT", 1, -1)
+	tex:SetPoint("BOTTOMRIGHT", -1, 1)
+	tex:SetTexture(media.backdrop)
+	tex:SetVertexColor(0.11, 0.11, 0.11, 1)
+
+	return tex
+end
+
+ReskinCheck = function(f)
+	f:SetNormalTexture("")
+	f:SetPushedTexture("")
+	f:SetHighlightTexture(media.backdrop)
+	local hl = f:GetHighlightTexture()
+	hl:SetPoint("TOPLEFT", 5, -5)
+	hl:SetPoint("BOTTOMRIGHT", -5, 5)
+	hl:SetVertexColor(r, g, b, .2)
+
+	local bd = CreateFrame("Frame", nil, f)
+	bd:SetPoint("TOPLEFT", 4, -4)
+	bd:SetPoint("BOTTOMRIGHT", -4, 4)
+	bd:SetFrameLevel(f:GetFrameLevel()-1)
+	CreateBD(bd, 0)
+
+	local tex = CreateGradient(f)
+	tex:SetPoint("TOPLEFT", 5, -5)
+	tex:SetPoint("BOTTOMRIGHT", -5, 5)
+
+	local ch = f:GetCheckedTexture()
+	ch:SetDesaturated(true)
+	ch:SetVertexColor(r, g, b)
+end
+local function colourButton(f)
+	if not f:IsEnabled() then return end
+
+	if useButtonGradientColour then
+		f:SetBackdropColor(r, g, b, .3)
+	else
+		f.tex:SetVertexColor(r / 4, g / 4, b / 4)
+	end
+	f:SetBackdropBorderColor(0, 0, 0)
+end
+
+local function clearButton(f)
+	if useButtonGradientColour then
+		f:SetBackdropColor(0, 0, 0, 0)
+	else
+		f.tex:SetVertexColor(0.11, 0.11, 0.11, 1)
+	end
+	f:SetBackdropBorderColor(0, 0, 0)
+end
+
+Reskin = function(f, noHighlight)
+	f:SetNormalTexture("")
+	f:SetHighlightTexture("")
+	f:SetPushedTexture("")
+	f:SetDisabledTexture("")
+
+	if f.Left then f.Left:SetAlpha(0) end
+	if f.Middle then f.Middle:SetAlpha(0) end
+	if f.Right then f.Right:SetAlpha(0) end
+	if f.LeftSeparator then f.LeftSeparator:Hide() end
+	if f.RightSeparator then f.RightSeparator:Hide() end
+
+	CreateBD(f, .0)
+
+	f.tex = CreateGradient(f)
+
+	if not noHighlight then
+		f:HookScript("OnEnter", colourButton)
+ 		f:HookScript("OnLeave", clearButton)
+	end
+end
+
+local function colourScroll(f)
+	if f:IsEnabled() then
+		f.tex:SetVertexColor(r, g, b)
+	end
+end
+
+local function clearScroll(f)
+	f.tex:SetVertexColor(1, 1, 1)
+end
+
+ReskinScroll = function(f)
+	local frame = f:GetName()
+
+	if _G[frame.."Track"] then _G[frame.."Track"]:Hide() end
+	if _G[frame.."BG"] then _G[frame.."BG"]:Hide() end
+	if _G[frame.."Top"] then _G[frame.."Top"]:Hide() end
+	if _G[frame.."Middle"] then _G[frame.."Middle"]:Hide() end
+	if _G[frame.."Bottom"] then _G[frame.."Bottom"]:Hide() end
+
+	local bu = _G[frame.."ThumbTexture"]
+	bu:SetAlpha(0)
+	bu:SetWidth(17)
+
+	bu.bg = CreateFrame("Frame", nil, f)
+	bu.bg:SetPoint("TOPLEFT", bu, 0, -2)
+	bu.bg:SetPoint("BOTTOMRIGHT", bu, 0, 4)
+	CreateBD(bu.bg, 0)
+
+	local tex = CreateGradient(f)
+	tex:SetPoint("TOPLEFT", bu.bg, 1, -1)
+	tex:SetPoint("BOTTOMRIGHT", bu.bg, -1, 1)
+
+	local up = _G[frame.."ScrollUpButton"]
+	local down = _G[frame.."ScrollDownButton"]
+
+	up:SetWidth(17)
+	down:SetWidth(17)
+
+	Reskin(up, true)
+	Reskin(down, true)
+
+	up:SetDisabledTexture(media.backdrop)
+	local dis1 = up:GetDisabledTexture()
+	dis1:SetVertexColor(0, 0, 0, .4)
+	dis1:SetDrawLayer("OVERLAY")
+
+	down:SetDisabledTexture(media.backdrop)
+	local dis2 = down:GetDisabledTexture()
+	dis2:SetVertexColor(0, 0, 0, .4)
+	dis2:SetDrawLayer("OVERLAY")
+
+	local uptex = up:CreateTexture(nil, "ARTWORK")
+	uptex:SetTexture(media.arrowUp)
+	uptex:SetSize(8, 8)
+	uptex:SetPoint("CENTER")
+	uptex:SetVertexColor(1, 1, 1)
+	up.tex = uptex
+
+	local downtex = down:CreateTexture(nil, "ARTWORK")
+	downtex:SetTexture(media.arrowDown)
+	downtex:SetSize(8, 8)
+	downtex:SetPoint("CENTER")
+	downtex:SetVertexColor(1, 1, 1)
+	down.tex = downtex
+
+	up:HookScript("OnEnter", colourScroll)
+	up:HookScript("OnLeave", clearScroll)
+	down:HookScript("OnEnter", colourScroll)
+	down:HookScript("OnLeave", clearScroll)
+end
 
 local NewButton = function(text,parent)
 	
 	local result = CreateFrame("Button", nil, parent)
 	local label = result:CreateFontString(nil,"OVERLAY",nil)
-	label:SetFont(Qulight["media"].font,10,"OUTLINE")
+	label:SetFont(Qulight["media"].font, 10, "OUTLINE")
 	label:SetText(text)
 	result:SetWidth(label:GetWidth())
 	result:SetHeight(label:GetHeight())
@@ -423,31 +615,31 @@ function CreateQulightConfigUI()
 		QulightConfigUI:Show()
 		return
 	end
-			
+	
 	-- MAIN FRAME
 	local QulightConfigUI = CreateFrame("Frame","QulightConfigUI",UIParent)
-	QulightConfigUI:SetPoint("CENTER", UIParent, "CENTER", 90, 0)
-	QulightConfigUI:SetWidth(490)
-	QulightConfigUI:SetHeight(300)
+	QulightConfigUI:SetPoint("CENTER", UIParent, "CENTER", 90, 90)
+	QulightConfigUI:SetWidth(600)
+	QulightConfigUI:SetHeight(400)
 	QulightConfigUI:SetFrameStrata("DIALOG")
 	QulightConfigUI:SetFrameLevel(0)
 	
 	-- TITLE 2
 	local QulightConfigUITitleBox = CreateFrame("Frame","QulightConfigUI",QulightConfigUI)
-	QulightConfigUITitleBox:SetWidth(510)
-	QulightConfigUITitleBox:SetHeight(21)
-	QulightConfigUITitleBox:SetPoint("TOPLEFT", -10, 36)
-	CreateShadow(QulightConfigUITitleBox)
+	QulightConfigUITitleBox:SetWidth(620)
+	QulightConfigUITitleBox:SetHeight(30)
+	QulightConfigUITitleBox:SetPoint("TOPLEFT", -10, 42)
+	CreateBD(QulightConfigUITitleBox, 0)
 	
 	local title = QulightConfigUITitleBox:CreateFontString("QulightConfigUITitle", "OVERLAY")
-	title:SetFont(Qulight["media"].font, 10)
+	title:SetFont(Qulight["media"].font, 12)
 	title:SetPoint("LEFT", QulightConfigUITitleBox, "LEFT", 4, 0)
 	
 	local qulightlolpro = CreateFrame("Frame","QulightConfigUI",QulightConfigUI)
 	qulightlolpro:SetWidth(150)
-	qulightlolpro:SetHeight(21)
-	qulightlolpro:SetPoint("TOPLEFT", -165, 36)
-	CreateShadow(qulightlolpro)
+	qulightlolpro:SetHeight(30)
+	qulightlolpro:SetPoint("TOPLEFT", -165, 42)
+	CreateBD(qulightlolpro, 0)
 	
 	local qulightlolprotitle = qulightlolpro:CreateFontString("qulightlolpro", "OVERLAY")
 	qulightlolprotitle:SetFont(Qulight["media"].font, 18)
@@ -457,18 +649,26 @@ function CreateQulightConfigUI()
 	local QulightConfigUIBG = CreateFrame("Frame","QulightConfigUI",QulightConfigUI)
 	QulightConfigUIBG:SetPoint("TOPLEFT", -10, 10)
 	QulightConfigUIBG:SetPoint("BOTTOMRIGHT", 10, -10)
-	CreateShadow(QulightConfigUIBG)
+	CreateBD(QulightConfigUIBG, 0)
+	
+	-- BACKGROUND
+	local BackgroundQulightConfigUI = CreateFrame("Frame", "QulightConfigUI",QulightConfigUI)
+	BackgroundQulightConfigUI:SetPoint("TOPLEFT", qulightlolpro, "TOPLEFT", -5, 5)
+	BackgroundQulightConfigUI:SetWidth(785)
+	BackgroundQulightConfigUI:SetHeight(490)
+	BackgroundQulightConfigUI:SetFrameLevel(0)
+	CreateShadow(BackgroundQulightConfigUI)	
 	
 	-- GROUP SELECTION ( LEFT SIDE )
 	local groups = CreateFrame("ScrollFrame", "QulightCatagoryGroup", QulightConfigUI)
 	groups:SetPoint("TOPLEFT",-155,0)
 	groups:SetWidth(130)
-	groups:SetHeight(300)
-
+	groups:SetHeight(400)
+	
 	local groupsBG = CreateFrame("Frame","QulightConfigUI",QulightConfigUI)
 	groupsBG:SetPoint("TOPLEFT", groups, -10, 10)
 	groupsBG:SetPoint("BOTTOMRIGHT", groups, 10, -10)
-	CreateShadow(groupsBG)
+	CreateBD(groupsBG, 0)
 	
 	--This is our frame we will use to prevent clicking on the config, before you choose a popup window
 	local QulightConfigCover = CreateFrame("Frame", "QulightConfigCover", QulightConfigUI)
@@ -482,12 +682,11 @@ function CreateQulightConfigUI()
 	local slider = CreateFrame("Slider", "QulightConfigUICatagorySlider", groups)
 	slider:SetPoint("TOPRIGHT", 0, 0)
 	slider:SetWidth(18)
-	slider:SetHeight(300)
+	slider:SetHeight(400)
 	slider:SetThumbTexture("Interface\\Buttons\\UI-ScrollBar-Knob")
 	slider:SetOrientation("VERTICAL")
 	slider:SetValueStep(20)
 	slider:SetScript("OnValueChanged", function(self,value) groups:SetVerticalScroll(value) end)
-	CreateShadow(slider)
 	local r,g,b,a = .15,.15,.15,0
 	slider:SetBackdropColor(r,g,b,0.2)
 	local child = CreateFrame("Frame",nil,groups)
@@ -505,7 +704,6 @@ function CreateQulightConfigUI()
 	end
 	child:SetWidth(110)
 	child:SetHeight(offset)
-	--slider:SetMinMaxValues(0, (offset == 0 and 1 or offset-12*25))
 	slider:SetValue(1)
 	groups:SetScrollChild(child)
 	
@@ -525,20 +723,18 @@ function CreateQulightConfigUI()
 	-- GROUP SCROLLFRAME ( RIGHT SIDE)
 	local group = CreateFrame("ScrollFrame", "QulightConfigUIGroup", QulightConfigUI)
 	group:SetPoint("TOPLEFT",0,5)
-	group:SetWidth(490)
-	group:SetHeight(300)
+	group:SetWidth(600)
+	group:SetHeight(400)
+	
 	local slider = CreateFrame("Slider", "QulightConfigUIGroupSlider", group)
 	slider:SetPoint("TOPRIGHT",0,0)
 	slider:SetWidth(18)
-	slider:SetHeight(300)
-	slider:SetThumbTexture("Interface\\Buttons\\UI-ScrollBar-Knob")
-	slider:SetOrientation("VERTICAL")
-	slider:SetValueStep(20)
-	CreateShadow(slider)
+	slider:SetHeight(400)
+
 	local r,g,b,a = .15,.15,.15,0
 	slider:SetBackdropColor(r,g,b,0.2)
 	slider:SetScript("OnValueChanged", function(self,value) group:SetVerticalScroll(value) end)
-	
+
 	for group in pairs(ALLOWED_GROUPS) do
 		local frame = CreateFrame("Frame","QulightConfigUI"..group,QulightConfigUIGroup)
 		frame:SetPoint("TOPLEFT")
@@ -556,12 +752,13 @@ function CreateQulightConfigUI()
 				_G["QulightConfigUI"..group..option.."Text"]:SetText(Qulight.option)
 				_G["QulightConfigUI"..group..option.."Text"]:SetFont(Qulight["media"].font, 10)
 				button:SetChecked(value)
+				ReskinCheck(button)
 				button:SetScript("OnClick", function(self) SetValue(group,option,(self:GetChecked() and true or false)) end)
 				button:SetPoint("TOPLEFT", 5, -(offset))
 				offset = offset+20
 			elseif type(value) == "number" or type(value) == "string" then
 				local label = frame:CreateFontString(nil,"OVERLAY",nil)
-				label:SetFont(Qulight["media"].font,10)
+				label:SetFont(Qulight["media"].font, 10)
 				local o = "QulightConfigUI"..group..option
 				Local(o)
 				label:SetText(Qulight.option)
@@ -586,12 +783,12 @@ function CreateQulightConfigUI()
 				editbox:SetFontObject(GameFontHighlight)
 				editbox:SetPoint("TOPLEFT", 5, -(offset+20))
 				editbox:SetText(value)
-				CreateShadowconfig(editbox)
+				CreateBD(editbox, 0)
 				
 				local okbutton = CreateFrame("Button", nil, frame)
 				okbutton:SetHeight(editbox:GetHeight())
 				okbutton:SetWidth(editbox:GetHeight())
-				CreateShadowconfig(okbutton)
+				CreateBD(okbutton, 0)
 				okbutton:SetPoint("LEFT", editbox, "RIGHT", 2, 0)
 				
 				local oktext = okbutton:CreateFontString(nil,"OVERLAY",nil)
@@ -624,19 +821,17 @@ function CreateQulightConfigUI()
 				label:SetJustifyH("LEFT")
 				label:SetPoint("TOPLEFT", 5, -(offset))
 				
-				--colorbuttonname = (label:GetText().."ColorPicker")
 				local colorbutton = CreateFrame("Button", colorbuttonname, frame)
 				colorbutton:SetHeight(18)
 				colorbutton:SetWidth(60)
-				CreateShadowconfig(colorbutton)
+				CreateBD(colorbutton, 0)
 				colorbutton:SetBackdropBorderColor(unpack(value))
 				colorbutton:SetPoint("LEFT", label, "RIGHT", 2, 0)
 				local colortext = colorbutton:CreateFontString(nil,"OVERLAY",nil)
 				colortext:SetFont(Qulight["media"].font,10)
 				colortext:SetText("Set Color")
 				colortext:SetPoint("CENTER")
-				colortext:SetJustifyH("CENTER")
-				
+				colortext:SetJustifyH("CENTER")			
 				
 				local function round(number, decimal)
 					return (("%%.%df"):format(decimal)):format(number)
@@ -680,15 +875,31 @@ function CreateQulightConfigUI()
 				offset = offset+25
 			end
 		end
-				
+		
 		frame:SetHeight(offset)
 		frame:Hide()
+		
 	end
 
+	local close = NewButton(QulightL.option_close, QulightConfigUI)
+	close:SetWidth(90)
+	close:SetHeight(25)
+	close:SetPoint("BOTTOMRIGHT", 10, -38)
+	close:SetScript("OnClick", function(self) QulightConfigUI:Hide() end)
+	Reskin(close)
+	
+	
+	local load = NewButton(QulightL.option_apply, QulightConfigUI)
+	load:SetHeight(25)
+	load:SetWidth(90)
+	load:SetPoint("RIGHT", close, "LEFT", -15, 0)
+	load:SetScript("OnClick", function(self) ReloadUI() end)
+	Reskin(load)
+	
 	local reset = NewButton(QulightL.option_reset, QulightConfigUI)
 	reset:SetWidth(90)
-	reset:SetHeight(18)
-	reset:SetPoint("BOTTOMLEFT",-10, -33)
+	reset:SetHeight(25)
+	reset:SetPoint("RIGHT", load, "LEFT", -15, 0)
 	reset:SetScript("OnClick", function(self) 
 		QulightConfigCover:Show()
 		if QulightConfigAll[myPlayerRealm][myPlayerName] == true then
@@ -697,22 +908,7 @@ function CreateQulightConfigUI()
 			StaticPopup_Show("RESET_ALL")
 		end
 	end)
-	CreateShadow(reset)
-	
-	local close = NewButton(QulightL.option_close, QulightConfigUI)
-	close:SetWidth(90)
-	close:SetHeight(18)
-	close:SetPoint("BOTTOMRIGHT", 10, -33)
-	close:SetScript("OnClick", function(self) QulightConfigUI:Hide() end)
-	CreateShadow(close)
-	
-	local load = NewButton(QulightL.option_apply, QulightConfigUI)
-	load:SetHeight(18)
-	load:SetWidth(90)
-	load:SetPoint("LEFT", reset, "RIGHT", 15, 0)
-	load:SetPoint("RIGHT", close, "LEFT", -15, 0)
-	load:SetScript("OnClick", function(self) ReloadUI() end)
-	CreateShadow(load)
+	Reskin(reset)
 	
 	if QulightConfigAll then
 		local button = CreateFrame("CheckButton", "QulightConfigAllCharacters", QulightConfigUITitleBox, "InterfaceOptionsCheckButtonTemplate")
@@ -720,7 +916,7 @@ function CreateQulightConfigUI()
 		button:SetScript("OnClick", function(self) StaticPopup_Show("PERCHAR") QulightConfigCover:Show() end)
 		
 		button:SetPoint("RIGHT", QulightConfigUITitleBox, "RIGHT",-3, 0)	
-		
+		ReskinCheck(button)
 		local label = QulightConfigAllCharacters:CreateFontString(nil,"OVERLAY",nil)
 		label:SetFont(Qulight["media"].font,10)
 		

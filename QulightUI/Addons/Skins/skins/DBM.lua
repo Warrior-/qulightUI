@@ -106,7 +106,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 						if not name.styled then
 							name:ClearAllPoints()
 							name:SetPoint("LEFT", frame, "LEFT", 4, 0)
-							name:SetWidth(130)
+							name:SetWidth(180)
 							name:SetHeight(8)
 							name:SetFont(Qulight["media"].font, 10, "OUTLINE")
 							name:SetShadowOffset(0, 0, 0, 0)
@@ -263,13 +263,10 @@ if IsAddOnLoaded("DBM-Core") then
 	DBM_SavedOptions.WarningIconLeft=false
 	DBM_SavedOptions.WarningIconRight=false
 	DBM_SavedOptions.ShowSpecialWarnings = true
-	DBM_SavedOptions.ShowMinimapButton = true
+	DBM_SavedOptions.ShowMinimapButton = false
 	DBT_PersistentOptions["DBM"].Scale = 1
 	DBT_PersistentOptions["DBM"].HugeScale = 1
 	DBT_PersistentOptions["DBM"].BarXOffset = 0
-	DBT_PersistentOptions["DBM"].Width = 189
-	DBT_PersistentOptions["DBM"].TimerX = 143
-	DBT_PersistentOptions["DBM"].TimerPoint = "BOTTOMLEFT"
 	DBT_PersistentOptions["DBM"].FillUpBars = true
 	DBT_PersistentOptions["DBM"].IconLeft = true
 	DBT_PersistentOptions["DBM"].ExpandUpwards = true
@@ -278,14 +275,10 @@ if IsAddOnLoaded("DBM-Core") then
 	DBT_PersistentOptions["DBM"].HugeBarsEnabled = true
 	DBT_PersistentOptions["DBM"].HugeBarXOffset = 0
 	DBT_PersistentOptions["DBM"].HugeBarXOffset = 0
-	DBT_PersistentOptions["DBM"].HugeWidth = 189
 	DBT_PersistentOptions["DBM"].HugeTimerX = 7
-	DBT_PersistentOptions["DBM"].HugeTimerPoint = "CENTER"
 	DBT_PersistentOptions["DBM"].HugeBarYOffset = 7
 	DBT_PersistentOptions["DBM"].BarYOffset = 5
 	DBT_PersistentOptions["DBM"].Texture = Qulight["media"].texture
-	DBT_PersistentOptions["DBM"].FillUpBars = true
-
 end	
 end
 

@@ -56,14 +56,24 @@ local menuList = {
 	{ text = BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() StaticPopup_Show("SET_BN_BROADCAST") end },
 }
 
-local function inviteClick(self, arg1, arg2, checked)
+local function inviteClick(self, name)
 	menuFrame:Hide()
-	InviteUnit(arg1)
+	
+	if type(name) ~= 'number' then
+		InviteUnit(name)
+	else
+		BNInviteFriend(name);
+	end
 end
 
-local function whisperClick(self,arg1,arg2,checked)
+local function whisperClick(self, name, battleNet)
 	menuFrame:Hide() 
-	SetItemRef( "player:"..arg1, ("|Hplayer:%1$s|h[%1$s]|h"):format(arg1), "LeftButton" )		 
+	
+	if battleNet then
+		ChatFrame_SendSmartTell(name)
+	else
+		SetItemRef( "player:"..name, ("|Hplayer:%1$s|h[%1$s]|h"):format(name), "LeftButton" )		 
+	end
 end
 
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
@@ -246,10 +256,10 @@ Stat:SetScript("OnMouseUp", function(self, btn)
 		local realID, playerFaction, grouped
 		for i = 1, #BNTable do
 			info = BNTable[i]
-			if (info[7]) then
-				realID = (BATTLENET_NAME_FORMAT):format(info[2], info[3])
+			if (info[5]) then
+				realID = info[2]
 				menuCountWhispers = menuCountWhispers + 1
-				menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID,notCheckable=true, func = whisperClick}
+				menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 
 				if select(1, UnitFactionGroup("player")) == "Horde" then playerFaction = 0 else playerFaction = 1 end
 				if info[6] == wowString and info[11] == myrealm and playerFaction == info[12] then

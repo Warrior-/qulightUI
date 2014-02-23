@@ -47,7 +47,11 @@ ShiftBarUpdate = function(self)
 end
 
 AnchorShift = CreateFrame("Frame","Move_Shift",UIParent)
-AnchorShift:SetPoint("BOTTOMLEFT", UIParent, 3, 191)
+	if Qulight["general"].centerpanel then
+		AnchorShift:SetPoint("BOTTOMLEFT", UIParent, 3, 191)
+	else
+		AnchorShift:SetPoint("BOTTOMLEFT", UIParent, 3, 175)
+	end
 CreateAnchor(AnchorShift, "Move Shift", petbuttonsize, petbuttonsize)
 
 -- used for anchor totembar or STANCEbar
