@@ -211,7 +211,7 @@
 	QulightL.option_tooltip_spellid = "Отображать спелл ид"
 	QulightL.option_tooltip_talents = "Отображать таланты цели на тултипе"
 	QulightL.option_tooltip_title = "Отключить отображение званий в тултипе"
-	QulightL.option_raidmarker = "Включение панели меток"
+	QulightL.option_raidmarker = "Панель меток"
 
 	
 	-- action bar

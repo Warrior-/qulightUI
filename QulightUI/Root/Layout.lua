@@ -6,13 +6,11 @@ petbuttonspacing = Qulight["actionbar"].petbuttonspacing
 if Qulight["general"].topbottompanel then
 	local BottomPanel = CreateFrame("Frame", "BottomPanel", UIParent)
 	CreatePanel(BottomPanel, 4000, 25, "BOTTOM", 0, -5)
-	CreateShadow(BottomPanel)
-	BottomPanel:SetFrameLevel(0)
+	CreateStyle(BottomPanel, 2)
 
 	local TopPanel = CreateFrame("Frame", "TopPanel", UIParent)
 	CreatePanel(TopPanel, 4000, 25, "TOP", 0, 5)
-	CreateShadow(TopPanel)
-	TopPanel:SetFrameLevel(0)
+	CreateStyle(TopPanel, 2)
 end
 
 Anchorchatbgdummy = CreateFrame("Frame","Move_chatbgdummy",UIParent)
@@ -21,7 +19,7 @@ CreateAnchor(Anchorchatbgdummy, "Move Chat", 440, 172)
 
 local ChatPanel = CreateFrame("Frame", "ChatBackground", UIParent)
 CreatePanel(ChatPanel, 440, 172, "BOTTOMLEFT", Anchorchatbgdummy)
-CreateShadow(ChatPanel)
+CreateStyle(ChatPanel, 2)
 
 Anchordamagelol = CreateFrame("Frame","Move_damagelol",UIParent)
 Anchordamagelol:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 3)
@@ -29,41 +27,34 @@ CreateAnchor(Anchordamagelol, "Move Damage Background", 440, 172)
 
 local ChatPanelTwo = CreateFrame("Frame", "ChatPanelRight", UIParent)
 CreatePanel(ChatPanelTwo, 440, 172, "BOTTOMRIGHT", Anchordamagelol)
-CreateShadow(ChatPanelTwo)
-ChatPanelTwo:SetFrameLevel(2)
+CreateStyle(ChatPanelTwo, 2)
 
 if Qulight["chatt"].chatbar then
 	local chatbar = CreateFrame("Frame", "chatbar", UIParent)
-	CreatePanel(chatbar, 13, 103, "RIGHT", ChatBackground, "RIGHT", -4, -1)
-	CreateShadow(chatbar)
-	chatbar:SetFrameLevel(2)	
+	CreatePanel(chatbar, 13, 121, "RIGHT", ChatBackground, "RIGHT", -4, -1)
+	CreateStyle(chatbar, 2, 1)	
 end
 
 local LeftInfoPanel = CreateFrame("Frame", "DataLeftPanel", UIParent)
 SimpleBackground(LeftInfoPanel, 430, 15, "BOTTOM", ChatPanel, "BOTTOM", 0, 5)
-CreateShadowforInfoPanel(LeftInfoPanel)
-LeftInfoPanel:SetFrameLevel(2)
+CreateStyle(LeftInfoPanel, 3, 1)
 
 local LeftTabPanel = CreateFrame("Frame", "LeftTabPanel", UIParent)
 SimpleBackground(LeftTabPanel, 430, 15, "TOP", ChatPanel, "TOP", 0, -5)
-CreateShadowforInfoPanel(LeftTabPanel)
-LeftTabPanel:SetFrameLevel(2)	
+CreateStyle(LeftTabPanel, 3, 1)
 
 local RightInfoPanel = CreateFrame("Frame", "DataRightPanel", UIParent)
 SimpleBackground(RightInfoPanel, 430, 15, "BOTTOM", ChatPanelTwo, "BOTTOM", 0, 5)
-CreateShadowforInfoPanel(RightInfoPanel)
-RightInfoPanel:SetFrameLevel(2)	
+CreateStyle(RightInfoPanel, 3, 1)
+
 if Qulight["general"].centerpanel then
-local RightUpInfoPanel = CreateFrame ("Frame", "RightUpInfoPanel", UIParent)
-CreatePanel(RightUpInfoPanel, 440, 15, "TOP", ChatPanelTwo, "TOP", 0, 16)
-CreateShadow(RightUpInfoPanel)
-RightUpInfoPanel:SetFrameLevel(2)
+	local RightUpInfoPanel = CreateFrame ("Frame", "RightUpInfoPanel", UIParent)
+	CreatePanel(RightUpInfoPanel, 438, 15, "TOP", ChatPanelTwo, "TOP", 0, 16)
+	CreateStyle(RightUpInfoPanel, 3, 1)
 
-local LeftUpInfoPanel = CreateFrame("Frame", "LeftUpInfoPanel", UIParent)
-CreatePanel(LeftUpInfoPanel, 440, 15, "TOP", ChatPanel, 0, 16)
-CreateShadow(LeftUpInfoPanel)
-LeftUpInfoPanel:SetFrameLevel(2)
-
+	local LeftUpInfoPanel = CreateFrame("Frame", "LeftUpInfoPanel", UIParent)
+	CreatePanel(LeftUpInfoPanel, 438, 15, "TOP", ChatPanel, 0, 16)
+	CreateStyle(LeftUpInfoPanel, 3, 1)
 end
 
 Anchorminimaplol = CreateFrame("Frame","Move_minimaplol",UIParent)
@@ -72,8 +63,7 @@ CreateAnchor(Anchorminimaplol, "Move Minimap", Qulight["minimapp"].size+4, Qulig
 	
 local minimaplol = CreateFrame("Frame", "minimaplol", UIParent)
 CreatePanel(minimaplol, Qulight["minimapp"].size+4, Qulight["minimapp"].size+4, "BOTTOMRIGHT", Anchorminimaplol)
-CreateShadow(minimaplol)
-minimaplol:SetFrameLevel(2)
+CreateStyle(minimaplol, 2, 1)
 
 ---------------------
 --Acton Bar Panels
@@ -173,9 +163,7 @@ if Qulight["actionbar"].enable then
 	local ltpetbg1 = CreateFrame("Frame", "QuLineToPetActionBarBackground", petbg)
 	CreatePanel(ltpetbg1, 24, 265, "LEFT", petbg, "RIGHT", 0, 0)
 	ltpetbg1:SetParent(petbg)
-	ltpetbg1:SetFrameStrata("BACKGROUND")
-	ltpetbg1:SetFrameLevel(0)
-	CreateShadow(ltpetbg1)
+	CreateStyle(ltpetbg1, 2)
 
 	local invbarbg = CreateFrame("Frame", "InvQuActionBarBackground", UIParent)
 	invbarbg:SetPoint("TOPLEFT", QuBar2)

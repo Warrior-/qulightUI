@@ -67,8 +67,8 @@ local OnUpdate = function(self)
 end
 
 media = {
-	["backdrop1"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
-	["backdrop"] =  "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
+	["backdrop1"] = Qulight["media"].texture,
+	["backdrop"] =  Qulight["media"].texture,
 	["checked"] = "Interface\\AddOns\\Aurora\\CheckButtonHilight",
 	["glow"] = "Interface\\AddOns\\Aurora\\glow",
 }
@@ -176,7 +176,7 @@ addon:SetParent(UIParent)
 addon:SetUserPlaced(true)
 addon:SetPoint("TOPLEFT", 0, -104)
 
-CreateShadow(addon)
+CreateStyle(addon, 2)
 
 addon:SetWidth(256)
 addon:SetHeight(60)

@@ -50,7 +50,7 @@ function StyleButton(self)
 
 		local panel = CreateFrame("Frame", name.."Panel", self)
 		CreatePanel(panel, buttonsize, buttonsize, "CENTER", self, "CENTER", 0, 0)
-		CreateShadow(panel)
+		CreateStyle(panel, 2)
 		panel:SetFrameStrata(self:GetFrameStrata())
 		panel:SetFrameLevel(self:GetFrameLevel() - 1)
  
@@ -208,7 +208,7 @@ function StyleActionBarButton(self)
 
 		local panel = CreateFrame("Frame", name.."Panel", self)
 		CreatePanel(panel, buttonsize, buttonsize, "CENTER", self, "CENTER", 0, 0)
-		CreateShadow(panel)
+		CreateStyle(panel, 2)
 		panel:SetFrameStrata(self:GetFrameStrata())
 		panel:SetFrameLevel(self:GetFrameLevel() - 1)
  
@@ -255,7 +255,7 @@ function StyleActionBarPetAndShiftButton(normal, button, icon, name, pet)
 		CreatePanel(panel, petbuttonsize, petbuttonsize, "CENTER", button, "CENTER", 0, 0)
 		panel:SetFrameStrata(button:GetFrameStrata())
 		panel:SetFrameLevel(button:GetFrameLevel() - 1)
-		CreateShadow(panel)
+		CreateStyle(panel, 2)
 		icon:SetTexCoord(.08, .92, .08, .92)
 		icon:ClearAllPoints()
 		if pet then			
@@ -502,7 +502,7 @@ local function StyleTotemFlyout(flyout)
 	local last = nil
 	
 	for _,button in ipairs(flyout.buttons) do
-		CreateShadow(button)
+		CreateStyle(button, 2)
 		local icon = select(1,button:GetRegions())
 		icon:SetTexCoord(.09,.91,.09,.91)
 		icon:SetDrawLayer("ARTWORK")
@@ -526,7 +526,7 @@ local function StyleTotemFlyout(flyout)
 	end
 
 	local close = MultiCastFlyoutFrameCloseButton
-	CreateShadow(close)
+	CreateStyle(close, 2)
 	close:GetHighlightTexture():SetTexture([[Interface\Buttons\ButtonHilight-Square]])
 	close:GetHighlightTexture():SetPoint("TOPLEFT",close,"TOPLEFT",1,-1)
 	close:GetHighlightTexture():SetPoint("BOTTOMRIGHT",close,"BOTTOMRIGHT",-1,1)
@@ -558,7 +558,7 @@ local function StyleTotemOpenButton(button, parent)
 		button.visibleBuhighlight:SetTexture([[Interface\Buttons\ButtonHilight-Square]])
 		button.visibleBuhighlight:SetPoint("TOPLEFT",button.visibleBut,"TOPLEFT",1,-1)
 		button.visibleBuhighlight:SetPoint("BOTTOMRIGHT",button.visibleBut,"BOTTOMRIGHT",-1,1)
-		CreateShadow(button.visibleBut)
+		CreateStyle(button.visibleBut, 2)
 	end
 	
 	button.visibleBut:SetBackdropBorderColor(parent:GetBackdropBorderColor())
@@ -573,7 +573,7 @@ local bordercolors = {
 }
 
 local function StyleTotemSlotButton(button, index)
-	CreateShadow(button)
+	CreateStyle(button, 2)
 	button.overlayTex:SetTexture(nil)
 	button.background:SetDrawLayer("ARTWORK")
 	button.background:ClearAllPoints()
@@ -612,7 +612,7 @@ local function StyleTotemSpellButton(button, index)
 	icon:SetDrawLayer("ARTWORK")
 	icon:SetPoint("TOPLEFT",button,"TOPLEFT",2,-2)
 	icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-2,2)
-	CreateShadow(button)
+	CreateStyle(button, 2)
 	button:GetNormalTexture():SetTexture(nil)
 	if not InCombatLockdown() then button:SetSize(30, 30) end
 	_G[button:GetName().."Highlight"]:SetTexture(nil)

@@ -3822,7 +3822,7 @@ function Filger:DisplayActives()
 		if not bar then
 			bar = CreateFrame("Frame", "FilgerAnchor"..id.."Frame"..index, self)
 			bar:SetScale(1)
-			CreateShadow(bar)
+			CreateStyle(bar, 2)
 
 			if index == 1 then
 				bar:SetPoint(unpack(self.Position))
@@ -3891,7 +3891,7 @@ function Filger:DisplayActives()
 					bar.bg:SetPoint("TOPLEFT", -2, 2)
 					bar.bg:SetPoint("BOTTOMRIGHT", 2, -2)
 					bar.bg:SetFrameStrata("BACKGROUND")
-					CreateShadow(bar.bg)
+					CreateStyle(bar.bg, 2)
 				end
 
 				if bar.background then

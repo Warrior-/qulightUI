@@ -169,7 +169,7 @@ local function SetChatStyle(frame)
 	editbox:SetPoint("CENTER", DataLeftPanel)
 	editbox:SetWidth(440)
 	editbox:SetHeight(15)
-	SimpleShadow(editbox)
+	CreateStyle(editbox, 2, 0 , 1, 0)
 end
 local function SetupChat(self)	
 	for i = 1, NUM_CHAT_WINDOWS do
@@ -194,7 +194,7 @@ for i=1, BNToastFrame:GetNumRegions() do
 	end
 end	
 
-CreateShadow(BNToastFrame)
+CreateStyle(BNToastFrame, 2)
 
 BNToastFrame:HookScript("OnShow", function(self)
 	self:ClearAllPoints()
@@ -453,7 +453,7 @@ local isf = nil
 
 local function CreateCopyFrame()
 	frame = CreateFrame("Frame", "ChatCopyFrame", UIParent)
-	CreateShadow(frame)
+	CreateStyle(frame, 2)
 	frame:SetWidth(440)
 	frame:SetHeight(250)
 	frame:SetScale(1)
@@ -512,12 +512,12 @@ copyicon = "Interface\\AddOns\\QulightUI\\Root\\Media\\copy"
 for i = 1, NUM_CHAT_WINDOWS do
 	local cf = _G[format("ChatFrame%d",  i)]
 	local button = CreateFrame("Button", format("ButtonCF%d", i), cf)
-	button:SetPoint("TOPRIGHT", 18, 0)
+	button:SetPoint("TOPRIGHT", 5, 0)
 	button:SetHeight(20)
 	button:SetWidth(20)
 	button:SetNormalTexture(copyicon)
 	button:SetAlpha(0)
-	CreateShadow(button)
+	CreateStyle(button, 2)
 
 	button:SetScript("OnMouseUp", function(self)
 		Copy(cf)

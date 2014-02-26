@@ -38,7 +38,7 @@ ConsolidatedBuffsCount:SetPoint("TOPRIGHT")
 ConsolidatedBuffsCount:SetFont(Qulight["media"].pxfont, Qulight["buffdebuff"].countfontsize, "OUTLINE")
 
 local CBbg = CreateFrame("Frame", nil, ConsolidatedBuffs)
-CreateShadow(CBbg)
+CreateStyle(CBbg, 2)
 
 for i = 1, 3 do
 	local te 			= _G["TempEnchant"..i]
@@ -58,7 +58,7 @@ for i = 1, 3 do
 	h:SetParent(te)
 	h:SetAllPoints(te)
 	h:SetFrameLevel(30)
-	CreateShadow(h)
+	CreateStyle(h, 2)
 end
 local function StyleBuffs(buttonName, index, debuff)
 	local buff = _G[buttonName..index]
@@ -88,7 +88,7 @@ local function StyleBuffs(buttonName, index, debuff)
 		
 		panel:SetFrameLevel(0)
 		panel:SetFrameStrata(buff:GetFrameStrata())
-		CreateShadow(panel)
+		CreateStyle(panel, 2)
 	end
 
 	if border then border:Hide() end

@@ -37,7 +37,7 @@ PPSkin:SetScript("OnEvent", function(self, event, addon)
 					frame.bg = CreateFrame('Frame', nil, frame)
 					frame.bg:SetAllPoints(frame)
 					frame.bg:SetFrameLevel(frame:GetFrameLevel()-1)
-					CreateShadow(frame.bg)
+					CreateStyle(frame.bg, 2)
 				end
 				
 				local fname = frame:GetName()
@@ -83,7 +83,7 @@ PPSkin:SetScript("OnEvent", function(self, event, addon)
 						
 						local panel = CreateFrame("Frame", fname..'New'..tex, frame)
 						panel:SetAllPoints(oldicon)
-						CreateShadow(panel)
+						CreateStyle(panel, 2)
 						
 						local icon = panel:CreateTexture()
 						panel.icon = panel

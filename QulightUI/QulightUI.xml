@@ -22,7 +22,6 @@
 	<Script file="Root\Fonts.lua"/>
 	<Script file="Root\Layout.lua"/>
 	<Script file="Root\Tweaks.lua"/>
-	<Script file="Root\TimeTracker.lua"/>
 	<Script file="Root\Mirror.lua"/>
 
 	<Include file="Addons\Aurora\Aurora.xml"/>		
@@ -78,7 +77,6 @@
 	<Script file="Addons\Minimap.lua"/>
 	<Script file="Addons\Map.lua"/>
 	<Script file="Addons\NamePlates.lua"/>
-	<Script file="Addons\QuestTracker.lua"/>
 	<Script file="Addons\RaidBuffReminder.lua"/>
 	<Script file="Addons\RaidUtility.lua"/>
 	<Script file="Addons\Reminder.lua"/>

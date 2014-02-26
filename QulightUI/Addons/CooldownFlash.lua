@@ -51,7 +51,7 @@ flash:SetScript("OnEvent", function()
 			flash:SetAlpha(1-(flash.e%.5)*4)
 		end
 	end)
-	CreateShadow(flash)
+	CreateStyle(flash, 2)
 	flash:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	flash:SetScript("OnEvent", nil)
 end)

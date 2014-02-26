@@ -5,8 +5,8 @@
 
 CreateBD = function(f, a)
 	f:SetBackdrop({
-		bgFile = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
-		edgeFile = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
+		bgFile = Qulight["media"].texture,
+		edgeFile = Qulight["media"].texture,
 		edgeSize = 1,
 	})
 	f:SetBackdropColor(.05,.05,.05, a or alpha)
@@ -85,7 +85,7 @@ frame:SetScript("OnEvent", function(self, event, addon)
 		if not button.isSkinned then
 			CreateBackdrop(button)
 			button.backdrop:SetAllPoints()
-			CreateShadow3(button)
+			CreateStyle(button, 3, 0)
 			icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 			icon:SetPoint("TOPLEFT", button, 1, -1)
 			icon:SetPoint("BOTTOMRIGHT", button, -1, 1)
@@ -133,7 +133,7 @@ frame:SetScript("OnEvent", function(self, event, addon)
 		local flash = _G[name.."Flash"]
 		
 		StyleButton(button)
-		CreateShadow3(button)
+		CreateStyle(button, 3, 0)
 		button:SetNormalTexture("")
 		button.SetNormalTexture = dummy
 		
@@ -219,7 +219,7 @@ local function SetupFlyoutButton()
 	for i = 1, buttons do
 		if _G["SpellFlyoutButton"..i] then
 			StyleButton(_G["SpellFlyoutButton"..i])
-			CreateShadow3(_G["SpellFlyoutButton"..i])
+			CreateStyle(_G["SpellFlyoutButton"..i], 3, 0)
 			if _G["SpellFlyoutButton"..i]:GetChecked() then
 				_G["SpellFlyoutButton"..i]:SetChecked(nil)
 			end

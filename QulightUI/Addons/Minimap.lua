@@ -101,7 +101,7 @@ QueueStatusMinimapButton:ClearAllPoints()
 QueueStatusMinimapButton:SetPoint("TOPRIGHT", 0, 0)
 QueueStatusMinimapButtonBorder:Hide()
 StripTextures(QueueStatusFrame)
-CreateShadow(QueueStatusFrame)
+CreateStyle(QueueStatusFrame, 2)
 
 MiniMapWorldMapButton:Hide()
 

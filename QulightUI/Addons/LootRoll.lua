@@ -1,7 +1,7 @@
 ﻿if Qulight["loot"].rolllootframe ~= true then return end
 
 local backdrop = {
-	bgFile = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4", tile = true, tileSize = 0,
+	bgFile = Qulight["media"].texture, tile = true, tileSize = 0,
 	edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1,
 	insets = {left = -1, right = -1, top = -1, bottom = -1},
 }
@@ -88,7 +88,7 @@ local function CreateRollFrame()
 	frame:SetBackdropColor(0.1, 0.1, 0.1, 1)
 	frame:SetScript("OnEvent", OnEvent)
 	frame:RegisterEvent("CANCEL_LOOT_ROLL")
-	CreateShadowNameplates(frame)
+	CreateStyle(frame, 4)
 	frame:Hide()
 	
 	
@@ -100,7 +100,7 @@ local function CreateRollFrame()
 	button:SetScript("OnLeave", HideTip2)
 	button:SetScript("OnUpdate", ItemOnUpdate)
 	button:SetScript("OnClick", LootClick)
-	CreateShadowNameplates(button)
+	CreateStyle(button, 4)
 	frame.button = button
 
 	local buttonborder = CreateFrame("Frame", nil, button)
@@ -185,7 +185,7 @@ label:SetAllPoints(anchor)
 label:SetText("MoveRoll")
 anchor:SetMovable(true)
 anchor:EnableMouse(false)
-CreateShadow(anchor)
+CreateStyle(anchor, 2)
 anchor:SetAlpha(0)
 anchor:SetBackdropBorderColor(1, 0, 0, 1)
 
@@ -334,14 +334,3 @@ anchor:SetScript("OnEvent", function(frame, event, addon)
 
 	anchor:SetPoint("BOTTOMRIGHT", AnchorLootRoll)
 end)
-
-
-
-
-
-
-
-
-
-
-

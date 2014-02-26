@@ -106,7 +106,7 @@ Mod_AddonSkins:RegisterSkin("DXE",function(Skin, skin, Layout, layout, config)
 
 	for i=1, #movers do
 		if _G[movers[i]] then
-			CreateShadow(_G[movers[i]])
+			CreateStyle(_G[movers[i]], 2)
 		end
 	end	
 

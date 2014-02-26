@@ -1,11 +1,8 @@
 if not Qulight["misk"].classtimer == true then return end
 
-local mediaPath = "Interface\\AddOns\\QulightUI\\media\\Other\\"
-local texture = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4"
-local glowTex = mediaPath.."glowTex"
-fontsize = 10
-fontsize1 =  10
-local buttonTex = mediaPath.."buttontex"
+local texture = Qulight["media"].texture
+local glowTex = Qulight["media"].glow
+local buttonTex = "Interface\\AddOns\\QulightUI\\media\\Other\\buttontex"
 
 local CreateSpellEntry = function( id, castByAnyone, color, unitType, castSpellId )
 	return { id = id, castByAnyone = castByAnyone, color = color, unitType = unitType or 0, castSpellId = castSpellId };
@@ -26,8 +23,8 @@ local CAST_SEPARATOR = true;
 local CAST_SEPARATOR_COLOR = CreateColor( .1,.1,.1,1 );
 local TEXT_MARGIN = 5;
 local MASTER_FONT, STACKS_FONT;
-MASTER_FONT = { Qulight["media"].font, fontsize };
-STACKS_FONT = { Qulight["media"].font, fontsize1 };
+MASTER_FONT = { Qulight["media"].font, Qulight["media"].fontsize };
+STACKS_FONT = { Qulight["media"].font, Qulight["media"].fontsize };
 local PERMANENT_AURA_VALUE = 1;
 local PLAYER_BAR_COLOR = CreateColor( 70, 70, 150, 1 );
 local PLAYER_DEBUFF_COLOR = nil;
@@ -1172,7 +1169,7 @@ do
 		border:SetPoint( "TOPLEFT", result, "TOPLEFT", -1, 1 );
 		border:SetPoint( "BOTTOMRIGHT", result, "BOTTOMRIGHT", 1, -1 );
 		result.border = border;		
-		CreateShadow(border)
+		CreateStyle(border, 2)
 		result:RegisterEvent( "PLAYER_ENTERING_WORLD" );
 		result:RegisterEvent( "UNIT_AURA" );
 		if ( unit == "target" ) then

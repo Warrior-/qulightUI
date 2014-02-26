@@ -657,7 +657,7 @@ function CreateQulightConfigUI()
 	BackgroundQulightConfigUI:SetWidth(785)
 	BackgroundQulightConfigUI:SetHeight(490)
 	BackgroundQulightConfigUI:SetFrameLevel(0)
-	CreateShadow(BackgroundQulightConfigUI)	
+	CreateStyle(BackgroundQulightConfigUI, 2)	
 	
 	-- GROUP SELECTION ( LEFT SIDE )
 	local groups = CreateFrame("ScrollFrame", "QulightCatagoryGroup", QulightConfigUI)

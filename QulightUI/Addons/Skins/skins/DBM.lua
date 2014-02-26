@@ -36,7 +36,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 							icon1.overlay:SetHeight(23)
 							icon1.overlay:SetFrameStrata("BACKGROUND")
 							icon1.overlay:SetPoint("BOTTOMRIGHT", tbar, "BOTTOMLEFT", -2, -2)
-							CreateShadow(icon1.overlay)
+							CreateStyle(icon1.overlay, 2)
 						end
 
 						if (icon2.overlay) then
@@ -47,7 +47,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 							icon2.overlay:SetHeight(23)
 							icon2.overlay:SetFrameStrata("BACKGROUND")
 							icon2.overlay:SetPoint("BOTTOMLEFT", tbar, "BOTTOMRIGHT", 5, -2)
-							CreateShadow(icon2.overlay)
+							CreateStyle(icon2.overlay, 2)
 						end
 
 						if bar.color then
@@ -66,7 +66,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 						frame:SetScale(1)
 						if not frame.styled then
 							frame:SetHeight(23)
-							CreateShadow(frame)
+							CreateStyle(frame, 2)
 							frame.styled = true
 						end
 
@@ -126,7 +126,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 						end
 						
 						DBMRangeCheckRadar:HookScript("OnShow",function(self)
-						CreateShadow(self)
+						CreateStyle(self, 2)
 						end)
 						
 						if bar.owner.options.IconLeft then icon1:Show() icon1.overlay:Show() else icon1:Hide() icon1.overlay:Hide() end
@@ -188,7 +188,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 				if not bar.styled then
 					bar:SetScale(1)
 					bar:SetHeight(19)
-					CreateShadow(bar)
+					CreateStyle(bar, 2)
 					background:SetNormalTexture(nil)
 					bar.styled = true
 				end	
@@ -243,7 +243,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 		DBM.RangeCheck:Show()
 		DBM.RangeCheck:Hide()
 
-		CreateShadow(DBMRangeCheckRadar)
+		CreateStyle(DBMRangeCheckRadar, 2)
 		
 		if croprwicons then
 			local replace = string.gsub

@@ -4,6 +4,7 @@
 	["fontsize"] = 10, 														    		-- size of font 
 	["texture"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",				-- main texture in Qulight UI
 	["blank"] = "Interface\\Buttons\\WHITE8x8",											-- clean texture
+	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",	
 }
 Qulight["general"] = {
 	["AutoScale"] = true,  																-- mainly enabled for users that don't want to mess with the config file
@@ -110,7 +111,6 @@ Qulight["buffdebuff"] = {
 	["BUFFS_PER_ROW"] = 15,
 }
 Qulight["addonskins"] = {
-	["Aurora"] = true, 			 
 	["DBM"] = true, 																	-- Deadly Boss Mod skinning
 	["PallyPower"] = true, 																-- Pally Power skinning
 	["Skada"] = true, 																	-- Skada skinning

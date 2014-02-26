@@ -16,7 +16,7 @@ CreateAnchor(Anchorvehicleleft, "Move vehicle button", 20, 20)
 -- exit vehicle button on left side of bottom action bar
 local vehicleleft = CreateFrame("Button", "QuExitVehicleButtonLeft", UIParent, "SecureHandlerClickTemplate")
 CreatePanel(vehicleleft, 20, 20, "BOTTOM", Anchorvehicleleft)
-CreateShadow(vehicleleft)
+CreateStyle(vehicleleft, 2)
 
 vehicleleft:RegisterForClicks("AnyUp")
 vehicleleft:SetScript("OnClick", function() VehicleExit() end)
