@@ -5,8 +5,8 @@ local oUF = ns.oUF or oUF
 if not oUF then return end
 
 local shadows = {
-	bgFile =  "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
-	edgeFile = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex", 
+	bgFile =  Qulight["media"].texture,
+	edgeFile = Qulight["media"].glow, 
 	edgeSize = 4,
 	insets = { left = 3, right = 3, top = 3, bottom = 3 }
 }
@@ -32,7 +32,7 @@ local _G = getfenv(0)
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 
 local gsub, find, format = string.gsub, string.find, string.format
-local Tooltips = {GameTooltip,ItemRefShoppingTooltip1,ItemRefShoppingTooltip2, ItemRefShoppingTooltip3,ShoppingTooltip1,ShoppingTooltip2,ShoppingTooltip3,WorldMapTooltip,WorldMapCompareTooltip1,WorldMapCompareTooltip2,WorldMapCompareTooltip3}
+local Tooltips = {GameTooltip, ItemRefShoppingTooltip1,ItemRefShoppingTooltip2, ItemRefShoppingTooltip3,ShoppingTooltip1,ShoppingTooltip2,ShoppingTooltip3,WorldMapTooltip,WorldMapCompareTooltip1,WorldMapCompareTooltip2,WorldMapCompareTooltip3}
 local ItemRefTooltip = ItemRefTooltip
 
 local linkTypes = {item = true, enchant = true, spell = true, quest = true, unit = true, talent = true, achievement = true, glyph = true}
@@ -220,7 +220,7 @@ local healthBarBG = CreateFrame("Frame", "StatusBarBG", healthBar)
 healthBarBG:SetFrameLevel(healthBar:GetFrameLevel() - 1)
 healthBarBG:SetPoint("TOPLEFT", -2, 2)
 healthBarBG:SetPoint("BOTTOMRIGHT", 2, -2)
-CreateShadow(healthBarBG)
+CreateStyle(healthBarBG, 2)
 
 local function OnTooltipSetUnit(self)
 	local lines = self:NumLines()
@@ -415,7 +415,7 @@ Tooltip:SetScript("OnEvent", function(self, event, addon)
 		ItemRefTooltip:HookScript("OnTooltipSetItem", SetStyle)
 		ItemRefTooltip:HookScript("OnShow", SetStyle)	
 		frame1px(FriendsTooltip)
-		CreateShadow(FriendsTooltip)
+		CreateStyle(FriendsTooltip, 2)
 		
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	
@@ -440,11 +440,11 @@ Tooltip:SetScript("OnEvent", function(self, event, addon)
 		if FrameStackTooltip then
 			FrameStackTooltip:SetScale(1)
 			
-			FrameStackTooltip:HookScript("OnShow", function(self) CreateShadow(self) end)
+			FrameStackTooltip:HookScript("OnShow", function(self) CreateStyle(self, 2) end)
 		end
 		
 		if EventTraceTooltip then
-			EventTraceTooltip:HookScript("OnShow", function(self) CreateShadow(self) end)
+			EventTraceTooltip:HookScript("OnShow", function(self) CreateStyle(self, 2) end)
 		end
 	end
 end)

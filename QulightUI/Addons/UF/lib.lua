@@ -5,12 +5,7 @@ local cast = CreateFrame("Frame")
 local oUF = ns.oUF or oUF
 oUF.colors.runes = {{0.87, 0.12, 0.23};{0.40, 0.95, 0.20};{0.14, 0.50, 1};{.70, .21, 0.94};}
 --------------------------------------------------------------------------------------
-backdrop_edge_texture = "Interface\\AddOns\\QulightUI\\Root\\Media\\backdrop_edge1"
-statusbar_texture = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4"
-powerbar_texture = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4"
-backdrop_texture = "Interface\\AddOns\\QulightUI\\Root\\Media\\backdrop1"
 highlight_texture = "Interface\\AddOns\\QulightUI\\Root\\Media\\raidbg"
-debuffBorder = "Interface\\AddOns\\QulightUI\\Root\\Media\\iconborder"
 fontsymbol = "Interface\\AddOns\\QulightUI\\Root\\Media\\symbol.ttf"
 --------------------------------------------------------------------------------------
 local fixStatusbar = function(bar)
@@ -94,7 +89,7 @@ cast.setBarTicks = function(castBar, ticknum)
 		for k = 1, ticknum do
 			if not ticks[k] then
 				ticks[k] = castBar:CreateTexture(nil, 'OVERLAY')
-				ticks[k]:SetTexture(statusbar_texture)
+				ticks[k]:SetTexture(Qulight["media"].texture)
 				ticks[k]:SetVertexColor(0, 0, 0)
 				ticks[k]:SetWidth(1)
 				ticks[k]:SetHeight(castBar:GetHeight())
@@ -285,7 +280,7 @@ function AltPowerBarPostUpdate(self, min, cur, max)
 end	
 gen_hpbar = function(f) 
     local s = CreateFrame("StatusBar", nil, f)
-    s:SetStatusBarTexture(statusbar_texture)
+    s:SetStatusBarTexture(Qulight["media"].texture)
 	s:GetStatusBarTexture():SetHorizTile(true)
 	s.Smooth = true
 	fixStatusbar(s)
@@ -305,9 +300,9 @@ gen_hpbar = function(f)
 	else
 		h:SetPoint("BOTTOMRIGHT",5,-5)
 	end
-	CreateShadow0(h)
+	CreateStyle(h, -1)
     local b = s:CreateTexture(nil, "BACKGROUND")
-    b:SetTexture(statusbar_texture)
+    b:SetTexture(Qulight["media"].texture)
 	b:SetVertexColor(.5,.5,.5,.9)
     b:SetAllPoints(s)
 	f.Health = s
@@ -340,7 +335,7 @@ gen_hpstrings = function(f)
 end
 gen_ppbar = function(f)
     local s = CreateFrame("StatusBar", nil, f)
-    s:SetStatusBarTexture(powerbar_texture)
+    s:SetStatusBarTexture(Qulight["media"].texture)
 	s:GetStatusBarTexture():SetHorizTile(true)
 	fixStatusbar(s)
 	s.Smooth = true
@@ -349,88 +344,50 @@ gen_ppbar = function(f)
     s:SetPoint("BOTTOM",UIParent,"BOTTOM",0,1)
 	
 	if f.mystyle == "player" then
-		local h = CreateFrame("Frame", nil, s)
 		s:SetPoint("BOTTOM",f,"BOTTOM", 0, 0)
-		h:SetFrameLevel(3)
 		s:SetWidth(212)
-		h:SetPoint("TOPLEFT",-5,5)
-		h:SetPoint("BOTTOMRIGHT",5,-5)
-		CreateShadow00(h)
 	end
 	if f.mystyle == "target" then
-		local h = CreateFrame("Frame", nil, s)
 		s:SetPoint("BOTTOM",f,"BOTTOM", 0, 0)
-		h:SetFrameLevel(3)
 		s:SetWidth(212)
-		h:SetPoint("TOPLEFT",-5,5)
-		h:SetPoint("BOTTOMRIGHT",5,-5)
-		CreateShadow00(h)		
 	end
 	if f.mystyle == "focus" then
-		local h = CreateFrame("Frame", nil, s)
 		s:SetPoint("BOTTOM",f,"BOTTOM",0,4)
-		h:SetFrameLevel(3)
 		s:SetWidth(172)
-		h:SetPoint("TOPLEFT",-5,5)
-		h:SetPoint("BOTTOMRIGHT",5,-5)	
-		CreateShadow00(h)
 	end
 	if f.mystyle == "oUF_MT" then
-		local h = CreateFrame("Frame", nil, s)
 		s:SetPoint("BOTTOM",f,"BOTTOM",0,4)
-		h:SetFrameLevel(3)
 		s:SetWidth(92)
-		h:SetPoint("TOPLEFT",-5,5)
-		h:SetPoint("BOTTOMRIGHT",5,-5)
-		CreateShadow00(h)
 	end
 	if f.mystyle == "boss" then
-		local h = CreateFrame("Frame", nil, s)
 		s:SetPoint("BOTTOM",f,"BOTTOM",0,4)
-		h:SetFrameLevel(3)
 		s:SetWidth(142)
-		h:SetPoint("TOPLEFT",-5,5)
-		h:SetPoint("BOTTOMRIGHT",5,-5)
-		CreateShadow00(h)
 	end
 	if f.mystyle == "oUF_Arena" then
-		local h = CreateFrame("Frame", nil, s)
 		s:SetPoint("BOTTOM",f,"BOTTOM",0,4)
-		h:SetFrameLevel(3)
 		s:SetWidth(142)
-		h:SetPoint("TOPLEFT",-5,5)
-		h:SetPoint("BOTTOMRIGHT",5,-5)
-		CreateShadow00(h)
 	end
 	if f.mystyle == "pet" then
-		local h = CreateFrame("Frame", nil, s)
 		s:SetPoint("BOTTOM",f,"BOTTOM",0,4)
-		h:SetFrameLevel(3)
 		s:SetWidth(92)
-		h:SetPoint("TOPLEFT",-5,5)
-		h:SetPoint("BOTTOMRIGHT",5,-5)
-		CreateShadow00(h)
 	end
 	if f.mystyle == "tot" then
-		local h = CreateFrame("Frame", nil, s)
 		s:SetPoint("BOTTOM",f,"BOTTOM",0,4)
-		h:SetFrameLevel(3)
 		s:SetWidth(92)
-		h:SetPoint("TOPLEFT",-5,5)
-		h:SetPoint("BOTTOMRIGHT",5,-5)
-		CreateShadow00(h)
 	end
 	if f.mystyle == "focustarget" then
-		local h = CreateFrame("Frame", nil, s)
 		s:SetPoint("BOTTOM",f,"BOTTOM",0,4)
-		h:SetFrameLevel(3)
 		s:SetWidth(92)
-		h:SetPoint("TOPLEFT",-5,5)
-		h:SetPoint("BOTTOMRIGHT",5,-5)
-		CreateShadow00(h)
 	end
-    local b = s:CreateTexture(nil, "BACKGROUND")
-    b:SetTexture(powerbar_texture)
+	
+	local h = CreateFrame("Frame", nil, s)
+	h:SetPoint("TOPLEFT",-5,5)
+	h:SetPoint("BOTTOMRIGHT",5,-5)
+	h:SetFrameLevel(3)
+	CreateStyle(h, -1, 4, .9, 0.6)
+    
+	local b = s:CreateTexture(nil, "BACKGROUND")
+    b:SetTexture(Qulight["media"].texture)
     b:SetAllPoints(s)
     f.Power = s
     f.Power.bg = b
@@ -438,7 +395,7 @@ end
 
 gen_focusbar = function(f)
   --[[  local s1 = CreateFrame("StatusBar", nil, f)
-    s1:SetStatusBarTexture(powerbar_texture)
+    s1:SetStatusBarTexture(Qulight["media"].texture)
 	s1:GetStatusBarTexture():SetHorizTile(true)
 	fixStatusbar(s1)
 	s1.Smooth = true
@@ -454,7 +411,7 @@ gen_focusbar = function(f)
 	CreateShadow00(h)
 
     local b1 = s1:CreateTexture(nil, "BACKGROUND")
-    b1:SetTexture(powerbar_texture)
+    b1:SetTexture(Qulight["media"].texture)
     b1:SetAllPoints(s1)
     f.Power = s1
     f.Power.bg = b1 --]]
@@ -472,7 +429,7 @@ gen_portrait = function(f)
 	
 	bg = f.Health:CreateTexture(nil, 'BORDER')
 	bg:SetAllPoints()
-	bg:SetTexture(statusbar_texture)
+	bg:SetTexture(Qulight["media"].texture)
 	bg:SetVertexColor(.4,.4,.4,1)			
 	bg:ClearAllPoints()
 	bg:SetPoint('BOTTOMLEFT', f.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
@@ -592,7 +549,7 @@ gen_castbar = function(f)
 	    s:SetPoint("TOPRIGHT",f,"BOTTOMRIGHT",0,-6)
 	end
 	
-    s:SetStatusBarTexture(statusbar_texture)
+    s:SetStatusBarTexture(Qulight["media"].texture)
     s:SetStatusBarColor(.15,.15,.15,1)
 	s.colorClass = true
     s:SetFrameLevel(1)
@@ -604,7 +561,7 @@ gen_castbar = function(f)
     h:SetFrameLevel(0)
     h:SetPoint("TOPLEFT",-5,5)
     h:SetPoint("BOTTOMRIGHT",5,-5)
-	CreateShadow0(h)
+	CreateStyle(h, -1)
     sp = s:CreateTexture(nil, "OVERLAY")
     sp:SetBlendMode("ADD")
     sp:SetAlpha(0.5)
@@ -631,10 +588,10 @@ gen_castbar = function(f)
     h2:SetFrameLevel(0)
     h2:SetPoint("TOPLEFT",i,"TOPLEFT",-5,5)
     h2:SetPoint("BOTTOMRIGHT",i,"BOTTOMRIGHT",5,-5)
-	CreateShadow0(h2)
+	CreateStyle(h2, -1)
     if f.mystyle == "player" then
         local z = s:CreateTexture(nil,"OVERLAY")
-        z:SetTexture(statusbar_texture)
+        z:SetTexture(Qulight["media"].texture)
         z:SetVertexColor(1,0.1,0,.6)
         z:SetPoint("TOPRIGHT")
         z:SetPoint("BOTTOMRIGHT")
@@ -689,7 +646,7 @@ gen_bigcastbar = function(f)
 	    s:SetPoint("TOPRIGHT",f,"BOTTOMRIGHT",0,-6)
 	end
 	
-    s:SetStatusBarTexture(statusbar_texture)
+    s:SetStatusBarTexture(Qulight["media"].texture)
     s:SetStatusBarColor(.15,.15,.15,1)
     s:SetFrameLevel(1)
     s.CastingColor = cbColor
@@ -700,7 +657,7 @@ gen_bigcastbar = function(f)
     h:SetFrameLevel(0)
     h:SetPoint("TOPLEFT",-5,5)
     h:SetPoint("BOTTOMRIGHT",5,-5)
-	CreateShadow0(h)
+	CreateStyle(h, -1)
     sp = s:CreateTexture(nil, "OVERLAY")
     sp:SetBlendMode("ADD")
     sp:SetAlpha(0.5)
@@ -723,10 +680,10 @@ gen_bigcastbar = function(f)
     h2:SetFrameLevel(0)
     h2:SetPoint("TOPLEFT",i,"TOPLEFT",-5,5)
     h2:SetPoint("BOTTOMRIGHT",i,"BOTTOMRIGHT",5,-5)
-	CreateShadow0(h2)
+	CreateStyle(h2, -1)
     if f.mystyle == "player" then
         local z = s:CreateTexture(nil,"OVERLAY")
-        z:SetTexture(statusbar_texture)
+        z:SetTexture(Qulight["media"].texture)
         z:SetVertexColor(1,0.1,0,.6)
         z:SetPoint("TOPRIGHT")
         z:SetPoint("BOTTOMRIGHT")
@@ -805,7 +762,7 @@ local postCreateIcon = function(element, button)
 	h:SetFrameLevel(0)
 	h:SetPoint("TOPLEFT",-5,5)
 	h:SetPoint("BOTTOMRIGHT",5,-5)
-	CreateShadow0(h)
+	CreateStyle(h, -1)
 	
 	if self.mystyle == "player" then
 		local time = gen_fontstring(button, Qulight["media"].pxfont, 10, "OUTLINE")
@@ -994,19 +951,19 @@ addEclipseBar = function(self)
 	h:SetFrameLevel(0)
 	h:SetPoint("TOPLEFT",-5,5)
 	h:SetPoint("BOTTOMRIGHT",5,-5)
-	CreateShadow1(h)
+	CreateStyle(h, -1)
 	
 	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
 	lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
 	lunarBar:SetSize((self:GetWidth()-120), 6)
-	lunarBar:SetStatusBarTexture(statusbar_texture)
+	lunarBar:SetStatusBarTexture(Qulight["media"].texture)
 	lunarBar:SetStatusBarColor(0, 0, 1)
 	eclipseBar.LunarBar = lunarBar
 	
 	local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
 	solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT', 0, 0)
 	solarBar:SetSize((self:GetWidth()-120), 6)
-	solarBar:SetStatusBarTexture(statusbar_texture)
+	solarBar:SetStatusBarTexture(Qulight["media"].texture)
 	solarBar:SetStatusBarColor(1, 3/5, 0)
 	eclipseBar.SolarBar = solarBar
 	
@@ -1027,7 +984,7 @@ genHolyPower = function(self)
 	for i = 1, 5 do					
 		bars[i]=CreateFrame("StatusBar", nil, bars)
 		bars[i]:SetHeight(bars:GetHeight())					
-		bars[i]:SetStatusBarTexture(statusbar_texture)
+		bars[i]:SetStatusBarTexture(Qulight["media"].texture)
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 
 		bars[i].bg = bars[i]:CreateTexture(nil, 'BORDER')
@@ -1042,11 +999,11 @@ genHolyPower = function(self)
 		
 		bars[i].bg:SetAllPoints(bars[i])
 		bars[i]:SetWidth((bars:GetWidth() - 2)/5)
-		bars[i].bg:SetTexture(statusbar_texture)					
+		bars[i].bg:SetTexture(Qulight["media"].texture)					
 		bars[i].bg:SetAlpha(.15)
 	end
 				
-	CreateShadowclassbar4(bars)
+	CreateStyle(bars, 4, 5, .9, 0.6)
 	bars.Override = UpdateHoly
 	self.HolyPower = bars	
 end
@@ -1068,13 +1025,13 @@ genRunes = function(self)
 		else
 			runes[i]:SetPoint("LEFT", runes[i-1], "RIGHT", 1, 0)
 		end
-		runes[i]:SetStatusBarTexture(statusbar_texture)
+		runes[i]:SetStatusBarTexture(Qulight["media"].texture)
 		runes[i]:GetStatusBarTexture():SetHorizTile(false)
 	end
 				
 	runes.backdrop = CreateFrame("Frame", nil, runes)
 	
-	CreateShadowclassbar(runes.backdrop)
+	CreateStyle(runes.backdrop, 2, 5, .9, 0.6)
 	runes.backdrop:SetBackdropBorderColor(.2,.2,.2,1)
 	runes.backdrop:SetPoint("TOPLEFT", -2, 2)
 	runes.backdrop:SetPoint("BOTTOMRIGHT", 2, -2)
@@ -1103,18 +1060,18 @@ if Qulight["unitframes"].TotemBars then
 		else
 			totems[i]:SetPoint("LEFT", totems[i-1], "RIGHT", 1, 0)
 		end
-		totems[i]:SetStatusBarTexture(statusbar_texture)
+		totems[i]:SetStatusBarTexture(Qulight["media"].texture)
 		totems[i]:GetStatusBarTexture():SetHorizTile(false)
 		totems[i]:SetMinMaxValues(0, 1)
 
 		totems[i].bg = totems[i]:CreateTexture(nil, "BORDER")
 		totems[i].bg:SetAllPoints()
-		totems[i].bg:SetTexture(statusbar_texture)
+		totems[i].bg:SetTexture(Qulight["media"].texture)
 		totems[i].bg.multiplier = 0.3
 	end
 	totems.backdrop = CreateFrame("Frame", nil, totems)
 	
-	CreateShadowclassbar(totems.backdrop)
+	CreateStyle(totems.backdrop, 2, 5, .9, 0.6)
 	totems.backdrop:SetBackdropBorderColor(.2,.2,.2,1)
 	totems.backdrop:SetPoint("TOPLEFT", -2, 2)
 	totems.backdrop:SetPoint("BOTTOMRIGHT", 2, -2)
@@ -1132,13 +1089,13 @@ Magebars = function(self)
 		mb:SetBackdrop(backdrop)
 		mb:SetBackdropColor(0, 0, 0)
 		mb:SetBackdropBorderColor(0, 0, 0)				
-		CreateShadowclassbar2(mb)
+		CreateStyle(mb, 4, 1, .9, 0.6)
 		mb:SetFrameLevel(6)
 				
 		for i = 1, 4 do
 		mb[i] = CreateFrame("StatusBar", "ArcaneBar"..i, mb)
 		mb[i]:SetHeight(6)
-		mb[i]:SetStatusBarTexture(statusbar_texture)
+		mb[i]:SetStatusBarTexture(Qulight["media"].texture)
 						
 			if i == 1 then
 				mb[i]:SetWidth(100 / 4)
@@ -1160,12 +1117,12 @@ Magebars = function(self)
 		rp:SetBackdrop(backdrop)
 		rp:SetBackdropColor(0, 0, 0)
 		rp:SetBackdropBorderColor(0, 0, 0)	
-		CreateShadowclassbar2(rp)
+		CreateStyle(rp, 4, 1, .9, 0.6)
 		rp:SetFrameLevel(6)
 		for i = 1, 2 do
 			rp[i] = CreateFrame("StatusBar", "RunePower"..i, rp)
 			rp[i]:SetHeight(6)
-			rp[i]:SetStatusBarTexture(statusbar_texture)
+			rp[i]:SetStatusBarTexture(Qulight["media"].texture)
 					
 			if i == 1 then
 				rp[i]:SetWidth(40 / 2)
@@ -1192,7 +1149,7 @@ genCPoints = function(self)
 	for i = 1, 5 do					
 		bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, bars)
 		bars[i]:SetHeight(6)					
-		bars[i]:SetStatusBarTexture(statusbar_texture)
+		bars[i]:SetStatusBarTexture(Qulight["media"].texture)
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 							
 		if i == 1 then
@@ -1215,7 +1172,7 @@ genCPoints = function(self)
 		
 	bars.FrameBackdrop = CreateFrame("Frame", nil, bars[1])
 	
-	CreateShadowclassbar(bars.FrameBackdrop)
+	CreateStyle(bars.FrameBackdrop, 2, 5, .9, 0.6)
 	bars.FrameBackdrop:SetBackdropBorderColor(.2,.2,.2,1)
 	bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", -2, 2)
 	bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", 2, -2)
@@ -1228,13 +1185,13 @@ genHarmony = function(self)
 		hb:SetPoint("TOPLEFT", self, "TOPLEFT",2,-2)
 		hb:SetWidth(100)
 		hb:SetHeight(6)
-		CreateShadowclassbar2(hb)
+		CreateStyle(hb, 4, 1, .9, 0.6)
 		hb:SetBackdropBorderColor(0,0,0,0)
 		hb:SetFrameLevel(6)
 			for i = 1, 5 do
 				hb[i] = CreateFrame("StatusBar", "HarmonyBar"..i, hb)
 				hb[i]:SetHeight(6)
-				hb[i]:SetStatusBarTexture(statusbar_texture)
+				hb[i]:SetStatusBarTexture(Qulight["media"].texture)
 					
 				if i == 1 then
 					hb[i]:SetWidth(100 / 5)
@@ -1257,12 +1214,12 @@ genShards = function(self)
 					
 		wb:SetBackdropColor(0, 0, 0)
 		wb:SetBackdropBorderColor(0, 0, 0)	
-		CreateShadowclassbar2(wb)
+		CreateStyle(wb, 4, 1, .9, 0.6)
 		wb:SetFrameLevel(6)
 			for i = 1, 4 do
 				wb[i] = CreateFrame("StatusBar", "WarlockSpecBars"..i, wb)
 				wb[i]:SetHeight(5)
-				wb[i]:SetStatusBarTexture(statusbar_texture)
+				wb[i]:SetStatusBarTexture(Qulight["media"].texture)
 						
 					if i == 1 then
 						wb[i]:SetWidth((123 / 4))
@@ -1288,7 +1245,7 @@ genShadowOrbsBar = function(self)
 	if myclass == "PRIEST" then
 				
 		self.ShadowOrbsBar = CreateFrame("Frame", self:GetName().."_ShadowOrbsBar", self)
-		CreateShadowclassbar2(self.ShadowOrbsBar)
+		CreateStyle(self.ShadowOrbsBar, 4, 1, .9, 0.6)
 		self.ShadowOrbsBar:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 4, -9)
 		self.ShadowOrbsBar:SetSize(122, 6)
 		self.ShadowOrbsBar:SetFrameLevel(6)
@@ -1301,12 +1258,12 @@ genShadowOrbsBar = function(self)
 				else
 					self.ShadowOrbsBar[i]:SetPoint("TOPLEFT", self.ShadowOrbsBar[i-1], "TOPRIGHT", 1, 0)
 				end
-				self.ShadowOrbsBar[i]:SetStatusBarTexture(statusbar_texture)
+				self.ShadowOrbsBar[i]:SetStatusBarTexture(Qulight["media"].texture)
 				self.ShadowOrbsBar[i]:SetStatusBarColor(0.70, 0.32, 0.75)
 
 				self.ShadowOrbsBar[i].bg = self.ShadowOrbsBar[i]:CreateTexture(nil, "BORDER")
 				self.ShadowOrbsBar[i].bg:SetAllPoints()
-				self.ShadowOrbsBar[i].bg:SetTexture(statusbar_texture)
+				self.ShadowOrbsBar[i].bg:SetTexture(Qulight["media"].texture)
 				self.ShadowOrbsBar[i].bg:SetVertexColor(0.70, 0.32, 0.75, 0.25)
 			end
 	end
@@ -1315,7 +1272,7 @@ AltPowerBar = function(self)
 	local AltPowerBar = CreateFrame("StatusBar", nil, self.Health)
 	
 	AltPowerBar:SetHeight(5)
-	AltPowerBar:SetStatusBarTexture(statusbar_texture)
+	AltPowerBar:SetStatusBarTexture(Qulight["media"].texture)
 	AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
 	AltPowerBar:EnableMouse(true)
 	AltPowerBar:SetFrameStrata("HIGH")
@@ -1327,8 +1284,8 @@ AltPowerBar = function(self)
 	AltPowerBar:SetPoint("BOTTOM", DataLeftPanel, -1, 1)
 		
 	AltPowerBar:SetBackdrop({
-			bgFile = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4", 
-			edgeFile = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4", 
+			bgFile = Qulight["media"].texture, 
+			edgeFile = Qulight["media"].texture, 
 			tile = false, tileSize = 0, edgeSize = 1, 
 			insets = { left = 0, right = 0, top = 0, bottom = 0}
 		})
@@ -1349,7 +1306,7 @@ end
 Experience = function(self)
 	if Qulight["unitframes"].Experiencebar then 
 	local Experience = CreateFrame('StatusBar', nil, self)
-	Experience:SetStatusBarTexture(statusbar_texture)
+	Experience:SetStatusBarTexture(Qulight["media"].texture)
 	Experience:SetStatusBarColor(0, 0.7, 1)
 	Experience:SetPoint('LEFT', ChatPanelRight, 'LEFT', -8, 0)
 	Experience:SetWidth(6)
@@ -1362,10 +1319,10 @@ Experience = function(self)
 	h:SetFrameLevel(1)
 	h:SetPoint("TOPLEFT",-5,5)
 	h:SetPoint("BOTTOMRIGHT",5,-5)
-	CreateShadow0(h)
+	CreateStyle(h, -1 )
 				
 	local Rested = CreateFrame('StatusBar', nil, Experience)
-	Rested:SetStatusBarTexture(statusbar_texture)
+	Rested:SetStatusBarTexture(Qulight["media"].texture)
 	Rested:SetStatusBarColor(0, 0.4, 1, 0.6)
 	Rested:SetFrameLevel(2)
 	Rested:SetOrientation("VERTICAL")
@@ -1379,7 +1336,7 @@ end
 Reputation = function(self)
 	if Qulight["unitframes"].Reputationbar then 
 	local Reputation = CreateFrame('StatusBar', nil, self)
-	Reputation:SetStatusBarTexture(statusbar_texture)
+	Reputation:SetStatusBarTexture(Qulight["media"].texture)
 	Reputation:SetWidth(6)
 	Reputation:SetHeight(168)
 	
@@ -1391,7 +1348,7 @@ Reputation = function(self)
 	h:SetFrameLevel(1)
 	h:SetPoint("TOPLEFT",-5,5)
 	h:SetPoint("BOTTOMRIGHT",5,-5)
-	CreateShadow0(h)
+	CreateStyle(h, -1)
 	
 	Reputation.PostUpdate = UpdateReputationColor
 	Reputation.Tooltip = true
@@ -1719,10 +1676,10 @@ oUF:Factory(function(self)
 		QulightPrepArena[i] = CreateFrame("Frame", "QulightPrepArena"..i, UIParent)
 		QulightPrepArena[i]:SetAllPoints(arena[i])
 		QulightPrepArena[i]:SetBackdropColor(0,0,0)
-		CreateShadow(QulightPrepArena[i])
+		CreateStyle(QulightPrepArena[i], 2)
 		QulightPrepArena[i].Health = CreateFrame("StatusBar", nil, QulightPrepArena[i])
 		QulightPrepArena[i].Health:SetAllPoints()
-		QulightPrepArena[i].Health:SetStatusBarTexture(statusbar_texture)
+		QulightPrepArena[i].Health:SetStatusBarTexture(Qulight["media"].texture)
 		QulightPrepArena[i].Health:SetStatusBarColor(.3, .3, .3, 1)
 		QulightPrepArena[i].SpecClass = QulightPrepArena[i].Health:CreateFontString(nil, "OVERLAY")
 		QulightPrepArena[i].SpecClass:SetFont(Qulight["media"].font, 9, "OUTLINE")

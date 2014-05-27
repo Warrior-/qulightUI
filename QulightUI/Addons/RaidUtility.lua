@@ -9,7 +9,7 @@ local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", UIParent)
 CreatePanel(RaidUtilityPanel, 125, (5)*4 + (18)*3, "TOP", AnchorRaidUtilityPanel, 0, 0)
 local r,g,b,_ = Qulight["media"].backdropcolor
 RaidUtilityPanel:SetBackdropColor(.05,.05,.05,0)
-CreateShadow(RaidUtilityPanel)
+CreateStyle(RaidUtilityPanel, 2)
 RaidUtilityPanel:Hide()
  
 --Check if We are Raid Leader or Raid Officer
@@ -38,7 +38,7 @@ local HiddenToggleButton = CreateFrame("Button", nil, UIParent)
 HiddenToggleButton:SetHeight(16)
 HiddenToggleButton:SetWidth(106)
 frame1px(HiddenToggleButton)
-CreateShadow(HiddenToggleButton)
+CreateStyle(HiddenToggleButton, 2)
 HiddenToggleButton:SetPoint( "TOP", AnchorRaidUtilityPanel)
 HiddenToggleButton:SetScript("OnEnter", ButtonEnter)
 HiddenToggleButton:SetScript("OnLeave", ButtonLeave)
@@ -58,7 +58,7 @@ local ShownToggleButton = CreateFrame("Button", nil, RaidUtilityPanel)
 ShownToggleButton:SetHeight(16)
 ShownToggleButton:SetWidth(RaidUtilityPanel:GetWidth() / 2.5)
 frame1px(ShownToggleButton)
-CreateShadow(ShownToggleButton)
+CreateStyle(ShownToggleButton, 2)
 ShownToggleButton:SetPoint("TOP", RaidUtilityPanel, "BOTTOM", 0, -5)
 ShownToggleButton:SetScript("OnEnter", ButtonEnter)
 ShownToggleButton:SetScript("OnLeave", ButtonLeave)
@@ -172,17 +172,3 @@ local WorldMarkerButtonTexture = WorldMarkerButton:CreateTexture(nil,"OVERLAY",n
 WorldMarkerButtonTexture:SetTexture("Interface\\RaidFrame\\Raid-WorldPing")
 WorldMarkerButtonTexture:SetPoint("TOPLEFT", WorldMarkerButton, "TOPLEFT", 1, -1)
 WorldMarkerButtonTexture:SetPoint("BOTTOMRIGHT", WorldMarkerButton, "BOTTOMRIGHT", -1, 1)
- 
----- Automatically show/hide the frame if we have RaidLeader or RaidOfficer
--- local LeadershipCheck = CreateFrame("Frame")
--- LeadershipCheck:RegisterEvent("RAID_ROSTER_UPDATE")
--- LeadershipCheck:RegisterEvent("PLAYER_ENTERING_WORLD")
--- LeadershipCheck:SetScript("OnEvent", function(self, event)
--- 	if CheckRaidStatus() then
--- 		RaidUtilityPanel:Hide()
--- 		HiddenToggleButton:Show()
--- 	else
--- 		HiddenToggleButton:Hide()
--- 		RaidUtilityPanel:Hide()
--- 	end
--- end)

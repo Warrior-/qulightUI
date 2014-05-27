@@ -3,10 +3,10 @@ local Mod_AddonSkins = Mod_AddonSkins
 
 function Mod_AddonSkins:SkinFrame(frame)
 	frame1px(frame)
-	CreateShadow(frame)
+	CreateStyle(frame, 2)
 end
 function Mod_AddonSkins:SkinFrame11(frame)
-	CreateShadow(frame)
+	CreateStyle(frame, 2)
 end
 function Mod_AddonSkins:SkinBackgroundFrame(frame)
 	self:SkinFrame(frame)
@@ -46,8 +46,8 @@ function Mod_AddonSkins:SkinActionButton(button)
 	end
 	button.cd = button.cd or _G[name.."Cooldown"]
 end
-Mod_AddonSkins.barTexture = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4"
-Mod_AddonSkins.bgTexture = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4"
+Mod_AddonSkins.barTexture = Qulight["media"].texture
+Mod_AddonSkins.bgTexture = Qulight["media"].texture
 Mod_AddonSkins.font = Qulight["media"].font
 Mod_AddonSkins.smallFont = Qulight["media"].font
 Mod_AddonSkins.fontSize = 10

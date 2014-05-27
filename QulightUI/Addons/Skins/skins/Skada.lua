@@ -6,7 +6,7 @@ local function CreateBackdrop(f, t, tex)
 	local b = CreateFrame("Frame", nil, f)
 	b:SetPoint("TOPLEFT", -2, 2)
 	b:SetPoint("BOTTOMRIGHT", 2, -2)
-	CreateShadow(b)
+	CreateStyle(b, 2)
 
 	if f:GetFrameLevel() - 1 >= 0 then
 		b:SetFrameLevel(f:GetFrameLevel() - 1)
@@ -69,7 +69,7 @@ barmod.ApplySettings = function(self, win)
 	hooksecurefunc(Skada, "OpenReportWindow", function(self)
 		if not self.ReportWindow.frame.reskinned then
 			StripTextures(self.ReportWindow.frame)
-			CreateShadow(self.ReportWindow.frame)
+			CreateStyle(self.ReportWindow.frame, 2)
 			self.ReportWindow.frame.reskinned = true
 		end
 	end)

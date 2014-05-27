@@ -104,7 +104,7 @@ local CreateBar = function()
 	bar.backdrop = CreateFrame("Frame", nil, bar)
 	bar.backdrop:SetPoint("TOPLEFT", -2, 2)
 	bar.backdrop:SetPoint("BOTTOMRIGHT", 2, -2)
-	CreateShadow(bar.backdrop)
+	CreateStyle(bar.backdrop, 2)
 	bar.backdrop:SetFrameStrata("BACKGROUND")
 
 	bar.bg = bar:CreateTexture(nil, "BACKGROUND")
@@ -128,7 +128,7 @@ local CreateBar = function()
 	bar.icon.backdrop = CreateFrame("Frame", nil, bar.icon)
 	bar.icon.backdrop:SetPoint("TOPLEFT", -2, 2)
 	bar.icon.backdrop:SetPoint("BOTTOMRIGHT", 2, -2)
-	CreateShadow(bar.icon.backdrop)
+	CreateStyle(bar.icon.backdrop, 2)
 	bar.icon.backdrop:SetFrameStrata("BACKGROUND")
 	
 	return bar

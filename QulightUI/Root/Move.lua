@@ -16,25 +16,6 @@ local OnDragStop = function(self)
 	SetPosition(self)
 end
 
-local shadows = {
-	bgFile =  "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
-	edgeFile = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex", 
-	edgeSize = 2,
-	insets = { left = 2, right = 2, top = 2, bottom = 2 }
-}
-function CreateShadowmove(f) --
-	if f.shadow then return end
-	local shadow = CreateFrame("Frame", nil, f)
-	shadow:SetFrameLevel(29)
-	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetPoint("TOPLEFT", -2, 2)
-	shadow:SetPoint("BOTTOMRIGHT", 2, -2)
-	shadow:SetBackdrop(shadows)
-	shadow:SetBackdropColor( .05,.05,.05, 1)
-	shadow:SetBackdropBorderColor(.23,.45,.13, 0)
-	f.shadow = shadow
-	return shadow
-end
 function framemove(f)
 	f:SetBackdrop({
 		bgFile =  [=[Interface\ChatFrame\ChatFrameBackground]=],

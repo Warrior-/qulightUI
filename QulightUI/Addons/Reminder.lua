@@ -431,7 +431,7 @@ for i=1, #tab do
 	frame.icon:SetWidth(36)
 	frame.icon:SetHeight(36)
 	frame:Hide()
-	CreateShadow(frame)
+	CreateStyle(frame, 2)
 	frame:RegisterEvent("UNIT_AURA")
 	frame:RegisterEvent("PLAYER_LOGIN")
 	frame:RegisterEvent("UNIT_INVENTORY_CHANGED")

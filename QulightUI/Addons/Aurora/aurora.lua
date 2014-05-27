@@ -1,5 +1,3 @@
-if not Qulight["addonskins"].Aurora == true then return end
-
 local alpha, useButtonGradientColour
 
 setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G }))
@@ -37,10 +35,10 @@ C.media = {
 	["arrowDown"] = "Interface\\Addons\\QulightUI\\Root\\Media\\arrow-down-active",
 	["arrowLeft"] = "Interface\\Addons\\QulightUI\\Root\\Media\\arrow-left-active",
 	["arrowRight"] = "Interface\\Addons\\QulightUI\\Root\\Media\\arrow-right-active",
-	["backdrop"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
+	["backdrop"] = Qulight["media"].texture,
 	["checked"] = "Interface\\Addons\\QulightUI\\Root\\Media\\CheckButtonHilight",
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=],
-	["glow"] = "Interface\\Addons\\QulightUI\\Root\\Media\\glow",
+	["glow"] = Qulight["media"].glow,
 	["gradient"] = "Interface\\Addons\\QulightUI\\Root\\Media\\gradient",
 	["roleIcons"] = "Interface\\Addons\\QulightUI\\Root\\Media\\UI-LFG-ICON-ROLES",
 }
@@ -3322,6 +3320,163 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 	end
 end)
 
+local function styleCore()
+	local firstInfo = true
+	hooksecurefunc(DBM.InfoFrame, "Show", function()
+		if firstInfo then
+			DBMInfoFrame:SetBackdrop(nil)
+			local bd = CreateFrame("Frame", nil, DBMInfoFrame)
+			bd:SetPoint("TOPLEFT")
+			bd:SetPoint("BOTTOMRIGHT")
+			bd:SetFrameLevel(DBMInfoFrame:GetFrameLevel()-1)
+			F.CreateBD(bd)
+			F.CreateSD(bd)
+			firstInfo = false
+		end
+	end)
+
+	local count = 1
+
+	local styleBar = function()
+		local bar = _G["DBM_BossHealth_Bar_"..count]
+
+		while bar do
+			if not bar.styled then
+				local name = bar:GetName()
+				local sb = _G[name.."Bar"]
+				local text = _G[name.."BarName"]
+				local timer = _G[name.."BarTimer"]
+
+				_G[name.."BarBackground"]:Hide()
+				_G[name.."BarBorder"]:SetNormalTexture("")
+
+				sb:SetStatusBarTexture(C.media.backdrop)
+
+				F.CreateBDFrame(sb)
+
+				bar.styled = true
+			end
+
+			count = count + 1
+			bar = _G["DBM_BossHealth_Bar_"..count]
+		end
+	end
+
+	hooksecurefunc(DBM.BossHealth, "AddBoss", styleBar)
+	hooksecurefunc(DBM.BossHealth, "UpdateSettings", styleBar)
+
+	hooksecurefunc(DBM, "ShowUpdateReminder", function()
+		-- no name or anything
+		-- reverse loop because it's most likely to be somewhere at the end
+		for i = UIParent:GetNumChildren(), 1, -1 do
+			local frame = select(i, UIParent:GetChildren())
+
+			local editBox = frame:GetChildren()
+			if editBox and editBox:GetObjectType() == "EditBox" and editBox:GetText() == "http://www.deadlybossmods.com" and not frame.styled then
+				F.CreateBD(frame)
+		
+				select(6, editBox:GetRegions()):Hide()
+				select(7, editBox:GetRegions()):Hide()
+				select(8, editBox:GetRegions()):Hide()
+
+				local bg = F.CreateBDFrame(editBox, .25)
+				bg:SetPoint("TOPLEFT", -2, -6)
+				bg:SetPoint("BOTTOMRIGHT", 2, 8)
+
+				F.Reskin(select(2, frame:GetChildren()))
+
+				frame.styled = true
+			end
+		end
+	end)
+end
+
+local function styleGUI()
+	DBM_GUI_OptionsFrameHeader:SetTexture(nil)
+	DBM_GUI_OptionsFramePanelContainer:SetBackdrop(nil)
+	DBM_GUI_OptionsFrameBossMods:DisableDrawLayer("BACKGROUND")
+	DBM_GUI_OptionsFrameDBMOptions:DisableDrawLayer("BACKGROUND")
+
+	for i = 1, 2 do
+		_G["DBM_GUI_OptionsFrameTab"..i.."Left"]:SetAlpha(0)
+		_G["DBM_GUI_OptionsFrameTab"..i.."Middle"]:SetAlpha(0)
+		_G["DBM_GUI_OptionsFrameTab"..i.."Right"]:SetAlpha(0)
+		_G["DBM_GUI_OptionsFrameTab"..i.."LeftDisabled"]:SetAlpha(0)
+		_G["DBM_GUI_OptionsFrameTab"..i.."MiddleDisabled"]:SetAlpha(0)
+		_G["DBM_GUI_OptionsFrameTab"..i.."RightDisabled"]:SetAlpha(0)
+	end
+
+	local count = 1
+
+	local function styleDBM()
+		local option = _G["DBM_GUI_Option_"..count]
+		while option do
+			local objType = option:GetObjectType()
+			if objType == "CheckButton" then
+				F.ReskinCheck(option)
+			elseif objType == "Slider" then
+				F.ReskinSlider(option)
+			elseif objType == "EditBox" then
+				F.ReskinInput(option)
+			elseif option:GetName():find("DropDown") then
+				F.ReskinDropDown(option)
+			elseif objType == "Button" then
+				F.Reskin(option)
+			elseif objType == "Frame" then
+				option:SetBackdrop(nil)
+			end
+
+			count = count + 1
+			option = _G["DBM_GUI_Option_"..count]
+			if not option then
+				option = _G["DBM_GUI_DropDown"..count]
+			end
+		end
+	end
+
+	DBM:RegisterOnGuiLoadCallback(function()
+		styleDBM()
+		hooksecurefunc(DBM_GUI, "UpdateModList", styleDBM)
+		DBM_GUI_OptionsFrameBossMods:HookScript("OnShow", styleDBM)
+	end)
+
+	hooksecurefunc(DBM_GUI_OptionsFrame, "DisplayButton", function(button, element)
+		-- bit of a hack, can't get the API to work
+		local pushed = element.toggle:GetPushedTexture():GetTexture()
+
+		if not element.styled then
+			F.ReskinExpandOrCollapse(element.toggle)
+			element.toggle:GetPushedTexture():SetAlpha(0)
+
+			element.styled = true
+		end
+
+		element.toggle.plus:SetShown(pushed and pushed:find("Plus"))
+	end)
+
+	F.CreateBD(DBM_GUI_OptionsFrame)
+	F.CreateSD(DBM_GUI_OptionsFrame)
+	F.Reskin(DBM_GUI_OptionsFrameOkay)
+	F.Reskin(DBM_GUI_OptionsFrameWebsiteButton)
+	F.ReskinScroll(DBM_GUI_OptionsFramePanelContainerFOVScrollBar)
+end
+
+if IsAddOnLoaded("DBM-Core") then
+	styleCore()
+end
+
+local init = CreateFrame("Frame")
+init:RegisterEvent("ADDON_LOADED")
+init:SetScript("OnEvent", function(self, _, addon)
+	if addon == "DBM-Core" then -- in case we load it on demand
+		styleCore()
+	elseif addon == "DBM-GUI" then -- GUI can't load before core
+		styleGUI()
+
+		self:UnregisterEvent("ADDON_LOADED")
+		init = nil
+	end
+end)
 local function Kill(object)
 	object.Show = dummy
 	object:Hide()
@@ -3666,7 +3821,7 @@ local function StripTextures(object, kill)
 end
 
 local IconBackdrop = CreateFrame("Frame", nil, LossOfControlFrame)
-CreateShadow(IconBackdrop)
+CreateStyle(IconBackdrop, 2)
 IconBackdrop:ClearAllPoints()
 IconBackdrop:SetPoint("TOPLEFT", LossOfControlFrame.Icon, -2, 2)
 IconBackdrop:SetPoint("BOTTOMRIGHT", LossOfControlFrame.Icon, 2, -2)

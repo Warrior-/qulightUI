@@ -76,7 +76,7 @@ do
 		local border = CreateFrame("Frame", nil, frame)
 		border:SetPoint("TOPLEFT", frame, -2, 2)
 		border:SetPoint("BOTTOMRIGHT", frame, 2, -2)
-		CreateShadow(border)
+		CreateStyle(border, 2)
 		border:SetFrameLevel(0)
 
 		local text = frame:CreateFontString(nil, 'OVERLAY')

@@ -1,4 +1,4 @@
-if not Qulight["addonskins"].Aurora == true then return end
+
 local F, C = unpack(select(2, ...))
 
 C.modules["Blizzard_AuctionUI"] = function()

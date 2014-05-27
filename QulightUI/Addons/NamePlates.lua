@@ -201,7 +201,7 @@ local function CreateAuraIcon(frame)
 	button:SetWidth(Qulight["nameplate"].auras_size)
 	button:SetHeight(Qulight["nameplate"].auras_size)
 
-	CreateShadowclassbar2(button)
+	CreateStyle(button, 4)
 	
 	button.bg = button:CreateTexture(nil, "BACKGROUND")
 	button.bg:SetTexture(0.05, 0.05, 0.05, 1)
@@ -439,7 +439,7 @@ local function UpdateObjects(frame)
 	frame.hp:SetPoint("TOP", frame, "TOP", 0, -15)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 	
-	CreateShadowNameplates(frame.hp)
+	CreateStyle(frame.hp, 4)
 	
 	-- Match values
 	HealthBar_ValueChanged(frame.hp)
@@ -535,7 +535,7 @@ local function SkinObjects(frame, nameFrame)
 	cb:SetStatusBarTexture(Qulight.media.texture)
 	CreateVirtualFrame(cb)
 	
-	CreateShadowNameplates(cb)
+	CreateStyle(cb, 4)
 	
 	cb.bg = cb:CreateTexture(nil, "BORDER")
 	cb.bg:SetAllPoints(cb)
@@ -562,7 +562,7 @@ local function SkinObjects(frame, nameFrame)
 		frame.class = cIconTex
 
 		frame.class.Glow = CreateFrame("Frame", nil, frame)
-		CreateShadow(frame.class.Glow)
+		CreateStyle(frame.class.Glow, 2)
 		frame.class.Glow:SetScale(noscalemult)
 		frame.class.Glow:SetPoint("TOPLEFT", frame.class, "TOPLEFT", 0, 0)
 		frame.class.Glow:SetPoint("BOTTOMRIGHT", frame.class, "BOTTOMRIGHT", 0, 0)

@@ -262,7 +262,7 @@ local function CreateButton(name, relativeTo, firstbutton)
 	button.t = button:CreateTexture(name..".t", "OVERLAY")
 	button.t:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	button.t:SetAllPoints(button)
-	CreateShadowNameplates(button)
+	CreateStyle(button, 4)
 end
 
 do

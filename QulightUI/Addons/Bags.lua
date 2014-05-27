@@ -1,5 +1,5 @@
 if not Qulight["bags"].Enable == true then return end
-local F, C = unpack(select(2, ...))
+
 local BAGS_BACKPACK = {0, 1, 2, 3, 4}
 local BAGS_BANK = {-1, 5, 6, 7, 8, 9, 10, 11}
 local ST_NORMAL = 1
@@ -362,8 +362,8 @@ function Stuffing:CreateBagFrame(w)
 	local f = CreateFrame("Frame", n, UIParent)
 	f:EnableMouse(true)
 	f:SetMovable(true)
-	f:SetFrameStrata("DIALOG")
-	f:SetFrameLevel(5)
+	f:SetFrameStrata("HIGH")
+	f:SetFrameLevel(1)
 	f:SetScript("OnMouseDown", function(self, button)
 		if IsShiftKeyDown() and button == "LeftButton" then
 			self:StartMoving()
@@ -372,9 +372,9 @@ function Stuffing:CreateBagFrame(w)
 	f:SetScript("OnMouseUp", f.StopMovingOrSizing)
 
 	if w == "Bank" then
-		f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 3, 150)
+		f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 3, 177)
 	else
-		f:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 175)
+		f:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 177)
 	end
 
 	if w == "Bank" then
@@ -397,25 +397,9 @@ function Stuffing:CreateBagFrame(w)
 		fb_purchasetitle:SetPoint("CENTER")
 	end
 
-	f.b_close = CreateFrame("Button", "Stuffing_CloseButton"..w, f, "UIPanelCloseButton")
-	F.ReskinClose(f.b_close)
-	f.b_close:SetSize(16, 16)
-	f.b_close:SetScript("OnClick", function(self, btn)
-		if self:GetParent():GetName() == "StuffingFrameBags" and btn == "RightButton" then
-			if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
-				CloseDropDownMenus()
-				Stuffing_DDMenu.initialize = Stuffing.Menu
-			end
-			ToggleDropDownMenu(nil, nil, Stuffing_DDMenu, self:GetName(), 0, 0)
-			return
-		end
-		self:GetParent():Hide()
-	end)
-	f.b_close:RegisterForClicks("AnyUp")
-
 	local fb = CreateFrame("Frame", n.."BagsFrame", f)
 	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, 3)
-	fb:SetFrameStrata("MEDIUM")
+	fb:SetFrameStrata("HIGH")
 	f.bags_frame = fb
 
 	return f
@@ -517,15 +501,14 @@ function Stuffing:InitBags()
 	self.frame = f
 	f:Hide()
 end
-CreateBDbags= function(f, a)
+CreateBDbags= function(f)
 	f:SetBackdrop({
-		bgFile = "Interface\\AddOns\\QulightUI\\Root\\Media\\backdrop_edge", 
-		edgeFile = "Interface\\AddOns\\QulightUI\\Root\\Media\\backdrop_edge", 
+		bgFile = Qulight["media"].texture, 
+		edgeFile = Qulight["media"].glow, 
 		edgeSize = 3,
 	})
 	f:SetBackdropColor(0, 0, 0, 0)
-	f:SetBackdropBorderColor(0, 0, 0)
-	
+	f:SetBackdropBorderColor(0, 0, 0, 1)
 end
 function Stuffing:Layout(isBank)
 	local slots = 0
@@ -552,7 +535,7 @@ function Stuffing:Layout(isBank)
 	end
 
 	f:SetClampedToScreen(1)
-	CreateShadow(f)
+	CreateStyle(f, 2)
 
 	local fb = f.bags_frame
 	if Qulight["bags"].BagBars then
@@ -593,7 +576,7 @@ function Stuffing:Layout(isBank)
 				b.frame:SetSize(bsize, bsize)
 			end
 
-			CreateShadow(b.frame)
+			CreateStyle(b.frame, 2)
 			
 			local btns = self.buttons
 			b.frame:HookScript("OnEnter", function(self)
@@ -667,14 +650,14 @@ function Stuffing:Layout(isBank)
 						+ ((y - 1) * 4)
 				yoff = yoff * -1
 				
-				CreateShadow12345(b.frame)
+				CreateBDbags(b.frame)
 				b.frame:ClearAllPoints()
 				b.frame:SetPoint("TOPLEFT", f, "TOPLEFT", xoff, yoff)
 				b.frame:SetSize(32, 32)
 				b.frame:SetPushedTexture("")
 				b.frame:SetNormalTexture("")
 				b.frame:Show()
-				CreateBDbags(b.frame)
+				CreateStyle(b.frame, 3)
 				
 				if bagType == ST_FISHBAG then
 					b.frame:SetBackdropBorderColor(1, 0, 0)	-- Tackle

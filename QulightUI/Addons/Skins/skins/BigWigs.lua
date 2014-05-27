@@ -13,7 +13,7 @@ local freebg = {}
 local createbg = function()
 	local bg=CreateFrame("Frame")
 	if drawshadow then
-		CreateShadow(bg)
+		CreateStyle(bg, 2)
 	end
 	return bg
 end
@@ -117,7 +117,7 @@ local function registerStyle()
 	bars.db.profile.barStyle = "BigWigs"
 	if prox and bars.db.profile.barStyle == "BigWigs" then
 		hooksecurefunc(prox, "RestyleWindow", function()
-			CreateShadow(BigWigsProximityAnchor)
+			CreateStyle(BigWigsProximityAnchor, 2)
 		end)
 	end
 	

@@ -489,7 +489,7 @@ local CountOffSets = {
 }
 
 CreateAuraWatchIcon = function(self, icon)
-	CreateShadow(icon)
+	CreateStyle(icon, 2)
 	icon.icon:SetPoint("TOPLEFT", icon, 1, -1)
 	icon.icon:SetPoint("BOTTOMRIGHT", icon, -1, 1)
 	icon.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -582,7 +582,7 @@ local function Shared(self, unit)
 	self.menu = SpawnMenu
 
 	-- Backdrop for every units
-	CreateShadowraid(self)
+	CreateStyle(self, 4)
 
 	-- Health bar
 	self.Health = CreateFrame("StatusBar", nil, self)
@@ -602,7 +602,6 @@ local function Shared(self, unit)
 	end
 
 	self.Health.frequentUpdates = true
-	--CreateShadow(self.Health)
 	if Qulight.raidframes.own_color == true then
 		self.Health.colorDisconnected = false
 		self.Health.colorReaction = false
@@ -652,7 +651,7 @@ local function Shared(self, unit)
 		self.Power:SetPoint("TOP", self, "BOTTOM", 0, 6)
 		self.Power:SetStatusBarTexture(Qulight.media.texture)
 		self.Power:SetFrameStrata("MEDIUM")
-		CreateShadowforInfoPanel(self.Power)
+		CreateStyle(self.Power, 2)
 		self.Power:SetWidth(unit_width)
 		
 		self.Power:SetFrameLevel(10)
@@ -796,7 +795,7 @@ local function Shared(self, unit)
 		self.RaidDebuffs:SetPoint("CENTER", self, 0, 1)
 		self.RaidDebuffs:SetFrameStrata("MEDIUM")
 		self.RaidDebuffs:SetFrameLevel(10)
-		CreateShadow(self.RaidDebuffs)
+		CreateStyle(self.RaidDebuffs, 2)
 
 		self.RaidDebuffs.icon = self.RaidDebuffs:CreateTexture(nil, "BORDER")
 		self.RaidDebuffs.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
