@@ -40,8 +40,8 @@ Qulight["raidframes"] = {
 	["show_range"] = true,						-- Show range opacity for raidframes
 	["range_alpha"] = 0.5,						-- Alpha of unitframes when unit is out of range
 	["hp_value"] = false,						
-	["width"] = 80,						
-	["height"] = 32.9,						
+	["width"] = 81.6,						
+	["height"] = 24.4,						
 
 	["show_party"] = true,						-- Show party frames
 	["show_raid"] = true,						-- Show raid frames

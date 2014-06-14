@@ -220,7 +220,7 @@ Anchortarget:SetPoint("TOPLEFT", UIParent, "BOTTOM", 200, 300)
 CreateAnchor(Anchortarget, "Move target", 220, 38)
 
 Anchorraid = CreateFrame("Frame","Move_raid",UIParent)
-Anchorraid:SetPoint("BOTTOM", 0, 10)
+Anchorraid:SetPoint("BOTTOMRIGHT", -17, -11)
 CreateAnchor(Anchorraid, "Move raid", 420, 180)
 
 Anchortot = CreateFrame("Frame","Move_tot",UIParent)

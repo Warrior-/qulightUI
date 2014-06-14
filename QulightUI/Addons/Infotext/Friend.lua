@@ -325,11 +325,11 @@ Stat:SetScript("OnEnter", function(self)
 			local status = 0
 			for i = 1, #BNTable do
 				if BNTable[i][7] then
-					if BNTable[i][6] == wowString then
-						if (BNTable[i][8] == true) then status = 1 elseif (BNTable[i][9] == true) then status = 2 else status = 3 end
-	
-						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[BNTable[i][14]], GetQuestDifficultyColor(BNTable[i][16])
-						if classc == nil then classc = GetQuestDifficultyColor(BNTable[i][16]) end
+					 if BNTable[i][6] == wowString and UnitFactionGroup("player") == BNTable[i][12] then
+      if (BNTable[i][8] == true) then status = 1 elseif (BNTable[i][9] == true) then status = 2 else status = 3 end
+ 
+      classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[BNTable[i][14]], GetQuestDifficultyColor(BNTable[i][16])
+      if classc == nil then classc = GetQuestDifficultyColor(BNTable[i][16]) end
 						
 						if UnitInParty(BNTable[i][4]) or UnitInRaid(BNTable[i][4]) then grouped = 1 else grouped = 2 end
 						GameTooltip:AddDoubleLine(format(clientLevelNameString, BNTable[i][6],levelc.r*255,levelc.g*255,levelc.b*255,BNTable[i][16],classc.r*255,classc.g*255,classc.b*255,BNTable[i][4],groupedTable[grouped], 255, 0, 0, statusTable[status]),BNTable[i][2],238,238,238,238,238,238)

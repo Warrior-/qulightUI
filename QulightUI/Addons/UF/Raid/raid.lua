@@ -685,7 +685,7 @@ local function Shared(self, unit)
 		self.RaidIcon = self.Health:CreateTexture(nil, "OVERLAY")
 		self.RaidIcon:SetSize(15, 15)
 		self.RaidIcon:SetTexture("Interface\\AddOns\\QulightUI\\Root\\Media\\raidicons")	
-		self.RaidIcon:SetPoint("CENTER", self.Health, 0, 0)
+		self.RaidIcon:SetPoint("CENTER", self.Health, 0, -7)
 	end
 
 	-- LFD role icons
