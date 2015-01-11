@@ -318,6 +318,7 @@ function UpdateActionBarHotKey(self, actionButtonType)
 
 	text = string.gsub(text, "(s%-)", "S")
 	text = string.gsub(text, "(a%-)", "A")
+	text = string.gsub(text, "(�%-)", "A") -- fix ruRU
 	text = string.gsub(text, "(c%-)", "C")
 	text = string.gsub(text, "(Mouse Button )", "M")
 	text = string.gsub(text, "(Кнопка мыши )", "M")

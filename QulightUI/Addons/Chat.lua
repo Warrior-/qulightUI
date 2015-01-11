@@ -479,6 +479,7 @@ local function CreateCopyFrame()
 
 	local close = CreateFrame("Button", "CopyCloseButton", frame, "UIPanelCloseButton")
 	close:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
+	close:GetNormalTexture():SetDesaturated(1)
 
 	isf = true
 end

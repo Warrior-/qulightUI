@@ -11,20 +11,6 @@ local shadows = {
 	insets = { left = 3, right = 3, top = 3, bottom = 3 }
 }
 
-function CreateShadowTooltip(f) --
-	if f.shadow then return end
-	local shadow = CreateFrame("Frame", nil, f)
-	shadow:SetFrameLevel(0)
-	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetPoint("TOPLEFT", -2, 2)
-	shadow:SetPoint("BOTTOMRIGHT", 2, -9)
-	shadow:SetBackdrop(shadows)
-	shadow:SetBackdropColor(.08,.08,.08, .9)
-	shadow:SetBackdropBorderColor(0, 0, 0, 1)
-	f.shadow = shadow
-	return shadow
-end
-
 local Tooltip = CreateFrame("Frame", "Tooltip", UIParent)
 
 local _G = getfenv(0)
@@ -32,7 +18,26 @@ local _G = getfenv(0)
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 
 local gsub, find, format = string.gsub, string.find, string.format
-local Tooltips = {GameTooltip, ItemRefTooltip, ShoppingTooltip1, ShoppingTooltip2, WorldMapTooltip,  WorldMapCompareTooltip1, WorldMapCompareTooltip2, FriendsTooltip, ConsolidatedBuffsTooltip, ItemRefShoppingTooltip1, ItemRefShoppingTooltip2, AtlasLootTooltip, QuestHelperTooltip, QuestGuru_QuestWatchTooltip, StoryTooltip}
+local Tooltips = {
+	GameTooltip,
+	ItemRefTooltip,
+	ItemRefShoppingTooltip1,
+	ItemRefShoppingTooltip2,
+	ItemRefShoppingTooltip3,
+	AutoCompleteBox,
+	FriendsTooltip,
+	ConsolidatedBuffsTooltip,
+	ShoppingTooltip1,
+	ShoppingTooltip2,
+	ShoppingTooltip3,
+	WorldMapTooltip,
+	WorldMapCompareTooltip1,
+	WorldMapCompareTooltip2,
+	WorldMapCompareTooltip3,
+	DropDownList1MenuBackdrop,
+	DropDownList2MenuBackdrop,
+	DropDownList3MenuBackdrop
+}
 
 local ItemRefTooltip = ItemRefTooltip
 
@@ -46,6 +51,20 @@ local classification = {
 }
 
 local NeedBackdropBorderRefresh = true
+
+function CreateShadowTooltip(f) --
+	if f.shadow then return end
+	local shadow = CreateFrame("Frame", nil, f)
+	shadow:SetFrameLevel(0)
+	shadow:SetFrameStrata(f:GetFrameStrata())
+	shadow:SetPoint("TOPLEFT", -2, 2)
+	shadow:SetPoint("BOTTOMRIGHT", 2, -9)
+	shadow:SetBackdrop(shadows)
+	shadow:SetBackdropColor(.08,.08,.08, .9)
+	shadow:SetBackdropBorderColor(0, 0, 0, 1)
+	f.shadow = shadow
+	return shadow
+end
 
 local anchor = CreateFrame("Frame", "TooltipAnchor", UIParent)
 anchor:SetSize(160, 160)
@@ -69,7 +88,7 @@ local function UpdateTooltip(self)
 	if self:GetAnchorType() == "ANCHOR_CURSOR" then
 		if NeedBackdropBorderRefresh then
 			self:ClearAllPoints()
-			NeedBackdropBorderRefresh = false			
+
 			self:SetBackdropColor(.05,.05,.05,0)
 			if not Qulight["tooltip"].cursor then
 				self:SetBackdropBorderColor(.15,.15,.15,0)
@@ -141,18 +160,21 @@ local function GetColor(unit)
 end
 
 local function ShortValue(value)
-	if value >= 1e7 then
-		return ('%.1fm'):format(value / 1e6):gsub('%.?0+([km])$', '%1')
+	if value >= 1e8 then
+		return ("%.0fm"):format(value / 1e6)
+	elseif value >= 1e7 then
+		return ("%.1fm"):format(value / 1e6):gsub("%.?0+([km])$", "%1")
 	elseif value >= 1e6 then
-		return ('%.2fm'):format(value / 1e6):gsub('%.?0+([km])$', '%1')
+		return ("%.2fm"):format(value / 1e6):gsub("%.?0+([km])$", "%1")
 	elseif value >= 1e5 then
-		return ('%.0fk'):format(value / 1e3)
+		return ("%.0fk"):format(value / 1e3)
 	elseif value >= 1e3 then
-		return ('%.1fk'):format(value / 1e3):gsub('%.?0+([km])$', '%1')
+		return ("%.1fk"):format(value / 1e3):gsub("%.?0+([km])$", "%1")
 	else
 		return value
 	end
-end
+end	
+
 
 local function StatusBarOnValueChanged(self, value)
 	GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
@@ -246,7 +268,12 @@ local function OnTooltipSetUnit(self)
 
 		for i= offset, lines do
 			if(_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race, color, class.."|r")
+				if race then
+					_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race, color, class.."|r")
+				else
+					_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s%s", r*255, g*255, b*255, Level > 0 and Level or "??", color, class .."|r")
+				end
+					      
 				break
 			end
 		end
@@ -275,7 +302,7 @@ local function OnTooltipSetUnit(self)
 		if not r and not g and not b then r, g, b = 1, 1, 1 end
 		GameTooltip:AddLine(UnitName(unit.."target"), r, g, b)
 	end
-	
+
 	self.fadeOut = nil
 end
 GameTooltip:HookScript("OnTooltipSetUnit", OnTooltipSetUnit)

@@ -390,7 +390,7 @@ local function Colorize(frame)
 	elseif r + b == 0 then	-- Friendly npc
 		r, g, b = unpack(oUF_colors.power["MANA"])
 		frame.isFriendly = true
-	elseif r + g > 1.95 then	-- Neutral
+	elseif r + g > 1.59 then	-- Neutral
 		r, g, b = unpack(oUF_colors.reaction[4])
 		frame.isFriendly = false
 	elseif r + g == 0 then	-- Friendly player

@@ -1,3 +1,4 @@
+local F, C = unpack(select(2, ...))
 if not Qulight["bags"].Enable == true then return end
 
 local BAGS_BACKPACK = {0, 1, 2, 3, 4}
@@ -168,9 +169,9 @@ function CreateReagentContainer()
 	local Deposit = ReagentBankFrame.DespositButton
 
 	Reagent:SetWidth(((Qulight.bags.buttonsize + Qulight.bags.buttonspace) * Qulight.bags.bankcolumns) + 17)
-	Reagent:SetPoint("CENTER", UIParent, "CENTER", -200, -5)
+	Reagent:SetPoint("TOPLEFT", _G["StuffingFrameBank"], "TOPLEFT", 0, 0)
 	Reagent:SetFrameStrata(_G["StuffingFrameBank"]:GetFrameStrata())
-	Reagent:SetFrameLevel(_G["StuffingFrameBank"]:GetFrameLevel())
+	Reagent:SetFrameLevel(_G["StuffingFrameBank"]:GetFrameLevel() + 5)
 
 	SwitchBankButton:SetSize(80, 20)
 	SwitchBankButton:SetPoint("TOPLEFT", 10, -4)
@@ -208,7 +209,8 @@ function CreateReagentContainer()
 
 	-- Close button
 	local Close = CreateFrame("Button", "StuffingCloseButtonReagent", Reagent, "UIPanelCloseButton")
-	Close:SetSize(15, 15)
+	Close:SetSize(25, 25)
+	Close:SetPoint("TOPRIGHT", 0, 0)
 	Close:RegisterForClicks("AnyUp")
 	Close:SetScript("OnClick", function(self, btn)
 		if btn == "RightButton" then
@@ -220,8 +222,11 @@ function CreateReagentContainer()
 			return
 		else
 			StuffingBank_OnHide()
+			self:GetParent():Hide()
 		end
 	end)
+	ReskinClose(Close)
+
 
 	for i = 1, 98 do
 		local button = _G["ReagentBankFrameItem" .. i]
@@ -231,6 +236,7 @@ function CreateReagentContainer()
 		ReagentBankFrame:SetParent(Reagent)
 		ReagentBankFrame:ClearAllPoints()
 		ReagentBankFrame:SetAllPoints()
+		CreateStyle(ReagentBankFrame, 3)
 
 		button:SetNormalTexture("")
 		button.IconBorder:SetAlpha(0)
@@ -264,6 +270,7 @@ function CreateReagentContainer()
 		LastButton = button
 	end
 	Reagent:SetHeight(((Qulight.bags.buttonsize + Qulight.bags.buttonspace) * (NumRows + 1) + 40) - 1)
+	MoneyFrame_Update(ReagentBankFrame.UnlockInfo.CostMoneyFrame, GetReagentBankCost())
 	
 	-- Unlock window
 	CreateStyle(ReagentBankFrameUnlockInfoPurchaseButton, 3)
@@ -524,6 +531,7 @@ function Stuffing:CreateBagFrame(w)
 			else
 				_G["StuffingFrameReagent"]:Show()
 			end
+			_G["StuffingFrameBank"]:SetAlpha(0)
 		end)
 		local fb_reagent = f.b_reagent:CreateFontString("f.b_reagent", "OVERLAY")
 		fb_reagent:SetFont(Qulight["media"].font, 10, "OUTLINE")
@@ -534,7 +542,8 @@ function Stuffing:CreateBagFrame(w)
 
 	-- Close button
 	f.b_close = CreateFrame("Button", "StuffingCloseButton"..w, f, "UIPanelCloseButton")
-	f.b_close:SetSize(15, 15)
+	f.b_close:SetSize(25, 25)
+	f.b_close:SetPoint("TOPRIGHT", 0, 0)
 	f.b_close:RegisterForClicks("AnyUp")
 	f.b_close:SetScript("OnClick", function(self, btn)
 		if btn == "RightButton" then
@@ -547,7 +556,8 @@ function Stuffing:CreateBagFrame(w)
 		end
 		self:GetParent():Hide()
 	end)
-	
+	ReskinClose(f.b_close)
+
 	-- Create the bags frame
 	local fb = CreateFrame("Frame", n.."BagsFrame", f)
 	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, 3)
@@ -668,6 +678,7 @@ function Stuffing:Layout(isBank)
 		bs = BAGS_BANK
 		cols = 12
 		f = self.bankFrame
+		f:SetAlpha(1)
 	else
 		bs = BAGS_BACKPACK
 		cols = 12

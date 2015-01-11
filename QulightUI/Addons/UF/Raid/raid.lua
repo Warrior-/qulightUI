@@ -621,11 +621,21 @@ local function Shared(self, unit)
 		self.Health:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, 0)
 	end
 	self.Health:SetStatusBarTexture(Qulight.media.texture)
+	self.Health.PostUpdate = function(health, unit)
+		if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
+			health:SetValue(0)
+		end
+	end
 
 	if Qulight.raidframes.vertical_health == true then
 		self.Health:SetOrientation("VERTICAL")
 	end
 
+	self.Health.PostUpdate = function(health, unit)
+		if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
+			health:SetValue(0)
+		end
+	end
 	self.Health.frequentUpdates = true
 	if Qulight.raidframes.own_color == true then
 		self.Health.colorDisconnected = false
@@ -678,6 +688,12 @@ local function Shared(self, unit)
 		self.Power:SetFrameStrata("MEDIUM")
 		CreateStyle(self.Power, 2)
 		self.Power:SetWidth(unit_width)
+
+		self.Power.PostUpdate = function(power, unit)
+			if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
+				power:SetValue(0)
+			end
+		end
 		
 		self.Power:SetFrameLevel(10)
 		self.Power.frequentUpdates = true

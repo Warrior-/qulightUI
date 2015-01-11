@@ -5,7 +5,6 @@
 local _, ns = ...
 local oUF = ns.oUF
 
-local SymbiosisName = GetSpellInfo(110309)
 local CleanseName = GetSpellInfo(4987)
 
 local bossDebuffPrio = 9999999
@@ -40,7 +39,6 @@ do
 			["Magic"] = false,
 			["Curse"] = true,
 			["Poison"] = true,
-			['Disease'] = false,
 		},
 		["MAGE"] = {
 			["Curse"] = true,
@@ -73,7 +71,7 @@ CheckSpec = function(tree)
 		return tree == GetSpecialization(false, false, activeGroup)
 	end
 end
-local function CheckSpec(self, event)
+local function CheckSpec()
 	if class == "DRUID" then
 		if CheckSpec(4) then
 			DispellFilter.Magic = true
@@ -280,9 +278,7 @@ local Enable = function(self)
 		return true
 	end
 	self:RegisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
-	if class == "DRUID" then
-		self:RegisterEvent("SPELLS_CHANGED", CheckSymbiosis)
-	end
+	CheckSpec()
 end
 
 local Disable = function(self)
@@ -292,9 +288,7 @@ local Disable = function(self)
 		self.RaidDebuffs.__owner = nil
 	end
 	self:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
-	if class == "DRUID" then
-		self:UnregisterEvent("SPELLS_CHANGED", CheckSymbiosis)
-	end
+	CheckSpec()
 end
 
 oUF:AddElement("RaidDebuffs", Update, Enable, Disable)

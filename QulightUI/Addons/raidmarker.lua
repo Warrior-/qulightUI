@@ -171,7 +171,7 @@ CloseButton:SetScript("OnLeave", ButtonLeave)
 CreateStyle(CloseButton, 2)
 local CloseButtonText = CloseButton:CreateFontString(nil, "OVERLAY")
 CloseButtonText:SetFont(Qulight["media"].font, fontsize)
-CloseButtonText:SetText("x")
+CloseButtonText:SetText("X")
 CloseButtonText:SetPoint("CENTER", CloseButton, "CENTER")
 
 ToggleButton:SetScript("OnMouseDown", function()

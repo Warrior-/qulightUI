@@ -50,6 +50,9 @@ end)
 for _, headerName in pairs({"QuestHeader", "AchievementHeader", "ScenarioHeader"}) do
 	local header = ObjectiveTrackerFrame.BlocksFrame[headerName].Background:Hide()
 end
+	
+--	ReskinClose(ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, nil, "-", true)
+	
 	hooksecurefunc("ObjectiveTracker_Collapse", function()
 		ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetText("+")
 	end)
