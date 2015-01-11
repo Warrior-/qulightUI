@@ -72,7 +72,7 @@ bar:SetScript("OnEvent", function(self, event, unit, ...)
 		local button
 		for i = 1, 12 do
 			button = _G["ActionButton"..i]
-			button:RegisterForClicks("LeftButtonDown", "RightButtonUp")
+
 			button:SetSize(buttonsize, buttonsize)
 			button:ClearAllPoints()
 			button:SetParent(bar)

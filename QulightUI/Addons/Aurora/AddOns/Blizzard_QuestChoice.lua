@@ -1,10 +1,13 @@
-
 local F, C = unpack(select(2, ...))
 
 C.modules["Blizzard_QuestChoice"] = function()
 	local QuestChoiceFrame = QuestChoiceFrame
 
 	for i = 1, 15 do
+		select(i, QuestChoiceFrame:GetRegions()):Hide()
+	end
+
+	for i = 17, 19 do
 		select(i, QuestChoiceFrame:GetRegions()):Hide()
 	end
 

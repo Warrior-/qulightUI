@@ -10,7 +10,7 @@ local r, g, b = unpack(Qulight["datatext"].color)
 qColor = ("|cff%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255)
 
 Anchorvehicleleft = CreateFrame("Frame","Move_vehiclebutton",UIParent)
-Anchorvehicleleft:SetPoint("BOTTOM", UIParent, "BOTTOM", -230, 80)
+Anchorvehicleleft:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 80)
 CreateAnchor(Anchorvehicleleft, "Move vehicle button", 20, 20)
 
 -- exit vehicle button on left side of bottom action bar

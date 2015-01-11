@@ -1,4 +1,3 @@
-
 local F, C = unpack(select(2, ...))
 
 C.modules["Blizzard_PetJournal"] = function()
@@ -26,9 +25,6 @@ C.modules["Blizzard_PetJournal"] = function()
 	MountJournal.MountDisplay.YesMountsTex:SetAlpha(0)
 	MountJournal.MountDisplay.NoMountsTex:SetAlpha(0)
 	MountJournal.MountDisplay.ShadowOverlay:Hide()
-	PetJournalFilterButtonLeft:Hide()
-	PetJournalFilterButtonRight:Hide()
-	PetJournalFilterButtonMiddle:Hide()
 	PetJournalTutorialButton.Ring:Hide()
 
 	F.CreateBD(PetJournalParent)
@@ -39,7 +35,6 @@ C.modules["Blizzard_PetJournal"] = function()
 	F.Reskin(MountJournalMountButton)
 	F.Reskin(PetJournalSummonButton)
 	F.Reskin(PetJournalFindBattle)
-	F.Reskin(PetJournalFilterButton)
 	F.ReskinTab(PetJournalParentTab1)
 	F.ReskinTab(PetJournalParentTab2)
 	F.ReskinTab(PetJournalParentTab3)
@@ -51,6 +46,10 @@ C.modules["Blizzard_PetJournal"] = function()
 	F.ReskinArrow(MountJournal.MountDisplay.ModelFrame.RotateLeftButton, "left")
 	F.ReskinArrow(MountJournal.MountDisplay.ModelFrame.RotateRightButton, "right")
 
+
+	MountJournalFilterButton:SetPoint("TOPRIGHT", MountJournal.LeftInset, -5, -8)
+	PetJournalFilterButton:SetPoint("TOPRIGHT", PetJournalLeftInset, -5, -8)
+	
 	PetJournalTutorialButton:SetPoint("TOPLEFT", PetJournal, "TOPLEFT", -14, 14)
 
 	PetJournalParentTab2:SetPoint("LEFT", PetJournalParentTab1, "RIGHT", -15, 0)
@@ -118,6 +117,42 @@ C.modules["Blizzard_PetJournal"] = function()
 	hooksecurefunc("MountJournal_UpdateMountList", updateScroll)
 	hooksecurefunc(MountJournalListScrollFrame, "update", updateScroll)
 
+	local function updatePetScroll()
+		local petButtons = PetJournal.listScroll.buttons
+		if petButtons then
+			for i = 1, #petButtons do
+				local bu = petButtons[i]
+
+				local index = bu.index
+				if index then
+					local petID, _, isOwned = C_PetJournal.GetPetInfoByIndex(index)
+
+					if petID and isOwned then
+						local _, _, _, _, rarity = C_PetJournal.GetPetStats(petID)
+
+						if rarity then
+							local color = ITEM_QUALITY_COLORS[rarity-1]
+							bu.name:SetTextColor(color.r, color.g, color.b)
+						else
+							bu.name:SetTextColor(1, 1, 1)
+						end
+					else
+						bu.name:SetTextColor(.5, .5, .5)
+					end
+
+					if bu.selectedTexture:IsShown() then
+						bu.bg:SetBackdropColor(r, g, b, .25)
+					else
+						bu.bg:SetBackdropColor(0, 0, 0, .25)
+					end
+				end
+			end
+		end
+	end
+
+	hooksecurefunc("PetJournal_UpdatePetList", updatePetScroll)
+	hooksecurefunc(PetJournalListScrollFrame, "update", updatePetScroll)
+
 	PetJournalHealPetButtonBorder:Hide()
 	PetJournalHealPetButtonIconTexture:SetTexCoord(.08, .92, .08, .92)
 	PetJournal.HealPetButton:SetPushedTexture("")
@@ -128,6 +163,11 @@ C.modules["Blizzard_PetJournal"] = function()
 	MountJournalSummonRandomFavoriteButton:SetPushedTexture("")
 	F.CreateBG(MountJournalSummonRandomFavoriteButton)
 
+	do
+		local ic = MountJournal.MountDisplay.InfoButton.Icon
+		ic:SetTexCoord(.08, .92, .08, .92)
+		F.CreateBG(ic)
+	end
 
 	if C.shouldStyleTooltips then
 		for _, f in pairs({PetJournalPrimaryAbilityTooltip, PetJournalSecondaryAbilityTooltip}) do
@@ -147,6 +187,9 @@ C.modules["Blizzard_PetJournal"] = function()
 	PetJournalPetCardBG:Hide()
 	card.PetInfo.levelBG:SetAlpha(0)
 	card.PetInfo.qualityBorder:SetAlpha(0)
+	card.AbilitiesBG1:SetAlpha(0)
+	card.AbilitiesBG2:SetAlpha(0)
+	card.AbilitiesBG3:SetAlpha(0)
 
 	card.PetInfo.level:SetFontObject(GameFontNormal)
 	card.PetInfo.level:SetTextColor(1, 1, 1)
@@ -299,7 +342,63 @@ C.modules["Blizzard_PetJournal"] = function()
 
 	PetJournal.listScroll.buttons[1].selectedTexture:SetPoint("TOPLEFT", 0, -1)
 	PetJournal.listScroll.buttons[1].selectedTexture:SetPoint("BOTTOMRIGHT", -1, 1)
+	-- [[ Toy box ]]
 
+	ToyBoxIconsFrame.Bg:Hide()
+	ToyBoxIconsFrameBackgroundTile:Hide()
+	ToyBoxIconsFrame:DisableDrawLayer("BORDER")
+	ToyBoxIconsFrame:DisableDrawLayer("ARTWORK")
+	ToyBoxIconsFrame:DisableDrawLayer("OVERLAY")
+
+	F.ReskinInput(ToyBox.searchBox)
+	F.ReskinArrow(ToyBoxPrevPageButton, "left")
+	F.ReskinArrow(ToyBoxNextPageButton, "right")
+
+	ToyBoxPrevPageButton:SetPoint("BOTTOMRIGHT", -320, 51)
+	ToyBoxNextPageButton:SetPoint("BOTTOMRIGHT", -285, 51)
+
+	-- Progress bar
+
+	ToyBoxProgressBarBorder:Hide()
+	ToyBoxProgressBarBackground:Hide()
+
+	ToyBoxProgressBar.text:SetPoint("CENTER", 0, 1)
+	ToyBoxProgressBarBar:SetTexture(C.media.backdrop)
+
+	F.CreateBDFrame(ToyBoxProgressBar, .25)
+
+	-- Toys!
+
+	for i = 1, 18 do
+		local bu = _G["ToySpellButton"..i]
+		local ic = _G["ToySpellButton"..i.."IconTexture"]
+
+		bu:SetPushedTexture("")
+		bu:SetHighlightTexture("")
+
+		bu.cooldown:SetAllPoints(ic)
+
+		_G["ToySpellButton"..i.."SlotFrameCollected"]:SetTexture("")
+		_G["ToySpellButton"..i.."SlotFrameUncollected"]:SetTexture("")
+
+		ic:SetTexCoord(.08, .92, .08, .92)
+		F.CreateBG(ic)
+	end
+
+	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
+		local toyString = _G[self:GetName().."ToyName"]
+
+		if PlayerHasToy(self.itemID) then
+			local _, _, quality = GetItemInfo(self.itemID)
+			if quality then
+				toyString:SetTextColor(GetItemQualityColor(quality))
+			else
+				toyString:SetTextColor(1, 1, 1)
+			end
+		else
+			toyString:SetTextColor(.5, .5, .5)
+		end
+	end)
 	hooksecurefunc("PetJournal_UpdatePetList", ColourPetQuality)
 	hooksecurefunc(PetJournalListScrollFrame, "update", ColourPetQuality)
 end

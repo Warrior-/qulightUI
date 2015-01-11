@@ -11,7 +11,6 @@ MultiBarBottomLeft:SetParent(bar)
 for i=1, 12 do
 	local b = _G["MultiBarBottomLeftButton"..i]
 	local b2 = _G["MultiBarBottomLeftButton"..i-1]
-	b:RegisterForClicks("LeftButtonDown", "RightButtonUp")
 	b:SetSize(buttonsize, buttonsize)
 	b:ClearAllPoints()
 	b:SetFrameStrata("BACKGROUND")

@@ -27,7 +27,6 @@ QulightOnLogon:SetScript("OnEvent", function(self, event)
 	
 		SetCVar("useUiScale", 1)
 		if Qulight["general"].MultisampleProtect == true then
-			SetMultisampleFormat(1)
 		end
 		if Qulight["general"].UiScale > 1 then Qulight["general"].UiScale = 1 end
 		if Qulight["general"].UiScale < 0.64 then Qulight["general"].UiScale = 0.64 end

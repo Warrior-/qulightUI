@@ -158,6 +158,7 @@ C.modules["Blizzard_EncounterJournal"] = function()
 					F.Reskin(header.button, true)
 
 					header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
+					header.button.bg = F.CreateBG(header.button.abilityIcon)
 
 					_G[name.."HeaderButtonELeftUp"]:SetAlpha(0)
 					_G[name.."HeaderButtonERightUp"]:SetAlpha(0)

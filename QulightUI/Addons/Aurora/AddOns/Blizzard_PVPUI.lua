@@ -1,4 +1,3 @@
-
 local F, C = unpack(select(2, ...))
 
 C.modules["Blizzard_PVPUI"] = function()
@@ -10,8 +9,6 @@ C.modules["Blizzard_PVPUI"] = function()
 	local ConquestFrame = ConquestFrame
 	local WarGamesFrame = WarGamesFrame
 	local PVPArenaTeamsFrame = PVPArenaTeamsFrame
-
-	PVPUIFrame.Shadows:Hide()
 
 	-- Category buttons
 
@@ -67,6 +64,8 @@ C.modules["Blizzard_PVPUI"] = function()
 		end
 	end)
 
+	PVPQueueFrame.CategoryButton1.Background:Show()
+
 	-- Honor frame
 
 	local Inset = HonorFrame.Inset
@@ -103,7 +102,7 @@ C.modules["Blizzard_PVPUI"] = function()
 	F.CreateBG(BonusFrame.BattlegroundReward2.Icon)
 
 	hooksecurefunc("HonorFrameBonusFrame_Update", function()
-		local canQueue, bgName, battleGroundID, hasWon, winHonorAmount, winConquestAmount = GetHolidayBGInfo()
+		local hasData, canQueue, bgName, battleGroundID, hasWon, winHonorAmount, winConquestAmount = GetHolidayBGInfo()
 		local rewardIndex = 0
 		if winConquestAmount and winConquestAmount > 0 then
 			rewardIndex = rewardIndex + 1

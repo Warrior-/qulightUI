@@ -64,7 +64,6 @@ local function Stuffing_OnShow()
 
 	Stuffing:Layout()
 	Stuffing:SearchReset()
-	PlaySound("igBackPackOpen")
 	collectgarbage("collect")
 end
 
@@ -73,14 +72,12 @@ local function StuffingBank_OnHide()
 	if Stuffing.frame:IsShown() then
 		Stuffing.frame:Hide()
 	end
-	PlaySound("igBackPackClose")
 end
 
 local function Stuffing_OnHide()
 	if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
 		Stuffing.bankFrame:Hide()
 	end
-	PlaySound("igBackPackClose")
 end
 
 local function Stuffing_Open()
@@ -162,7 +159,7 @@ function Stuffing:BagFrameSlotNew(p, slot)
 		ret.slot = slot
 		slot = slot - 4
 		ret.frame = CreateFrame("CheckButton", "StuffingBBag"..slot, p, "BankItemButtonBagTemplate")
-		ret.frame:SetID(slot + 4)
+		ret.frame:SetID(slot)
 		table.insert(self.bagframe_buttons, ret)
 
 		BankFrameItemButton_Update(ret.frame)
@@ -363,8 +360,8 @@ function Stuffing:CreateBagFrame(w)
 	local f = CreateFrame("Frame", n, UIParent)
 	f:EnableMouse(true)
 	f:SetMovable(true)
-	f:SetFrameStrata("HIGH")
-	f:SetFrameLevel(1)
+	f:SetFrameStrata("DIALOG")
+	f:SetFrameLevel(5)
 	f:SetScript("OnMouseDown", function(self, button)
 		if IsShiftKeyDown() and button == "LeftButton" then
 			self:StartMoving()
@@ -379,6 +376,7 @@ function Stuffing:CreateBagFrame(w)
 	end
 
 	if w == "Bank" then
+		-- Buy button
 		f.b_purchase = CreateFrame("Button", "Stuffing_PurchaseButton"..w, f)
 		f.b_purchase:SetSize(80, 20)
 		f.b_purchase:SetPoint("TOPLEFT", 10, -4)
@@ -396,11 +394,42 @@ function Stuffing:CreateBagFrame(w)
 		fb_purchasetitle:SetFont(Qulight["media"].font, 10, "OUTLINE")
 		fb_purchasetitle:SetText(BANKSLOTPURCHASE)
 		fb_purchasetitle:SetPoint("CENTER")
+
+		-- Reagent button
+		f.b_reagent = CreateFrame("Button", "Stuffing_ReagentButton"..w, f)
+		f.b_reagent:SetSize(105, 20)
+		f.b_reagent:SetPoint("TOPLEFT", f.b_purchase, "TOPRIGHT", 3, 0)
+		f.b_reagent:RegisterForClicks("AnyUp")
+		f.b_reagent:SetScript("OnClick", function()
+			BankFrame_ShowPanel(BANK_PANELS[2].name)
+		end)
+		local fb_reagent = f.b_reagent:CreateFontString("f.b_reagent", "OVERLAY")
+		fb_reagent:SetFont(Qulight["media"].font, 10, "OUTLINE")
+		fb_reagent:SetText(REAGENT_BANK)
+		fb_reagent:SetPoint("CENTER")
+
 	end
 
+	-- Close button
+	f.b_close = CreateFrame("Button", "Stuffing_CloseButton"..w, f)
+	f.b_close:SetSize(15, 15)
+	f.b_close:SetScript("OnClick", function(self, btn)
+		if self:GetParent():GetName() == "StuffingFrameBags" and btn == "RightButton" then
+			if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
+				CloseDropDownMenus()
+				Stuffing_DDMenu.initialize = Stuffing.Menu
+			end
+			ToggleDropDownMenu(nil, nil, Stuffing_DDMenu, self:GetName(), 0, 0)
+			return
+		end
+		self:GetParent():Hide()
+	end)
+	f.b_close:RegisterForClicks("AnyUp")
+
+	-- Create the bags frame
 	local fb = CreateFrame("Frame", n.."BagsFrame", f)
 	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, 3)
-	fb:SetFrameStrata("HIGH")
+	fb:SetFrameStrata("MEDIUM")
 	f.bags_frame = fb
 
 	return f
