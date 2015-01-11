@@ -8,7 +8,7 @@ if not Qulight["actionbar"].enable == true then return end
 local bar = QuPetBar
 local link = QuLineToPetActionBarBackground
 link:SetAlpha(0)
-bar:SetAlpha(.8)
+bar:SetAlpha(.5)
 
 bar:RegisterEvent("PLAYER_LOGIN")
 bar:RegisterEvent("PLAYER_CONTROL_LOST")

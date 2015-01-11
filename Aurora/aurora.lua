@@ -664,7 +664,7 @@ F.ReskinGarrisonPortrait = function(portrait)
 
 	F.CreateBD(squareBG, 1)
 	portrait.squareBG = squareBG
-
+	
 	if cover then
 		cover:SetTexture(0, 0, 0)
 		cover:SetAllPoints(squareBG)

@@ -122,7 +122,7 @@ MiniMapMailBorder:Hide()
 GarrisonLandingPageMinimapButton:ClearAllPoints()
 GarrisonLandingPageMinimapButton:SetParent(Minimap)
 GarrisonLandingPageMinimapButton:SetSize(35,35)
-GarrisonLandingPageMinimapButton:SetPoint("BOTTOMLEFT", 0, 0)
+GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", 0, 0)
 
 MiniMapTracking:ClearAllPoints()
 MiniMapTracking:SetParent(Minimap)
@@ -474,7 +474,7 @@ m_coord:SetAlpha(0)
 
 local m_coord_text = m_coord:CreateFontString("QuMinimapCoordText","minimap")
 m_coord_text:SetFont(Qulight["media"].font, 8, "OUTLINE")
-m_coord_text:SetPoint("BOTTOMRIGHT", minimaplol, "BOTTOMRIGHT", -35,0)
+m_coord_text:SetPoint("BOTTOMRIGHT", minimaplol, "BOTTOMRIGHT", -35,3)
 m_coord_text:SetAlpha(0)
 m_coord_text:SetText("00,00")
 

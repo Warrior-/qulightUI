@@ -33,9 +33,6 @@ local Tooltips = {
 	WorldMapCompareTooltip1,
 	WorldMapCompareTooltip2,
 	WorldMapCompareTooltip3,
-	DropDownList1MenuBackdrop,
-	DropDownList2MenuBackdrop,
-	DropDownList3MenuBackdrop
 }
  
 for _, tt in pairs(Tooltips) do
@@ -87,7 +84,11 @@ anchor:SetAlpha(0)
 anchor:SetPoint("TOPRIGHT", RightUpInfoPanel)
  
 AnchorTooltips = CreateFrame("Frame","Move_Tooltip",UIParent)
-AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 195)
+if Qulight["general"].centerpanel then
+		AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 235)
+	else
+		AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 218)
+end
 CreateAnchor(AnchorTooltips, "Move tooltips", 100, 110)
  
 local function UpdateTooltip(self)

@@ -110,14 +110,14 @@ if Qulight["actionbar"].enable then
 	
 	AnchorQuBar4 = CreateFrame("Frame","Move_Bar4",UIParent)
 		if Qulight["general"].centerpanel then
-			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 54)
+			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 53)
 		else
-			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 38)
+			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 36)
 		end
 	CreateAnchor(AnchorQuBar4, "Move Bar4", (buttonsize * 12) + (buttonspacing * 13), buttonsize)
 	
 	local QuBar4 = CreateFrame("Frame", "QuBar4", UIParent)
-	CreatePanel(QuBar4, 20, 20, "TOP", AnchorQuBar4, "TOP")
+	CreatePanel(QuBar4, 1, 1, "TOP", AnchorQuBar4, "TOP")
 	QuBar4:SetWidth((buttonsize * 12) + (buttonspacing * 13))
 	QuBar4:SetHeight(buttonsize)
 	QuBar4:SetFrameStrata("BACKGROUND")
@@ -168,5 +168,29 @@ if Qulight["actionbar"].enable then
 	local invbarbg = CreateFrame("Frame", "InvQuActionBarBackground", UIParent)
 	invbarbg:SetPoint("TOPLEFT", QuBar2)
 	invbarbg:SetPoint("BOTTOMRIGHT", QuBar3)
+end
+
+
+for i = 1, NUM_CHAT_WINDOWS do
+	local SkadaButton = _G[format("DataRightPanel",  i)]
+	local button = CreateFrame("Button", format("ButtonCF%d", i), SkadaButton)
+	button:SetPoint("TOPLEFT", -70, 20)
+	button:SetHeight(20)
+	button:SetWidth(60)
+	button:SetAlpha(0)
+	CreateStyle(button, 3, 0, 1, 1)
+	
+	local Text  = button:CreateFontString(nil, "OVERLAY")
+	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
+	Text:SetText("Skada")
+	Text:SetPoint("CENTER", 0, 0)
+	
+	button:SetScript("OnMouseUp", function(self)
+		Skada:ToggleWindow()
+	end)
+	button:SetScript("OnEnter", function() 
+		button:SetAlpha(1) 
+	end)
+	button:SetScript("OnLeave", function() button:SetAlpha(0) end)
 
 end
