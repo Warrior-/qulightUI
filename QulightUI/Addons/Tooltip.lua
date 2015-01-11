@@ -25,7 +25,6 @@ local Tooltips = {
 	ItemRefShoppingTooltip2,
 	ItemRefShoppingTooltip3,
 	AutoCompleteBox,
-	FriendsTooltip,
 	ConsolidatedBuffsTooltip,
 	ShoppingTooltip1,
 	ShoppingTooltip2,
@@ -50,11 +49,6 @@ local shadow = CreateFrame("Frame", nil, tt)
 	shadow:SetBackdrop(shadows)
 	shadow:SetBackdropColor(.08,.08,.08, .9)
 	shadow:SetBackdropBorderColor(0, 0, 0, 1)
- 
-	-- tt:HookScript("OnShow", SetStyle)
-	-- tt.GetBackdrop = function() return shadow end
-	-- tt.GetBackdropColor = function() return shadow end
-	-- tt.GetBackdropBorderColor = function() return shadow end
 end
  
 local ItemRefTooltip = ItemRefTooltip
@@ -93,7 +87,7 @@ anchor:SetAlpha(0)
 anchor:SetPoint("TOPRIGHT", RightUpInfoPanel)
  
 AnchorTooltips = CreateFrame("Frame","Move_Tooltip",UIParent)
-AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 195)
+AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 183)
 CreateAnchor(AnchorTooltips, "Move tooltips", 100, 110)
  
 local function UpdateTooltip(self)
@@ -375,11 +369,9 @@ oUF_colors = setmetatable({
 }, {__index = oUF.colors})
  
 local BorderColor = function(self)
-	local GMF = GetMouseFocus()
-	local unit = (select(2, self:GetUnit())) or (GMF and GMF:GetAttribute("unit")) or (UnitExists("mouseover") and "mouseover") or nil
+	local GetMouseFocus = GetMouseFocus()
+	local unit = (select(2, self:GetUnit())) or (GetMouseFocus and GetMouseFocus:GetAttribute("unit"))
 
-	if not unit then return end
- 
 	local reaction = unit and UnitReaction(unit, "player")
 	local player = unit and UnitIsPlayer(unit)
 	local tapped = unit and UnitIsTapped(unit)
@@ -405,7 +397,7 @@ local BorderColor = function(self)
 			healthBar:SetStatusBarColor(.15,.15,.15,0)
 		end
 	end
- 
+	
 	NeedBackdropBorderRefresh = true
 end
  
@@ -426,7 +418,6 @@ local SetStyle = function(self)
 end
  
 local SetStyleSafely = function(self)
-	--frame1px(self)
 	CreateShadowTooltip(self)
 	BorderColor(self)
 end
@@ -437,9 +428,6 @@ Tooltip:SetScript("OnEvent", function(self, event, addon)
 	if event == "PLAYER_ENTERING_WORLD" then
 		for _, tt in pairs(Tooltips) do
 			tt:HookScript("OnShow", SetStyleSafely)
-			-- tt.GetBackdrop = function() return shadow end
-			-- tt.GetBackdropColor = function() return shadow end
-			-- tt.GetBackdropBorderColor = function() return shadow end
 		end
  
 		ItemRefTooltip:HookScript("OnTooltipSetItem", SetStyle)

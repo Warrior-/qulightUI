@@ -1,7 +1,7 @@
 --------------------------------------------------------------------
 -- SUPPORT FOR HPS Feed... 
 --------------------------------------------------------------------
-
+if Qulight["general"].centerpanel then
 if Qulight["datatext"].hps and Qulight["datatext"].hps > 0 then
 	local events = {SPELL_HEAL = true, SPELL_PERIODIC_HEAL = true}
 	local HPS_FEED = CreateFrame("Frame")
@@ -85,4 +85,5 @@ if Qulight["datatext"].hps and Qulight["datatext"].hps > 0 then
 		end
 	end
 
+end
 end

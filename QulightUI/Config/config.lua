@@ -1,7 +1,7 @@
 ﻿Qulight["media"] = {
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=], 			        -- main font in Qulight UI
 	["pxfont"] = [=[Interface\Addons\QulightUI\Root\Media\pxFont.ttf]=],
-	["fontsize"] = 11, 														    		-- size of font 
+	["fontsize"] = 10, 														    		-- size of font 
 	["texture"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",				-- main texture in Qulight UI
 	["blank"] = "Interface\\Buttons\\WHITE8x8",											-- clean texture
 	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",	

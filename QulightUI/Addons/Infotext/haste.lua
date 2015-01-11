@@ -1,4 +1,4 @@
-
+if Qulight["general"].centerpanel then
 if Qulight["datatext"].haste and Qulight["datatext"].haste > 0 then
 
 	local Stat = CreateFrame("Frame")
@@ -39,4 +39,5 @@ if Qulight["datatext"].haste and Qulight["datatext"].haste > 0 then
 
 	Stat:SetScript("OnUpdate", Update)
 	Update(Stat, 10)
+end
 end

@@ -110,9 +110,9 @@ if Qulight["actionbar"].enable then
 	
 	AnchorQuBar4 = CreateFrame("Frame","Move_Bar4",UIParent)
 		if Qulight["general"].centerpanel then
-			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 54)
+			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", 9, 54)
 		else
-			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 38)
+			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", 9, 38)
 		end
 	CreateAnchor(AnchorQuBar4, "Move Bar4", (buttonsize * 12) + (buttonspacing * 13), buttonsize)
 	
@@ -123,7 +123,7 @@ if Qulight["actionbar"].enable then
 	QuBar4:SetFrameStrata("BACKGROUND")
 	QuBar4:SetFrameLevel(2)
 	QuBar4:SetAlpha(0)
-	QuBar4:SetScale(0.99)
+	QuBar4:SetScale(1.048)
 	
 	AnchorQuBar6 = CreateFrame("Frame","Move_Bar6",UIParent)
 	AnchorQuBar6:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 4)

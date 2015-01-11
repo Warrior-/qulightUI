@@ -3,6 +3,7 @@ if not Qulight["actionbar"].enable == true then return end
 ---------------------------------------------------------------------------
 -- Setup Shapeshift Bar
 ---------------------------------------------------------------------------
+
 -- used to update shift action bar buttons
 ShiftBarUpdate = function(self)
 	local numForms = GetNumShapeshiftForms()
