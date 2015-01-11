@@ -73,7 +73,7 @@ end
 ----------------------------------------------------------------------------------------
 function Mountz(groundmount, flyingmount, underwatermount)
 	local flyablex, swimablex, vjswim, InVj, nofly
-	local num = GetNumCompanions("MOUNT")
+	local num = C_MountJournal.GetNumMounts()
 	if not num or IsMounted() then
 		Dismount()
 		return
@@ -368,7 +368,6 @@ end)
 --gtframe:SetPoint("LEFT", _G["FriendsFrameTab"..n - 1], "RIGHT", -15, 0)
 --PanelTemplates_DeselectTab(gtframe)
 --gtframe:SetScript("OnClick", function() ToggleGuildFrame() end)
-
 
 
 ----------------------------------------------------------------------------------------

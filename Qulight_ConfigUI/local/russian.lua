@@ -129,6 +129,7 @@
 	QulightL.option_loot_position = "Позиция окна розыгрыша"
 	--misk
 	QulightL.option_enable = "Включить" 
+	QulightL.option_armory_link = "Включить копирование армори ссылки (не будет работать выбор главного танка и наводчика)"
 	QulightL.option_addonmanager = "Аддон менеджер" 
 	QulightL.option_togglemenu = "МиниМеню" 
 	QulightL.option_togglemenu_buttonwidth = "Ширина кнопок" 

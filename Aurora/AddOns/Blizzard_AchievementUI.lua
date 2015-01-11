@@ -76,12 +76,14 @@ end)
 	bg:SetPoint("BOTTOMRIGHT", 1, -1)
 	bg:SetFrameLevel(AchievementFrameSummaryCategoriesStatusBar:GetFrameLevel()-1)
 	F.CreateBD(bg, .25)
-
-	for i = 1, 3 do
-		local tab = _G["AchievementFrameTab"..i]
-		if tab then
-			F.ReskinTab(tab)
-		end
+	
+	if LoadAddOn('Overachiever_Tabs') then
+ 		  for i = 1, 6 do
+  			 local tab = _G["AchievementFrameTab"..i]
+  			 if tab then
+  			 	F.ReskinTab(tab)
+    			 end
+  		 end
 	end
 
 	for i = 1, 7 do

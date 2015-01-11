@@ -136,6 +136,7 @@
 	QulightL.option_loot_position = "Позиция окна розыгрыша"
 	--misk
 	QulightL.option_enable = "Enable" 
+	QulightL.option_armory_link = "Enable Armory Link (Then dont work Maintank and aimer)"
 	QulightL.option_addonmanager = "Addon Manager" 
 	QulightL.option_togglemenu = "Toggle menu" 
 	QulightL.option_togglemenu_buttonwidth = "Button width" 

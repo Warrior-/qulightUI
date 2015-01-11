@@ -272,6 +272,7 @@ local function Local(o)
 	if o == "QulightConfigUIactionbarsidebarWidth" then o = QulightL.option_actionbar_sidebarWidth end
 		
 	if o == "QulightConfigUImisk" then o = QulightL.option_misk end
+	if o == "QulightConfigUImiskarmory_link" then o = QulightL.option_armory_link end
 	if o == "QulightConfigUImiskaddonmanager" then o = QulightL.option_addonmanager end
 	if o == "QulightConfigUImiskclasstimer" then o = QulightL.option_classtimer end
 	if o == "QulightConfigUImiskfilger" then o = QulightL.option_filger end

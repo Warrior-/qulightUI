@@ -9,6 +9,7 @@ local argcheck = Private.argcheck
 
 local print = Private.print
 local error = Private.error
+local OnEvent = Private.OnEvent
 
 local styles, style = {}
 local callback, objects = {}, {}
@@ -473,7 +474,7 @@ do
 				end
 
 				frame:SetAttribute('*type1', 'target')
-				frame:SetAttribute('*type2', 'menu')
+				frame:SetAttribute('*type2', 'togglemenu')
 				frame:SetAttribute('toggleForVehicle', true)
 				frame:SetAttribute('oUF-guessUnit', unit)
 			end
@@ -572,6 +573,7 @@ function oUF:AddElement(name, update, enable, disable)
 end
 
 oUF.version = _VERSION
+oUF.units = units
 oUF.objects = objects
 
 if(global) then

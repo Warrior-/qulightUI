@@ -1,7 +1,7 @@
 ﻿Qulight["media"] = {
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=], 			        -- main font in Qulight UI
 	["pxfont"] = [=[Interface\Addons\QulightUI\Root\Media\pxFont.ttf]=],
-	["fontsize"] = 10, 														    		-- size of font 
+	["fontsize"] = 11, 														    		-- size of font 
 	["texture"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",				-- main texture in Qulight UI
 	["blank"] = "Interface\\Buttons\\WHITE8x8",											-- clean texture
 	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",	
@@ -33,10 +33,10 @@ Qulight["actionbar"] = {
 
 Qulight["raidframes"] = {
 	["aggro_border"] = true,					-- Aggro border
-	["deficit_health"] = false,					-- Raid deficit health
+	["deficit_health"] = true,					-- Raid deficit health
 	["vertical_health"] = false,				-- Vertical orientation of health
 	["alpha_health"] = false,					-- Alpha of healthbars when 100%hp
-	["power"] = true,					-- Alpha of healthbars when 100%hp
+	["power"] = false,					-- Alpha of healthbars when 100%hp
 	["show_range"] = true,						-- Show range opacity for raidframes
 	["range_alpha"] = 0.5,						-- Alpha of unitframes when unit is out of range
 	["hp_value"] = true,						
@@ -190,7 +190,8 @@ Qulight["cooldown"] = {
 	["enable"] = true,                     												-- enable/disable cooldown addon(for buttons)
 }
 Qulight["misk"] = {
-	["addonmanager"] = true,															-- enable disable addonmanager																-- enable disable raid utility
+	["addonmanager"] = true,														-- enable disable addonmanager	
+	["armory_link"] = false,															-- enable armory_link
 	["filger"] = true,																	-- enable disable filger
 	["classtimer"] = false,																-- enable disable classtimer
 	["BuffReminderRaidBuffs"] = true,													-- enable disable raid buffs reminder

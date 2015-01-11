@@ -73,7 +73,7 @@ local guardianelixirbuffs = ReminderBuffs["GuardianElixir"]
 local foodbuffs = ReminderBuffs["Food"]
 local statbuffs = ReminderBuffs["Stat"]
 local staminabuffs = ReminderBuffs["Stamina"]
-local visible, flask, battleelixir, guardianelixir, food, stat, stamina, spell5, spell6, once
+local visible, flask, battleelixir, guardianelixir, food, stat, stamina, spell5, spell6
 
 local function CheckElixir(unit)
 	if battleelixirbuffs and battleelixirbuffs[1] then
@@ -82,7 +82,6 @@ local function CheckElixir(unit)
 			if UnitAura("player", spellname) then
 				FlaskFrame.t:SetTexture(select(3, GetSpellInfo(battleelixirbuffs)))
 				battleelixir = true
-				once = true
 				break
 			else
 				battleelixir = false
@@ -98,7 +97,6 @@ local function CheckElixir(unit)
 				if not battleelixir then
 					FlaskFrame.t:SetTexture(select(3, GetSpellInfo(guardianelixirbuffs)))
 				end
-				once = true
 				break
 			else
 				guardianelixir = false
@@ -158,7 +156,7 @@ local function OnAuraChange(self, event, arg1, unit)
 
 	for i, statbuffs in pairs(statbuffs) do
 		local spellname = select(1, GetSpellInfo(statbuffs))
-		if UnitAura("player", name) then
+		if UnitAura("player", spellname) then
 			StatFrame:SetAlpha(1)
 			StatFrame.t:SetTexture(select(3, GetSpellInfo(statbuffs)))
 			stat = true
@@ -200,7 +198,7 @@ local function OnAuraChange(self, event, arg1, unit)
 
 	for i, Spell6Buff in pairs(Spell6Buff) do
 		local spellname = select(1, GetSpellInfo(Spell6Buff))
-		if UnitAura("player", name) then
+		if UnitAura("player", spellname) then
 			Spell6Frame:SetAlpha(1)
 			Spell6Frame.t:SetTexture(select(3, GetSpellInfo(Spell6Buff)))
 			spell6 = true
@@ -233,12 +231,12 @@ local function OnAuraChange(self, event, arg1, unit)
 	end
 end
 bsize = 18
---Anchorraidbuff_reminder = CreateFrame("Frame","Move_raidbuff_reminder",UIParent)
---Anchorraidbuff_reminder:SetPoint("RIGHT", UIParent, "RIGHT", -1, 0)
---CreateAnchor(Anchorraidbuff_reminder, "Move Raid Buff Reminder", bsize + 8, 136)
+Anchorraidbuff_reminder = CreateFrame("Frame","Move_raidbuff_reminder",UIParent)
+Anchorraidbuff_reminder:SetPoint("RIGHT", UIParent, "RIGHT", -1, 0)
+CreateAnchor(Anchorraidbuff_reminder, "Move Raid Buff Reminder", bsize + 8, 136)
 
 local raidbuff_reminder = CreateFrame("Frame", "RaidBuffReminder", UIParent)
-CreatePanel(raidbuff_reminder, bsize + 8,135 , "TOPLEFT", minimaplol, "TOPLEFT", -26, 0)
+CreatePanel(raidbuff_reminder, bsize + 8,135 , "TOPLEFT", Anchorraidbuff_reminder, "TOPLEFT", 0, 0)
 CreateStyle(raidbuff_reminder, 2)
 raidbuff_reminder:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_INVENTORY_CHANGED")

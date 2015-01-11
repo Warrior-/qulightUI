@@ -656,6 +656,8 @@ SlashCmdList.TELLTARGET = function(msg)
 	SendChatMessage(msg, "WHISPER")
 end
 
+
+if not Qulight["misk"].armory_link == true then return end
 ----------------------------------------------------------------------------------------
 --	Armory link on right click player name in chat
 ----------------------------------------------------------------------------------------
@@ -759,6 +761,8 @@ hooksecurefunc("UnitPopup_OnClick", function(self)
 end)
 
 UnitPopupButtons["ARMORYLINK"] = {text = "Armory", dist = 0, func = UnitPopup_OnClick}
+
+-- Comment armory function, becourse they causes error then choose in raid maintank
 tinsert(UnitPopupMenus["FRIEND"], #UnitPopupMenus["FRIEND"] - 1, "ARMORYLINK")
 tinsert(UnitPopupMenus["PARTY"], #UnitPopupMenus["PARTY"] - 1, "ARMORYLINK")
 tinsert(UnitPopupMenus["RAID"], #UnitPopupMenus["RAID"] - 1, "ARMORYLINK")

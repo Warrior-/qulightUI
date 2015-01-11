@@ -1,9 +1,6 @@
 
 local F, C = unpack(select(2, ...))
 	
-setfenv(SpellBookFrame_OnShow, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
-setfenv(SpellBookFrame_OnHide, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
-	
 tinsert(C.modules["Aurora"], function()
 	SpellBookFrame:DisableDrawLayer("BACKGROUND")
 	SpellBookFrame:DisableDrawLayer("BORDER")
