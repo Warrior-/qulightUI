@@ -4,13 +4,23 @@ local F, C = unpack(select(2, ...))
 C.modules["Blizzard_GuildBankUI"] = function()
 	GuildBankFrame:DisableDrawLayer("BACKGROUND")
 	GuildBankFrame:DisableDrawLayer("BORDER")
-	GuildBankFrame:DisableDrawLayer("OVERLAY")
-	GuildBankTabTitle:SetDrawLayer("ARTWORK")
 
+
+	GuildBankFrame.TopLeftCorner:Hide()
+	GuildBankFrame.TopRightCorner:Hide()
+	GuildBankFrame.TopBorder:Hide()
+	GuildBankTabTitleBackground:SetTexture("")
+	GuildBankTabTitleBackgroundLeft:SetTexture("")
+	GuildBankTabTitleBackgroundRight:SetTexture("")
+	GuildBankTabLimitBackground:SetTexture("")
+	GuildBankTabLimitBackgroundLeft:SetTexture("")
+	GuildBankTabLimitBackgroundRight:SetTexture("")
 	GuildBankEmblemFrame:Hide()
 	GuildBankPopupFrameTopLeft:Hide()
 	GuildBankPopupFrameBottomLeft:Hide()
-	GuildBankMoneyFrameBackground:Hide()
+	GuildBankMoneyFrameBackgroundLeft:Hide()
+	GuildBankMoneyFrameBackgroundMiddle:Hide()
+	GuildBankMoneyFrameBackgroundRight:Hide()
 	select(2, GuildBankPopupFrame:GetRegions()):Hide()
 	select(4, GuildBankPopupFrame:GetRegions()):Hide()
 	GuildBankPopupNameLeft:Hide()
@@ -60,11 +70,17 @@ C.modules["Blizzard_GuildBankUI"] = function()
 		_G["GuildBankColumn"..i]:GetRegions():Hide()
 		for j = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local bu = _G["GuildBankColumn"..i.."Button"..j]
+			local border = bu.IconBorder
 
 			bu:SetNormalTexture("")
 			bu:SetPushedTexture("")
 
 			bu.icon:SetTexCoord(.08, .92, .08, .92)
+
+			border:SetTexture(C.media.backdrop)
+			border:SetPoint("TOPLEFT", -1, 1)
+			border:SetPoint("BOTTOMRIGHT", 1, -1)
+			border:SetDrawLayer("BACKGROUND")
 		end
 	end
 
@@ -73,6 +89,10 @@ C.modules["Blizzard_GuildBankUI"] = function()
 		local bu = _G["GuildBankTab"..i.."Button"]
 		local ic = _G["GuildBankTab"..i.."ButtonIconTexture"]
 		local nt = _G["GuildBankTab"..i.."ButtonNormalTexture"]
+		
+		bu:SetPushedTexture("")
+		tb:GetRegions():Hide()
+		nt:SetAlpha(0)
 
 		bu:SetCheckedTexture(C.media.checked)
 		F.CreateBG(bu)
@@ -81,8 +101,7 @@ C.modules["Blizzard_GuildBankUI"] = function()
 		bu:SetPoint(a1, p, a2, x + 1, y)
 
 		ic:SetTexCoord(.08, .92, .08, .92)
-		tb:GetRegions():Hide()
-		nt:SetAlpha(0)
+
 	end
 
 	for i = 1, NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_ICON_ROWS do

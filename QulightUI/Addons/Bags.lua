@@ -133,7 +133,7 @@ function Stuffing:SlotUpdate(b)
 
 	SetItemButtonTexture(b.frame, texture)
 	SetItemButtonCount(b.frame, count)
-	SetItemButtonDesaturated(b.frame, locked, 0.5, 0.5, 0.5)
+	SetItemButtonDesaturated(b.frame, locked)
 
 	b.frame:Show()
 end
@@ -242,8 +242,9 @@ function Stuffing:SlotNew(bag, slot)
 		c:SetShadowOffset(1, -1)
 		c:SetPoint("BOTTOMRIGHT", 1, 1)
 
-		if  _G[ret.frame:GetName().."NewItemTexture"] then
-			_G[ret.frame:GetName().."NewItemTexture"]:SetAlpha(0)
+		local Battlepay = _G[ret.frame:GetName()].BattlepayItemTexture
+		if Battlepay then
+			Battlepay:SetAlpha(0)
 		end
 	end
 
@@ -318,10 +319,10 @@ function Stuffing:SearchUpdate(str)
 		end
 		if b.name then
 			if not string.find (string.lower(b.name), str, 1, true) then
-				SetItemButtonDesaturated(b.frame, 1, 1, 1, 1)
+				SetItemButtonDesaturated(b.frame, true)
 				b.frame:SetAlpha(.2)
 			else
-				SetItemButtonDesaturated(b.frame, 0, 1, 1, 1)
+				SetItemButtonDesaturated(b.frame, false)
 				b.frame:SetAlpha(1)
 			end
 		end
@@ -331,7 +332,7 @@ end
 function Stuffing:SearchReset()
 	for _, b in ipairs(self.buttons) do
 		b.frame:SetAlpha(1)
-		SetItemButtonDesaturated(b.frame, 0, 1, 1, 1)
+		SetItemButtonDesaturated(b.frame, false)
 	end
 end
 

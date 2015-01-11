@@ -1719,14 +1719,13 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		for i = 1, #slots do
 			local slot = _G["Character"..slots[i].."Slot"]
-			local ic = _G["Character"..slots[i].."SlotIconTexture"]
 			local border = slot.IconBorder
 
 			_G["Character"..slots[i].."SlotFrame"]:Hide()
 
 			slot:SetNormalTexture("")
 			slot:SetPushedTexture("")
-			ic:SetTexCoord(.08, .92, .08, .92)
+			slot.icon:SetTexCoord(.08, .92, .08, .92)
 
 			border:SetTexture(C.media.backdrop)
 			border:SetPoint("TOPLEFT", -1, 1)
@@ -1759,32 +1758,13 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		select(11, CharacterMainHandSlot:GetRegions()):Hide()
 		select(11, CharacterSecondaryHandSlot:GetRegions()):Hide()
 
-		local updateChar = function(self)
-			if not PaperDollFrame:IsShown() then return end
-
-			for i, slotName in ipairs(slots) do
-				if i == 18 then i = 19 end
-
-				local slot = _G["Character"..slotName.."Slot"]
-				local slotLink = GetInventoryItemLink("player", i)
-
-				if slotLink then
-					slot.icon:SetAlpha(1)
-				else
-					slot.icon:SetAlpha(0)
-				end
-
-				
-				colourPopout(slot.popoutButton)
+		hooksecurefunc("PaperDollItemSlotButton_Update", function(button)
+			-- also fires for bag slots, we don't want that
+			if button.popoutButton then
+				button.icon:SetShown(button.hasItem)
+				colourPopout(button.popoutButton)
 			end
-		end
-
-		do
-			local f = CreateFrame("Frame")
-			f:RegisterEvent("UNIT_INVENTORY_CHANGED")
-			f:SetScript("OnEvent", updateChar)
-			PaperDollFrame:HookScript("OnShow", updateChar)
-		end
+		end)
 
 		for i = 1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
@@ -2194,7 +2174,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			AudioOptionsVoicePanelTalkingTitle:SetPoint("BOTTOMLEFT", AudioOptionsVoicePanelTalking, "TOPLEFT", 5, 2)
 			AudioOptionsVoicePanelListeningTitle:SetPoint("BOTTOMLEFT", AudioOptionsVoicePanelListening, "TOPLEFT", 5, 2)
 
-			local dropdowns = {"Graphics_DisplayModeDropDown", "Graphics_ResolutionDropDown", "Graphics_RefreshDropDown", "Graphics_PrimaryMonitorDropDown", "Graphics_MultiSampleDropDown", "Graphics_VerticalSyncDropDown", "Graphics_TextureResolutionDropDown", "Graphics_FilteringDropDown", "Graphics_ProjectedTexturesDropDown", "Graphics_ShadowsDropDown", "Graphics_LiquidDetailDropDown", "Graphics_SunshaftsDropDown", "Graphics_ParticleDensityDropDown", "Graphics_ViewDistanceDropDown", "Graphics_EnvironmentalDetailDropDown", "Graphics_GroundClutterDropDown", "Graphics_SSAODropDown", "Advanced_BufferingDropDown", "Advanced_LagDropDown", "Advanced_HardwareCursorDropDown", "InterfaceOptionsLanguagesPanelLocaleDropDown", "AudioOptionsSoundPanelHardwareDropDown", "AudioOptionsSoundPanelSoundChannelsDropDown", "AudioOptionsVoicePanelInputDeviceDropDown", "AudioOptionsVoicePanelChatModeDropDown", "AudioOptionsVoicePanelOutputDeviceDropDown"}
+			local dropdowns = {"Display_DisplayModeDropDown", "Display_ResolutionDropDown", "Display_RefreshDropDown", "Display_PrimaryMonitorDropDown", "Display_AntiAliasingDropDown", "Display_VerticalSyncDropDown", "Graphics_TextureResolutionDropDown", "Graphics_FilteringDropDown", "Graphics_ProjectedTexturesDropDown", "Graphics_ShadowsDropDown", "Graphics_LiquidDetailDropDown", "Graphics_SunshaftsDropDown", "Graphics_ParticleDensityDropDown", "Graphics_ViewDistanceDropDown", "Graphics_EnvironmentalDetailDropDown", "Graphics_GroundClutterDropDown", "Graphics_SSAODropDown", "Graphics_RefractionDropDown", "RaidGraphics_TextureResolutionDropDown", "RaidGraphics_FilteringDropDown", "RaidGraphics_ProjectedTexturesDropDown", "RaidGraphics_ShadowsDropDown", "RaidGraphics_LiquidDetailDropDown", "RaidGraphics_SunshaftsDropDown", "RaidGraphics_ParticleDensityDropDown", "RaidGraphics_ViewDistanceDropDown", "RaidGraphics_EnvironmentalDetailDropDown", "RaidGraphics_GroundClutterDropDown", "RaidGraphics_SSAODropDown", "RaidGraphics_RefractionDropDown", "Advanced_BufferingDropDown", "Advanced_LagDropDown", "Advanced_HardwareCursorDropDown", "AudioOptionsSoundPanelHardwareDropDown", "AudioOptionsSoundPanelSoundChannelsDropDown", "AudioOptionsVoicePanelInputDeviceDropDown", "AudioOptionsVoicePanelChatModeDropDown", "AudioOptionsVoicePanelOutputDeviceDropDown", "InterfaceOptionsLanguagesPanelLocaleDropDown", "InterfaceOptionsLanguagesPanelAudioLocaleDropDown"}
 			for i = 1, #dropdowns do
 				F.ReskinDropDown(_G[dropdowns[i]])
 			end
@@ -2202,7 +2182,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			Graphics_RightQuality:GetRegions():Hide()
 			Graphics_RightQuality:DisableDrawLayer("BORDER")
 
-			local sliders = {"Graphics_Quality", "Advanced_UIScaleSlider", "Advanced_MaxFPSSlider", "Advanced_MaxFPSBKSlider", "Advanced_GammaSlider", "AudioOptionsSoundPanelSoundQuality", "AudioOptionsSoundPanelMasterVolume", "AudioOptionsSoundPanelSoundVolume", "AudioOptionsSoundPanelMusicVolume", "AudioOptionsSoundPanelAmbienceVolume", "AudioOptionsVoicePanelMicrophoneVolume", "AudioOptionsVoicePanelSpeakerVolume", "AudioOptionsVoicePanelSoundFade", "AudioOptionsVoicePanelMusicFade", "AudioOptionsVoicePanelAmbienceFade"}
+			local sliders = {"Graphics_Quality", "RaidGraphics_Quality", "Advanced_UIScaleSlider", "Advanced_MaxFPSSlider", "Advanced_MaxFPSBKSlider", "Advanced_GammaSlider", "AudioOptionsSoundPanelMasterVolume", "AudioOptionsSoundPanelSoundVolume", "AudioOptionsSoundPanelMusicVolume", "AudioOptionsSoundPanelAmbienceVolume", "AudioOptionsSoundPanelDialogVolume", "AudioOptionsVoicePanelMicrophoneVolume", "AudioOptionsVoicePanelSpeakerVolume", "AudioOptionsVoicePanelSoundFade", "AudioOptionsVoicePanelMusicFade", "AudioOptionsVoicePanelAmbienceFade"}
 			for i = 1, #sliders do
 				F.ReskinSlider(_G[sliders[i]])
 			end
@@ -3060,6 +3040,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		PetitionFrameMasterTitle:SetShadowColor(0, 0, 0)
 		PetitionFrameMemberTitle:SetTextColor(1, 1, 1)
 		PetitionFrameMemberTitle:SetShadowColor(0, 0, 0)
+
 		QuestInfoTitleHeader:SetTextColor(1, 1, 1)
 		QuestInfoTitleHeader.SetTextColor = F.dummy
 		QuestInfoDescriptionHeader:SetTextColor(1, 1, 1)
@@ -3397,6 +3378,7 @@ F.CreateBD(WorldMapDetailFrame.backdrop)
 WorldMapDetailFrame.backdrop:SetPoint("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -2, 2)
 WorldMapDetailFrame.backdrop:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, "BOTTOMRIGHT", 2, -2)
 WorldMapDetailFrame.backdrop:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() - 2)
+
 
 SkinCloseButton(WorldMapFrameCloseButton)
 SkinCloseButton(WorldMapFrameSizeDownButton)
