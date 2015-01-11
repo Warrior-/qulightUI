@@ -58,7 +58,7 @@ if Qulight["general"].centerpanel then
 end
 
 Anchorminimaplol = CreateFrame("Frame","Move_minimaplol",UIParent)
-Anchorminimaplol:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 3, -3)
+Anchorminimaplol:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -15, -25)
 CreateAnchor(Anchorminimaplol, "Move Minimap", Qulight["minimapp"].size+4, Qulight["minimapp"].size+4)
 	
 local minimaplol = CreateFrame("Frame", "minimaplol", UIParent)

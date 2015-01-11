@@ -5,22 +5,21 @@ local function update()
 	local buttons = QuestLogScrollFrame.buttons
 	local numButtons = #buttons
 	local scrollOffset = HybridScrollFrame_GetOffset(QuestLogScrollFrame)
-	local numEntries, numQuests = GetNumQuestLogEntries()
+	local numEntries = GetNumQuestLogEntries()
 	
 	for i = 1, numButtons do
 		local questIndex = i + scrollOffset
 		local questLogTitle = buttons[i]
 		if questIndex <= numEntries then
-			local title, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily = GetQuestLogTitle(questIndex)
+			local title, level, _, _, isHeader = GetQuestLogTitle(questIndex)
 			if not isHeader then
-				questLogTitle:SetText("[" .. level .. "] " .. title)
+				questLogTitle:SetText("["..level.."] "..title)
 				QuestLogTitleButton_Resize(questLogTitle)
 			end
 		end
 	end
 end
-hooksecurefunc("QuestLog_Update", update)
-QuestLogScrollFrameScrollBar:HookScript("OnValueChanged", update)
+
 ----------------------------------------------------------------------------------------
 -- Clear UIErrors frame(ncError by Nightcracker)
 ----------------------------------------------------------------------------------------
@@ -409,33 +408,38 @@ StaticPopupDialogs.WATCHFRAME_URL = {
 	preferredIndex = 5,
 }
 
-local tblDropDown = {}
-hooksecurefunc("WatchFrameDropDown_Initialize", function(self)
-	if self.type == "QUEST" then
-		tblDropDown = {
-			text = "Wowhead link", notCheckable = true, arg1 = self.index,
-			func = function(_, watchId)
-				local logId = GetQuestIndexForWatch(watchId)
-				local _, _, _, _, _, _, _, _, questId = GetQuestLogTitle(logId)
-				local inputBox = StaticPopup_Show("WATCHFRAME_URL")
-				inputBox.editBox:SetText(linkQuest:format(questId))
-				inputBox.editBox:HighlightText()
-			end
-		}
-		UIDropDownMenu_AddButton(tblDropDown, UIDROPDOWN_MENU_LEVEL)
-	elseif self.type == "ACHIEVEMENT" then
-		tblDropDown = {
-			text = "Wowhead link", notCheckable = true, arg1 = self.index,
-			func = function(_, id)
-				local inputBox = StaticPopup_Show("WATCHFRAME_URL")
-				inputBox.editBox:SetText(linkAchievement:format(id))
-				inputBox.editBox:HighlightText()
-			end
-		}
-		UIDropDownMenu_AddButton(tblDropDown, UIDROPDOWN_MENU_LEVEL)
+hooksecurefunc("QuestObjectiveTracker_OnOpenDropDown", function(self)
+	local _, b, i, info, questID
+	b = self.activeFrame
+	i = b.questLogIndex
+	_, _, _, _, _, _, _, questID = GetQuestLogTitle(i)
+	info = UIDropDownMenu_CreateInfo()
+	info.text = L_WATCH_WOWHEAD_LINK
+	info.func = function(id)
+		local inputBox = StaticPopup_Show("WATCHFRAME_URL")
+		inputBox.editBox:SetText(linkQuest:format(questID))
+		inputBox.editBox:HighlightText()
 	end
+	info.arg1 = questID
+	info.notCheckable = true
+	UIDropDownMenu_AddButton(info, UIDROPDOWN_MENU_LEVEL)
 end)
-UIDropDownMenu_Initialize(WatchFrameDropDown, WatchFrameDropDown_Initialize, "MENU")
+
+hooksecurefunc("AchievementObjectiveTracker_OnOpenDropDown", function(self)
+	local _, b, i, info
+	b = self.activeFrame
+	i = b.id
+	info = UIDropDownMenu_CreateInfo()
+	info.text = L_WATCH_WOWHEAD_LINK
+	info.func = function(_, i)
+		local inputBox = StaticPopup_Show("WATCHFRAME_URL")
+		inputBox.editBox:SetText(linkAchievement:format(i))
+		inputBox.editBox:HighlightText()
+	end
+	info.arg1 = i
+	info.notCheckable = true
+	UIDropDownMenu_AddButton(info, UIDROPDOWN_MENU_LEVEL)
+end)
 
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("ADDON_LOADED")
@@ -450,14 +454,6 @@ frame:SetScript("OnEvent", function(self, event, addon)
 		end)
 	end
 end)
-
-WatchFrame:SetClampedToScreen(false)
-WatchFrame:ClearAllPoints()
-WatchFrame.ClearAllPoints = function() return end
-WatchFrame:SetWidth(250)
-WatchFrame:SetHeight(500)
-WatchFrame:SetPoint("TOPRIGHT", AnchorWatchFrame)
-WatchFrame.SetPoint = function() return end
 
 
 local function SkinIt(bar)	
@@ -498,4 +494,4 @@ end
 
 local load = CreateFrame("Frame")
 load:RegisterEvent("START_TIMER")
-load:SetScript("OnEvent", SkinBlizzTimer)
+load:SetScript("OnEvent", SkinBlizzTimers)

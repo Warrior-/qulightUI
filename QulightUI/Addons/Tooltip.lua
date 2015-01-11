@@ -52,14 +52,10 @@ anchor:SetFrameStrata("TOOLTIP")
 anchor:SetFrameLevel(20)
 anchor:SetClampedToScreen(true)
 anchor:SetAlpha(0)
-anchor:SetPoint("TOPRIGHT", minimaplol)
+anchor:SetPoint("TOPRIGHT", RightUpInfoPanel)
 
 AnchorTooltips = CreateFrame("Frame","Move_Tooltip",UIParent)
-if Qulight["general"].centerpanel then
-		AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 235)
-	else
-		AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 219)
-end
+AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 195)
 CreateAnchor(AnchorTooltips, "Move tooltips", 100, 110)
 
 local function UpdateTooltip(self)
@@ -253,10 +249,15 @@ local function OnTooltipSetUnit(self)
 	if not color then color = "|CFFFFFFFF" end
 	if not realm then realm = "" end
 	
-	if title or name then
-		_G["GameTooltipTextLeft1"]:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
-	end
+	_G["GameTooltipTextLeft1"]:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
 
+	if title and Qulight["tooltip"].title == true then
+        local text = GameTooltipTextLeft1:GetText()
+        title = title:gsub(name, "")
+        text = text:gsub(title, "")
+        if text then GameTooltipTextLeft1:SetText(text) end
+    end
+	
 	if(UnitIsPlayer(unit)) then
 		if UnitIsAFK(unit) then
 			self:AppendText((" %s"):format(CHAT_FLAG_AFK))
@@ -272,7 +273,7 @@ local function OnTooltipSetUnit(self)
 
 		for i= offset, lines do
 			if(_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race or "", color, class or "".."|r")
+				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s %s%s", r*255, g*255, b*255, level > 0 and level or "??", race, color, class.."|r")
 				break
 			end
 		end
@@ -440,7 +441,7 @@ Tooltip:SetScript("OnEvent", function(self, event, addon)
 		if FrameStackTooltip then
 			FrameStackTooltip:SetScale(1)
 			
-			FrameStackTooltip:HookScript("OnShow", function(self) CreateStyle(self, 2) end)
+			EventTraceTooltip:HookScript("OnShow", function(self) CreateStyle(self, 2) end)
 		end
 		
 		if EventTraceTooltip then
@@ -535,17 +536,19 @@ if Qulight["tooltip"].spellid then
 	ItemRefTooltip:HookScript("OnTooltipSetItem", attachItemTooltip)
 	ItemRefShoppingTooltip1:HookScript("OnTooltipSetItem", attachItemTooltip)
 	ItemRefShoppingTooltip2:HookScript("OnTooltipSetItem", attachItemTooltip)
-	ItemRefShoppingTooltip3:HookScript("OnTooltipSetItem", attachItemTooltip)
 	ShoppingTooltip1:HookScript("OnTooltipSetItem", attachItemTooltip)
 	ShoppingTooltip2:HookScript("OnTooltipSetItem", attachItemTooltip)
-	ShoppingTooltip3:HookScript("OnTooltipSetItem", attachItemTooltip)
 end
 
 
 if Qulight["tooltip"].itemlevel then
+
 ----------------------------------------------------------------------------------------
+
 --	Equipped average item level(EquippedItemLevel by Villiv)
+
 ----------------------------------------------------------------------------------------
+
 -- Additional strings
 local WAITING = CONTINUED
 local PENDING = CONTINUED..CONTINUED
@@ -558,9 +561,11 @@ local upgrades = {
 	["477"] = 4, ["478"] = 8, ["480"] = 8, ["492"] = 4, ["493"] = 8, ["495"] = 4,
 	["496"] = 8, ["497"] = 12, ["498"] = 16, ["504"] = 12, ["505"] = 16, ["506"] = 20,
 	["507"] = 24
+
 }
+
 -- Output prefix
-local PREFIX = HIGHLIGHT_FONT_COLOR_CODE.."ItemLvl: "..HIGHLIGHT_FONT_COLOR_CODE
+local PREFIX = STAT_FORMAT:format(STAT_AVERAGE_ITEM_LEVEL).."|Heqppditmlvl|h |h"..HIGHLIGHT_FONT_COLOR_CODE
 
 local f = CreateFrame("Frame")
 f:SetScript("OnEvent", function(self, event, ...) return self[event](self, event, ...)end)
@@ -701,7 +706,7 @@ do
 
 		if isReady then
 			cache[guid] = level
-			return SetTipText(level.." ("..((myLevel > 0) and "|cff00ff00+" or "|cffff0000")..myLevel.."|r|cffffffff)|r")
+		return SetTipText(level.." ("..((myLevel > 0) and "|cff00ff00+" or "|cffff0000")..myLevel.."|r|cffffffff)|r")
 		end
 
 		level = cachedLevel or level

@@ -35,8 +35,10 @@
 	<Script file='AddOns\Blizzard_VoidStorageUI.lua' />
 	<Script file='AddOns\Recount.lua' />
 
+	<Script file='SharedXML\AddonList.lua' />
+
 	<Script file='FrameXML\AlertFrames.lua' />
-	<Script file='FrameXML\FlexRaidFrame.lua' />
+	<Script file='FrameXML\Constants.lua' />
 	<Script file='FrameXML\Fonts.lua' />
 	<Script file='FrameXML\LFDFrame.lua' />
 	<Script file='FrameXML\LFGFrame.lua' />
@@ -51,6 +53,7 @@
 	<Script file='FrameXML\RolePoll.lua' />
 	<Script file='FrameXML\ScenarioFinder.lua' />
 	<Script file='FrameXML\SpellBookFrame.lua' />
+	<Script file='FrameXML\SplashFrame.lua' />
 	<Script file='FrameXML\StaticPopup.lua' />
 	<Script file='FrameXML\TaxiFrame.lua' />
 	<Script file='FrameXML\WorldStateFrame.lua' />

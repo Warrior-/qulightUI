@@ -31,7 +31,7 @@ function PP(p, obj)
 		obj:SetPoint("RIGHT", DataRightPanel,"RIGHT", -10, 0)
 	elseif p == 9 then
 		obj:SetHeight(DataRightPanel:GetHeight())
-		obj:SetPoint("RIGHT", DataRightPanel,"RIGHT", -70, 0)
+		obj:SetPoint("RIGHT", DataRightPanel,"RIGHT", -90, 0)
 	elseif p == 10 then
 		obj:SetHeight(DataRightPanel:GetHeight())
 		obj:SetPoint("LEFT", righttabpanel,"LEFT", 10, 0)

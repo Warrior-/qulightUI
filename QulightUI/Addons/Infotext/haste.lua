@@ -1,12 +1,11 @@
 
-if Qulight["general"].centerpanel then
 if Qulight["datatext"].haste and Qulight["datatext"].haste > 0 then
 
 	local Stat = CreateFrame("Frame")
 	Stat:SetFrameStrata("BACKGROUND")
 	Stat:SetFrameLevel(3)
 
-	local Text  = LeftUpInfoPanel:CreateFontString(nil, "OVERLAY")
+	local Text  = RightUpInfoPanel:CreateFontString(nil, "OVERLAY")
 	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
 	PP(Qulight["datatext"].haste, Text)
 
@@ -40,5 +39,4 @@ if Qulight["datatext"].haste and Qulight["datatext"].haste > 0 then
 
 	Stat:SetScript("OnUpdate", Update)
 	Update(Stat, 10)
-end
 end

@@ -401,12 +401,10 @@ function StyleActionBarFlyout(self)
 			self.FlyoutArrow:ClearAllPoints()
 			self.FlyoutArrow:SetPoint("TOP", self, "TOP", 0, arrowDistance)
 			SetClampedTextureRotation(self.FlyoutArrow, 0)
-			if not InCombatLockdown() then self:SetAttribute("flyoutDirection", "UP") end
 		else
 			self.FlyoutArrow:ClearAllPoints()
 			self.FlyoutArrow:SetPoint("LEFT", self, "LEFT", -arrowDistance, 0)
 			SetClampedTextureRotation(self.FlyoutArrow, 270)
-			if not InCombatLockdown() then self:SetAttribute("flyoutDirection", "LEFT") end
 		end
 	end
 end
@@ -626,7 +624,7 @@ hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) StyleTotemSpe
 --	Make ExtraActionBarFrame movable(use macro /click ExtraActionButton1)
 ------------------------------------------------------------------------------------------
 AnchorExtraActionBar = CreateFrame("Frame","Move_ExtraActionBar",UIParent)
-AnchorExtraActionBar:SetPoint("BOTTOM", 0, 480)
+AnchorExtraActionBar:SetPoint("BOTTOM", 172, 380)
 CreateAnchor(AnchorExtraActionBar, "Move ExtraActionBar", 40, 40)
 
 ExtraActionBarFrame:SetParent(UIParent)

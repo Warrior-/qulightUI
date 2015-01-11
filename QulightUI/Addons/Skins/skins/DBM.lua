@@ -240,10 +240,16 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 		hooksecurefunc(DBM.BossHealth, "AddBoss", SkinBoss)
 		hooksecurefunc(DBM.BossHealth,"UpdateSettings",SkinBoss)
 		
-		DBM.RangeCheck:Show()
-		DBM.RangeCheck:Hide()
+		hooksecurefunc(DBM.RangeCheck, "Show", function()
+			DBMRangeCheck:SetTemplate("Transparent")
+			if DBMRangeCheckRadar then
+				DBMRangeCheckRadar:SetTemplate("Transparent")
+			end
+		end)
 
-		CreateStyle(DBMRangeCheckRadar, 2)
+		hooksecurefunc(DBM.InfoFrame, "Show", function()
+			DBMInfoFrame:SetTemplate("Transparent")
+		end)		
 		
 		if croprwicons then
 			local replace = string.gsub
@@ -279,6 +285,36 @@ if IsAddOnLoaded("DBM-Core") then
 	DBT_PersistentOptions["DBM"].HugeBarYOffset = 7
 	DBT_PersistentOptions["DBM"].BarYOffset = 5
 	DBT_PersistentOptions["DBM"].Texture = Qulight["media"].texture
+
+	DBT_PersistentOptions["DBM"].EndColorG = 1
+	DBT_PersistentOptions["DBM"].HugeTimerY = 91.11986689654809
+	DBT_PersistentOptions["DBM"].HugeBarXOffset = 0
+	DBT_PersistentOptions["DBM"].Scale = 1
+	DBT_PersistentOptions["DBM"].IconLeft = true
+	DBT_PersistentOptions["DBM"].EnlargeBarsPercent = 0.125
+	DBT_PersistentOptions["DBM"].TimerY = 172.348816227143
+	DBT_PersistentOptions["DBM"].StartColorR = 0.08627450980392157
+	DBT_PersistentOptions["DBM"].HugeScale = 1
+	DBT_PersistentOptions["DBM"].TimerX = 432.5000026329087
+	DBT_PersistentOptions["DBM"].HugeBarsEnabled = true
+	DBT_PersistentOptions["DBM"].BarYOffset = 5
+	DBT_PersistentOptions["DBM"].HugeTimerX = -306.0003201890552
+	DBT_PersistentOptions["DBM"].HugeBarYOffset = 7
+	DBT_PersistentOptions["DBM"].ExpandUpwards = true
+	DBT_PersistentOptions["DBM"].TimerPoint = "CENTER"
+	DBT_PersistentOptions["DBM"].StartColorG = 1
+	DBT_PersistentOptions["DBM"].IconRight = false
+	DBT_PersistentOptions["DBM"].StartColorB = 0.1333333333333333
+	DBT_PersistentOptions["DBM"].EndColorR = 0.2196078431372549
+	DBT_PersistentOptions["DBM"].Width = 189
+	DBT_PersistentOptions["DBM"].HugeTimerPoint = "CENTER"
+	DBT_PersistentOptions["DBM"].FontSize = 10
+	DBT_PersistentOptions["DBM"].HugeWidth = 189
+	DBT_PersistentOptions["DBM"].EnlargeBarsTime = 8
+	DBT_PersistentOptions["DBM"].Height = 20
+	DBT_PersistentOptions["DBM"].FillUpBars = true
+	DBT_PersistentOptions["DBM"].BarXOffset = 0
+	DBT_PersistentOptions["DBM"].EndColorB = 0.3490196078431372
 end	
 end
 

@@ -1,7 +1,7 @@
 ﻿Qulight["media"] = {
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=], 			        -- main font in Qulight UI
 	["pxfont"] = [=[Interface\Addons\QulightUI\Root\Media\pxFont.ttf]=],
-	["fontsize"] = 10, 														    		-- size of font 
+	["fontsize"] = 11, 														    		-- size of font 
 	["texture"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",				-- main texture in Qulight UI
 	["blank"] = "Interface\\Buttons\\WHITE8x8",											-- clean texture
 	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",	
@@ -10,7 +10,7 @@ Qulight["general"] = {
 	["AutoScale"] = true,  																-- mainly enabled for users that don't want to mess with the config file
 	["UiScale"] = 0.75,																	-- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["MultisampleProtect"] = false,    													-- 1x antialazing
-	["AutoRepair"] = true,																-- auto repair
+	["AutoRepair"] = false,																-- auto repair
 	["AutoGreed"] = false,
 	["topbottompanel"] = true,
 	["centerpanel"] = true,
@@ -27,7 +27,7 @@ Qulight["actionbar"] = {
 	["petbuttonsize"] = 32,                             -- pet & stance buttons size
 	["buttonspacing"] = 1,                              -- buttons spacing
 	["petbuttonspacing"] = 1,
-	["mainbarWidth"] = 10,		
+	["mainbarWidth"] = 12,		
 	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
 }
 
@@ -39,9 +39,9 @@ Qulight["raidframes"] = {
 	["power"] = true,					-- Alpha of healthbars when 100%hp
 	["show_range"] = true,						-- Show range opacity for raidframes
 	["range_alpha"] = 0.5,						-- Alpha of unitframes when unit is out of range
-	["hp_value"] = false,						
-	["width"] = 81.6,						
-	["height"] = 24.4,						
+	["hp_value"] = true,						
+	["width"] = 80,						
+	["height"] = 30,						
 
 	["show_party"] = true,						-- Show party frames
 	["show_raid"] = true,						-- Show raid frames
@@ -90,7 +90,7 @@ Qulight["unitframes"] = {
 	["Reputationbar"] = true, 															-- show reputation bar
 	["Experiencebar"] = true, 															-- show experience bar
 	["showPlayerAuras"] = false, 														-- use a custom player buffs/debuffs frame instead of blizzard's default.
-	["showPortrait"] = true,															-- show portraits
+	["showPortrait"] = false,															-- show portraits
 	["showRunebar"] = true, 															-- show dk rune bar
 	["showHolybar"] = true, 															-- show paladin HolyPower bar
 	["showEclipsebar"] = true, 															-- show druid eclipse bar
@@ -132,11 +132,12 @@ Qulight["datatext"] = {
 	["Bags"] = 6,                														-- show space used in bags on panels
 	["specswitcher"] = 9,
 	["haste"] = 11,
-	["mastery"] = 12,
+	["mastery"] = 0,
 	["power"] = 13,
-	["crit"] = 0,
-	["hps"] = 0,
-	["dps"] = 16,
+	["crit"] = 12,
+	["hps"] = 14,
+	["dps"] = 15,
+	["vengeance"] = 16,
 	["Time24"] = true,            														-- set time to 24h format(if wowtime enable)
 	["Localtime"] = true,  																-- local time(if wowtime enable)
 	["classcolor"] = true,																-- class color text info
@@ -177,7 +178,7 @@ Qulight["tooltip"] = {
 }
 Qulight["bags"] = {
 	["Enable"] = true,																	-- enable/disable bags 
-	["BagBars"] = false,																-- enable/disable bags bar
+	["BagBars"] = true,																-- enable/disable bags bar
 }
 Qulight["loot"] = {
 	["lootframe"] = true,                  												-- enable/disable loot addon
@@ -196,6 +197,6 @@ Qulight["misk"] = {
 	["raidcooldowns"] = false, 
 	["AutoScreen"] = true,
 	["Threatbar"] = true,
-	["raidmarker"] = false,
-	["raidutility"] = false,														-- enable disable raid utility
+	["raidmarker"] = true,
+	["raidutility"] = true,														-- enable disable raid utility
 }  

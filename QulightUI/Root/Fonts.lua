@@ -29,7 +29,7 @@ Fonts:SetScript("OnEvent", function(self, event, addon)
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 	
 	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
-	CHAT_FONT_HEIGHTS = {12, 13, 14, 15, 16, 17, 18, 19, 20}
+	CHAT_FONT_HEIGHTS = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 	
 	UNIT_NAME_FONT     = NORMAL
 	NAMEPLATE_FONT     = NORMAL
@@ -43,8 +43,8 @@ Fonts:SetScript("OnEvent", function(self, event, addon)
 	SetFont(NumberFont_Outline_Med,             Qulight["media"].font, Qulight["media"].fontsize, "OUTLINE")
 	SetFont(NumberFont_Shadow_Med,              NORMAL, Qulight["media"].fontsize+1) --chat editbox uses this
 	SetFont(NumberFont_Shadow_Small,            NORMAL, Qulight["media"].fontsize)
-	SetFont(QuestFont,                          NORMAL, Qulight["media"].fontsize)
-	SetFont(QuestFont_Large,                    NORMAL, 14)
+	SetFont(QuestFont,                          NORMAL, Qulight["media"].fontsize+3)
+	SetFont(QuestFont_Large,                    NORMAL, 18)
 	SetFont(SystemFont_Large,                   NORMAL, 15)
 	SetFont(SystemFont_Shadow_Huge1,			NORMAL, 20, "THINOUTLINE") -- Raid Warning, Boss emote frame too
 	SetFont(SystemFont_Med1,                    NORMAL, Qulight["media"].fontsize)
@@ -64,7 +64,7 @@ Fonts:SetScript("OnEvent", function(self, event, addon)
 	SetFont(SubZoneTextString,					NORMAL, 25, "OUTLINE")
 	SetFont(PVPInfoTextString,					NORMAL, 22, "THINOUTLINE")
 	SetFont(PVPArenaTextString,					NORMAL, 22, "THINOUTLINE")
-	SetFont(CombatTextFont,                     COMBAT, 100, "THINOUTLINE") -- number here just increase the font quality.
+	SetFont(CombatTextFont,                     COMBAT, 100, "OUTLINE") -- number here just increase the font quality.
 	SetFont(InvoiceFont_Med, 					NORMAL, 13)
 	SetFont(InvoiceFont_Small,					NORMAL, 10)
 	SetFont(MailFont_Large, 					NORMAL, 15)

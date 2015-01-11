@@ -660,7 +660,7 @@ end
 ----------------------------------------------------------------------------------------
 -- Find the Realm and Local
 local realmName = string.lower(GetRealmName())
-local realmLocal = string.sub(GetCVar("realmList"), 1, 2)
+local realmLocal = string.lower(GetCVar("portal"))
 local link
 
 local function urlencode(obj)

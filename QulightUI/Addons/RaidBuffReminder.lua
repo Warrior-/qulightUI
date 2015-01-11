@@ -1,4 +1,4 @@
-if not Qulight["misk"].BuffReminderRaidBuffs == true then return end
+	if not Qulight["misk"].BuffReminderRaidBuffs == true then return end
 
 ReminderBuffs = {
 	Flask = {
@@ -158,7 +158,7 @@ local function OnAuraChange(self, event, arg1, unit)
 
 	for i, statbuffs in pairs(statbuffs) do
 		local spellname = select(1, GetSpellInfo(statbuffs))
-		if UnitAura("player", spellname) then
+		if UnitAura("player", name) then
 			StatFrame:SetAlpha(1)
 			StatFrame.t:SetTexture(select(3, GetSpellInfo(statbuffs)))
 			stat = true
@@ -200,7 +200,7 @@ local function OnAuraChange(self, event, arg1, unit)
 
 	for i, Spell6Buff in pairs(Spell6Buff) do
 		local spellname = select(1, GetSpellInfo(Spell6Buff))
-		if UnitAura("player", spellname) then
+		if UnitAura("player", name) then
 			Spell6Frame:SetAlpha(1)
 			Spell6Frame.t:SetTexture(select(3, GetSpellInfo(Spell6Buff)))
 			spell6 = true
@@ -232,13 +232,14 @@ local function OnAuraChange(self, event, arg1, unit)
 		end
 	end
 end
-bsize = 28
-Anchorraidbuff_reminder = CreateFrame("Frame","Move_raidbuff_reminder",UIParent)
-Anchorraidbuff_reminder:SetPoint("RIGHT", UIParent, "RIGHT", -1, 0)
-CreateAnchor(Anchorraidbuff_reminder, "Move Raid Buff Reminder", bsize + 8, 136)
+bsize = 18
+--Anchorraidbuff_reminder = CreateFrame("Frame","Move_raidbuff_reminder",UIParent)
+--Anchorraidbuff_reminder:SetPoint("RIGHT", UIParent, "RIGHT", -1, 0)
+--CreateAnchor(Anchorraidbuff_reminder, "Move Raid Buff Reminder", bsize + 8, 136)
 
 local raidbuff_reminder = CreateFrame("Frame", "RaidBuffReminder", UIParent)
-CreatePanel(raidbuff_reminder, bsize + 8,136 , "BOTTOMRIGHT", Anchorraidbuff_reminder)
+CreatePanel(raidbuff_reminder, bsize + 8,135 , "TOPLEFT", minimaplol, "TOPLEFT", -26, 0)
+CreateStyle(raidbuff_reminder, 2)
 raidbuff_reminder:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_INVENTORY_CHANGED")
 raidbuff_reminder:RegisterEvent("UNIT_AURA")
@@ -253,9 +254,10 @@ raidbuff_reminder:SetScript("OnEvent", OnAuraChange)
 local function CreateButton(name, relativeTo, firstbutton)
 	local button = CreateFrame("Frame", name, RaidBuffReminder)
 	if firstbutton == true then
-		CreatePanel(button, bsize, bsize, "TOP", relativeTo, "BOTTOM", 0, 20)
+-- for horizontal use RIGHT and LEFT, for vertical use TOP and BOTTOM
+		CreatePanel(button, bsize + 1, bsize - 1, "TOP", relativeTo, "BOTTOM", 0, 20) 
 	else
-		CreatePanel(button, bsize, bsize, "BOTTOM", relativeTo, "TOP", 0, 5)
+		CreatePanel(button, bsize + 1, bsize - 1, "BOTTOM", relativeTo, "TOP", 0, 5)
 	end
 	
 	button:SetFrameLevel(RaidBuffReminder:GetFrameLevel() + 2)

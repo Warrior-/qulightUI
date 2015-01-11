@@ -1,9 +1,5 @@
 local alpha, useButtonGradientColour
-
-setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G }))
-setfenv(FriendsFrame_OnShow, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
-setfenv(SpellBookFrame_OnShow, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
-setfenv(SpellBookFrame_OnHide, setmetatable({UpdateMicroButtons = function() end}, {__index = _G}))
+local LATEST_API_VERSION = "6.0"
 
 local addon, core = ...
 
@@ -372,10 +368,13 @@ end
 
 F.ReskinInput = function(f, height, width)
 	local frame = f:GetName()
-	_G[frame.."Left"]:Hide()
-	if _G[frame.."Middle"] then _G[frame.."Middle"]:Hide() end
-	if _G[frame.."Mid"] then _G[frame.."Mid"]:Hide() end
-	_G[frame.."Right"]:Hide()
+	local left = _G[frame.."Left"] or f.Left
+	local middle = _G[frame.."Middle"] or _G[frame.."Mid"] or f.Middle
+	local right = _G[frame.."Right"] or f.Right
+
+	left:Hide()
+	middle:Hide()
+	right:Hide()
 
 	local bd = CreateFrame("Frame", nil, f)
 	bd:SetPoint("TOPLEFT", -2, 0)
@@ -603,40 +602,6 @@ F.ReskinColourSwatch = function(f)
 	bg:SetPoint("BOTTOMRIGHT", -2, 2)
 end
 
-F.ColourQuality = function(button, id)
-	local quality, texture, _
-	local quest = _G[button:GetName().."IconQuestTexture"]
-
-	if id then
-		quality, _, _, _, _, _, _, texture = select(3, GetItemInfo(id))
-	end
-
-	local glow = button.AuroraGlow
-	if not glow then
-		glow = button:CreateTexture(nil, "BACKGROUND")
-		glow:SetPoint("TOPLEFT", -1, 1)
-		glow:SetPoint("BOTTOMRIGHT", 1, -1)
-		glow:SetTexture(C.media.backdrop)
-
-		button.AuroraGlow = glow
-	end
-
-	if texture then
-		local r, g, b
-
-		if quest and quest:IsShown() then
-			r, g, b = 1, 0, 0
-		else
-			r, g, b = GetItemQualityColor(quality)
-			if r == 1 and g == 1 then r, g, b = 0, 0, 0 end
-		end
-
-		glow:SetVertexColor(r, g, b)
-		glow:Show()
-	else
-		glow:Hide()
-	end
-end
 
 -- [[ Module handling ]]
 
@@ -725,7 +690,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Simple backdrops ]]
 
-		local bds = {"AutoCompleteBox", "TicketStatusFrameButton", "GearManagerDialogPopup", "TokenFramePopup", "RaidInfoFrame", "ScrollOfResurrectionSelectionFrame", "ScrollOfResurrectionFrame", "VoiceChatTalkers", "ReportPlayerNameDialog", "ReportCheatingDialog", "QueueStatusFrame"}
+		local bds = {"AutoCompleteBox", "TicketStatusFrameButton", "GearManagerDialogPopup", "TokenFramePopup", "RaidInfoFrame", "ScrollOfResurrectionSelectionFrame", "ScrollOfResurrectionFrame", "VoiceChatTalkers", "ReportPlayerNameDialog", "ReportCheatingDialog"}
 
 		for i = 1, #bds do
 			local bd = _G[bds[i]]
@@ -760,29 +725,16 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Dropdowns ]]
 
-		local dropdowns = {"LFDQueueFrameTypeDropDown", "LFRBrowseFrameRaidDropDown", "WhoFrameDropDown", "FriendsFriendsFrameDropDown", "RaidFinderQueueFrameSelectionDropDown", "WorldMapShowDropDown", "Advanced_GraphicsAPIDropDown"}
-		for i = 1, #dropdowns do
-			local dropdown = _G[dropdowns[i]]
-			if dropdown then
-				F.ReskinDropDown(dropdown)
-			else
-				print("Aurora: "..dropdowns[i].." was not found.")
-			end
+		for _, dropdown in pairs({"LFDQueueFrameTypeDropDown", "WhoFrameDropDown", "FriendsFriendsFrameDropDown", "RaidFinderQueueFrameSelectionDropDown", "Advanced_GraphicsAPIDropDown"}) do
+			F.ReskinDropDown(_G[dropdown])
 		end
 
 		-- [[ Input frames ]]
 
-		local inputs = {"AddFriendNameEditBox", "GearManagerDialogPopupEditBox", "HelpFrameKnowledgebaseSearchBox", "ChannelFrameDaughterFrameChannelName", "ChannelFrameDaughterFrameChannelPassword", "BagItemSearchBox", "BankItemSearchBox", "ScrollOfResurrectionSelectionFrameTargetEditBox", "ScrollOfResurrectionFrameNoteFrame"}
-		for i = 1, #inputs do
-			local input = _G[inputs[i]]
-			if input then
-				F.ReskinInput(input)
-			else
-				print("Aurora: "..inputs[i].." was not found.")
-			end
+		for _, input in pairs({"AddFriendNameEditBox", "GearManagerDialogPopupEditBox", "HelpFrameKnowledgebaseSearchBox", "ChannelFrameDaughterFrameChannelName", "ChannelFrameDaughterFrameChannelPassword", "ScrollOfResurrectionSelectionFrameTargetEditBox", "ScrollOfResurrectionFrameNoteFrame", "FriendsFrameBroadcastInput"}) do
+			F.ReskinInput(_G[input])
 		end
 
-		F.ReskinInput(FriendsFrameBroadcastInput)
 
 		-- [[ Arrows ]]
 
@@ -1154,23 +1106,48 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		end
 
 		for i = 1, ATTACHMENTS_MAX_SEND do
-			local button = _G["SendMailAttachment"..i]
-			button:GetRegions():Hide()
+			local bu = _G["SendMailAttachment"..i]
+			local border = bu.IconBorder
 
-			local bg = CreateFrame("Frame", nil, button)
+			bu:GetRegions():Hide()
+
+			border:SetTexture(C.media.backdrop)
+			border:SetPoint("TOPLEFT", -1, 1)
+			border:SetPoint("BOTTOMRIGHT", 1, -1)
+			border:SetDrawLayer("BACKGROUND")
+
+			local bg = CreateFrame("Frame", nil, bu)
 			bg:SetPoint("TOPLEFT", -1, 1)
 			bg:SetPoint("BOTTOMRIGHT", 1, -1)
 			bg:SetFrameLevel(0)
 			F.CreateBD(bg, .25)
 		end
 
+		-- sigh
+		-- we mess with quality colour numbers, so we have to fix this
+		hooksecurefunc("SendMailFrame_Update", function()
+			for i = 1, ATTACHMENTS_MAX_SEND do
+				local bu = _G["SendMailAttachment"..i]
+
+				if bu:GetNormalTexture() == nil and bu.IconBorder:IsShown() then
+					bu.IconBorder:Hide()
+				end
+			end
+		end)
+
 		for i = 1, ATTACHMENTS_MAX_RECEIVE do
 			local bu = _G["OpenMailAttachmentButton"..i]
 			local ic = _G["OpenMailAttachmentButton"..i.."IconTexture"]
+			local border = bu.IconBorder
 
 			bu:SetNormalTexture("")
 			bu:SetPushedTexture("")
 			ic:SetTexCoord(.08, .92, .08, .92)
+
+			border:SetTexture(C.media.backdrop)
+			border:SetPoint("TOPLEFT", -1, 1)
+			border:SetPoint("BOTTOMRIGHT", 1, -1)
+			border:SetDrawLayer("BACKGROUND")
 
 			local bg = CreateFrame("Frame", nil, bu)
 			bg:SetPoint("TOPLEFT", -1, 1)
@@ -1188,8 +1165,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			end
 		end)
 
-		F.ReskinPortraitFrame(MailFrame, true)
-		F.ReskinPortraitFrame(OpenMailFrame, true)
 		F.ReskinPortraitFrame(MailFrame, true)
 		F.ReskinPortraitFrame(OpenMailFrame, true)
 		F.ReskinInput(SendMailNameEditBox, 20)
@@ -1309,7 +1284,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- Raid frame (social frame)
 
-		F.Reskin(RaidFrameRaidBrowserButton)
 		F.ReskinCheck(RaidFrameAllAssistCheckButton)
 
 		-- Professions
@@ -1365,12 +1339,33 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		for i = 1, 2 do
 			local bu = _G["PrimaryProfession"..i]
+
+			_G["PrimaryProfession"..i.."IconBorder"]:Hide()
+
+			bu.professionName:ClearAllPoints()
+			bu.professionName:SetPoint("TOPLEFT", 100, -4)
+
+			bu.icon:SetAlpha(1)
+			bu.icon:SetTexCoord(.08, .92, .08, .92)
+			bu.icon:SetDesaturated(false)
+			F.CreateBG(bu.icon)
+
 			local bg = CreateFrame("Frame", nil, bu)
 			bg:SetPoint("TOPLEFT")
 			bg:SetPoint("BOTTOMRIGHT", 0, -4)
 			bg:SetFrameLevel(0)
 			F.CreateBD(bg, .25)
 		end
+
+		hooksecurefunc("FormatProfession", function(frame, index)
+			if index then
+				local _, texture = GetProfessionInfo(index)
+
+				if frame.icon and texture then
+					frame.icon:SetTexture(texture)
+				end
+			end
+		end)
 
 		-- Merchant Frame
 
@@ -1534,7 +1529,17 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- Friends Frame
 
-		for i = 1, 5 do
+		FriendsFrameFriendsScrollFrameTop:Hide()
+		FriendsFrameFriendsScrollFrameMiddle:Hide()
+		FriendsFrameFriendsScrollFrameBottom:Hide()
+		IgnoreListFrameTop:Hide()
+		IgnoreListFrameMiddle:Hide()
+		IgnoreListFrameBottom:Hide()
+		PendingListFrameTop:Hide()
+		PendingListFrameMiddle:Hide()
+		PendingListFrameBottom:Hide()
+
+		for i = 1, 4 do
 			F.ReskinTab(_G["FriendsFrameTab"..i])
 		end
 
@@ -1640,27 +1645,19 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- Battletag invite frame
 
-		for i = 1, 9 do
-			select(i, BattleTagInviteFrame.NoteFrame:GetRegions()):Hide()
-		end
-
 		F.CreateBD(BattleTagInviteFrame)
-		F.CreateBD(BattleTagInviteFrame.NoteFrame, .25)
 
-		local _, send, cancel = BattleTagInviteFrame:GetChildren()
+		local send, cancel = BattleTagInviteFrame:GetChildren()
 		F.Reskin(send)
 		F.Reskin(cancel)
 
-		F.ReskinScroll(BattleTagInviteFrameScrollFrameScrollBar)
-
 		-- Nav Bar
 
-		local function navButtonFrameLevel(self)
+		local function moveNavButtons(self)
 			for i=1, #self.navList do
 				local navButton = self.navList[i]
 				local lastNav = self.navList[i-1]
 				if navButton and lastNav then
-					navButton:SetFrameLevel(lastNav:GetFrameLevel() - 2)
 					navButton:ClearAllPoints()
 					navButton:SetPoint("LEFT", lastNav, "RIGHT", 1, 0)
 				end
@@ -1670,21 +1667,19 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		hooksecurefunc("NavBar_AddButton", function(self, buttonData)
 			local navButton = self.navList[#self.navList]
 
-
 			if not navButton.skinned then
 				F.Reskin(navButton)
-				navButton:GetRegions():SetAlpha(0)
-				select(2, navButton:GetRegions()):SetAlpha(0)
-				select(3, navButton:GetRegions()):SetAlpha(0)
+				F.ReskinArrow(navButton.MenuArrowButton, "down")
+
+				navButton.arrowUp:SetAlpha(0)
+				navButton.arrowDown:SetAlpha(0)
+				navButton.selected:SetAlpha(0)
+				navButton.MenuArrowButton.Art:Hide()
 
 				navButton.skinned = true
-
-				navButton:HookScript("OnClick", function()
-					navButtonFrameLevel(self)
-				end)
 			end
 
-			navButtonFrameLevel(self)
+			moveNavButtons(self)
 		end)
 
 		-- Character frame
@@ -1701,7 +1696,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		local function colourPopout(self)
 			local aR, aG, aB
-			local glow = self:GetParent().AuroraGlow
+			local glow = self:GetParent().IconBorder
 
 			if glow:IsShown() then
 				aR, aG, aB = glow:GetVertexColor()
@@ -1725,11 +1720,18 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		for i = 1, #slots do
 			local slot = _G["Character"..slots[i].."Slot"]
 			local ic = _G["Character"..slots[i].."SlotIconTexture"]
+			local border = slot.IconBorder
+
 			_G["Character"..slots[i].."SlotFrame"]:Hide()
 
 			slot:SetNormalTexture("")
 			slot:SetPushedTexture("")
 			ic:SetTexCoord(.08, .92, .08, .92)
+
+			border:SetTexture(C.media.backdrop)
+			border:SetPoint("TOPLEFT", -1, 1)
+			border:SetPoint("BOTTOMRIGHT", 1, -1)
+			border:SetDrawLayer("BACKGROUND")
 
 			local popout = slot.popoutButton
 
@@ -1754,8 +1756,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			popout:HookScript("OnLeave", colourPopout)
 		end
 
-		select(10, CharacterMainHandSlot:GetRegions()):Hide()
-		select(10, CharacterSecondaryHandSlot:GetRegions()):Hide()
+		select(11, CharacterMainHandSlot:GetRegions()):Hide()
+		select(11, CharacterSecondaryHandSlot:GetRegions()):Hide()
 
 		local updateChar = function(self)
 			if not PaperDollFrame:IsShown() then return end
@@ -1772,8 +1774,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 					slot.icon:SetAlpha(0)
 				end
 
-				F.ColourQuality(slot, slotLink)
-
+				
 				colourPopout(slot.popoutButton)
 			end
 		end
@@ -1908,32 +1909,17 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- Quest Frame
 
-		F.ReskinPortraitFrame(QuestLogFrame, true)
-		F.ReskinPortraitFrame(QuestLogDetailFrame, true)
 		F.ReskinPortraitFrame(QuestFrame, true)
 
-		F.CreateBD(QuestLogCount, .25)
 
 		QuestFrameDetailPanel:DisableDrawLayer("BACKGROUND")
 		QuestFrameProgressPanel:DisableDrawLayer("BACKGROUND")
 		QuestFrameRewardPanel:DisableDrawLayer("BACKGROUND")
 		QuestFrameGreetingPanel:DisableDrawLayer("BACKGROUND")
-		EmptyQuestLogFrame:DisableDrawLayer("BACKGROUND")
 		QuestFrameDetailPanel:DisableDrawLayer("BORDER")
 		QuestFrameRewardPanel:DisableDrawLayer("BORDER")
 
-		select(18, QuestLogFrame:GetRegions()):Hide()
-		select(18, QuestLogDetailFrame:GetRegions()):Hide()
 
-		QuestLogFramePageBg:Hide()
-		QuestLogFrameBookBg:Hide()
-		QuestLogDetailFramePageBg:Hide()
-		QuestLogScrollFrameTop:Hide()
-		QuestLogScrollFrameBottom:Hide()
-		QuestLogScrollFrameMiddle:Hide()
-		QuestLogDetailScrollFrameTop:Hide()
-		QuestLogDetailScrollFrameBottom:Hide()
-		QuestLogDetailScrollFrameMiddle:Hide()
 		QuestDetailScrollFrameTop:Hide()
 		QuestDetailScrollFrameBottom:Hide()
 		QuestDetailScrollFrameMiddle:Hide()
@@ -1946,9 +1932,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		QuestGreetingScrollFrameTop:Hide()
 		QuestGreetingScrollFrameBottom:Hide()
 		QuestGreetingScrollFrameMiddle:Hide()
-		QuestDetailLeftBorder:Hide()
-		QuestDetailBotLeftCorner:Hide()
-		QuestDetailTopLeftCorner:Hide()
 
 		QuestNPCModelShadowOverlay:Hide()
 		QuestNPCModelBg:Hide()
@@ -1957,11 +1940,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		QuestNPCModelTextFrameBg:Hide()
 		QuestNPCModelTextFrame:DisableDrawLayer("OVERLAY")
 
-		for i = 1, 9 do
-			select(i, QuestLogCount:GetRegions()):Hide()
-		end
-
-		QuestLogDetailTitleText:SetDrawLayer("OVERLAY")
 		QuestInfoItemHighlight:GetRegions():Hide()
 		QuestInfoSpellObjectiveFrameNameFrame:Hide()
 		QuestFrameProgressPanelMaterialTopLeft:SetAlpha(0)
@@ -1969,18 +1947,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		QuestFrameProgressPanelMaterialBotLeft:SetAlpha(0)
 		QuestFrameProgressPanelMaterialBotRight:SetAlpha(0)
 
-		QuestLogFramePushQuestButton:ClearAllPoints()
-		QuestLogFramePushQuestButton:SetPoint("LEFT", QuestLogFrameAbandonButton, "RIGHT", 1, 0)
-		QuestLogFramePushQuestButton:SetWidth(100)
-		QuestLogFrameTrackButton:ClearAllPoints()
-		QuestLogFrameTrackButton:SetPoint("LEFT", QuestLogFramePushQuestButton, "RIGHT", 1, 0)
-
-		QuestLogFrameShowMapButton.texture:Hide()
-		QuestLogFrameShowMapButtonHighlight:SetAlpha(0)
-		QuestLogFrameShowMapButton:SetSize(QuestLogFrameShowMapButton.text:GetStringWidth() + 14, 22)
-		QuestLogFrameShowMapButton.text:ClearAllPoints()
-		QuestLogFrameShowMapButton.text:SetPoint("CENTER", 1, 0)
-		F.Reskin(QuestLogFrameShowMapButton)
 
 		local line = QuestFrameGreetingPanel:CreateTexture()
 		line:SetTexture(1, 1, 1, .2)
@@ -1997,14 +1963,14 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		npcbd:SetPoint("TOPLEFT", -1, 1)
 		npcbd:SetPoint("RIGHT", 1, 0)
 		npcbd:SetPoint("BOTTOM", QuestNPCModelTextScrollFrame)
-		npcbd:SetFrameLevel(QuestNPCModel:GetFrameLevel()-1)
+		npcbd:SetFrameLevel(0)
 		F.CreateBD(npcbd)
 
 		local npcLine = CreateFrame("Frame", nil, QuestNPCModel)
-		npcLine:SetPoint("BOTTOMLEFT", 0, -1)
-		npcLine:SetPoint("BOTTOMRIGHT", 0, -1)
+		npcLine:SetPoint("BOTTOMLEFT", 0, -2)
+		npcLine:SetPoint("BOTTOMRIGHT", 0, -2)
 		npcLine:SetHeight(1)
-		npcLine:SetFrameLevel(QuestNPCModel:GetFrameLevel()-1)
+		npcLine:SetFrameLevel(0)
 		F.CreateBD(npcLine, 0)
 
 		QuestInfoSkillPointFrameIconTexture:SetSize(40, 40)
@@ -2019,9 +1985,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		QuestInfoSkillPointFrameNameFrame:Hide()
 		QuestInfoSkillPointFrameName:SetParent(bg)
 		QuestInfoSkillPointFrameIconTexture:SetParent(bg)
-		QuestInfoSkillPointFrameSkillPointBg:SetParent(bg)
-		QuestInfoSkillPointFrameSkillPointBgGlow:SetParent(bg)
-		QuestInfoSkillPointFramePoints:SetParent(bg)
 
 		local skillPointLine = QuestInfoSkillPointFrame:CreateTexture(nil, "BACKGROUND")
 		skillPointLine:SetSize(1, 40)
@@ -2090,96 +2053,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		QuestDetailScrollFrame:SetWidth(302) -- else these buttons get cut off
 
-		for i = 1, MAX_NUM_ITEMS do
-			local bu = _G["QuestInfoItem"..i]
-			local ic = _G["QuestInfoItem"..i.."IconTexture"]
-			local na = _G["QuestInfoItem"..i.."NameFrame"]
-			local co = _G["QuestInfoItem"..i.."Count"]
-
-			ic:SetPoint("TOPLEFT", 1, -1)
-			ic:SetSize(39, 39)
-			ic:SetTexCoord(.08, .92, .08, .92)
-			ic:SetDrawLayer("OVERLAY")
-
-			F.CreateBD(bu, .25)
-
-			na:Hide()
-			co:SetDrawLayer("OVERLAY")
-
-			local line = CreateFrame("Frame", nil, bu)
-			line:SetSize(1, 40)
-			line:SetPoint("RIGHT", ic, 1, 0)
-			F.CreateBD(line)
-		end
-
-		local function updateQuest()
-			local numEntries = GetNumQuestLogEntries()
-
-			local buttons = QuestLogScrollFrame.buttons
-			local numButtons = #buttons
-			local scrollOffset = HybridScrollFrame_GetOffset(QuestLogScrollFrame)
-			local questLogTitle, questIndex
-			local isHeader, isCollapsed
-
-			for i = 1, numButtons do
-				questLogTitle = buttons[i]
-				questIndex = i + scrollOffset
-
-				if not questLogTitle.reskinned then
-					questLogTitle.reskinned = true
-
-					questLogTitle:SetNormalTexture("")
-					questLogTitle.SetNormalTexture = F.dummy
-					questLogTitle:SetPushedTexture("")
-					questLogTitle:SetHighlightTexture("")
-					questLogTitle.SetHighlightTexture = F.dummy
-
-					questLogTitle.bg = CreateFrame("Frame", nil, questLogTitle)
-					questLogTitle.bg:SetSize(13, 13)
-					questLogTitle.bg:SetPoint("LEFT", 4, 0)
-					questLogTitle.bg:SetFrameLevel(questLogTitle:GetFrameLevel()-1)
-					F.CreateBD(questLogTitle.bg, 0)
-
-					questLogTitle.tex = F.CreateGradient(questLogTitle)
-					questLogTitle.tex:SetAllPoints(questLogTitle.bg)
-
-					questLogTitle.minus = questLogTitle:CreateTexture(nil, "OVERLAY")
-					questLogTitle.minus:SetSize(7, 1)
-					questLogTitle.minus:SetPoint("CENTER", questLogTitle.bg)
-					questLogTitle.minus:SetTexture(C.media.backdrop)
-					questLogTitle.minus:SetVertexColor(1, 1, 1)
-
-					questLogTitle.plus = questLogTitle:CreateTexture(nil, "OVERLAY")
-					questLogTitle.plus:SetSize(1, 7)
-					questLogTitle.plus:SetPoint("CENTER", questLogTitle.bg)
-					questLogTitle.plus:SetTexture(C.media.backdrop)
-					questLogTitle.plus:SetVertexColor(1, 1, 1)
-				end
-
-				if questIndex <= numEntries then
-					_, _, _, _, isHeader, isCollapsed = GetQuestLogTitle(questIndex)
-					if isHeader then
-						questLogTitle.bg:Show()
-						questLogTitle.tex:Show()
-						questLogTitle.minus:Show()
-						if isCollapsed then
-							questLogTitle.plus:Show()
-						else
-							questLogTitle.plus:Hide()
-						end
-					else
-						questLogTitle.bg:Hide()
-						questLogTitle.tex:Hide()
-						questLogTitle.minus:Hide()
-						questLogTitle.plus:Hide()
-					end
-				end
-			end
-		end
-
-		hooksecurefunc("QuestLog_Update", updateQuest)
-		QuestLogScrollFrame:HookScript("OnVerticalScroll", updateQuest)
-		QuestLogScrollFrame:HookScript("OnMouseWheel", updateQuest)
 
 		hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, _, _, _, _, y)
 			QuestNPCModel:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", 2, y)
@@ -2193,13 +2066,10 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			end
 		end)
 
-		local questButtons = {"QuestLogFrameAbandonButton", "QuestLogFramePushQuestButton", "QuestLogFrameTrackButton", "QuestLogFrameCancelButton", "QuestFrameAcceptButton", "QuestFrameDeclineButton", "QuestFrameCompleteQuestButton", "QuestFrameCompleteButton", "QuestFrameGoodbyeButton", "QuestFrameGreetingGoodbyeButton", "QuestLogFrameCompleteButton"}
-		for i = 1, #questButtons do
-			F.Reskin(_G[questButtons[i]])
+		for _, questButton in pairs({"QuestFrameAcceptButton", "QuestFrameDeclineButton", "QuestFrameCompleteQuestButton", "QuestFrameCompleteButton", "QuestFrameGoodbyeButton", "QuestFrameGreetingGoodbyeButton"}) do
+			F.Reskin(_G[questButton])
 		end
 
-		F.ReskinScroll(QuestLogScrollFrameScrollBar)
-		F.ReskinScroll(QuestLogDetailScrollFrameScrollBar)
 		F.ReskinScroll(QuestProgressScrollFrameScrollBar)
 		F.ReskinScroll(QuestRewardScrollFrameScrollBar)
 		F.ReskinScroll(QuestDetailScrollFrameScrollBar)
@@ -2358,12 +2228,12 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			line:SetPoint("LEFT", 205, 10)
 			line:SetTexture(1, 1, 1, .2)
 
-			local checkboxes = {"InterfaceOptionsControlsPanelStickyTargeting", "InterfaceOptionsControlsPanelAutoDismount", "InterfaceOptionsControlsPanelAutoClearAFK", "InterfaceOptionsControlsPanelBlockTrades", "InterfaceOptionsControlsPanelBlockGuildInvites", "InterfaceOptionsControlsPanelBlockChatChannelInvites", "InterfaceOptionsControlsPanelLootAtMouse", "InterfaceOptionsControlsPanelAutoLootCorpse", "InterfaceOptionsControlsPanelInteractOnLeftClick", "InterfaceOptionsCombatPanelAttackOnAssist", "InterfaceOptionsCombatPanelStopAutoAttack", "InterfaceOptionsNamesPanelUnitNameplatesNameplateClassColors", "InterfaceOptionsCombatPanelTargetOfTarget", "InterfaceOptionsCombatPanelShowSpellAlerts", "InterfaceOptionsCombatPanelReducedLagTolerance", "InterfaceOptionsCombatPanelActionButtonUseKeyDown", "InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait", "InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates", "InterfaceOptionsCombatPanelEnemyCastBarsOnOnlyTargetNameplates", "InterfaceOptionsCombatPanelEnemyCastBarsNameplateSpellNames", "InterfaceOptionsCombatPanelAutoSelfCast", "InterfaceOptionsCombatPanelLossOfControl", "InterfaceOptionsDisplayPanelShowCloak", "InterfaceOptionsDisplayPanelShowHelm", "InterfaceOptionsDisplayPanelShowAggroPercentage", "InterfaceOptionsDisplayPanelPlayAggroSounds", "InterfaceOptionsDisplayPanelShowSpellPointsAvg", "InterfaceOptionsDisplayPanelShowFreeBagSpace", "InterfaceOptionsDisplayPanelCinematicSubtitles", "InterfaceOptionsDisplayPanelRotateMinimap", "InterfaceOptionsDisplayPanelShowAccountAchievments", "InterfaceOptionsObjectivesPanelAutoQuestTracking", "InterfaceOptionsObjectivesPanelMapQuestDifficulty", "InterfaceOptionsObjectivesPanelWatchFrameWidth", "InterfaceOptionsSocialPanelProfanityFilter", "InterfaceOptionsSocialPanelSpamFilter", "InterfaceOptionsSocialPanelChatBubbles", "InterfaceOptionsSocialPanelPartyChat", "InterfaceOptionsSocialPanelChatHoverDelay", "InterfaceOptionsSocialPanelGuildMemberAlert", "InterfaceOptionsSocialPanelChatMouseScroll", "InterfaceOptionsSocialPanelWholeChatWindowClickable", "InterfaceOptionsActionBarsPanelBottomLeft", "InterfaceOptionsActionBarsPanelBottomRight", "InterfaceOptionsActionBarsPanelRight", "InterfaceOptionsActionBarsPanelRightTwo", "InterfaceOptionsActionBarsPanelLockActionBars", "InterfaceOptionsActionBarsPanelAlwaysShowActionBars", "InterfaceOptionsActionBarsPanelSecureAbilityToggle", "InterfaceOptionsNamesPanelMyName", "InterfaceOptionsNamesPanelFriendlyPlayerNames", "InterfaceOptionsNamesPanelFriendlyPets", "InterfaceOptionsNamesPanelFriendlyGuardians", "InterfaceOptionsNamesPanelFriendlyTotems", "InterfaceOptionsNamesPanelUnitNameplatesFriends", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyPets", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyGuardians", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyTotems", "InterfaceOptionsNamesPanelGuilds", "InterfaceOptionsNamesPanelGuildTitles", "InterfaceOptionsNamesPanelTitles", "InterfaceOptionsNamesPanelNonCombatCreature", "InterfaceOptionsNamesPanelEnemyPlayerNames", "InterfaceOptionsNamesPanelEnemyPets", "InterfaceOptionsNamesPanelEnemyGuardians", "InterfaceOptionsNamesPanelEnemyTotems", "InterfaceOptionsNamesPanelUnitNameplatesEnemies", "InterfaceOptionsNamesPanelUnitNameplatesEnemyPets", "InterfaceOptionsNamesPanelUnitNameplatesEnemyGuardians", "InterfaceOptionsNamesPanelUnitNameplatesEnemyTotems", "InterfaceOptionsCombatTextPanelTargetDamage", "InterfaceOptionsCombatTextPanelPeriodicDamage", "InterfaceOptionsCombatTextPanelPetDamage", "InterfaceOptionsCombatTextPanelHealing", "InterfaceOptionsCombatTextPanelHealingAbsorbTarget", "InterfaceOptionsCombatTextPanelTargetEffects", "InterfaceOptionsCombatTextPanelOtherTargetEffects", "InterfaceOptionsCombatTextPanelEnableFCT", "InterfaceOptionsCombatTextPanelDodgeParryMiss", "InterfaceOptionsCombatTextPanelDamageReduction", "InterfaceOptionsCombatTextPanelRepChanges", "InterfaceOptionsCombatTextPanelReactiveAbilities", "InterfaceOptionsCombatTextPanelFriendlyHealerNames", "InterfaceOptionsCombatTextPanelCombatState", "InterfaceOptionsCombatTextPanelHealingAbsorbSelf", "InterfaceOptionsCombatTextPanelComboPoints", "InterfaceOptionsCombatTextPanelLowManaHealth", "InterfaceOptionsCombatTextPanelEnergyGains", "InterfaceOptionsCombatTextPanelPeriodicEnergyGains", "InterfaceOptionsCombatTextPanelHonorGains", "InterfaceOptionsCombatTextPanelAuras", "InterfaceOptionsStatusTextPanelPlayer", "InterfaceOptionsStatusTextPanelPet", "InterfaceOptionsStatusTextPanelParty", "InterfaceOptionsStatusTextPanelTarget", "InterfaceOptionsStatusTextPanelAlternateResource", "InterfaceOptionsStatusTextPanelXP", "InterfaceOptionsBattlenetPanelOnlineFriends", "InterfaceOptionsBattlenetPanelOfflineFriends", "InterfaceOptionsBattlenetPanelBroadcasts", "InterfaceOptionsBattlenetPanelFriendRequests", "InterfaceOptionsBattlenetPanelConversations", "InterfaceOptionsBattlenetPanelShowToastWindow", "InterfaceOptionsCameraPanelFollowTerrain", "InterfaceOptionsCameraPanelHeadBob", "InterfaceOptionsCameraPanelWaterCollision", "InterfaceOptionsCameraPanelSmartPivot", "InterfaceOptionsMousePanelInvertMouse", "InterfaceOptionsMousePanelClickToMove", "InterfaceOptionsMousePanelWoWMouse", "InterfaceOptionsHelpPanelShowTutorials", "InterfaceOptionsHelpPanelEnhancedTooltips", "InterfaceOptionsHelpPanelShowLuaErrors", "InterfaceOptionsHelpPanelColorblindMode", "InterfaceOptionsHelpPanelMovePad", "InterfaceOptionsControlsPanelAutoOpenLootHistory", "InterfaceOptionsUnitFramePanelPartyPets", "InterfaceOptionsUnitFramePanelArenaEnemyFrames", "InterfaceOptionsUnitFramePanelArenaEnemyCastBar", "InterfaceOptionsUnitFramePanelArenaEnemyPets", "InterfaceOptionsUnitFramePanelFullSizeFocusFrame", "InterfaceOptionsBuffsPanelDispellableDebuffs", "InterfaceOptionsBuffsPanelCastableBuffs", "InterfaceOptionsBuffsPanelConsolidateBuffs", "InterfaceOptionsBuffsPanelShowAllEnemyDebuffs"}
+			local checkboxes = {"InterfaceOptionsControlsPanelStickyTargeting", "InterfaceOptionsControlsPanelAutoDismount", "InterfaceOptionsControlsPanelAutoClearAFK", "InterfaceOptionsControlsPanelBlockTrades", "InterfaceOptionsControlsPanelBlockGuildInvites", "InterfaceOptionsControlsPanelBlockChatChannelInvites", "InterfaceOptionsControlsPanelLootAtMouse", "InterfaceOptionsControlsPanelAutoLootCorpse", "InterfaceOptionsControlsPanelInteractOnLeftClick", "InterfaceOptionsControlsPanelReverseCleanUpBags", "InterfaceOptionsControlsPanelReverseNewLoot", "InterfaceOptionsCombatPanelAttackOnAssist", "InterfaceOptionsCombatPanelStopAutoAttack", "InterfaceOptionsNamesPanelUnitNameplatesNameplateClassColors", "InterfaceOptionsCombatPanelTargetOfTarget", "InterfaceOptionsCombatPanelShowSpellAlerts", "InterfaceOptionsCombatPanelReducedLagTolerance", "InterfaceOptionsCombatPanelActionButtonUseKeyDown", "InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait", "InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates", "InterfaceOptionsCombatPanelEnemyCastBarsOnOnlyTargetNameplates", "InterfaceOptionsCombatPanelEnemyCastBarsNameplateSpellNames", "InterfaceOptionsCombatPanelAutoSelfCast", "InterfaceOptionsCombatPanelLossOfControl", "InterfaceOptionsDisplayPanelShowCloak", "InterfaceOptionsDisplayPanelShowHelm", "InterfaceOptionsDisplayPanelShowAggroPercentage", "InterfaceOptionsDisplayPanelPlayAggroSounds", "InterfaceOptionsDisplayPanelShowSpellPointsAvg", "InterfaceOptionsDisplayPanelShowFreeBagSpace", "InterfaceOptionsDisplayPanelCinematicSubtitles", "InterfaceOptionsDisplayPanelRotateMinimap", "InterfaceOptionsDisplayPanelShowAccountAchievments", "InterfaceOptionsObjectivesPanelAutoQuestTracking", "InterfaceOptionsObjectivesPanelMapFade", "InterfaceOptionsSocialPanelProfanityFilter", "InterfaceOptionsSocialPanelSpamFilter", "InterfaceOptionsSocialPanelChatBubbles", "InterfaceOptionsSocialPanelPartyChat", "InterfaceOptionsSocialPanelChatHoverDelay", "InterfaceOptionsSocialPanelGuildMemberAlert", "InterfaceOptionsSocialPanelChatMouseScroll", "InterfaceOptionsSocialPanelWholeChatWindowClickable", "InterfaceOptionsActionBarsPanelBottomLeft", "InterfaceOptionsActionBarsPanelBottomRight", "InterfaceOptionsActionBarsPanelRight", "InterfaceOptionsActionBarsPanelRightTwo", "InterfaceOptionsActionBarsPanelLockActionBars", "InterfaceOptionsActionBarsPanelAlwaysShowActionBars", "InterfaceOptionsActionBarsPanelSecureAbilityToggle", "InterfaceOptionsActionBarsPanelCountdownCooldowns", "InterfaceOptionsNamesPanelMyName", "InterfaceOptionsNamesPanelMinus", "InterfaceOptionsNamesPanelFriendlyPlayerNames", "InterfaceOptionsNamesPanelFriendlyPets", "InterfaceOptionsNamesPanelFriendlyGuardians", "InterfaceOptionsNamesPanelFriendlyTotems", "InterfaceOptionsNamesPanelUnitNameplatesFriends", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyPets", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyGuardians", "InterfaceOptionsNamesPanelUnitNameplatesFriendlyTotems", "InterfaceOptionsNamesPanelGuilds", "InterfaceOptionsNamesPanelGuildTitles", "InterfaceOptionsNamesPanelTitles", "InterfaceOptionsNamesPanelNonCombatCreature", "InterfaceOptionsNamesPanelEnemyPlayerNames", "InterfaceOptionsNamesPanelEnemyPets", "InterfaceOptionsNamesPanelEnemyGuardians", "InterfaceOptionsNamesPanelEnemyTotems", "InterfaceOptionsNamesPanelUnitNameplatesEnemies", "InterfaceOptionsNamesPanelUnitNameplatesEnemyPets", "InterfaceOptionsNamesPanelUnitNameplatesEnemyGuardians", "InterfaceOptionsNamesPanelUnitNameplatesEnemyTotems", "InterfaceOptionsNamesPanelUnitNameplatesEnemyMinus", "InterfaceOptionsCombatTextPanelTargetDamage", "InterfaceOptionsCombatTextPanelPeriodicDamage", "InterfaceOptionsCombatTextPanelPetDamage", "InterfaceOptionsCombatTextPanelHealing", "InterfaceOptionsCombatTextPanelHealingAbsorbTarget", "InterfaceOptionsCombatTextPanelTargetEffects", "InterfaceOptionsCombatTextPanelOtherTargetEffects", "InterfaceOptionsCombatTextPanelEnableFCT", "InterfaceOptionsCombatTextPanelDodgeParryMiss", "InterfaceOptionsCombatTextPanelDamageReduction", "InterfaceOptionsCombatTextPanelRepChanges", "InterfaceOptionsCombatTextPanelReactiveAbilities", "InterfaceOptionsCombatTextPanelFriendlyHealerNames", "InterfaceOptionsCombatTextPanelCombatState", "InterfaceOptionsCombatTextPanelHealingAbsorbSelf", "InterfaceOptionsCombatTextPanelComboPoints", "InterfaceOptionsCombatTextPanelLowManaHealth", "InterfaceOptionsCombatTextPanelEnergyGains", "InterfaceOptionsCombatTextPanelPeriodicEnergyGains", "InterfaceOptionsCombatTextPanelHonorGains", "InterfaceOptionsCombatTextPanelAuras", "InterfaceOptionsCombatTextPanelPetBattle", "InterfaceOptionsStatusTextPanelPlayer", "InterfaceOptionsStatusTextPanelPet", "InterfaceOptionsStatusTextPanelParty", "InterfaceOptionsStatusTextPanelTarget", "InterfaceOptionsStatusTextPanelAlternateResource", "InterfaceOptionsStatusTextPanelXP", "InterfaceOptionsBattlenetPanelOnlineFriends", "InterfaceOptionsBattlenetPanelOfflineFriends", "InterfaceOptionsBattlenetPanelBroadcasts", "InterfaceOptionsBattlenetPanelFriendRequests", "InterfaceOptionsBattlenetPanelConversations", "InterfaceOptionsBattlenetPanelShowToastWindow", "InterfaceOptionsCameraPanelFollowTerrain", "InterfaceOptionsCameraPanelHeadBob", "InterfaceOptionsCameraPanelWaterCollision", "InterfaceOptionsCameraPanelSmartPivot", "InterfaceOptionsMousePanelInvertMouse", "InterfaceOptionsMousePanelClickToMove", "InterfaceOptionsMousePanelWoWMouse", "InterfaceOptionsHelpPanelShowTutorials", "InterfaceOptionsHelpPanelEnhancedTooltips", "InterfaceOptionsHelpPanelShowLuaErrors", "InterfaceOptionsHelpPanelColorblindMode", "InterfaceOptionsHelpPanelMovePad", "InterfaceOptionsControlsPanelAutoOpenLootHistory", "InterfaceOptionsUnitFramePanelPartyPets", "InterfaceOptionsUnitFramePanelArenaEnemyFrames", "InterfaceOptionsUnitFramePanelArenaEnemyCastBar", "InterfaceOptionsUnitFramePanelArenaEnemyPets", "InterfaceOptionsUnitFramePanelFullSizeFocusFrame", "InterfaceOptionsBuffsPanelDispellableDebuffs", "InterfaceOptionsBuffsPanelCastableBuffs", "InterfaceOptionsBuffsPanelConsolidateBuffs", "InterfaceOptionsBuffsPanelShowAllEnemyDebuffs"}
 			for i = 1, #checkboxes do
 				F.ReskinCheck(_G[checkboxes[i]])
 			end
 
-			local dropdowns = {"InterfaceOptionsControlsPanelAutoLootKeyDropDown", "InterfaceOptionsCombatPanelFocusCastKeyDropDown", "InterfaceOptionsCombatPanelSelfCastKeyDropDown", "InterfaceOptionsCombatPanelLossOfControlFullDropDown", "InterfaceOptionsCombatPanelLossOfControlSilenceDropDown", "InterfaceOptionsCombatPanelLossOfControlInterruptDropDown", "InterfaceOptionsCombatPanelLossOfControlDisarmDropDown", "InterfaceOptionsCombatPanelLossOfControlRootDropDown", "InterfaceOptionsSocialPanelChatStyle", "InterfaceOptionsSocialPanelTimestamps", "InterfaceOptionsSocialPanelWhisperMode", "InterfaceOptionsSocialPanelBnWhisperMode", "InterfaceOptionsSocialPanelConversationMode", "InterfaceOptionsActionBarsPanelPickupActionKeyDropDown", "InterfaceOptionsNamesPanelNPCNamesDropDown", "InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown", "InterfaceOptionsCombatTextPanelFCTDropDown", "InterfaceOptionsStatusTextPanelDisplayDropDown", "InterfaceOptionsCameraPanelStyleDropDown", "InterfaceOptionsMousePanelClickMoveStyleDropDown"}
+			local dropdowns = {"InterfaceOptionsControlsPanelAutoLootKeyDropDown", "InterfaceOptionsCombatPanelFocusCastKeyDropDown", "InterfaceOptionsCombatPanelSelfCastKeyDropDown", "InterfaceOptionsCombatPanelLossOfControlFullDropDown", "InterfaceOptionsCombatPanelLossOfControlSilenceDropDown", "InterfaceOptionsCombatPanelLossOfControlInterruptDropDown", "InterfaceOptionsCombatPanelLossOfControlDisarmDropDown", "InterfaceOptionsCombatPanelLossOfControlRootDropDown", "InterfaceOptionsDisplayPanelOutlineDropDown", "InterfaceOptionsObjectivesPanelQuestSorting", "InterfaceOptionsSocialPanelChatStyle", "InterfaceOptionsSocialPanelTimestamps", "InterfaceOptionsSocialPanelWhisperMode", "InterfaceOptionsSocialPanelBnWhisperMode", "InterfaceOptionsSocialPanelConversationMode", "InterfaceOptionsActionBarsPanelPickupActionKeyDropDown", "InterfaceOptionsNamesPanelNPCNamesDropDown", "InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown", "InterfaceOptionsCombatTextPanelTargetModeDropDown", "InterfaceOptionsCombatTextPanelFCTDropDown", "InterfaceOptionsStatusTextPanelDisplayDropDown", "InterfaceOptionsCameraPanelStyleDropDown", "InterfaceOptionsMousePanelClickMoveStyleDropDown"}
 			for i = 1, #dropdowns do
 				F.ReskinDropDown(_G[dropdowns[i]])
 			end
@@ -3040,7 +2910,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 			select(i, AddFriendNoteFrame:GetRegions()):Hide()
 			select(i, ReportPlayerNameDialogCommentFrame:GetRegions()):Hide()
 			select(i, ReportCheatingDialogCommentFrame:GetRegions()):Hide()
-			select(i, QueueStatusFrame:GetRegions()):Hide()
+
 		end
 		HelpFrameHeader:Hide()
 		ReadyCheckPortrait:SetAlpha(0)
@@ -3180,7 +3050,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		SpellBookPageText:SetTextColor(.8, .8, .8)
 		QuestProgressRequiredItemsText:SetTextColor(1, 1, 1)
 		QuestProgressRequiredItemsText:SetShadowColor(0, 0, 0)
-		QuestInfoRewardsHeader:SetShadowColor(0, 0, 0)
 		QuestProgressTitleText:SetShadowColor(0, 0, 0)
 		QuestInfoTitleHeader:SetShadowColor(0, 0, 0)
 		AvailableServicesText:SetTextColor(1, 1, 1)
@@ -3199,8 +3068,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		QuestInfoObjectivesHeader:SetTextColor(1, 1, 1)
 		QuestInfoObjectivesHeader.SetTextColor = F.dummy
 		QuestInfoObjectivesHeader:SetShadowColor(0, 0, 0)
-		QuestInfoRewardsHeader:SetTextColor(1, 1, 1)
-		QuestInfoRewardsHeader.SetTextColor = F.dummy
 		QuestInfoDescriptionText:SetTextColor(1, 1, 1)
 		QuestInfoDescriptionText.SetTextColor = F.dummy
 		QuestInfoObjectivesText:SetTextColor(1, 1, 1)
@@ -3209,14 +3076,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		QuestInfoGroupSize.SetTextColor = F.dummy
 		QuestInfoRewardText:SetTextColor(1, 1, 1)
 		QuestInfoRewardText.SetTextColor = F.dummy
-		QuestInfoItemChooseText:SetTextColor(1, 1, 1)
-		QuestInfoItemChooseText.SetTextColor = F.dummy
-		QuestInfoItemReceiveText:SetTextColor(1, 1, 1)
-		QuestInfoItemReceiveText.SetTextColor = F.dummy
-		QuestInfoSpellLearnText:SetTextColor(1, 1, 1)
-		QuestInfoSpellLearnText.SetTextColor = F.dummy
-		QuestInfoXPFrameReceiveText:SetTextColor(1, 1, 1)
-		QuestInfoXPFrameReceiveText.SetTextColor = F.dummy
 		QuestProgressTitleText:SetTextColor(1, 1, 1)
 		QuestProgressTitleText.SetTextColor = F.dummy
 		QuestProgressText:SetTextColor(1, 1, 1)
@@ -3236,34 +3095,28 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		CoreAbilityFont:SetTextColor(1, 1, 1)
 		SystemFont_Large:SetTextColor(1, 1, 1)
 
-		for i = 1, MAX_OBJECTIVES do
-			local objective = _G["QuestInfoObjective"..i]
-			objective:SetTextColor(1, 1, 1)
-			objective.SetTextColor = F.dummy
-		end
-
 		hooksecurefunc("UpdateProfessionButton", function(self)
 			self.spellString:SetTextColor(1, 1, 1);
 			self.subSpellString:SetTextColor(1, 1, 1)
 		end)
 
-		function PaperDollFrame_SetLevel()
+		hooksecurefunc("PaperDollFrame_SetLevel", function()
 			local primaryTalentTree = GetSpecialization()
 			local classDisplayName, class = UnitClass("player")
 			local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or C.classcolours[class]
 			local classColorString = format("ff%.2x%.2x%.2x", classColor.r * 255, classColor.g * 255, classColor.b * 255)
-			local specName
+			local specName, _
 
-			if (primaryTalentTree) then
-				_, specName = GetSpecializationInfo(primaryTalentTree);
+			if primaryTalentTree then
+				_, specName = GetSpecializationInfo(primaryTalentTree, nil, nil, nil, UnitSex("player"))
 			end
 
-			if (specName and specName ~= "") then
-				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), classColorString, specName, classDisplayName);
+			if specName and specName ~= "" then
+				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), classColorString, specName, classDisplayName)
 			else
-				CharacterLevelText:SetFormattedText(PLAYER_LEVEL_NO_SPEC, UnitLevel("player"), classColorString, classDisplayName);
+				CharacterLevelText:SetFormattedText(PLAYER_LEVEL_NO_SPEC, UnitLevel("player"), classColorString, classDisplayName)
 			end
-		end
+		end)
 
 		-- [[ Change positions ]]
 
@@ -3298,7 +3151,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- [[ Buttons ]]
 
-		local buttons = {"GameMenuButtonAddonManager", "GameMenuButtonQulightUI","WorldMapZoomOutButton", "btn_aLoadFrame","OpenAllButton2", "OpenAllButton", "btn2_aLoadFrame", "VideoOptionsFrameOkay", "VideoOptionsFrameCancel", "VideoOptionsFrameDefaults", "VideoOptionsFrameApply", "AudioOptionsFrameOkay", "AudioOptionsFrameCancel", "AudioOptionsFrameDefaults", "InterfaceOptionsFrameDefaults", "InterfaceOptionsFrameOkay", "InterfaceOptionsFrameCancel", "ChatConfigFrameOkayButton", "ChatConfigFrameDefaultButton", "DressUpFrameCancelButton", "DressUpFrameResetButton", "WhoFrameWhoButton", "WhoFrameAddFriendButton", "WhoFrameGroupInviteButton", "SendMailMailButton", "SendMailCancelButton", "OpenMailReplyButton", "OpenMailDeleteButton", "OpenMailCancelButton", "OpenMailReportSpamButton", "ChannelFrameNewButton", "RaidFrameRaidInfoButton", "RaidFrameConvertToRaidButton", "GearManagerDialogPopupOkay", "GearManagerDialogPopupCancel", "StackSplitOkayButton", "StackSplitCancelButton", "GameMenuButtonHelp", "GameMenuButtonOptions", "GameMenuButtonUIOptions", "GameMenuButtonKeybindings", "GameMenuButtonMacros", "GameMenuButtonLogout", "GameMenuButtonQuit", "GameMenuButtonContinue", "GameMenuButtonMacOptions", "LFDQueueFrameFindGroupButton", "LFRQueueFrameFindGroupButton", "LFRQueueFrameAcceptCommentButton", "AddFriendEntryFrameAcceptButton", "AddFriendEntryFrameCancelButton", "FriendsFriendsSendRequestButton", "FriendsFriendsCloseButton", "ColorPickerOkayButton", "ColorPickerCancelButton", "LFRBrowseFrameSendMessageButton", "LFRBrowseFrameInviteButton", "LFRBrowseFrameRefreshButton", "GuildInviteFrameJoinButton", "GuildInviteFrameDeclineButton", "FriendsFramePendingButton1AcceptButton", "FriendsFramePendingButton1DeclineButton", "RaidInfoExtendButton", "RaidInfoCancelButton", "PaperDollEquipmentManagerPaneEquipSet", "PaperDollEquipmentManagerPaneSaveSet", "HelpFrameAccountSecurityOpenTicket", "HelpFrameCharacterStuckStuck", "HelpFrameOpenTicketHelpTopIssues", "HelpFrameOpenTicketHelpOpenTicket", "ReadyCheckFrameYesButton", "ReadyCheckFrameNoButton", "HelpFrameTicketSubmit", "HelpFrameTicketCancel", "HelpFrameKnowledgebaseSearchButton", "GhostFrame", "HelpFrameGM_ResponseNeedMoreHelp", "HelpFrameGM_ResponseCancel", "GMChatOpenLog", "HelpFrameKnowledgebaseNavBarHomeButton", "AddFriendInfoFrameContinueButton", "LFDQueueFramePartyBackfillBackfillButton", "LFDQueueFramePartyBackfillNoBackfillButton", "ChannelFrameDaughterFrameOkayButton", "ChannelFrameDaughterFrameCancelButton", "PendingListInfoFrameContinueButton", "LFDQueueFrameNoLFDWhileLFRLeaveQueueButton", "InterfaceOptionsHelpPanelResetTutorials", "RaidFinderFrameFindRaidButton", "RaidFinderQueueFrameIneligibleFrameLeaveQueueButton", "SideDressUpModelResetButton", "RaidFinderQueueFramePartyBackfillBackfillButton", "RaidFinderQueueFramePartyBackfillNoBackfillButton", "ScrollOfResurrectionSelectionFrameAcceptButton", "ScrollOfResurrectionSelectionFrameCancelButton", "ScrollOfResurrectionFrameAcceptButton", "ScrollOfResurrectionFrameCancelButton", "HelpFrameReportBugSubmit", "HelpFrameSubmitSuggestionSubmit", "ReportPlayerNameDialogReportButton", "ReportPlayerNameDialogCancelButton", "ReportCheatingDialogReportButton", "ReportCheatingDialogCancelButton", "HelpFrameOpenTicketHelpItemRestoration", "GameMenuButtonStore"}
+		local buttons = {"VideoOptionsFrameOkay", "VideoOptionsFrameCancel", "VideoOptionsFrameDefaults", "VideoOptionsFrameApply", "AudioOptionsFrameOkay", "AudioOptionsFrameCancel", "AudioOptionsFrameDefaults", "InterfaceOptionsFrameDefaults", "InterfaceOptionsFrameOkay", "InterfaceOptionsFrameCancel", "ChatConfigFrameOkayButton", "ChatConfigFrameDefaultButton", "DressUpFrameCancelButton", "DressUpFrameResetButton", "WhoFrameWhoButton", "WhoFrameAddFriendButton", "WhoFrameGroupInviteButton", "SendMailMailButton", "SendMailCancelButton", "OpenMailReplyButton", "OpenMailDeleteButton", "OpenMailCancelButton", "OpenMailReportSpamButton", "ChannelFrameNewButton", "RaidFrameRaidInfoButton", "RaidFrameConvertToRaidButton", "GearManagerDialogPopupOkay", "GearManagerDialogPopupCancel", "StackSplitOkayButton", "StackSplitCancelButton", "GameMenuButtonHelp", "GameMenuButtonWhatsNew", "GameMenuButtonStore", "GameMenuButtonOptions", "GameMenuButtonUIOptions", "GameMenuButtonKeybindings", "GameMenuButtonMacros", "GameMenuButtonAddons", "GameMenuButtonLogout", "GameMenuButtonQuit", "GameMenuButtonContinue", "GameMenuButtonMacOptions", "LFDQueueFrameFindGroupButton", "AddFriendEntryFrameAcceptButton", "AddFriendEntryFrameCancelButton", "FriendsFriendsSendRequestButton", "FriendsFriendsCloseButton", "ColorPickerOkayButton", "ColorPickerCancelButton", "GuildInviteFrameJoinButton", "GuildInviteFrameDeclineButton", "FriendsFramePendingButton1AcceptButton", "FriendsFramePendingButton1DeclineButton", "RaidInfoExtendButton", "RaidInfoCancelButton", "PaperDollEquipmentManagerPaneEquipSet", "PaperDollEquipmentManagerPaneSaveSet", "HelpFrameAccountSecurityOpenTicket", "HelpFrameCharacterStuckStuck", "HelpFrameOpenTicketHelpTopIssues", "HelpFrameOpenTicketHelpOpenTicket", "ReadyCheckFrameYesButton", "ReadyCheckFrameNoButton", "HelpFrameTicketSubmit", "HelpFrameTicketCancel", "HelpFrameKnowledgebaseSearchButton", "GhostFrame", "HelpFrameGM_ResponseNeedMoreHelp", "HelpFrameGM_ResponseCancel", "GMChatOpenLog", "HelpFrameKnowledgebaseNavBarHomeButton", "AddFriendInfoFrameContinueButton", "LFDQueueFramePartyBackfillBackfillButton", "LFDQueueFramePartyBackfillNoBackfillButton", "ChannelFrameDaughterFrameOkayButton", "ChannelFrameDaughterFrameCancelButton", "PendingListInfoFrameContinueButton", "LFDQueueFrameNoLFDWhileLFRLeaveQueueButton", "InterfaceOptionsHelpPanelResetTutorials", "RaidFinderFrameFindRaidButton", "RaidFinderQueueFrameIneligibleFrameLeaveQueueButton", "SideDressUpModelResetButton", "RaidFinderQueueFramePartyBackfillBackfillButton", "RaidFinderQueueFramePartyBackfillNoBackfillButton", "ScrollOfResurrectionSelectionFrameAcceptButton", "ScrollOfResurrectionSelectionFrameCancelButton", "ScrollOfResurrectionFrameAcceptButton", "ScrollOfResurrectionFrameCancelButton", "HelpFrameReportBugSubmit", "HelpFrameSubmitSuggestionSubmit", "ReportPlayerNameDialogReportButton", "ReportPlayerNameDialogCancelButton", "ReportCheatingDialogReportButton", "ReportCheatingDialogCancelButton", "HelpFrameOpenTicketHelpItemRestoration"}
 		for i = 1, #buttons do
 		local reskinbutton = _G[buttons[i]]
 			if reskinbutton then
@@ -3537,7 +3390,6 @@ local function SkinCloseButton(f, SetPoint)
 end
 
 --World Map
-	
 CreateBackdrop(WorldMapFrame)
 F.CreateSD(WorldMapFrame)
 WorldMapDetailFrame.backdrop = CreateFrame("Frame", nil, WorldMapFrame)
@@ -3551,19 +3403,14 @@ SkinCloseButton(WorldMapFrameSizeDownButton)
 SkinCloseButton(WorldMapFrameSizeUpButton)
 									
 F.ReskinDropDown(WorldMapLevelDropDown)
-F.ReskinDropDown(WorldMapZoneMinimapDropDown)
-F.ReskinDropDown(WorldMapContinentDropDown)
-F.ReskinDropDown(WorldMapZoneDropDown)
-			
-F.Reskin(WorldMapZoomOutButton)
-WorldMapZoomOutButton:SetPoint("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
-WorldMapLevelUpButton:SetPoint("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2, 8)
-WorldMapLevelDownButton:SetPoint("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)
-			
-SkinCheckBox(WorldMapTrackQuest)
-
 --Mini
 local function SmallSkin()
+	if InCombatLockdown() then return; end
+
+		WorldMapFrameSizeUpButton:Show()
+		WorldMapFrameSizeDownButton:Hide()	
+end
+--[[
 	WorldMapLevelDropDown:ClearAllPoints()
 	WorldMapLevelDropDown:SetPoint("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -17, 27)
 
@@ -3571,20 +3418,31 @@ local function SmallSkin()
 	WorldMapFrame.backdrop:SetPoint("TOPLEFT", 2, 2)
 	WorldMapFrame.backdrop:SetPoint("BOTTOMRIGHT", 2, -2)
 end
+--]]
+
 			
 --Large
 local function LargeSkin()
 	if not InCombatLockdown() then
-		WorldMapFrame:SetParent(UIParent)
-		WorldMapFrame:EnableMouse(false)
+		WorldMapFrame:SetParent(E.UIParent)
 		WorldMapFrame:EnableKeyboard(false)
+		WorldMapFrame:SetScale(1)
+		WorldMapFrame:EnableMouse(true)
+	
+	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
 		SetUIPanelAttribute(WorldMapFrame, "area", "center");
-		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
 	end
-				
-	WorldMapFrame.backdrop:ClearAllPoints()
-	WorldMapFrame.backdrop:SetPoint("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -25, 70)
-	WorldMapFrame.backdrop:SetPoint("BOTTOMRIGHT", WorldMapDetailFrame, "BOTTOMRIGHT", 25, -30)    
+	
+	if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
+		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)	
+	end
+
+		WorldMapFrameSizeUpButton:Hide()
+		WorldMapFrameSizeDownButton:Show()	
+
+		WorldMapFrame:ClearAllPoints()
+		WorldMapFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 100)
+		WorldMapFrame:SetSize(1002, 668)
 end
 
 F.CreateBD(WorldMapFrame.backdrop)
@@ -3626,8 +3484,6 @@ local function FixSkin()
 		LargeSkin()
 	elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
 		SmallSkin()
-	elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
-		QuestSkin()
 	end
 	
 	if not InCombatLockdown() then
@@ -3651,9 +3507,8 @@ local function FixSkin()
 end
 			
 WorldMapFrame:HookScript("OnShow", FixSkin)
-hooksecurefunc("WorldMapFrame_SetFullMapView", LargeSkin)
-hooksecurefunc("WorldMapFrame_SetQuestMapView", QuestSkin)
-hooksecurefunc("WorldMap_ToggleSizeUp", FixSkin)
+hooksecurefunc("WorldMap_ToggleSizeUp", LargeSkin)
+hooksecurefunc("WorldMap_ToggleSizeDown", FixSkin)
 			
 WorldMapFrame:RegisterEvent("PLAYER_LOGIN")
 WorldMapFrame:HookScript("OnEvent", function(self, event)
@@ -3664,6 +3519,7 @@ WorldMapFrame:HookScript("OnEvent", function(self, event)
 		end
 	end
 end)
+
 			
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 local fontheight = 10*1.1
@@ -3679,28 +3535,7 @@ coords.MouseText:SetPoint("TOPRIGHT", coords.PlayerText, "BOTTOMRIGHT", 0, -5)
 local int = 0
 			
 WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
-				
-	if InCombatLockdown() then
-		WorldMapFrameSizeDownButton:Disable()
-		WorldMapFrameSizeUpButton:Disable()
-	else
-		WorldMapFrameSizeDownButton:Enable()
-		WorldMapFrameSizeUpButton:Enable()			
-	end
-				
-	if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
-		WorldMapFrameSizeUpButton:Hide()
-		WorldMapFrameSizeDownButton:Show()
-	elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
-		WorldMapFrameSizeUpButton:Show()
-		WorldMapFrameSizeDownButton:Hide()
-	elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
-		WorldMapFrameSizeUpButton:Hide()
-		WorldMapFrameSizeDownButton:Show()
-	end		
-
 	int = int + 1
-				
 	if int >= 3 then
 		local inInstance, _ = IsInInstance()
 		local x,y = GetPlayerMapPosition("player")
@@ -4271,20 +4106,4 @@ local function STHookFrame(fname)
 		SetTabCheckedState(fname, false)
 	end)
 end
-
-local function InitSocialTabs()
-	for i = 1, #hookAtLoad do
-		STHookFrame(hookAtLoad[i])
-	end
 end
-
-SocialTabs:SetScript("OnEvent", function(self, event, addon)
-	if event == "ADDON_LOADED" then
-		if addon == "ShestakUI" then
-			InitSocialTabs()
-		elseif addon == "Blizzard_PVPUI" then
-			STHookFrame("PVPUIFrame")
-		end
-	end
-end)
-SocialTabs:RegisterEvent("ADDON_LOADED")

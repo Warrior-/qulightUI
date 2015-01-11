@@ -10,7 +10,7 @@ RaidBuffs = {
 	},
 	MONK = {
 		{119611, "TOPRIGHT", {0.2, 0.7, 0.7}},				-- Renewing Mist
-		{132120, "BOTTOMLEFT", {0.4, 0.8, 0.2}},			-- Enveloping Mist
+		{132120, "TOPLEFT", {0.4, 0.8, 0.2}},			-- Enveloping Mist
 		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}},				-- Zen Sphere
 		{116849, "LEFT", {0.81, 0.85, 0.1}, true},			-- Life Cocoon
 	},
@@ -78,37 +78,42 @@ RaidDebuffs = {
 -----------------------------------------------------------------
 -- Siege of Orgrimmar
 	-- Immerseus
-	[SpellName(143436)] = 3,	-- Corrosive Blast (Tank switch)
+	[SpellName(143436)] = 2,	-- Corrosive Blast (Tank switch)
+	[SpellName(143459)] = 3,	-- Sha Residue
+	[SpellName(143579)] = 3,
 	-- The Fallen Protectors
 	[SpellName(143434)] = 4,	-- Shadow Word: Bane (Dispel)
 	[SpellName(143198)] = 3,	-- Garrote (DoT)
+	[SpellName(143962)] = 3,        -- ¿‰‰ÒÍËÈ Û‰‡
 	[SpellName(143842)] = 5,	-- Mark of Anguish
 	[SpellName(147383)] = 3,	-- Debilitation
+	[SpellName(143424)] = 3,        -- ŒÊÓ„ ÿ‡
 	-- Norushen
-	[SpellName(146124)] = 4,	-- Self Doubt (Tank switch)
-	[SpellName(144514)] = 3,	-- Lingering Corruption (Dispel)
+	[SpellName(146124)] = 3,	-- Self Doubt (Tank switch)
+	[SpellName(144514)] = 4,	-- Lingering Corruption (Dispel)
 	-- Sha of Pride
-	[SpellName(144358)] = 4,	-- Wounded Pride (Tank switch)
-	[SpellName(144351)] = 3,	-- Mark of Arrogance (Dispel)
+	[SpellName(144358)] = 3,	-- Wounded Pride (Tank switch)
+	[SpellName(144351)] = 4,	-- Mark of Arrogance (Dispel)
 	[SpellName(146594)] = 3,	-- Gift of the Titans
-	[SpellName(147207)] = 3,	-- Weakened Resolve (Heroic)
+	[SpellName(147207)] = 2,	-- Weakened Resolve (Heroic)
 	-- Galakras
 	[SpellName(147029)] = 3,	-- Flames of Galakrond (DoT)
-	[SpellName(146902)] = 3,	-- Poison-Tipped Blades (Poison stacks)
+	[SpellName(146765)] = 3,	-- Flame Arrows (DoT)
+	[SpellName(146902)] = 4,	-- Poison-Tipped Blades (Poison stacks)
 	-- Iron Juggernaut
 	[SpellName(144467)] = 4,	-- Ignite Armor (Tank stacks)
 	[SpellName(144459)] = 3,	-- Laser Burn (DoT)
 	-- Kor'kron Dark Shaman
-	[SpellName(144215)] = 3,	-- Froststorm Strike (Tank stacks)
+	[SpellName(144215)] = 2,	-- Froststorm Strike (Tank stacks)
 	[SpellName(144089)] = 3,	-- Toxic Mist (DoT)
 	[SpellName(144330)] = 3,	-- Iron Prison (Heroic)
 	-- General Nazgrim
 	[SpellName(143494)] = 3,	-- Sundering Blow (Tank stacks)
 	[SpellName(143638)] = 3,	-- Bonecracker (DoT)
-	[SpellName(143431)] = 3,	-- Magistrike (Dispel)
+	[SpellName(143431)] = 4,	-- Magistrike (Dispel)
 	[SpellName(143480)] = 3,	-- Assassin's Mark (Fixate)
 	-- Malkorok
-	[SpellName(142990)] = 4,	-- Fatal Strike (Tank stacks)
+	[SpellName(142990)] = 3,	-- Fatal Strike (Tank stacks)
 	[SpellName(142864)] = 3,	-- Ancient Barrier
 	[SpellName(142865)] = 3,	-- Strong Ancient Barrier
 	[SpellName(142913)] = 4,	-- Displaced Energy (Dispel)
@@ -121,20 +126,28 @@ RaidDebuffs = {
 	[SpellName(143773)] = 3,	-- Freezing Breath (Tank Stacks)
 	[SpellName(143800)] = 3,	-- Icy Blood (Random Stacks)
 	[SpellName(143767)] = 3,	-- Scorching Breath (Tank Stacks)
-	[SpellName(143791)] = 3,	-- Corrosive Blood (Dispel)
+	[SpellName(143791)] = 4,	-- Corrosive Blood (Dispel)
 	-- Siegecrafter Blackfuse
 	[SpellName(143385)] = 3,	-- Electrostatic Charge (Tank stacks)
 	[SpellName(144236)] = 3,	-- Pattern Recognition
 	-- Paragons of the Klaxxi
-	[SpellName(143974)] = 4,	-- Shield Bash (Tank stun)
-	[SpellName(142315)] = 4,	-- Caustic Blood (Tank stacks)
-	[SpellName(143701)] = 3,	-- Whirling (DoT)
+	[SpellName(142929)] = 3,	-- Tenderizing Strikes (Tank stacks)
+	[SpellName(143275)] = 3,	-- Hewn (Tank stacks)
+	[SpellName(143279)] = 3,	-- Genetic Alteration (Tank stacks)
+	[SpellName(143974)] = 3,	-- Shield Bash (Tank stun)
 	[SpellName(142948)] = 3,	-- Aim
 	-- Garrosh Hellscream
 	[SpellName(145183)] = 3,	-- Gripping Despair (Tank stacks)
 	[SpellName(145195)] = 3,	-- Empowered Gripping Despair (Tank stacks)
 	[SpellName(145065)] = 3,	-- Touch of Y'Shaarj
 	[SpellName(145171)] = 3,	-- Empowered Touch of Y'Shaarj
+
+ 	-- Other
+	[SpellName(87023)] = 4,		-- Cauterize
+ 	[SpellName(94794)] = 4,		-- Rocket Fuel Leak
+	[SpellName(116888)] = 4,	-- Shroud of Purgatory
+	[SpellName(121175)] = 2,	-- Orb of Power
+
 -- Throne of Thunder
 	-- Jin'rokh the Breaker
 	[SpellName(137162)] = 4,	-- Static Burst (Tank switch)
@@ -277,40 +290,29 @@ RaidDebuffs = {
 	[SpellName(116525)] = 3,	-- Focused Assault
 -- Sha of Anger
 	[SpellName(119626)] = 3,	-- Aggressive Behavior
--- Other
-	[SpellName(87023)] = 4,		-- Cauterize
-	[SpellName(94794)] = 4,		-- Rocket Fuel Leak
-	[SpellName(116888)] = 4,	-- Shroud of Purgatory
-	[SpellName(121175)] = 2,	-- Orb of Power
 -----------------------------------------------------------------
 -- PvP
 -----------------------------------------------------------------
 	-- Death Knight
 	[SpellName(115001)] = 3,	-- Remorseless Winter
 	[SpellName(108194)] = 3,	-- Asphyxiate
-	[SpellName(91797)] = 3,		-- Monstrous Blow (Mutated Ghoul)
-	[SpellName(91800)] = 3,		-- Gnaw (Ghoul)
 	[SpellName(47476)] = 3,		-- Strangulate
+	[SpellName(91800)] = 3,		-- Gnaw (Ghoul)
+	[SpellName(91797)] = 3,		-- Monstrous Blow (Mutated Ghoul)
 	-- Druid
 	[SpellName(33786)] = 3,		-- Cyclone
-	[SpellName(2637)] = 3,		-- Hibernate
 	[SpellName(339)] = 2,		-- Entangling Roots
 	[SpellName(78675)] = 3,		-- Solar Beam
 	-- Hunter
 	[SpellName(3355)] = 3,		-- Freezing Trap
-	[SpellName(19386)] = 3,		-- Wyvern Sting
 	[SpellName(117526)] = 3,	-- Binding Shot
-	[SpellName(24394)] = 3,		-- Intimidation
-	[SpellName(1513)] = 3,		-- Scare Beast
-	[SpellName(19503)] = 3,		-- Scatter Shot
-	[SpellName(34490)] = 3,		-- Silence Shot
+	[SpellName(19386)] = 3,		-- Wyvern Sting
 	-- Mage
-	[SpellName(61305)] = 3,		-- Polymorph
+	[SpellName(31661)] = 3,		-- Dragon's Breath
 	[SpellName(82691)] = 3,		-- Ring of Frost
 	[SpellName(44572)] = 3,		-- Deep Freeze
-	[SpellName(31661)] = 3,		-- Dragon's Breath
+	[SpellName(61305)] = 3,		-- Polymorph
 	[SpellName(102051)] = 3,	-- Frostjaw
-	[SpellName(55021)] = 3,		-- Improved Counterspell
 	[SpellName(122)] = 2,		-- Frost Nova
 	[SpellName(111340)] = 2,	-- Ice Ward
 	-- Monk
@@ -324,9 +326,9 @@ RaidDebuffs = {
 	-- Priest
 	[SpellName(605)] = 3,		-- Dominate Mind
 	[SpellName(8122)] = 3,		-- Psychic Scream
-	[SpellName(113792)] = 3,	-- Psychic Terror
 	[SpellName(64044)] = 3,		-- Psychic Horror
 	[SpellName(15487)] = 3,		-- Silence
+	--[SpellName(6788)] = 3,		-- Silence
 	-- Rogue
 	[SpellName(6770)] = 3,		-- Sap
 	[SpellName(2094)] = 3,		-- Blind
@@ -337,7 +339,6 @@ RaidDebuffs = {
 	[SpellName(63685)] = 2,		-- Freeze
 	-- Warlock
 	[SpellName(118699)] = 3,	-- Fear
-	[SpellName(104045)] = 3,	-- Sleep
 	[SpellName(6789)] = 3,		-- Mortal Coil
 	[SpellName(5484)] = 3,		-- Howl of Terror
 	[SpellName(6358)] = 3,		-- Seduction (Succubus)
@@ -346,7 +347,6 @@ RaidDebuffs = {
 	-- Warrior
 	[SpellName(46968)] = 3,		-- Shockwave
 	[SpellName(132169)] = 3,	-- Storm Bolt
-	[SpellName(20511)] = 3,		-- Intimidating Shout
 }
 
 RaidDebuffsReverse = {
@@ -495,7 +495,7 @@ CreateAuraWatchIcon = function(self, icon)
 	icon.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	icon.icon:SetDrawLayer("ARTWORK")
 	if icon.cd then
-		icon.cd:SetReverse()
+		icon.cd:SetReverse(true)
 	end
 	icon.overlay:SetTexture()
 end
@@ -635,7 +635,7 @@ local function Shared(self, unit)
 	if Qulight.raidframes.hp_value == true then
 		if not (self:GetAttribute("unitsuffix") == "pet" or (self:GetAttribute("unitsuffix") == "target" and unit ~= "tank")) then
 			self.Health.value = SetFontString(self.Health, Qulight["media"].pxfont, 10, Qulight["raidframes"].outline)
-			self.Health.value:SetPoint("BOTTOM", self.Health, "BOTTOM", 0, 4)
+			self.Health.value:SetPoint("BOTTOM", self.Health, "BOTTOM", 0, 7)
 			self.Health.value:SetTextColor(1, 1, 1)
 		end	
 		self.Health.PostUpdate = PostUpdateRaidHealth	
@@ -685,7 +685,7 @@ local function Shared(self, unit)
 		self.RaidIcon = self.Health:CreateTexture(nil, "OVERLAY")
 		self.RaidIcon:SetSize(15, 15)
 		self.RaidIcon:SetTexture("Interface\\AddOns\\QulightUI\\Root\\Media\\raidicons")	
-		self.RaidIcon:SetPoint("CENTER", self.Health, 0, -7)
+		self.RaidIcon:SetPoint("CENTER", self.Health, 0, 0)
 	end
 
 	-- LFD role icons
@@ -816,7 +816,7 @@ local function Shared(self, unit)
 			self.RaidDebuffs.cd = CreateFrame("Cooldown", nil, self.RaidDebuffs)
 			self.RaidDebuffs.cd:SetPoint("TOPLEFT", 2, -2)
 			self.RaidDebuffs.cd:SetPoint("BOTTOMRIGHT", -2, 2)
-			self.RaidDebuffs.cd:SetReverse()
+			self.RaidDebuffs.cd:SetReverse(true)
 			self.RaidDebuffs.cd.noOCC = true
 			self.RaidDebuffs.parent = CreateFrame("Frame", nil, self.RaidDebuffs)
 			self.RaidDebuffs.parent:SetFrameLevel(self.RaidDebuffs.cd:GetFrameLevel() + 1)
