@@ -23,6 +23,7 @@ assert(oUF, 'oUF Experience was unable to locate oUF install')
 
 local function GetXP(unit)
 	return UnitXP(unit), UnitXPMax(unit)
+	
 end
 
 local function SetTooltip(self)
@@ -32,6 +33,8 @@ local function SetTooltip(self)
 	local bars = 20
 
 	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -5)
+	GameTooltip:AddLine(COMBAT_XP_GAIN.." "..format(LEVEL_GAINED, UnitLevel("player")))
+	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(string.format(XP..": %d / %d (%d%% - %d/%d)", min, max, min/max * 100, bars - (bars * (max - min) / max), bars))
 	GameTooltip:AddLine(string.format(LEVEL_ABBR..": %d (%d%% - %d/%d)", max - min, (max - min) / max * 100, 1 + bars * (max - min) / max, bars))
 
@@ -43,16 +46,13 @@ local function SetTooltip(self)
 end
 
 local function Update(self, event, owner)
-	if self.unit ~= unit then return end
-
 	local experience = self.Experience
-
-	if UnitLevel(unit) == MAX_PLAYER_LEVEL or UnitHasVehicleUI("player") then
-		experience:Hide()
-	else
-		return experience:hide()
+	-- Conditional hiding
+	if(UnitLevel('player') == MAX_PLAYER_LEVEL) then
+		return experience:Hide()
 	end
 
+	local unit = self.unit
 	local min, max = GetXP(unit)
 	experience:SetMinMaxValues(0, max)
 	experience:SetValue(min)
@@ -64,9 +64,15 @@ local function Update(self, event, owner)
 
 	if(experience.Rested) then
 		local rested = GetXPExhaustion()
+		if(unit == 'player' and rested and rested > 0) then
 			experience.Rested:SetMinMaxValues(0, max)
 			experience.Rested:SetValue(math.min(min + rested, max))
 			experience.rested = rested
+		else
+			experience.Rested:SetMinMaxValues(0, 1)
+			experience.Rested:SetValue(0)
+			experience.rested = nil
+		end
 	end
 
 	if(experience.PostUpdate) then
@@ -81,10 +87,10 @@ local function Enable(self, unit)
 
 		self:RegisterEvent('PLAYER_XP_UPDATE', Update)
 		self:RegisterEvent('PLAYER_LEVEL_UP', Update)
+		self:RegisterEvent('UNIT_PET', Update)
 
 		if(experience.Rested) then
 			self:RegisterEvent('UPDATE_EXHAUSTION', Update)
-			experience.Rested:SetFrameLevel(1)
 		end
 
 		if(not experience.noTooltip) then
@@ -111,6 +117,10 @@ local function Disable(self)
 
 		if(experience.Rested) then
 			self:UnregisterEvent('UPDATE_EXHAUSTION', Update)
+		end
+
+		if(hunterPlayer) then
+			self:UnregisterEvent('UNIT_PET_EXPERIENCE', Update)
 		end
 	end
 end

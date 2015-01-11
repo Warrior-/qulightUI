@@ -1874,6 +1874,317 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.CreateBD(EquipmentFlyoutFrame.NavigationFrame)
 		F.ReskinArrow(EquipmentFlyoutFrame.NavigationFrame.PrevButton, "left")
 		F.ReskinArrow(EquipmentFlyoutFrame.NavigationFrame.NextButton, "right")
+	
+	-- QuestMapFrame
+
+local QuestMapFrame = QuestMapFrame
+
+	-- [[ Quest scroll frame ]]
+
+	local QuestScrollFrame = QuestScrollFrame
+	local StoryHeader = QuestScrollFrame.Contents.StoryHeader
+
+	QuestMapFrame.VerticalSeparator:Hide()
+	QuestScrollFrame.Background:Hide()
+
+	F.CreateBD(QuestScrollFrame.StoryTooltip)
+	F.Reskin(QuestScrollFrame.ViewAll)
+	F.ReskinScroll(QuestScrollFrame.ScrollBar)
+
+	-- Story header
+
+	StoryHeader.Background:Hide()
+	StoryHeader.Shadow:Hide()
+
+	do
+		local bg = F.CreateBDFrame(StoryHeader, .25)
+		bg:SetPoint("TOPLEFT", 0, -1)
+		bg:SetPoint("BOTTOMRIGHT", -4, 0)
+
+		local hl = StoryHeader.HighlightTexture
+
+		hl:SetTexture(C.media.backdrop)
+		hl:SetVertexColor(r, g, b, .2)
+		hl:SetPoint("TOPLEFT", 1, -2)
+		hl:SetPoint("BOTTOMRIGHT", -5, 1)
+		hl:SetDrawLayer("BACKGROUND")
+		hl:Hide()
+
+		StoryHeader:HookScript("OnEnter", function()
+			hl:Show()
+		end)
+
+		StoryHeader:HookScript("OnLeave", function()
+			hl:Hide()
+		end)
+	end
+
+	-- [[ Quest details ]]
+
+	local DetailsFrame = QuestMapFrame.DetailsFrame
+	local RewardsFrame = DetailsFrame.RewardsFrame
+	local CompleteQuestFrame = DetailsFrame.CompleteQuestFrame
+
+	DetailsFrame:GetRegions():Hide()
+	select(2, DetailsFrame:GetRegions()):Hide()
+	select(3, DetailsFrame:GetRegions()):Hide()
+	select(6, DetailsFrame.ShareButton:GetRegions()):Hide()
+	select(7, DetailsFrame.ShareButton:GetRegions()):Hide()
+
+	F.Reskin(DetailsFrame.BackButton)
+	F.Reskin(DetailsFrame.AbandonButton)
+	F.Reskin(DetailsFrame.ShareButton)
+	F.Reskin(DetailsFrame.TrackButton)
+
+	DetailsFrame.AbandonButton:ClearAllPoints()
+	DetailsFrame.AbandonButton:SetPoint("BOTTOMLEFT", DetailsFrame, -1, 0)
+	DetailsFrame.AbandonButton:SetWidth(95)
+
+	DetailsFrame.ShareButton:ClearAllPoints()
+	DetailsFrame.ShareButton:SetPoint("LEFT", DetailsFrame.AbandonButton, "RIGHT", 1, 0)
+	DetailsFrame.ShareButton:SetWidth(94)
+
+	DetailsFrame.TrackButton:ClearAllPoints()
+	DetailsFrame.TrackButton:SetPoint("LEFT", DetailsFrame.ShareButton, "RIGHT", 1, 0)
+	DetailsFrame.TrackButton:SetWidth(96)
+
+	-- Rewards frame
+
+	RewardsFrame.Background:Hide()
+	select(2, RewardsFrame:GetRegions()):Hide()
+
+	-- Scroll frame
+
+	F.ReskinScroll(DetailsFrame.ScrollFrame.ScrollBar)
+
+	-- Complete quest frame
+	CompleteQuestFrame:GetRegions():Hide()
+	select(2, CompleteQuestFrame:GetRegions()):Hide()
+	select(6, CompleteQuestFrame.CompleteButton:GetRegions()):Hide()
+	select(7, CompleteQuestFrame.CompleteButton:GetRegions()):Hide()
+
+	F.Reskin(CompleteQuestFrame.CompleteButton)
+
+	-- [[ Quest log popup detail frame ]]
+
+	local QuestLogPopupDetailFrame = QuestLogPopupDetailFrame
+
+	select(18, QuestLogPopupDetailFrame:GetRegions()):Hide()
+	QuestLogPopupDetailFramePageBg:Hide()
+	QuestLogPopupDetailFrameScrollFrameTop:Hide()
+	QuestLogPopupDetailFrameScrollFrameBottom:Hide()
+	QuestLogPopupDetailFrameScrollFrameMiddle:Hide()
+
+	F.ReskinPortraitFrame(QuestLogPopupDetailFrame, true)
+	F.ReskinScroll(QuestLogPopupDetailFrameScrollFrameScrollBar)
+	F.Reskin(QuestLogPopupDetailFrame.AbandonButton)
+	F.Reskin(QuestLogPopupDetailFrame.TrackButton)
+	F.Reskin(QuestLogPopupDetailFrame.ShareButton)
+
+	-- Show map button
+
+	local ShowMapButton = QuestLogPopupDetailFrame.ShowMapButton
+
+	ShowMapButton.Texture:Hide()
+	ShowMapButton.Highlight:SetTexture("")
+	ShowMapButton.Highlight:SetTexture("")
+
+	ShowMapButton:SetSize(ShowMapButton.Text:GetStringWidth() + 14, 22)
+	ShowMapButton.Text:ClearAllPoints()
+	ShowMapButton.Text:SetPoint("CENTER", 1, 0)
+
+	ShowMapButton:ClearAllPoints()
+	ShowMapButton:SetPoint("TOPRIGHT", QuestLogPopupDetailFrame, -30, -25)
+
+	F.Reskin(ShowMapButton)
+
+	ShowMapButton:HookScript("OnEnter", function(self)
+		self.Text:SetTextColor(GameFontHighlight:GetTextColor())
+	end)
+
+	ShowMapButton:HookScript("OnLeave", function(self)
+		self.Text:SetTextColor(GameFontNormal:GetTextColor())
+	end)
+
+	-- Bottom buttons
+
+	QuestLogPopupDetailFrame.ShareButton:ClearAllPoints()
+	QuestLogPopupDetailFrame.ShareButton:SetPoint("LEFT", QuestLogPopupDetailFrame.AbandonButton, "RIGHT", 1, 0)
+	QuestLogPopupDetailFrame.ShareButton:SetPoint("RIGHT", QuestLogPopupDetailFrame.TrackButton, "LEFT", -1, 0)
+
+	-- [[ Item reward highlight ]]
+
+	QuestInfoItemHighlight:GetRegions():Hide()
+
+	local function clearHighlight()
+		for _, button in pairs(QuestInfoRewardsFrame.RewardButtons) do
+			button.bg:SetBackdropColor(0, 0, 0, .25)
+		end
+	end
+
+	local function setHighlight(self)
+		clearHighlight()
+
+		local _, point = self:GetPoint()
+		if point then
+			point.bg:SetBackdropColor(r, g, b, .2)
+		end
+	end
+
+	hooksecurefunc(QuestInfoItemHighlight, "SetPoint", setHighlight)
+	QuestInfoItemHighlight:HookScript("OnShow", setHighlight)
+	QuestInfoItemHighlight:HookScript("OnHide", clearHighlight)
+
+	-- [[ Shared ]]
+
+	local function restyleSpellButton(bu)
+		local name = bu:GetName()
+		local icon = bu.Icon
+
+		_G[name.."NameFrame"]:Hide()
+		_G[name.."SpellBorder"]:Hide()
+
+		icon:SetPoint("TOPLEFT", 3, -2)
+		icon:SetDrawLayer("ARTWORK")
+		icon:SetTexCoord(.08, .92, .08, .92)
+		F.CreateBG(icon)
+
+		local bg = CreateFrame("Frame", nil, bu)
+		bg:SetPoint("TOPLEFT", 2, -1)
+		bg:SetPoint("BOTTOMRIGHT", 0, 14)
+		bg:SetFrameLevel(0)
+		F.CreateBD(bg, .25)
+	end
+
+	-- [[ Objectives ]]
+
+	restyleSpellButton(QuestInfoSpellObjectiveFrame)
+
+	local function colourObjectivesText()
+		if not QuestInfoFrame.questLog then return end
+
+		local objectivesTable = QuestInfoObjectivesFrame.Objectives
+		local numVisibleObjectives = 0
+
+		for i = 1, GetNumQuestLeaderBoards() do
+			local text, type, finished = GetQuestLogLeaderBoard(i)
+
+			if (type ~= "spell" and type ~= "log" and numVisibleObjectives < MAX_OBJECTIVES) then
+				numVisibleObjectives = numVisibleObjectives + 1
+				local objective = objectivesTable[numVisibleObjectives]
+
+				if finished then
+					objective:SetTextColor(.9, .9, .9)
+				else
+					objective:SetTextColor(1, 1, 1)
+				end
+			end
+		end
+	end
+
+	hooksecurefunc("QuestMapFrame_ShowQuestDetails", colourObjectivesText)
+	hooksecurefunc("QuestInfo_Display", colourObjectivesText)
+
+	-- [[ Quest rewards ]]
+
+	restyleSpellButton(QuestInfoRewardSpell)
+
+	local function restyleRewardButton(bu, isMapQuestInfo)
+		bu.NameFrame:Hide()
+
+		bu.Icon:SetTexCoord(.08, .92, .08, .92)
+		bu.Icon:SetDrawLayer("BACKGROUND", 1)
+		F.CreateBG(bu.Icon, 1)
+
+		local bg = CreateFrame("Frame", nil, bu)
+		bg:SetPoint("TOPLEFT", bu, 1, 1)
+
+		if isMapQuestInfo then
+			bg:SetPoint("BOTTOMRIGHT", bu, -3, 0)
+			bu.Icon:SetSize(29, 29)
+		else
+			bg:SetPoint("BOTTOMRIGHT", bu, -3, 1)
+		end
+
+		bg:SetFrameLevel(0)
+		F.CreateBD(bg, .25)
+
+		bu.bg = bg
+	end
+
+	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
+		local bu = rewardsFrame.RewardButtons[index]
+
+		if not bu.restyled then
+			restyleRewardButton(bu, rewardsFrame == MapQuestInfoRewardsFrame)
+
+			bu.restyled = true
+		end
+	end)
+
+	restyleRewardButton(QuestInfoSkillPointFrame)
+	restyleRewardButton(MapQuestInfoRewardsFrame.SpellFrame, true)
+	restyleRewardButton(MapQuestInfoRewardsFrame.XPFrame, true)
+	restyleRewardButton(MapQuestInfoRewardsFrame.MoneyFrame, true)
+	restyleRewardButton(MapQuestInfoRewardsFrame.SkillPointFrame, true)
+
+	MapQuestInfoRewardsFrame.XPFrame.Name:SetShadowOffset(0, 0)
+
+	-- [[ Change text colours ]]
+
+	hooksecurefunc(QuestInfoRequiredMoneyText, "SetTextColor", function(self, r, g, b)
+		if r == 0 then
+			self:SetTextColor(.8, .8, .8)
+		elseif r == .2 then
+			self:SetTextColor(1, 1, 1)
+		end
+	end)
+
+	QuestInfoTitleHeader:SetTextColor(1, 1, 1)
+	QuestInfoTitleHeader.SetTextColor = F.dummy
+	QuestInfoTitleHeader:SetShadowColor(0, 0, 0)
+
+	QuestInfoDescriptionHeader:SetTextColor(1, 1, 1)
+	QuestInfoDescriptionHeader.SetTextColor = F.dummy
+	QuestInfoDescriptionHeader:SetShadowColor(0, 0, 0)
+
+	QuestInfoObjectivesHeader:SetTextColor(1, 1, 1)
+	QuestInfoObjectivesHeader.SetTextColor = F.dummy
+	QuestInfoObjectivesHeader:SetShadowColor(0, 0, 0)
+
+	QuestInfoRewardsFrame.Header:SetTextColor(1, 1, 1)
+	QuestInfoRewardsFrame.Header.SetTextColor = F.dummy
+	QuestInfoRewardsFrame.Header:SetShadowColor(0, 0, 0)
+
+	QuestInfoDescriptionText:SetTextColor(1, 1, 1)
+	QuestInfoDescriptionText.SetTextColor = F.dummy
+
+	QuestInfoObjectivesText:SetTextColor(1, 1, 1)
+	QuestInfoObjectivesText.SetTextColor = F.dummy
+
+	QuestInfoGroupSize:SetTextColor(1, 1, 1)
+	QuestInfoGroupSize.SetTextColor = F.dummy
+
+	QuestInfoRewardText:SetTextColor(1, 1, 1)
+	QuestInfoRewardText.SetTextColor = F.dummy
+
+	QuestInfoSpellObjectiveLearnLabel:SetTextColor(1, 1, 1)
+	QuestInfoSpellObjectiveLearnLabel.SetTextColor = F.dummy
+
+	QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
+	QuestInfoRewardsFrame.ItemChooseText.SetTextColor = F.dummy
+
+	QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
+	QuestInfoRewardsFrame.ItemReceiveText.SetTextColor = F.dummy
+
+	QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
+	QuestInfoRewardsFrame.SpellLearnText.SetTextColor = F.dummy
+
+	QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(1, 1, 1)
+	QuestInfoRewardsFrame.PlayerTitleText.SetTextColor = F.dummy
+
+	QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(1, 1, 1)
+	QuestInfoRewardsFrame.XPFrame.ReceiveText.SetTextColor = F.dummy
 
 		-- Quest Frame
 
@@ -2486,6 +2797,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.Reskin(GuildRegistrarFrameGoodbyeButton)
 		F.Reskin(GuildRegistrarFramePurchaseButton)
 		F.Reskin(GuildRegistrarFrameCancelButton)
+		
 
 		-- Item text
 
@@ -3890,9 +4202,130 @@ local function SkinCloseButton(f, SetPoint)
 	end
 end
 
+F.ReskinCheck(ObjectiveTrackerFrame.HeaderMenu.MinimizeButton)
+-----------------------------------------------------------------------------------------------------------------------------------------
+local WorldMapFrame = WorldMapFrame
+	local BorderFrame = WorldMapFrame.BorderFrame
+
+	WorldMapFrame.UIElementsFrame.CloseQuestPanelButton:GetRegions():Hide()
+	WorldMapFrame.UIElementsFrame.OpenQuestPanelButton:GetRegions():Hide()
+	BorderFrame.Bg:Hide()
+	select(2, BorderFrame:GetRegions()):Hide()
+	BorderFrame.portrait:SetTexture("")
+	BorderFrame.portraitFrame:SetTexture("")
+	for i = 5, 7 do
+		select(i, BorderFrame:GetRegions()):SetAlpha(0)
+	end
+	BorderFrame.TopTileStreaks:SetTexture("")
+	for i = 10, 14 do
+		select(i, BorderFrame:GetRegions()):Hide()
+	end
+	BorderFrame.ButtonFrameEdge:Hide()
+	BorderFrame.InsetBorderTop:Hide()
+	BorderFrame.Inset.Bg:Hide()
+	BorderFrame.Inset:DisableDrawLayer("BORDER")
+
+	F.SetBD(BorderFrame, 1, 0, -3, 2)
+	F.ReskinClose(BorderFrame.CloseButton)
+	F.ReskinArrow(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, "left")
+	F.ReskinArrow(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton, "right")
+	F.ReskinDropDown(WorldMapLevelDropDown)
+
+	BorderFrame.CloseButton:SetPoint("TOPRIGHT", -9, -6)
+
+	WorldMapLevelDropDown:SetPoint("TOPLEFT", -14, 2)
+
+	-- [[ Size up / down buttons ]]
+
+	for _, buttonName in pairs{"WorldMapFrameSizeUpButton", "WorldMapFrameSizeDownButton"} do
+		local button = _G[buttonName]
+
+		button:SetSize(17, 17)
+		button:ClearAllPoints()
+		button:SetPoint("RIGHT", BorderFrame.CloseButton, "LEFT", -1, 0)
+
+		F.Reskin(button)
+
+		local function colourArrow(f)
+			if f:IsEnabled() then
+				for _, pixel in pairs(f.pixels) do
+					pixel:SetVertexColor(r, g, b)
+				end
+			end
+		end
+
+		local function clearArrow(f)
+			for _, pixel in pairs(f.pixels) do
+				pixel:SetVertexColor(1, 1, 1)
+			end
+		end
+
+		button.pixels = {}
+
+		for i = 1, 8 do
+			local tex = button:CreateTexture()
+			tex:SetTexture(1, 1, 1)
+			tex:SetSize(1, 1)
+			tex:SetPoint("BOTTOMLEFT", 3+i, 3+i)
+			tinsert(button.pixels, tex)
+		end
+
+		local hline = button:CreateTexture()
+		hline:SetTexture(1, 1, 1)
+		hline:SetSize(7, 1)
+		tinsert(button.pixels, hline)
+
+		local vline = button:CreateTexture()
+		vline:SetTexture(1, 1, 1)
+		vline:SetSize(1, 7)
+		tinsert(button.pixels, vline)
+
+		if buttonName == "WorldMapFrameSizeUpButton" then
+			hline:SetPoint("TOP", 1, -4)
+			vline:SetPoint("RIGHT", -4, 1)
+		else
+			hline:SetPoint("BOTTOM", 1, 4)
+			vline:SetPoint("LEFT", 4, 1)
+		end
+
+		button:SetScript("OnEnter", colourArrow)
+		button:SetScript("OnLeave", clearArrow)
+	end
+
+	-- [[ Misc ]]
+
+	WorldMapFrameTutorialButton.Ring:Hide()
+	WorldMapFrameTutorialButton:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", -12, 12)
+
+	do
+		local topLine = WorldMapFrame.UIElementsFrame:CreateTexture()
+		topLine:SetTexture(0, 0, 0)
+		topLine:SetHeight(1)
+		topLine:SetPoint("TOPLEFT", 0, 1)
+		topLine:SetPoint("TOPRIGHT", 1, 1)
+
+		local rightLine = WorldMapFrame.UIElementsFrame:CreateTexture()
+		rightLine:SetTexture(0, 0, 0)
+		rightLine:SetWidth(1)
+		rightLine:SetPoint("BOTTOMRIGHT", 1, 0)
+		rightLine:SetPoint("TOPRIGHT", 1, 1)
+	end
+
+	-- [[ Tracking options ]]
+
+	local TrackingOptions = WorldMapFrame.UIElementsFrame.TrackingOptionsButton
+
+	TrackingOptions:GetRegions():Hide()
+	TrackingOptions.Background:Hide()
+	TrackingOptions.IconOverlay:SetTexture("")
+	TrackingOptions.Button.Border:Hide()
 
 
---World Map
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+-- World Map
 CreateBackdrop(WorldMapFrame)
 F.CreateSD(WorldMapFrame)
 WorldMapDetailFrame.backdrop = CreateFrame("Frame", nil, WorldMapFrame)
@@ -3926,6 +4359,7 @@ end
 
 			
 --Large
+
 local function LargeSkin()
 	if not InCombatLockdown() then
 		WorldMapFrame:SetParent(E.UIParent)

@@ -1,7 +1,7 @@
 if not Qulight["misk"].Reminder == true then return end
 
 ReminderBuffs = {
-		DEATHKNIGHT = {
+				DEATHKNIGHT = {
 			[1] = {	-- Horn of Winter group
 				["spells"] = {
 					57330,	-- Horn of Winter
@@ -14,7 +14,7 @@ ReminderBuffs = {
 			},
 			[2] = {	-- Blood Presence group
 				["spells"] = {
-					48263,	-- Blood Presence
+
 				},
 				["role"] = "Tank",
 				["instance"] = true,
@@ -72,12 +72,11 @@ ReminderBuffs = {
 		PALADIN = {
 			[1] = {	-- Righteous Fury group
 				["spells"] = {
-					25780,	-- Righteous Fury
+				
 				},
 				["role"] = "Tank",
 				["instance"] = true,
 				["reversecheck"] = true,
-				["negate_reversecheck"] = 1,	-- Holy paladins use RF sometimes
 			},
 			[2] = {	-- Blessing of Kings group
 				["spells"] = {
@@ -88,9 +87,9 @@ ReminderBuffs = {
 					115921,	-- Legacy of the Emperor
 					116781,	-- Legacy of the White Tiger
 					90363,	-- Embrace of the Shale Spider
+					19740,	-- Blessing of Might
 				},
 				["personal"] = {
-					19740,	-- Blessing of Might
 				},
 				["combat"] = true,
 				["instance"] = true,
@@ -105,9 +104,9 @@ ReminderBuffs = {
 					93435,	-- Roar of Courage
 					128997,	-- Spirit Beast Blessing
 					155522,	-- Power of the Grave
+					20217,	-- Blessing of Kings
 				},
 				["personal"] = {
-					20217,	-- Blessing of Kings
 				},
 				["combat"] = true,
 				["instance"] = true,
@@ -210,7 +209,7 @@ if not tab then return end
 
 local function OnEvent(self, event, arg1, arg2)
 	local group = tab[self.id]
-	if not group.spells then return end
+	if not group.spells and not group.weapon then return end
 	if not GetActiveSpecGroup() then return end
 	if event == "UNIT_AURA" and arg1 ~= "player" then return end
 	if group.level and UnitLevel("player") < group.level then return end
@@ -226,23 +225,57 @@ local function OnEvent(self, event, arg1, arg2)
 		end
 	end
 
-	for _, buff in pairs(group.spells) do
-		local name, _, icon = GetSpellInfo(buff)
-		local usable, nomana = IsUsableSpell(name)
-		if usable or nomana or group.level then
-			self.icon:SetTexture(select(3, GetSpellInfo(buff)))
-			self.hasTexture = true
-			break
+	local hasOffhandWeapon = OffhandHasWeapon()
+	local hasMainHandEnchant, _, _, hasOffHandEnchant, _, _ = GetWeaponEnchantInfo()
+	if not group.weapon then
+		for _, buff in pairs(group.spells) do
+			local name = GetSpellInfo(buff)
+			local usable, nomana = IsUsableSpell(name)
+			if (usable or nomana) then
+				self.icon:SetTexture(select(3, GetSpellInfo(buff)))
+				self.hasTexture = true
+				break
+			end
 		end
-	end
 
-	if not self.icon:GetTexture() and event == "PLAYER_LOGIN" then
+		if (not self.hasTexture and event == "PLAYER_LOGIN") then
+			self:UnregisterAllEvents()
+			self:RegisterEvent("LEARNED_SPELL_IN_TAB")
+			return
+		elseif (self.hasTexture and event == "LEARNED_SPELL_IN_TAB") then
+			self:UnregisterAllEvents()
+			self:RegisterEvent("UNIT_AURA")
+			if group.combat and group.combat == true then
+				self:RegisterEvent("PLAYER_REGEN_ENABLED")
+				self:RegisterEvent("PLAYER_REGEN_DISABLED")
+			end
+
+			if (group.instance and group.instance == true) or (group.pvp and group.pvp == true) then
+				self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+			end
+
+			if group.role and group.role == true then
+				self:RegisterEvent("UNIT_INVENTORY_CHANGED")
+			end
+		end
+	else
 		self:UnregisterAllEvents()
-		self:RegisterEvent("LEARNED_SPELL_IN_TAB")
-		return
-	elseif self.icon:GetTexture() and event == "LEARNED_SPELL_IN_TAB" then
-		self:UnregisterAllEvents()
-		self:RegisterEvent("UNIT_AURA")
+		self:RegisterEvent("UNIT_INVENTORY_CHANGED")
+
+		if hasOffhandWeapon == nil then
+			if hasMainHandEnchant == nil then
+				self.icon:SetTexture(GetInventoryItemTexture("player", 16))
+			end
+		else
+			if hasOffHandEnchant == nil then
+				self.icon:SetTexture(GetInventoryItemTexture("player", 17))
+			end
+
+			if hasMainHandEnchant == nil then
+				self.icon:SetTexture(GetInventoryItemTexture("player", 16))
+			end
+		end
+
 		if group.combat and group.combat == true then
 			self:RegisterEvent("PLAYER_REGEN_ENABLED")
 			self:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -293,39 +326,69 @@ local function OnEvent(self, event, arg1, arg2)
 	-- Prevent user error
 	if reversecheck ~= nil and (role == nil and spec == nil) then reversecheck = nil end
 
-	if ((combat and UnitAffectingCombat("player")) or (instance and difficultyID ~= 0) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and
-	specpass == true and rolepass == true and not UnitInVehicle("player") then
-		for _, buff in pairs(group.spells) do
-			local name = GetSpellInfo(buff)
-			local _, _, icon, _, _, _, _, unitCaster = UnitBuff("player", name)
-			if personal and personal == true then
-				if name and icon and unitCaster == "player" then	
-					self:Hide()
+	if not group.weapon then
+		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and
+		specpass == true and rolepass == true and not (UnitInVehicle("player") and self.hasTexture) then
+			for _, buff in pairs(group.spells) do
+				local name = GetSpellInfo(buff)
+				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
+				if personal and personal == true then
+					if (name and icon and unitCaster == "player") then
+						self:Hide()
+						return
+					end
+				else
+					if (name and icon) then
+						self:Hide()
+						return
+					end
+				end
+			end
+			self:Show()
+			if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
+		elseif ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid"))) and
+		reversecheck == true and not (UnitInVehicle("player") and self.hasTexture) then
+			if negate_reversecheck and negate_reversecheck == GetSpecialization() then self:Hide() return end
+			for _, buff in pairs(group.spells) do
+				local name = GetSpellInfo(buff)
+				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
+				if (name and icon and unitCaster == "player") then
+					self:Show()
+					if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
+					return
+				end
+			end
+		else
+			self:Hide()
+		end
+	else
+		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and
+		specpass == true and rolepass == true and not (UnitInVehicle("player") and self.hasTexture) then
+			if hasOffhandWeapon == nil then
+				if hasMainHandEnchant == nil then
+					self:Show()
+					self.icon:SetTexture(GetInventoryItemTexture("player", 16))
+					if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
 					return
 				end
 			else
-				if name and icon then
-					self:Hide()
+				if hasMainHandEnchant == nil or hasOffHandEnchant == nil then
+					self:Show()
+					if hasMainHandEnchant == nil then
+						self.icon:SetTexture(GetInventoryItemTexture("player", 16))
+					else
+						self.icon:SetTexture(GetInventoryItemTexture("player", 17))
+					end
+					if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
 					return
 				end
 			end
+			self:Hide()
+			return
+		else
+			self:Hide()
+			return
 		end
-		self:Show()
-		if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
-	elseif ((combat and UnitAffectingCombat("player")) or (instance and difficultyID ~= 0)) and
-	reversecheck == true and not UnitInVehicle("player") then
-		if negate_reversecheck and negate_reversecheck == GetSpecialization() then self:Hide() return end
-		for _, buff in pairs(group.spells) do
-			local name = GetSpellInfo(buff)
-			local _, _, icon, _, _, _, _, unitCaster = UnitBuff("player", name)
-			if name and icon and unitCaster == "player" then
-				self:Show()
-				if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
-				return
-			end
-		end
-	else
-		self:Hide()
 	end
 end
 

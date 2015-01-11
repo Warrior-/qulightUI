@@ -104,11 +104,21 @@ QuPetBarUpdate = function(self, event)
 
 		if isActive and name ~= "PET_ACTION_FOLLOW" then
 			petActionButton:SetChecked(1)
+
+		if PetActionBackdrop then
+			PetActionBackdrop:SetBackdropBorderColor(0, 1, 0)
+			end
+
 			if IsPetAttackAction(i) then
 				PetActionButton_StartFlash(petActionButton)
 			end
 		else
-			petActionButton:SetChecked(0)
+			petActionButton:SetChecked()
+			
+			if PetActionBackdrop then
+				PetActionBackdrop:SetBackdropBorderColor(parent:GetBackdropBorderColor())
+			end
+
 			if IsPetAttackAction(i) then
 				PetActionButton_StopFlash(petActionButton)
 			end			

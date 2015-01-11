@@ -139,6 +139,9 @@ local function Local(o)
 	if o == "QulightConfigUIbags" then o = QulightL.option_bags end
 	if o == "QulightConfigUIbagsEnable" then o = QulightL.option_bags_Enable end
 	if o == "QulightConfigUIbagsBagBars" then o = QulightL.option_bags_BagBars end
+	if o == "QulightConfigUIbagsbankcolumns" then o = QulightL.option_bags_bankcolumns end
+	if o == "QulightConfigUIbagsbankcolumns" then o = QulightL.option_bags_buttonsize end
+	if o == "QulightConfigUIbagsbankcolumns" then o = QulightL.option_bags_buttonspace end
 	--datatext
 	if o == "QulightConfigUIdatatext" then o = QulightL.option_datatext end
 	if o == "QulightConfigUIdatatextDurability" then o = QulightL.option_datatext_Durability end

@@ -97,6 +97,9 @@
 	QulightL.option_bags = "Cумки"	
 	QulightL.option_bags_Enable = "Включить сумки"
 	QulightL.option_bags_BagBars = "Включить панель сумок"
+	QulightL.option_bags_bankcolumns = "Количество ячеек в строчку"
+	QulightL.option_bags_buttonsize = "Размер ячейки"
+	QulightL.option_bags_buttonspace = "Промежуток между ячейками"
 	--datatext
 	QulightL.option_datatext = "Тексты"
 	QulightL.option_datatext_Durability = "Прочность"

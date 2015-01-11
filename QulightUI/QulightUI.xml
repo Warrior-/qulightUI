@@ -59,8 +59,7 @@
 	<Script file="Addons\Infotext\crit.lua"/>
 	<Script file="Addons\Infotext\dps.lua"/>
 	<Script file="Addons\Infotext\hps.lua"/>
-	<Script file="Addons\Infotext\vengeance.lua"/>
-	
+
 	--Script file="Addons\AddonManager.lua"--
 	<Script file="Addons\Bags.lua"/>
 	<Script file="Addons\Buffs.lua"/>
@@ -78,6 +77,7 @@
 	<Script file="Addons\Minimap.lua"/>
 	<Script file="Addons\Map.lua"/>
 	<Script file="Addons\NamePlates.lua"/>
+	<Script file="Addons\ObjectiveTracker.lua"/>
 	<Script file="Addons\RaidBuffReminder.lua"/>
 	<Script file="Addons\RaidUtility.lua"/>
 	<Script file="Addons\Reminder.lua"/>

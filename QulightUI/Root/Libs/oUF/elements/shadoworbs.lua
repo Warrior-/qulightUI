@@ -3,7 +3,12 @@ if(select(2, UnitClass('player')) ~= 'PRIEST') then return end
 local parent, ns = ...
 local oUF = ns.oUF
 
+local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL
+local PRIEST_BAR_NUM_LARGE_ORBS = PRIEST_BAR_NUM_LARGE_ORBS
+local PRIEST_BAR_NUM_SMALL_ORBS = PRIEST_BAR_NUM_SMALL_ORBS
 local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
+local SHADOW_ORB_MINOR_TALENT_ID = SHADOW_ORB_MINOR_TALENT_ID
+local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL
 
 local function Update(self, event, unit, powerType)
 	if(self.unit ~= unit or (powerType and powerType ~= 'SHADOW_ORBS')) then return end
@@ -15,7 +20,7 @@ local function Update(self, event, unit, powerType)
 	end
 
 	local numOrbs = UnitPower('player', SPELL_POWER_SHADOW_ORBS)
-	local totalOrbs = UnitPowerMax("player", SPELL_POWER_SHADOW_ORBS)
+	local totalOrbs = IsSpellKnown(SHADOW_ORB_MINOR_TALENT_ID) and 5 or 3
 
 	for i = 1, totalOrbs do
 		if i <= numOrbs then

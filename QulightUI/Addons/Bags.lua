@@ -478,6 +478,12 @@ function Stuffing:CreateBagFrame(w)
 	f:SetMovable(true)
 	f:SetFrameStrata("HIGH")
 	f:SetFrameLevel(5)
+	f:SetScript("OnMouseDown", function(self, button)
+		if IsShiftKeyDown() and button == "LeftButton" then
+			self:StartMoving()
+		end
+	end)
+	f:SetScript("OnMouseUp", f.StopMovingOrSizing)
 
 	if w == "Bank" then
 		f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 3, 177)

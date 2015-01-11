@@ -1303,7 +1303,10 @@ genShadowOrbsBar = function(self)
 				self.ShadowOrbsBar[i].bg:SetAllPoints()
 				self.ShadowOrbsBar[i].bg:SetTexture(Qulight["media"].texture)
 				self.ShadowOrbsBar[i].bg:SetVertexColor(0.70, 0.32, 0.75, 0.25)
+				self.ShadowOrbsBar[i].width = self.ShadowOrbsBar[i]:GetWidth()
 			end
+
+			self.ShadowOrbsBar.Override = UpdateShadowOrb
 	end
 end
 AltPowerBar = function(self)

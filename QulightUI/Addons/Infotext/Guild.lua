@@ -133,7 +133,7 @@ Stat:SetScript("OnMouseUp", function(self, btn)
 	
 	GameTooltip:Hide()
 
-	local classc, levelc, grouped, info
+	local classc, levelc, grouped
 	local menuCountWhispers = 0
 	local menuCountInvites = 0
 
@@ -148,7 +148,7 @@ Stat:SetScript("OnMouseUp", function(self, btn)
 				grouped = "|cffaaaaaa*|r"
 			else
 				grouped = ""
-				if not guildTable[i][10] then
+				if not guildTable[i][11] then
 					menuCountInvites = menuCountInvites + 1
 					menuList[2].menuList[menuCountInvites] = {text = string.format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, guildTable[i][3], classc.r*255,classc.g*255,classc.b*255, guildTable[i][1], ""), arg1 = guildTable[i][1],notCheckable=true, func = inviteClick}
 				end
@@ -172,9 +172,6 @@ Stat:SetScript("OnEnter", function(self)
 	GuildRoster()
 	UpdateGuildMessage()
 	BuildGuildTable()
-	
-	
-	local GuildInfo, GuildRank, GuildLevel = GetGuildInfo("player")
 
 	local name, rank, level, zone, note, officernote, connected, status, class, isMobile
 	local zonec, classc, levelc

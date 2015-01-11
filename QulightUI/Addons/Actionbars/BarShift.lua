@@ -33,8 +33,16 @@ ShiftBarUpdate = function(self)
 			if isActive then
 				StanceBarFrame.lastSelected = button:GetID()
 				button:SetChecked(true)
+
+				if button.Backdrop then
+					button.Backdrop:SetBackdropBorderColor(0, 1, 0)
+				end
 			else
 				button:SetChecked(false)
+
+				if button.Backdrop then
+					button.Backdrop:SetBackdropBorderColor(parent:GetBackdropBorderColor())
+				end
 			end
 
 			if isCastable then
@@ -62,7 +70,7 @@ bar:SetHeight(petbuttonsize/2)
 bar:SetFrameStrata("MEDIUM")
 bar:SetMovable(true)
 bar:SetClampedToScreen(true)
-bar:SetAlpha(0.5)
+bar:SetAlpha(1)
 
 -- hide it if not needed and stop executing code
 if Qulight.actionbar.hideSTANCE then bar:Hide() return end
@@ -99,6 +107,8 @@ bar:RegisterEvent("UPDATE_SHAPESHIFT_USABLE")
 bar:RegisterEvent("UPDATE_SHAPESHIFT_COOLDOWN")
 bar:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 bar:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
+bar:RegisterEvent("PLAYER_TALENT_UPDATE")
+bar:RegisterEvent("SPELLS_CHANGED")
 bar:SetScript("OnEvent", function(self, event, ...)
 	if event == "PLAYER_LOGIN" then
 		StanceBarFrame.ignoreFramePositionManager = true

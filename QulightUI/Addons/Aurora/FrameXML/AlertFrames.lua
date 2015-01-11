@@ -241,10 +241,8 @@ tinsert(C.modules["QulightUI"], function()
 			frame:HookScript("OnHide", showHideBg)
 			frame:HookScript("OnUpdate", onUpdate)
 
-			frame.Background:Hide()
-			frame.IconBorder:Hide()
-			frame.glow:SetTexture("")
 			frame.shine:SetTexture("")
+			frame.SpecRing:SetTexture("")
 
 			frame.Icon:SetTexCoord(.08, .92, .08, .92)
 			F.CreateBG(frame.Icon)
@@ -272,6 +270,11 @@ tinsert(C.modules["QulightUI"], function()
 
 			frame.Icon:SetTexCoord(.08, .92, .08, .92)
 			F.CreateBG(frame.Icon)
+			frame.Background:Hide()
+			frame.IconBorder:Hide()
+			frame.glow:SetTexture("")
+			frame.PvPBackground:Hide()
+			frame.BGAtlas:Hide()
 		end
 	end)
 

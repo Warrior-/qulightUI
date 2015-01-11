@@ -46,7 +46,7 @@
 	QulightL.option_unitframes_RCheckIcon = "Show raid check icon" 
 	QulightL.option_unitframes_Castbars = "Use built-in castbars" 
 	QulightL.option_unitframes_showLFDIcons = "Show dungeon role icons in raid/party"
-    QulightL.option_unitframes_HealthcolorClass = "Health color class"
+   	QulightL.option_unitframes_HealthcolorClass = "Health color class"
 	QulightL.option_unitframes_Powercolor = "Power bar by power color oO"
 	QulightL.option_unitframes_showPartyFrames	 = "Show party frames"
 	QulightL.option_unitframes_bigcastbar = "Big castbar"
@@ -83,8 +83,8 @@
 	QulightL.option_raidframes_plugins_auto_resurrection = "Auto cast resurrection on middle click when the unit is dead (doesn't work with Clique enabled)"
 	QulightL.option_raidframes_own_color = "Set your color for health bars"
 	QulightL.option_raidframes_fontsize = "Font size"
-    QulightL.option_raidframes_fontsizeEdge = "Add Font size"
-    QulightL.option_raidframes_outline = "Font style"
+   	QulightL.option_raidframes_fontsizeEdge = "Add Font size"
+ 	QulightL.option_raidframes_outline = "Font style"
 	QulightL.option_raidframes_bar_color_value = "Health bar color by current health remaining"
 	QulightL.option_raidframes_color_value = "Health/mana value is colored"
 	QulightL.option_raidframes_plugins_smooth_bar = "Smooth bar"
@@ -126,9 +126,9 @@
 	QulightL.option_datatext_crit = "Crit position (0 for disabled)"
 	QulightL.option_datatext_dps = "DPS position (0 for disabled)"
 	QulightL.option_datatext_hps = "HPS position (0 for disabled)"
-	
-	
-	
+	QulightL.option_bags_bankcolumns = "The number of cells in the row"
+	QulightL.option_bags_buttonsize = "Cell Size"
+	QulightL.option_bags_buttonspace = "Space Between Cells"
 	--loot
 	QulightL.option_loot = "Loot"
 	QulightL.option_loot_lootframe = "Enable loot window"

@@ -30,11 +30,12 @@ local Tooltip = CreateFrame("Frame", "Tooltip", UIParent)
 local _G = getfenv(0)
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
-local StoryTooltip = QuestScrollFrame.StoryTooltip
 
 local gsub, find, format = string.gsub, string.find, string.format
-local Tooltips = {GameTooltip, ItemRefShoppingTooltip1,ItemRefShoppingTooltip2,ShoppingTooltip1,ShoppingTooltip2,WorldMapTooltip,WorldMapCompareTooltip1,WorldMapCompareTooltip2, FriendsTooltip, ConsolidatedBuffsTooltip, AtlasLootTooltip, QuestHelperTooltip, QuestGuru_QuestWatchTooltip, StoryTooltip}
+local Tooltips = {GameTooltip, ItemRefTooltip, ShoppingTooltip1, ShoppingTooltip2, WorldMapTooltip,  WorldMapCompareTooltip1, WorldMapCompareTooltip2, FriendsTooltip, ConsolidatedBuffsTooltip, ItemRefShoppingTooltip1, ItemRefShoppingTooltip2, AtlasLootTooltip, QuestHelperTooltip, QuestGuru_QuestWatchTooltip, StoryTooltip}
+
 local ItemRefTooltip = ItemRefTooltip
+
 local linkTypes = {item = true, enchant = true, spell = true, quest = true, unit = true, talent = true, achievement = true, glyph = true}
 
 local classification = {
@@ -154,55 +155,27 @@ local function ShortValue(value)
 end
 
 local function StatusBarOnValueChanged(self, value)
-	if not value then
-		return
-	end
-	local min, max = self:GetMinMaxValues()
-	
-	if (value < min) or (value > max) then
-		return
-	end
-	local _, unit = GameTooltip:GetUnit()
-	
-	if (not unit) then
-		local GMF = GetMouseFocus()
-		unit = GMF and GMF:GetAttribute("unit")
-	end
-
-	if not self.text then
-		self.text = self:CreateFontString(nil, "OVERLAY")
-		self.text:SetPoint("CENTER", GameTooltipStatusBar, 0, 0)
-
-		self.text:SetFont(Qulight["media"].font, 10, "THINOUTLINE")
+	GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
+		if not value then return end
+		local min, max = self:GetMinMaxValues()
+		if (value < min) or (value > max) then return end
+		self:SetStatusBarColor(0, 1, 0)
+		local _, unit = GameTooltip:GetUnit()
+		if unit then
+			min, max = UnitHealth(unit), UnitHealthMax(unit)
+			if not self.text then
+				self.text = self:CreateFontString(nil, "OVERLAY")
+				self.text:SetPoint("CENTER", GameTooltipStatusBar, 0, 1.5)
+				self.text:SetFont(Qulight["media"].font, 10, "THINOUTLINE")
+			end
 		self.text:Show()
-		if unit then
-			min, max = UnitHealth(unit), UnitHealthMax(unit)
-			local hp = ShortValue(min).." / "..ShortValue(max)
-			if UnitIsGhost(unit) then
-				self.text:SetText("Ghost")
-			elseif min == 0 or UnitIsDead(unit) or UnitIsGhost(unit) then
-				self.text:SetText("Dead")
-			else
-				self.text:SetText(hp)
-			end
+		local hp = ShortValue(min).." / "..ShortValue(max)
+		self.text:SetText(hp)
+
 		end
-	else
-		if unit then
-			min, max = UnitHealth(unit), UnitHealthMax(unit)
-			self.text:Show()
-			local hp = ShortValue(min).." / "..ShortValue(max)
-			if UnitIsGhost(unit) then
-				self.text:SetText("Ghost")
-			elseif min == 0 or UnitIsDead(unit) or UnitIsGhost(unit) then
-				self.text:SetText("Dead")
-			else
-				self.text:SetText(hp)
-			end
-		else
-			self.text:Hide()
-		end
-	end
+	end)
 end
+
 GameTooltipStatusBar:SetScript("OnValueChanged", StatusBarOnValueChanged)
 
 local healthBar = GameTooltipStatusBar
@@ -411,6 +384,9 @@ Tooltip:SetScript("OnEvent", function(self, event, addon)
 	if event == "PLAYER_ENTERING_WORLD" then
 		for _, tt in pairs(Tooltips) do
 			tt:HookScript("OnShow", SetStyle)
+			tt.GetBackdrop = function() return shadow end
+			tt.GetBackdropColor = function() return shadow end
+			tt.GetBackdropBorderColor = function() return shadow end
 		end
 		
 		ItemRefTooltip:HookScript("OnTooltipSetItem", SetStyle)
@@ -448,12 +424,6 @@ Tooltip:SetScript("OnEvent", function(self, event, addon)
 			EventTraceTooltip:HookScript("OnShow", function(self) CreateStyle(self, 2) end)
 		end
 	end
-end)
-
-local FixTooltipBags = CreateFrame("Frame")
-FixTooltipBags:RegisterEvent("BAG_UPDATE_DELAYED")
-FixTooltipBags:SetScript("OnEvent", function()
-GameTooltip:Hide()
 end)
 
 ----------------------------------------------------------------------------------------
@@ -547,6 +517,90 @@ if Qulight["tooltip"].spellid then
 end
 
 
+----------------------------------------------------------------------------------------
+--	Fix compare tooltips(by Blizzard)(../FrameXML/GameTooltip.lua)
+----------------------------------------------------------------------------------------
+hooksecurefunc("GameTooltip_ShowCompareItem", function(self, shift)
+	if not self then
+		self = GameTooltip
+	end
+
+	-- Find correct side
+	local shoppingTooltip1, shoppingTooltip2 = unpack(self.shoppingTooltips)
+	local primaryItemShown, secondaryItemShown = shoppingTooltip1:SetCompareItem(shoppingTooltip2, self)
+	local side = "left"
+	local rightDist = 0
+	local leftPos = self:GetLeft()
+	local rightPos = self:GetRight()
+
+	if not rightPos then
+		rightPos = 0
+	end
+	if not leftPos then
+		leftPos = 0
+	end
+
+	rightDist = GetScreenWidth() - rightPos
+
+	if leftPos and (rightDist < leftPos) then
+		side = "left"
+	else
+		side = "right"
+	end
+
+	-- See if we should slide the tooltip
+	if self:GetAnchorType() and self:GetAnchorType() ~= "ANCHOR_PRESERVE" then
+		local totalWidth = 0
+		if primaryItemShown then
+			totalWidth = totalWidth + shoppingTooltip1:GetWidth()
+		end
+		if secondaryItemShown then
+			totalWidth = totalWidth + shoppingTooltip2:GetWidth()
+		end
+
+		if side == "left" and totalWidth > leftPos then
+			self:SetAnchorType(self:GetAnchorType(), totalWidth - leftPos, 0)
+		elseif side == "right" and (rightPos + totalWidth) > GetScreenWidth() then
+			self:SetAnchorType(self:GetAnchorType(), -((rightPos + totalWidth) - GetScreenWidth()), 0)
+		end
+	end
+
+	-- Anchor the compare tooltips
+	if secondaryItemShown then
+		shoppingTooltip2:SetOwner(self, "ANCHOR_NONE")
+		shoppingTooltip2:ClearAllPoints()
+		if side and side == "left" then
+			shoppingTooltip2:SetPoint("TOPRIGHT", self, "TOPLEFT", -3, -10)
+		else
+			shoppingTooltip2:SetPoint("TOPLEFT", self, "TOPRIGHT", 3, -10)
+		end
+
+		shoppingTooltip1:SetOwner(self, "ANCHOR_NONE")
+		shoppingTooltip1:ClearAllPoints()
+
+		if side and side == "left" then
+			shoppingTooltip1:SetPoint("TOPRIGHT", shoppingTooltip2, "TOPLEFT", -3, 0)
+		else
+			shoppingTooltip1:SetPoint("TOPLEFT", shoppingTooltip2, "TOPRIGHT", 3, 0)
+		end
+	else
+		shoppingTooltip1:SetOwner(self, "ANCHOR_NONE")
+		shoppingTooltip1:ClearAllPoints()
+
+		if side and side == "left" then
+			shoppingTooltip1:SetPoint("TOPRIGHT", self, "TOPLEFT", -3, -10)
+		else
+			shoppingTooltip1:SetPoint("TOPLEFT", self, "TOPRIGHT", 3, -10)
+		end
+
+		shoppingTooltip2:Hide()
+	end
+
+	shoppingTooltip1:SetCompareItem(shoppingTooltip2, self)
+	shoppingTooltip1:Show()
+end)
+
+
 if Qulight["tooltip"].itemlevel then
 
 ----------------------------------------------------------------------------------------
@@ -567,9 +621,7 @@ local upgrades = {
 	["477"] = 4, ["478"] = 8, ["480"] = 8, ["492"] = 4, ["493"] = 8, ["495"] = 4,
 	["496"] = 8, ["497"] = 12, ["498"] = 16, ["504"] = 12, ["505"] = 16, ["506"] = 20,
 	["507"] = 24
-
 }
-
 -- Output prefix
 local PREFIX = STAT_FORMAT:format(STAT_AVERAGE_ITEM_LEVEL).."|Heqppditmlvl|h |h"..HIGHLIGHT_FONT_COLOR_CODE
 
@@ -648,6 +700,7 @@ do
 
 	local function scan(unit, slot, total, count, twoHanded, incomplete)
 		if slot > INVSLOT_LAST_EQUIPPED then
+			if count == 0 then return end --WoD Fix division by zero
 			return formatString:format(total / (twoHanded and count - 1 or count)), incomplete
 		end
 
@@ -701,6 +754,7 @@ do
 
 	local function update(unit, guid)
 		local level, incomplete = UnitItemLevel(unit)
+		if not level then return end
 		local myLevel = level - UnitItemLevel("player")
 
 		if incomplete then
@@ -712,7 +766,7 @@ do
 
 		if isReady then
 			cache[guid] = level
-		return SetTipText(level.." ("..((myLevel > 0) and "|cff00ff00+" or "|cffff0000")..myLevel.."|r|cffffffff)|r")
+			return SetTipText(level.." ("..((myLevel > 0) and "|cff00ff00+" or "|cffff0000")..myLevel.."|r|cffffffff)|r")
 		end
 
 		level = cachedLevel or level
@@ -844,6 +898,29 @@ end
 
 return f:RegisterEvent("PLAYER_LOGIN")
 end
+
+----------------------------------------------------------------------------------------
+--	Fix blank tooltip
+----------------------------------------------------------------------------------------
+local FixTooltip = CreateFrame("Frame")
+FixTooltip:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
+FixTooltip:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
+FixTooltip:SetScript("OnEvent", function()
+	for i = 1, 12 do
+		local button = _G["ActionButton" .. i]
+		if GameTooltip:GetOwner() == button then
+			GameTooltip:Hide()
+		end
+	end
+end)
+
+local FixTooltipBags = CreateFrame("Frame")
+FixTooltipBags:RegisterEvent("BAG_UPDATE_DELAYED")
+FixTooltipBags:SetScript("OnEvent", function()
+	if StuffingFrameBags and StuffingFrameBags:IsShown() then
+		GameTooltip:Hide()
+	end
+end)
 
 
 ----------------------------------------------------------------------------------------

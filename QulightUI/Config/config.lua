@@ -27,7 +27,7 @@ Qulight["actionbar"] = {
 	["petbuttonsize"] = 32,                             -- pet & stance buttons size
 	["buttonspacing"] = 1,                              -- buttons spacing
 	["petbuttonspacing"] = 1,
-	["mainbarWidth"] = 12,		
+	["mainbarWidth"] = 10,		
 	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
 }
 
@@ -132,12 +132,11 @@ Qulight["datatext"] = {
 	["Bags"] = 6,                														-- show space used in bags on panels
 	["specswitcher"] = 9,
 	["haste"] = 11,
-	["mastery"] = 0,
+	["mastery"] = 16,
 	["power"] = 13,
 	["crit"] = 12,
 	["hps"] = 14,
 	["dps"] = 15,
-	["vengeance"] = 16,
 	["Time24"] = true,            														-- set time to 24h format(if wowtime enable)
 	["Localtime"] = true,  																-- local time(if wowtime enable)
 	["classcolor"] = true,																-- class color text info
