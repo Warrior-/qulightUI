@@ -45,6 +45,17 @@ local function Print(x)
 	print("|cffffff00"..x)
 end
 
+-- Drop down menu stuff from Postal
+	local Stuffing_DDMenu = CreateFrame("Frame", "Stuffing_DropDownMenu")
+	Stuffing_DDMenu.displayMode = "MENU"
+	Stuffing_DDMenu.info = {}
+	Stuffing_DDMenu.HideMenu = function()
+		if UIDROPDOWNMENU_OPEN_MENU == Stuffing_DDMenu then
+			CloseDropDownMenus()
+		end
+	end
+
+
 local function Stuffing_Sort(args)
 	if not args then
 		args = ""
@@ -147,6 +158,119 @@ function Stuffing:BagSlotUpdate(bag)
 	end
 end
 
+function CreateReagentContainer()
+
+	local Reagent = CreateFrame("Frame", "StuffingFrameReagent", UIParent)
+	local SwitchBankButton = CreateFrame("Button", nil, Reagent)
+	local SortButton = CreateFrame("Button", nil, Reagent)
+	local NumButtons = ReagentBankFrame.size
+	local NumRows, LastRowButton, NumButtons, LastButton = 0, ReagentBankFrameItem1, 1, ReagentBankFrameItem1
+	local Deposit = ReagentBankFrame.DespositButton
+
+	Reagent:SetWidth(((Qulight.bags.buttonsize + Qulight.bags.buttonspace) * Qulight.bags.bankcolumns) + 17)
+	Reagent:SetPoint("CENTER", UIParent, "CENTER", -200, -5)
+	Reagent:SetFrameStrata(_G["StuffingFrameBank"]:GetFrameStrata())
+	Reagent:SetFrameLevel(_G["StuffingFrameBank"]:GetFrameLevel())
+
+	SwitchBankButton:SetSize(80, 20)
+	SwitchBankButton:SetPoint("TOPLEFT", 10, -4)
+	
+	local SBButton = SwitchBankButton:CreateFontString("SwitchBankButton", "OVERLAY")
+		SBButton:SetFont(Qulight["media"].font, 10, "OUTLINE")
+		SBButton:SetPoint("CENTER")
+
+	SwitchBankButton:SetText(BANK)
+	SwitchBankButton:SetScript("OnClick", function()
+		Reagent:Hide()
+		_G["StuffingFrameBank"]:Show()
+		BankFrame_ShowPanel(BANK_PANELS[1].name)
+	end)
+
+	Deposit:SetParent(Reagent)
+	Deposit:ClearAllPoints()
+	Deposit:SetSize(170, 20)
+	Deposit:SetPoint("TOPLEFT", SwitchBankButton, "TOPRIGHT", 3, 0)
+
+	local Dep = Deposit:CreateFontString("Deposit", "OVERLAY")
+		Dep:SetFont(Qulight["media"].font, 10, "OUTLINE")
+		Dep:SetText(REAGENTBANK_DEPOSIT)
+
+	SortButton:SetSize(170, 20)
+	SortButton:SetPoint("TOPRIGHT", SwitchBankButton, "TOPRIGHT", 2, 0)
+
+	local SortBButton = SortButton:CreateFontString("SwitchBankButton", "OVERLAY")
+		SortBButton:SetFont(Qulight["media"].font, 10)
+		SortBButton:SetPoint("CENTER")
+
+	SortButton:SetText(BAG_FILTER_CLEANUP)
+	SortButton:SetScript("OnClick", BankFrame_AutoSortButtonOnClick) 
+
+
+	-- Close button
+	local Close = CreateFrame("Button", "StuffingCloseButtonReagent", Reagent, "UIPanelCloseButton")
+	Close:SetSize(15, 15)
+	Close:RegisterForClicks("AnyUp")
+	Close:SetScript("OnClick", function(self, btn)
+		if btn == "RightButton" then
+			if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
+				CloseDropDownMenus()
+				Stuffing_DDMenu.initialize = Stuffing.Menu
+			end
+			ToggleDropDownMenu(nil, nil, Stuffing_DDMenu, self:GetName(), 0, 0)
+			return
+		else
+			StuffingBank_OnHide()
+		end
+	end)
+
+	for i = 1, 98 do
+		local button = _G["ReagentBankFrameItem" .. i]
+		local icon = _G[button:GetName() .. "IconTexture"]
+		local count = _G[button:GetName().."Count"]
+
+		ReagentBankFrame:SetParent(Reagent)
+		ReagentBankFrame:ClearAllPoints()
+		ReagentBankFrame:SetAllPoints()
+
+		button:SetNormalTexture("")
+		button.IconBorder:SetAlpha(0)
+		button:SetPushedTexture("")
+		button:ClearAllPoints()
+		button:SetSize(Qulight.bags.buttonsize, Qulight.bags.buttonsize)
+		button:SetBackdropColor(0, 0, 0, 0)
+		button:SetBackdropBorderColor(0, 0, 0, 1)
+		CreateStyle(button, 3)
+
+		if i == 1 then
+			button:SetPoint("TOPLEFT", Reagent, "TOPLEFT", 10, -27)
+			LastRowButton = button
+			LastButton = button
+		elseif NumButtons ==  Qulight.bags.bankcolumns then
+			button:SetPoint("TOPRIGHT", LastRowButton, "TOPRIGHT", 0, -(Qulight.bags.buttonspace + Qulight.bags.buttonsize))
+			button:SetPoint("BOTTOMLEFT", LastRowButton, "BOTTOMLEFT", 0, -(Qulight.bags.buttonspace + Qulight.bags.buttonsize))
+			LastRowButton = button
+			NumRows = NumRows + 1
+			NumButtons = 1
+		else
+			button:SetPoint("TOPRIGHT", LastButton, "TOPRIGHT", (Qulight.bags.buttonspace + Qulight.bags.buttonsize), 0)
+			button:SetPoint("BOTTOMLEFT", LastButton, "BOTTOMLEFT", (Qulight.bags.buttonspace + Qulight.bags.buttonsize), 0)
+			NumButtons = NumButtons + 1
+		end
+
+		icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		icon:SetPoint("TOPLEFT", 2, -2)
+		icon:SetPoint("BOTTOMRIGHT", -2, 2)
+
+		LastButton = button
+	end
+	Reagent:SetHeight(((Qulight.bags.buttonsize + Qulight.bags.buttonspace) * (NumRows + 1) + 40) - 1)
+	
+	-- Unlock window
+	CreateStyle(ReagentBankFrameUnlockInfoPurchaseButton, 3)
+	ReagentBankFrameUnlockInfo:SetAllPoints(Reagent)
+
+end
+
 function Stuffing:BagFrameSlotNew(p, slot)
 	for _, v in ipairs(self.bagframe_buttons) do
 		if v.slot == slot then
@@ -158,7 +282,7 @@ function Stuffing:BagFrameSlotNew(p, slot)
 	if slot > 3 then
 		ret.slot = slot
 		slot = slot - 4
-		ret.frame = CreateFrame("CheckButton", "StuffingBBag"..slot, p, "BankItemButtonBagTemplate")
+		ret.frame = CreateFrame("CheckButton", "StuffingBBag"..slot.."Slot", p, "BankItemButtonBagTemplate")
 		ret.frame:SetID(slot)
 		table.insert(self.bagframe_buttons, ret)
 
@@ -333,14 +457,6 @@ function Stuffing:SearchReset()
 	end
 end
 
-local Stuffing_DDMenu = CreateFrame("Frame", "Stuffing_DropDownMenu")
-Stuffing_DDMenu.displayMode = "MENU"
-Stuffing_DDMenu.info = {}
-Stuffing_DDMenu.HideMenu = function()
-	if UIDROPDOWNMENU_OPEN_MENU == Stuffing_DDMenu then
-		CloseDropDownMenus()
-	end
-end
 local function FontString(parent, name, fontName, fontHeight, fontStyle)
 	local fs = parent:CreateFontString(nil, "OVERLAY")
 	fs:SetFont(fontName, fontHeight, fontStyle)
@@ -360,14 +476,8 @@ function Stuffing:CreateBagFrame(w)
 	local f = CreateFrame("Frame", n, UIParent)
 	f:EnableMouse(true)
 	f:SetMovable(true)
-	f:SetFrameStrata("DIALOG")
+	f:SetFrameStrata("HIGH")
 	f:SetFrameLevel(5)
-	f:SetScript("OnMouseDown", function(self, button)
-		if IsShiftKeyDown() and button == "LeftButton" then
-			self:StartMoving()
-		end
-	end)
-	f:SetScript("OnMouseUp", f.StopMovingOrSizing)
 
 	if w == "Bank" then
 		f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 3, 177)
@@ -377,7 +487,7 @@ function Stuffing:CreateBagFrame(w)
 
 	if w == "Bank" then
 		-- Buy button
-		f.b_purchase = CreateFrame("Button", "Stuffing_PurchaseButton"..w, f)
+		f.b_purchase = CreateFrame("Button", "StuffingPurchaseButton"..w, f)
 		f.b_purchase:SetSize(80, 20)
 		f.b_purchase:SetPoint("TOPLEFT", 10, -4)
 		f.b_purchase:RegisterForClicks("AnyUp")
@@ -396,12 +506,18 @@ function Stuffing:CreateBagFrame(w)
 		fb_purchasetitle:SetPoint("CENTER")
 
 		-- Reagent button
-		f.b_reagent = CreateFrame("Button", "Stuffing_ReagentButton"..w, f)
+		f.b_reagent = CreateFrame("Button", "StuffingReagentButton"..w, f)
 		f.b_reagent:SetSize(105, 20)
 		f.b_reagent:SetPoint("TOPLEFT", f.b_purchase, "TOPRIGHT", 3, 0)
 		f.b_reagent:RegisterForClicks("AnyUp")
 		f.b_reagent:SetScript("OnClick", function()
 			BankFrame_ShowPanel(BANK_PANELS[2].name)
+			if not ReagentBankFrame.isMade then
+				CreateReagentContainer()
+				ReagentBankFrame.isMade = true
+			else
+				_G["StuffingFrameReagent"]:Show()
+			end
 		end)
 		local fb_reagent = f.b_reagent:CreateFontString("f.b_reagent", "OVERLAY")
 		fb_reagent:SetFont(Qulight["media"].font, 10, "OUTLINE")
@@ -411,10 +527,11 @@ function Stuffing:CreateBagFrame(w)
 	end
 
 	-- Close button
-	f.b_close = CreateFrame("Button", "Stuffing_CloseButton"..w, f)
+	f.b_close = CreateFrame("Button", "StuffingCloseButton"..w, f, "UIPanelCloseButton")
 	f.b_close:SetSize(15, 15)
+	f.b_close:RegisterForClicks("AnyUp")
 	f.b_close:SetScript("OnClick", function(self, btn)
-		if self:GetParent():GetName() == "StuffingFrameBags" and btn == "RightButton" then
+		if btn == "RightButton" then
 			if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
 				CloseDropDownMenus()
 				Stuffing_DDMenu.initialize = Stuffing.Menu
@@ -424,8 +541,7 @@ function Stuffing:CreateBagFrame(w)
 		end
 		self:GetParent():Hide()
 	end)
-	f.b_close:RegisterForClicks("AnyUp")
-
+	
 	-- Create the bags frame
 	local fb = CreateFrame("Frame", n.."BagsFrame", f)
 	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, 3)
@@ -489,19 +605,15 @@ function Stuffing:InitBags()
 	detail:SetText("|cff9999ff"..SEARCH.."|r")
 	editbox:SetAllPoints(detail)
 
-	local OpenEditbox = function(self)
-		self:GetParent().detail:Hide()
-		self:GetParent().editbox:Show()
-		self:GetParent().editbox:HighlightText()
-	end
-
 	local button = CreateFrame("Button", nil, f)
 	button:EnableMouse(true)
 	button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	button:SetAllPoints(detail)
 	button:SetScript("OnClick", function(self, btn)
 		if btn == "RightButton" then
-			OpenEditbox(self)
+			self:GetParent().detail:Hide()
+			self:GetParent().editbox:Show()
+			self:GetParent().editbox:HighlightText()
 		else
 			if self:GetParent().editbox:IsShown() then
 				self:GetParent().editbox:Hide()
@@ -818,8 +930,10 @@ function Stuffing:ADDON_LOADED(addon)
 	self:RegisterEvent("GUILDBANKFRAME_OPENED")
 	self:RegisterEvent("GUILDBANKFRAME_CLOSED")
 	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
+	--self:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
 	self:RegisterEvent("BAG_CLOSED")
 	self:RegisterEvent("BAG_UPDATE_COOLDOWN")
+	--self:RegisterEvent("REAGENTBANK_UPDATE")
 
 	SlashCmdList.STUFFING = StuffingSlashCmd
 	SLASH_STUFFING1 = "/bags"
@@ -828,6 +942,7 @@ function Stuffing:ADDON_LOADED(addon)
 	self:InitBags()
 
 	tinsert(UISpecialFrames, "StuffingFrameBags")
+	tinsert(UISpecialFrames, "StuffingFrameReagent")
 
 	ToggleBackpack = Stuffing_Toggle
 	ToggleBag = Stuffing_Toggle
@@ -837,7 +952,10 @@ function Stuffing:ADDON_LOADED(addon)
 	CloseAllBags = Stuffing_Close
 	CloseBackpack = Stuffing_Close
 
-	BankFrame:UnregisterAllEvents()
+	--BankFrame:UnregisterAllEvents()
+	BankFrame:SetScale(0.00001)
+	BankFrame:SetAlpha(0)
+	BankFrame:SetPoint("TOPLEFT")
 end
 
 function Stuffing:PLAYER_ENTERING_WORLD()
@@ -895,8 +1013,12 @@ function Stuffing:BANKFRAME_OPENED()
 end
 
 function Stuffing:BANKFRAME_CLOSED()
-	if not self.bankFrame then return end
-	self.bankFrame:Hide()
+	if Stuffing_FrameReagent then
+		Stuffing_FrameReagent:Hide()
+	end
+	if self.bankFrame then
+		self.bankFrame:Hide()
+	end
 end
 
 function Stuffing:GUILDBANKFRAME_OPENED()
@@ -1224,6 +1346,16 @@ function Stuffing:Restack()
 	end
 end
 
+function Stuffing:PLAYERBANKBAGSLOTS_CHANGED()
+	if not StuffingPurchaseButtonBank then return end
+	local _, full = GetNumBankSlots()
+	if full then
+		StuffingPurchaseButtonBank:Hide()
+	else
+		StuffingPurchaseButtonBank:Show()
+	end
+end
+
 function Stuffing.Menu(self, level)
 	if not level then return end
 
@@ -1237,7 +1369,9 @@ function Stuffing.Menu(self, level)
 	info.text = "Sort"
 	info.notCheckable = 1
 	info.func = function()
-		Stuffing_Sort("d")
+		SortBags()
+		SortBankBags()
+		SortReagentBankBags()
 	end
 	UIDropDownMenu_AddButton(info, level)
 

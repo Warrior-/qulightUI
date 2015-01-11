@@ -165,7 +165,6 @@ GameMenuButtonStore:SetPoint("TOP", "GameMenuFrame", "TOP", 0, -91)
 GameMenuButtonContinue:ClearAllPoints()
 	
 showb:SetScript("OnClick", function()
-	PlaySound("igMainMenuOption")
 	HideUIPanel(GameMenuFrame)
 	loadf:Show()
 end)

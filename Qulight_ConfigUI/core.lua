@@ -934,9 +934,16 @@ end
 
 local quuuu = CreateFrame("Button", "GameMenuButtonQulightUI", GameMenuFrame, "GameMenuButtonTemplate")
 quuuu:SetText("Qulight UI")
-quuuu:SetPoint("TOP", "GameMenuFrame", "TOP", 0, -25)
+quuuu:SetPoint("TOP", "GameMenuButtonAddons", "BOTTOM", 0, -1)
 
-GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + quuuu:GetHeight())
+GameMenuFrame:HookScript("OnShow", function()
+	GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + quuuu:GetHeight())
+	if IsMacClient() then
+		GameMenuButtonMacOptions:SetPoint("TOP", quuuu, "BOTTOM", 0, -16)
+	else
+		GameMenuButtonLogout:SetPoint("TOP", quuuu, "BOTTOM", 0, -16)
+	end
+end)
 
 quuuu:SetScript("OnClick", function()
 	HideUIPanel(GameMenuFrame)

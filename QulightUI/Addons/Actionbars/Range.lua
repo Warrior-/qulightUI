@@ -229,7 +229,7 @@ function tullaRange.UpdateButtonUsable(button)
 	--usable
 	if isUsable then
 		--but out of range
-		if IsActionInRange(action) == 0 then
+		if IsActionInRange(action) == false then
 			tullaRange.SetButtonColor(button, 'oor')
 		--a holy power abilty, and we're less than 3 Holy Power
 		elseif PLAYER_IS_PALADIN and isHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) >= tullaRange:GetHolyPowerThreshold() or UnitBuff('player', HAND_OF_LIGHT)) then
@@ -248,7 +248,7 @@ function tullaRange.UpdateButtonUsable(button)
 		end
 	--unusable
 	else
-		button.tullaRangeColor = 'unusuable'
+		button.tullaRangeColor = "unusuable"
 	end
 end
 

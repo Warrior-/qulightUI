@@ -14,6 +14,7 @@ ReminderBuffs = {
 			},
 			[2] = {	-- Blood Presence group
 				["spells"] = {
+					48263,	-- Blood Presence
 				},
 				["role"] = "Tank",
 				["instance"] = true,
@@ -25,39 +26,13 @@ ReminderBuffs = {
 				["spells"] = {
 					1126,	-- Mark of the Wild
 				},
-				["negate_spells"] = {
-					20217,	-- Blessing of Kings
-					117666,	-- Legacy of the Emperor
-					90363,	-- Embrace of the Shale Spider
-				},
 				["combat"] = true,
 				["instance"] = true,
 				["pvp"] = true,
-			},
-		},
-		HUNTER = {
-			[1] = {	-- Aspects group
-				["spells"] = {
-					13165,	-- Aspect of the Hawk
-					109260,	-- Aspect of the Iron Hawk
-					--82661,	-- Aspect of the Fox
-				},
-				["instance"] = true,
-				["personal"] = true,
 			},
 		},
 		MAGE = {
-			[1] = {	-- Armors group
-				["spells"] = {
-					30482,	-- Molten Armor
-					7302,	-- Frost Armor
-					6117,	-- Mage Armor
-				},
-				["combat"] = true,
-				["instance"] = true,
-				["pvp"] = true,
-			},
-			[2] = {	-- Brilliance group
+			[1] = {	-- Brilliance group
 				["spells"] = {
 					1459,	-- Arcane Brilliance
 					61316,	-- Dalaran Brilliance
@@ -70,12 +45,13 @@ ReminderBuffs = {
 		MONK = {
 			[1] = {	-- Legacy of the Emperor group
 				["spells"] = {
-					117666,	-- Legacy of the Emperor
+					115921,	-- Legacy of the Emperor
 				},
 				["negate_spells"] = {
 					1126,	-- Mark of the Wild
 					20217,	-- Blessing of Kings
 					90363,	-- Embrace of the Shale Spider
+					116781,	-- Legacy of the White Tiger
 				},
 				["combat"] = true,
 				["instance"] = true,
@@ -86,11 +62,7 @@ ReminderBuffs = {
 					116781,	-- Legacy of the White Tiger
 				},
 				["negate_spells"] = {
-					1459,	-- Arcane Brilliance
-					61316,	-- Dalaran Brilliance
-					24932,	-- Leader of the Pack
-					90309,	-- Terrifying Roar
-					24604,	-- Furious Howl
+					90363,	-- Embrace of the Shale Spider
 				},
 				["combat"] = true,
 				["instance"] = true,
@@ -100,7 +72,7 @@ ReminderBuffs = {
 		PALADIN = {
 			[1] = {	-- Righteous Fury group
 				["spells"] = {
-
+					25780,	-- Righteous Fury
 				},
 				["role"] = "Tank",
 				["instance"] = true,
@@ -113,8 +85,11 @@ ReminderBuffs = {
 				},
 				["negate_spells"] = {
 					1126,	-- Mark of the Wild
-					117666,	-- Legacy of the Emperor
+					115921,	-- Legacy of the Emperor
+					116781,	-- Legacy of the White Tiger
 					90363,	-- Embrace of the Shale Spider
+				},
+				["personal"] = {
 					19740,	-- Blessing of Might
 				},
 				["combat"] = true,
@@ -128,7 +103,10 @@ ReminderBuffs = {
 				["negate_spells"] = {
 					116956,	-- Grace of Air
 					93435,	-- Roar of Courage
-					127830,	-- Spirit Beast Blessing
+					128997,	-- Spirit Beast Blessing
+					155522,	-- Power of the Grave
+				},
+				["personal"] = {
 					20217,	-- Blessing of Kings
 				},
 				["combat"] = true,
@@ -137,10 +115,14 @@ ReminderBuffs = {
 			},
 		},
 		PRIEST = {
-			[1] = {	-- Inner Fire/Will group
+			[1] = {	-- Stamina group
 				["spells"] = {
-					588,	-- Inner Fire
-					73413,	-- Inner Will
+					21562,	-- Power Word: Fortitude
+				},
+				["negate_spells"] = {
+					469,	-- Commanding Shout
+					90364,	-- Qiraji Fortitude
+					166928,	-- Blood Pact
 				},
 				["combat"] = true,
 				["instance"] = true,
@@ -152,17 +134,16 @@ ReminderBuffs = {
 				["spells"] = {
 					2823,	-- Deadly Poison
 					8679,	-- Wound Poison
+					157584,	-- Instant Poison
 				},
 				["combat"] = true,
 				["instance"] = true,
 				["pvp"] = true,
 			},
-			[2] = {	--  Non-Lethal Poisons group
+			[2] = {	-- Non-Lethal Poisons group
 				["spells"] = {
-					5761,	-- Mind-numbing Poison
 					3408,	-- Crippling Poison
 					108211,	-- Leeching Poison
-					108215,	-- Paralytic Poison
 				},
 				["combat"] = true,
 				["instance"] = true,
@@ -180,23 +161,11 @@ ReminderBuffs = {
 				["instance"] = true,
 				["pvp"] = true,
 			},
-			[2] = {	-- Weapons enchants group
-				["weapon"] = true,
-				["combat"] = true,
-				["instance"] = true,
-				["pvp"] = true,
-				["level"] = 10,
-			},
 		},
 		WARLOCK = {
 			[1] = {	-- Dark Intent group
 				["spells"] = {
 					109773,	-- Dark Intent
-				},
-				["negate_spells"] = {
-					1459,	-- Arcane Brilliance
-					61316,	-- Dalaran Brilliance
-					77747,	-- Burning Wrath
 				},
 				["combat"] = true,
 				["instance"] = true,
@@ -210,8 +179,10 @@ ReminderBuffs = {
 				},
 				["negate_spells"] = {
 					21562,	-- Power Word: Fortitude
-					6307,	-- Blood Pact
 					90364,	-- Qiraji Fortitude
+					166928,	-- Blood Pact
+				},
+				["personal"] = {
 					6673,	-- Battle Shout
 				},
 				["combat"] = true,
@@ -224,6 +195,8 @@ ReminderBuffs = {
 				["negate_spells"] = {
 					19506,	-- Trueshot Aura
 					57330,	-- Horn of Winter
+				},
+				["personal"] = {
 					469,	-- Commanding Shout
 				},
 				["combat"] = true,
@@ -237,7 +210,7 @@ if not tab then return end
 
 local function OnEvent(self, event, arg1, arg2)
 	local group = tab[self.id]
-	if not group.spells and not group.weapon then return end
+	if not group.spells then return end
 	if not GetActiveSpecGroup() then return end
 	if event == "UNIT_AURA" and arg1 ~= "player" then return end
 	if group.level and UnitLevel("player") < group.level then return end
@@ -253,57 +226,23 @@ local function OnEvent(self, event, arg1, arg2)
 		end
 	end
 
-	local hasOffhandWeapon = OffhandHasWeapon()
-	local hasMainHandEnchant, _, _, hasOffHandEnchant, _, _ = GetWeaponEnchantInfo()
-	if not group.weapon then
-		for _, buff in pairs(group.spells) do
-			local name = GetSpellInfo(buff)
-			local usable, nomana = IsUsableSpell(name)
-			if (usable or nomana) then
-				self.icon:SetTexture(select(3, GetSpellInfo(buff)))
-				self.hasTexture = true
-				break
-			end
+	for _, buff in pairs(group.spells) do
+		local name, _, icon = GetSpellInfo(buff)
+		local usable, nomana = IsUsableSpell(name)
+		if usable or nomana or group.level then
+			self.icon:SetTexture(select(3, GetSpellInfo(buff)))
+			self.hasTexture = true
+			break
 		end
+	end
 
-		if (not self.hasTexture and event == "PLAYER_LOGIN") then
-			self:UnregisterAllEvents()
-			self:RegisterEvent("LEARNED_SPELL_IN_TAB")
-			return
-		elseif (self.hasTexture and event == "LEARNED_SPELL_IN_TAB") then
-			self:UnregisterAllEvents()
-			self:RegisterEvent("UNIT_AURA")
-			if group.combat and group.combat == true then
-				self:RegisterEvent("PLAYER_REGEN_ENABLED")
-				self:RegisterEvent("PLAYER_REGEN_DISABLED")
-			end
-
-			if (group.instance and group.instance == true) or (group.pvp and group.pvp == true) then
-				self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-			end
-
-			if group.role and group.role == true then
-				self:RegisterEvent("UNIT_INVENTORY_CHANGED")
-			end
-		end
-	else
+	if not self.icon:GetTexture() and event == "PLAYER_LOGIN" then
 		self:UnregisterAllEvents()
-		self:RegisterEvent("UNIT_INVENTORY_CHANGED")
-
-		if hasOffhandWeapon == nil then
-			if hasMainHandEnchant == nil then
-				self.icon:SetTexture(GetInventoryItemTexture("player", 16))
-			end
-		else
-			if hasOffHandEnchant == nil then
-				self.icon:SetTexture(GetInventoryItemTexture("player", 17))
-			end
-
-			if hasMainHandEnchant == nil then
-				self.icon:SetTexture(GetInventoryItemTexture("player", 16))
-			end
-		end
-
+		self:RegisterEvent("LEARNED_SPELL_IN_TAB")
+		return
+	elseif self.icon:GetTexture() and event == "LEARNED_SPELL_IN_TAB" then
+		self:UnregisterAllEvents()
+		self:RegisterEvent("UNIT_AURA")
 		if group.combat and group.combat == true then
 			self:RegisterEvent("PLAYER_REGEN_ENABLED")
 			self:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -354,69 +293,39 @@ local function OnEvent(self, event, arg1, arg2)
 	-- Prevent user error
 	if reversecheck ~= nil and (role == nil and spec == nil) then reversecheck = nil end
 
-	if not group.weapon then
-		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and
-		specpass == true and rolepass == true and not (UnitInVehicle("player") and self.hasTexture) then
-			for _, buff in pairs(group.spells) do
-				local name = GetSpellInfo(buff)
-				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
-				if personal and personal == true then
-					if (name and icon and unitCaster == "player") then
-						self:Hide()
-						return
-					end
-				else
-					if (name and icon) then
-						self:Hide()
-						return
-					end
-				end
-			end
-			self:Show()
-			if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
-		elseif ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid"))) and
-		reversecheck == true and not (UnitInVehicle("player") and self.hasTexture) then
-			if negate_reversecheck and negate_reversecheck == GetSpecialization() then self:Hide() return end
-			for _, buff in pairs(group.spells) do
-				local name = GetSpellInfo(buff)
-				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
-				if (name and icon and unitCaster == "player") then
-					self:Show()
-					if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
-					return
-				end
-			end
-		else
-			self:Hide()
-		end
-	else
-		if ((combat and UnitAffectingCombat("player")) or (instance and (instanceType == "party" or instanceType == "raid")) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and
-		specpass == true and rolepass == true and not (UnitInVehicle("player") and self.hasTexture) then
-			if hasOffhandWeapon == nil then
-				if hasMainHandEnchant == nil then
-					self:Show()
-					self.icon:SetTexture(GetInventoryItemTexture("player", 16))
-					if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
+	if ((combat and UnitAffectingCombat("player")) or (instance and difficultyID ~= 0) or (pvp and (instanceType == "arena" or instanceType == "pvp"))) and
+	specpass == true and rolepass == true and not UnitInVehicle("player") then
+		for _, buff in pairs(group.spells) do
+			local name = GetSpellInfo(buff)
+			local _, _, icon, _, _, _, _, unitCaster = UnitBuff("player", name)
+			if personal and personal == true then
+				if name and icon and unitCaster == "player" then	
+					self:Hide()
 					return
 				end
 			else
-				if hasMainHandEnchant == nil or hasOffHandEnchant == nil then
-					self:Show()
-					if hasMainHandEnchant == nil then
-						self.icon:SetTexture(GetInventoryItemTexture("player", 16))
-					else
-						self.icon:SetTexture(GetInventoryItemTexture("player", 17))
-					end
-					if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
+				if name and icon then
+					self:Hide()
 					return
 				end
 			end
-			self:Hide()
-			return
-		else
-			self:Hide()
-			return
 		end
+		self:Show()
+		if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
+	elseif ((combat and UnitAffectingCombat("player")) or (instance and difficultyID ~= 0)) and
+	reversecheck == true and not UnitInVehicle("player") then
+		if negate_reversecheck and negate_reversecheck == GetSpecialization() then self:Hide() return end
+		for _, buff in pairs(group.spells) do
+			local name = GetSpellInfo(buff)
+			local _, _, icon, _, _, _, _, unitCaster = UnitBuff("player", name)
+			if name and icon and unitCaster == "player" then
+				self:Show()
+				if canplaysound == true then PlaySoundFile(C.media.warning_sound, "Master") end
+				return
+			end
+		end
+	else
+		self:Hide()
 	end
 end
 

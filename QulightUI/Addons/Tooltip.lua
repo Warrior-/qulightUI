@@ -30,11 +30,11 @@ local Tooltip = CreateFrame("Frame", "Tooltip", UIParent)
 local _G = getfenv(0)
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
+local StoryTooltip = QuestScrollFrame.StoryTooltip
 
 local gsub, find, format = string.gsub, string.find, string.format
-local Tooltips = {GameTooltip, ItemRefShoppingTooltip1,ItemRefShoppingTooltip2, ItemRefShoppingTooltip3,ShoppingTooltip1,ShoppingTooltip2,ShoppingTooltip3,WorldMapTooltip,WorldMapCompareTooltip1,WorldMapCompareTooltip2,WorldMapCompareTooltip3}
+local Tooltips = {GameTooltip, ItemRefShoppingTooltip1,ItemRefShoppingTooltip2,ShoppingTooltip1,ShoppingTooltip2,WorldMapTooltip,WorldMapCompareTooltip1,WorldMapCompareTooltip2, FriendsTooltip, ConsolidatedBuffsTooltip, AtlasLootTooltip, QuestHelperTooltip, QuestGuru_QuestWatchTooltip, StoryTooltip}
 local ItemRefTooltip = ItemRefTooltip
-
 local linkTypes = {item = true, enchant = true, spell = true, quest = true, unit = true, talent = true, achievement = true, glyph = true}
 
 local classification = {
@@ -450,6 +450,12 @@ Tooltip:SetScript("OnEvent", function(self, event, addon)
 	end
 end)
 
+local FixTooltipBags = CreateFrame("Frame")
+FixTooltipBags:RegisterEvent("BAG_UPDATE_DELAYED")
+FixTooltipBags:SetScript("OnEvent", function()
+GameTooltip:Hide()
+end)
+
 ----------------------------------------------------------------------------------------
 --	Adds item icons to tooltips()
 ----------------------------------------------------------------------------------------
@@ -657,7 +663,7 @@ do
 			repeat
 				_, _, _, level, _, _, _, _, equipLoc = GetItemInfo(link)
 				if level and level >= 458 then
-					local upgrade = link:match(":(%d+)\124h%[")
+					local upgrade = link:match("item:%d+:%d+:%d+:%d+:%d+:%d+:%-?%d+:%-?%d+:%d+:(%d+)")
 					if (upgrade and upgrades[upgrade]) then
 						level = level + upgrades[upgrade]
 					end

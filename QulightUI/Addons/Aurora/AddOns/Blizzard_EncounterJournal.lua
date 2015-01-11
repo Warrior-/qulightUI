@@ -1,4 +1,3 @@
-
 local F, C = unpack(select(2, ...))
 
 C.modules["Blizzard_EncounterJournal"] = function()
@@ -108,6 +107,79 @@ C.modules["Blizzard_EncounterJournal"] = function()
 		hooksecurefunc("EncounterJournal_ListInstances", listInstances)
 		listInstances()
 
+	-- [[ Encounter frame ]]
+
+	EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:Hide()
+	EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetFontObject("GameFontNormalLarge")
+
+	EncounterJournalEncounterFrameInfoEncounterTitle:SetTextColor(1, 1, 1)
+	EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollChildLore:SetTextColor(1, 1, 1)
+	EncounterJournalEncounterFrameInfoDetailsScrollFrameScrollChildDescription:SetTextColor(1, 1, 1)
+	EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildLoreDescription:SetTextColor(1, 1, 1)
+	EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetTextColor(1, 1, 1)
+	EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChild.overviewDescription.Text:SetTextColor(1, 1, 1)
+
+	F.CreateBDFrame(EncounterJournalEncounterFrameInfoModelFrame, .25)
+
+	EncounterJournalEncounterFrameInfoCreatureButton1:SetPoint("TOPLEFT", EncounterJournalEncounterFrameInfoModelFrame, 0, -35)
+
+	do
+		local numBossButtons = 1
+		local bossButton
+
+		hooksecurefunc("EncounterJournal_DisplayInstance", function()
+			bossButton = _G["EncounterJournalBossButton"..numBossButtons]
+			while bossButton do
+				F.Reskin(bossButton, true)
+
+				bossButton.text:SetTextColor(1, 1, 1)
+				bossButton.text.SetTextColor = F.dummy
+
+				local hl = bossButton:GetHighlightTexture()
+				hl:SetTexture(r, g, b, .2)
+				hl:SetPoint("TOPLEFT", 2, -1)
+				hl:SetPoint("BOTTOMRIGHT", 0, 1)
+
+				bossButton.creature:SetPoint("TOPLEFT", 0, -4)
+
+				numBossButtons = numBossButtons + 1
+				bossButton = _G["EncounterJournalBossButton"..numBossButtons]
+			end
+
+			-- move last tab
+			local _, point = EncounterJournalEncounterFrameInfoModelTab:GetPoint()
+			EncounterJournalEncounterFrameInfoModelTab:SetPoint("TOP", point, "BOTTOM", 0, 1)
+		end)
+	end
+
+	-- [[ Side tabs ]]
+
+	EncounterJournalEncounterFrameInfoOverviewTab:ClearAllPoints()
+	EncounterJournalEncounterFrameInfoOverviewTab:SetPoint("TOPLEFT", EncounterJournalEncounterFrameInfo, "TOPRIGHT", 9, -35)
+	EncounterJournalEncounterFrameInfoLootTab:ClearAllPoints()
+	EncounterJournalEncounterFrameInfoLootTab:SetPoint("TOP", EncounterJournalEncounterFrameInfoOverviewTab, "BOTTOM", 0, 1)
+	EncounterJournalEncounterFrameInfoBossTab:ClearAllPoints()
+	EncounterJournalEncounterFrameInfoBossTab:SetPoint("TOP", EncounterJournalEncounterFrameInfoLootTab, "BOTTOM", 0, 1)
+
+	local tabs = {EncounterJournalEncounterFrameInfoOverviewTab, EncounterJournalEncounterFrameInfoLootTab, EncounterJournalEncounterFrameInfoBossTab, EncounterJournalEncounterFrameInfoModelTab}
+	for _, tab in pairs(tabs) do
+		tab:SetScale(.75)
+
+		tab:SetBackdrop({
+			bgFile = C.media.backdrop,
+			edgeFile = C.media.backdrop,
+			edgeSize = 1 / .75,
+		})
+
+		tab:SetBackdropColor(0, 0, 0, .5)
+		tab:SetBackdropBorderColor(0, 0, 0)
+
+		tab:SetNormalTexture("")
+		tab:SetPushedTexture("")
+		tab:SetDisabledTexture("")
+		tab:SetHighlightTexture("")
+	end
+	------------------------ 
 		EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollChildLore:SetTextColor(1, 1, 1)
 		EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollChildLore:SetShadowOffset(1, -1)
 		EncounterJournalEncounterFrameInfoDetailsScrollFrameScrollChildDescription:SetTextColor(1, 1, 1)
@@ -158,7 +230,6 @@ C.modules["Blizzard_EncounterJournal"] = function()
 					F.Reskin(header.button, true)
 
 					header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
-					header.button.bg = F.CreateBG(header.button.abilityIcon)
 
 					_G[name.."HeaderButtonELeftUp"]:SetAlpha(0)
 					_G[name.."HeaderButtonERightUp"]:SetAlpha(0)
@@ -194,6 +265,41 @@ C.modules["Blizzard_EncounterJournal"] = function()
 				header = _G[name]
 			end
 		end)
+
+	hooksecurefunc("EncounterJournal_SetUpOverview", function(self, role, index)
+		local header = self.overviews[index]
+		if not header.styled then
+			header.flashAnim.Play = F.dummy
+
+			header.descriptionBG:SetAlpha(0)
+			header.descriptionBGBottom:SetAlpha(0)
+			for i = 4, 18 do
+				select(i, header.button:GetRegions()):SetTexture("")
+			end
+
+			header.button.title:SetTextColor(1, 1, 1)
+			header.button.title.SetTextColor = F.dummy
+			header.button.expandedIcon:SetTextColor(1, 1, 1)
+			header.button.expandedIcon.SetTextColor = F.dummy
+
+			F.Reskin(header.button, true)
+
+			header.styled = true
+		end
+	end)
+
+	hooksecurefunc("EncounterJournal_SetBullets", function(object, description)
+		local parent = object:GetParent()
+
+		if parent.Bullets then
+			for _, bullet in pairs(parent.Bullets) do
+				if not bullet.styled then
+					bullet.Text:SetTextColor(1, 1, 1)
+					bullet.styled = true
+				end
+			end
+		end
+	end)
 
 		local items = EncounterJournal.encounter.info.lootScroll.buttons
 
@@ -247,6 +353,7 @@ C.modules["Blizzard_EncounterJournal"] = function()
 		F.ReskinScroll(EncounterJournalInstanceSelectScrollFrameScrollBar)
 		F.ReskinScroll(EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollBar)
 		F.ReskinScroll(EncounterJournalEncounterFrameInfoBossesScrollFrameScrollBar)
+		F.ReskinScroll(EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollBar)
 		F.ReskinScroll(EncounterJournalEncounterFrameInfoDetailsScrollFrameScrollBar)
 		F.ReskinScroll(EncounterJournalEncounterFrameInfoLootScrollFrameScrollBar)
 		F.ReskinScroll(EncounterJournalSearchResultsScrollFrameScrollBar)

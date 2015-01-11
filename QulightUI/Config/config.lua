@@ -178,7 +178,10 @@ Qulight["tooltip"] = {
 }
 Qulight["bags"] = {
 	["Enable"] = true,																	-- enable/disable bags 
-	["BagBars"] = true,																-- enable/disable bags bar
+	["buttonsize"] = 32,																	-- Buttons size
+	["buttonspace"] = 3,																	-- Buttons space
+	["bankcolumns"] = 17,																	-- Horizontal number of columns in bank
+	["BagBars"] = true,																	-- enable/disable bags bar
 }
 Qulight["loot"] = {
 	["lootframe"] = true,                  												-- enable/disable loot addon

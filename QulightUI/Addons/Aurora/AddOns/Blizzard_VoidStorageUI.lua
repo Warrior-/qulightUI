@@ -1,4 +1,3 @@
-
 local F, C = unpack(select(2, ...))
 
 C.modules["Blizzard_VoidStorageUI"] = function()
@@ -33,9 +32,9 @@ C.modules["Blizzard_VoidStorageUI"] = function()
 		for i = 1, 9 do
 			local bu = _G[voidButton..i]
 			local border = bu.IconBorder
- 
+
 			bu:SetPushedTexture("")
-			G[voidButton..i.."Bg"]:Hide()
+			_G[voidButton..i.."Bg"]:Hide()
 
 			bu.icon:SetTexCoord(.08, .92, .08, .92)
 
@@ -51,6 +50,7 @@ C.modules["Blizzard_VoidStorageUI"] = function()
 	for i = 1, 80 do
 		local bu = _G["VoidStorageStorageButton"..i]
 		local border = bu.IconBorder
+		local searchOverlay = bu.searchOverlay
 
 		bu:SetPushedTexture("")
 
@@ -59,8 +59,13 @@ C.modules["Blizzard_VoidStorageUI"] = function()
 		border:SetPoint("BOTTOMRIGHT", 1, -1)
 		border:SetDrawLayer("BACKGROUND")
 
+		searchOverlay:SetPoint("TOPLEFT", -1, 1)
+		searchOverlay:SetPoint("BOTTOMRIGHT", 1, -1)
+
 		_G["VoidStorageStorageButton"..i.."Bg"]:Hide()
 		_G["VoidStorageStorageButton"..i.."IconTexture"]:SetTexCoord(.08, .92, .08, .92)
+			
+			F.CreateBDFrame(bu, .25)
 	end
 
 	for i = 1, 2 do

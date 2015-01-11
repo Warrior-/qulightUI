@@ -32,9 +32,9 @@ ShiftBarUpdate = function(self)
 			
 			if isActive then
 				StanceBarFrame.lastSelected = button:GetID()
-				button:SetChecked(1)
+				button:SetChecked(true)
 			else
-				button:SetChecked(0)
+				button:SetChecked(false)
 			end
 
 			if isCastable then

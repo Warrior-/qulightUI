@@ -1,7 +1,7 @@
 
 if Qulight["datatext"].vengeance and Qulight["datatext"].vengeance > 0 then
 
-local vengeance = GetSpellInfo(93098) or GetSpellInfo(76691)
+local vengeance = GetSpellInfo(158300) or GetSpellInfo(76691)
 local Stat = CreateFrame("Frame")
 	Stat:SetFrameStrata("BACKGROUND")
 	Stat:SetFrameLevel(3)

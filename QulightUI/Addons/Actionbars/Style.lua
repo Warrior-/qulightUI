@@ -359,7 +359,7 @@ local function SetupFlyoutButton()
 			StyleButton(_G["SpellFlyoutButton"..i])
 
 			if _G["SpellFlyoutButton"..i]:GetChecked() then
-				_G["SpellFlyoutButton"..i]:SetChecked(nil)
+				_G["SpellFlyoutButton"..i]:SetChecked(false)
 			end
 		end
 	end
@@ -463,6 +463,7 @@ end
 hooksecurefunc("ActionButton_Update", StyleActionBarButton)
 hooksecurefunc("ActionButton_UpdateHotkeys", UpdateActionBarHotKey)
 hooksecurefunc("ActionButton_UpdateFlyout", StyleActionBarFlyout)
+hooksecurefunc("ActionButton_OnEvent", function(self, event, ...) if event == "PLAYER_ENTERING_WORLD" then ActionButton_UpdateHotkeys(self, self.buttonType) end end)
 
 if not myclass == "SHAMAN" then return end
 

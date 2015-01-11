@@ -320,7 +320,7 @@ local menuList = {
         text = QUESTLOG_BUTTON,
         icon = 'Interface\\GossipFrame\\ActiveQuestIcon',
         func = function() 
-            securecall(ToggleFrame, QuestLogFrame) 
+        	ToggleQuestLog()
         end,
         notCheckable = true,
     },
@@ -342,12 +342,12 @@ local menuList = {
         notCheckable = true,
     },
     {
-        text = PLAYER_V_PLAYER,
-        icon = 'Interface\\MINIMAP\\TRACKING\\BattleMaster',
-        func = function() 
-            securecall(TogglePVPUI, 1) 
-        end,
-        notCheckable = true,
+        --text = PLAYER_V_PLAYER,
+        --icon = 'Interface\\MINIMAP\\TRACKING\\BattleMaster',
+        --func = function() 
+            --securecall(TogglePVPUI, 1) 
+        --end,
+        --notCheckable = true,
     },
     {
         text = DUNGEONS_BUTTON,

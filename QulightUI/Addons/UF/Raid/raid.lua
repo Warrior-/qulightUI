@@ -35,10 +35,6 @@ RaidBuffs = {
 	SHAMAN = {
 		{61295, "TOPRIGHT", {0.7, 0.3, 0.7}},				-- Riptide
 		{974, "BOTTOMLEFT", {0.2, 0.7, 0.2}, true},			-- Earth Shield
-		{51945, "BOTTOMRIGHT", {0.7, 0.4, 0}},				-- Earthliving
-	},
-	DEATHKNIGHT = {
-		{49016, "TOPRIGHT", {0.89, 0.89, 0.1}},				-- Unholy Frenzy
 	},
 	HUNTER = {
 		{35079, "TOPRIGHT", {0.2, 0.2, 1}},					-- Misdirection
@@ -73,6 +69,35 @@ local function SpellName(id)
 end
 
 RaidDebuffs = {
+-----------------------------------------------------------------
+-- Draenor
+-----------------------------------------------------------------
+-- Blackrock Foundry
+	-- Beastlord Darmac
+	-- Flamebender Ka'graz
+	-- Gruul the Subjugated
+	-- Blast Furnace
+	-- Hans'gar and Franzok
+	-- Iron Maidens
+	-- Kromog
+	-- Operator Thogar
+	-- Oregorger
+	-- Warlord Blackhand
+-- Highmaul
+	-- The Butcher
+	[SpellName(156152)] = 3,	-- Gushing Wounds
+	-- Kargath Bladefist
+	[SpellName(159178)] = 3,	-- Open Wounds (Tank switch)
+	[SpellName(159113)] = 3,	-- Impale (DoT)
+	-- Twin Ogron
+	[SpellName(155569)] = 3,	-- Injured (DoT)
+	[SpellName(167200)] = 3,	-- Arcane Wound (DoT)
+	-- Ko'ragh
+	[SpellName(161242)] = 3,	-- Caustic Energy (DoT)
+	-- Tectus
+	-- Brackenspore
+	-- Imperator Mar'gok
+	[SpellName(158605)] = 3,	-- Mark of Chaos
 -----------------------------------------------------------------
 -- Pandaria
 -----------------------------------------------------------------
@@ -813,10 +838,11 @@ local function Shared(self, unit)
 		self.RaidDebuffs.count:SetTextColor(1, 1, 1)
 
 		if Qulight.raidframes.show_spiral == true then
-			self.RaidDebuffs.cd = CreateFrame("Cooldown", nil, self.RaidDebuffs)
+			self.RaidDebuffs.cd = CreateFrame("Cooldown", nil, self.RaidDebuffs, "CooldownFrameTemplate")
 			self.RaidDebuffs.cd:SetPoint("TOPLEFT", 2, -2)
 			self.RaidDebuffs.cd:SetPoint("BOTTOMRIGHT", -2, 2)
 			self.RaidDebuffs.cd:SetReverse(true)
+			self.RaidDebuffs.cd:SetDrawEdge(false)
 			self.RaidDebuffs.cd.noOCC = true
 			self.RaidDebuffs.parent = CreateFrame("Frame", nil, self.RaidDebuffs)
 			self.RaidDebuffs.parent:SetFrameLevel(self.RaidDebuffs.cd:GetFrameLevel() + 1)

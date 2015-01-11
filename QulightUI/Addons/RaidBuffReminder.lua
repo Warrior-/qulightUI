@@ -1,12 +1,11 @@
 	if not Qulight["misk"].BuffReminderRaidBuffs == true then return end
-
 ReminderBuffs = {
 	Flask = {
-			105694,	-- Flask of the Earth
 			105691,	-- Flask of the Warm Sun
 			105696,	-- Flask of Winter's Bite
 			105693,	-- Flask of Falling Leaves
 			105689,	-- Flask of Spring Blossoms
+			105694,	-- Flask of the Earth
 		},
 		BattleElixir = {
 			105688,	-- Monk's Elixir
@@ -25,48 +24,47 @@ ReminderBuffs = {
 		},
 		Stat = {
 			20217,	-- Blessing of Kings
-			117666,	-- Legacy of the Emperor
+			115921,	-- Legacy of the Emperor
+			116781,	-- Legacy of the White Tiger
 			90363,	-- Embrace of the Shale Spider
 			1126,	-- Mark of the Wild
 		},
 		Stamina = {
-			109773,	-- Dark Intent
 			469,	-- Commanding Shout
 			90364,	-- Qiraji Fortitude
+			166928,	-- Blood Pact
 			111922,	-- Runescroll of Fortitude III
 			21562,	-- Power Word: Fortitude
 		}
-}
+	}
 
-function ReminderCasterBuffs()
-	Spell5Buff = {	-- Spell Power
-			77747,	-- Burning Wrath
+	-- Caster buffs
+	function ReminderCasterBuffs()
+		Spell5Buff = {	-- Spell Power
 			109773,	-- Dark Intent
 			126309,	-- Still Water
+			128433,	-- Serpent's Swiftness
 			61316,	-- Dalaran Brilliance
 			1459,	-- Arcane Brilliance
 		}
-		Spell6Buff = {	-- Spell Haste
-			24907,	-- Moonkin Aura
-			49868,	-- Mind Quickening
-			135678,	-- Energizing Spores
-			51470,	-- Elemental Oath
-		}
-end
+	end
 
-function ReminderPhysicalBuffs()
-	Spell5Buff = {	-- Attack Power
+	-- Physical buffs
+	function ReminderPhysicalBuffs()
+		Spell5Buff = {	-- Attack Power
 			6673,	-- Battle Shout
 			19506,	-- Trueshot Aura
 			57330,	-- Horn of Winter
 		}
-		Spell6Buff = {	-- Melee and Ranged Haste
-			30809,	-- Unleashed Rage
-			113742,	-- Swiftblade's Cunning
-			128432,	-- Cackling Howl
-			128433,	-- Serpent's Swiftness
-			55610,	-- Unholy Aura
-		}
+
+	Spell6Buff = {	-- Haste
+		49868,	-- Mind Quickening
+		135678,	-- Energizing Spores
+		113742,	-- Swiftblade's Cunning
+		128432,	-- Cackling Howl
+		55610,	-- Unholy Aura
+		116956,	-- Grace of Air
+	}
 end
 
 local flaskbuffs = ReminderBuffs["Flask"]
@@ -75,7 +73,7 @@ local guardianelixirbuffs = ReminderBuffs["GuardianElixir"]
 local foodbuffs = ReminderBuffs["Food"]
 local statbuffs = ReminderBuffs["Stat"]
 local staminabuffs = ReminderBuffs["Stamina"]
-local visible, flask, battleelixir, guardianelixir, food, stat, stamina, spell5, spell6
+local visible, flask, battleelixir, guardianelixir, food, stat, stamina, spell5, spell6, once
 
 local function CheckElixir(unit)
 	if battleelixirbuffs and battleelixirbuffs[1] then
@@ -84,6 +82,7 @@ local function CheckElixir(unit)
 			if UnitAura("player", spellname) then
 				FlaskFrame.t:SetTexture(select(3, GetSpellInfo(battleelixirbuffs)))
 				battleelixir = true
+				once = true
 				break
 			else
 				battleelixir = false
@@ -99,6 +98,7 @@ local function CheckElixir(unit)
 				if not battleelixir then
 					FlaskFrame.t:SetTexture(select(3, GetSpellInfo(guardianelixirbuffs)))
 				end
+				once = true
 				break
 			else
 				guardianelixir = false

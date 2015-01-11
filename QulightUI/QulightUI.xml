@@ -61,7 +61,7 @@
 	<Script file="Addons\Infotext\hps.lua"/>
 	<Script file="Addons\Infotext\vengeance.lua"/>
 	
-	<Script file="Addons\AddonManager.lua"/>
+	--Script file="Addons\AddonManager.lua"--
 	<Script file="Addons\Bags.lua"/>
 	<Script file="Addons\Buffs.lua"/>
 	<Script file="Addons\Chat.lua"/>
