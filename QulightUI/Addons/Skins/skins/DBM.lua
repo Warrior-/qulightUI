@@ -236,10 +236,22 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 		hooksecurefunc(DBM.BossHealth, "AddBoss", SkinBoss)
 		hooksecurefunc(DBM.BossHealth, "UpdateSettings", SkinBoss)
 		
-		DBM.RangeCheck:Show()
-		DBM.RangeCheck:Hide()
+		local firstRange = true
+		hooksecurefunc(DBM.RangeCheck, "Show", function()
+			if firstRange then
+				DBMRangeCheck:SetBackdrop(nil)
+				local bd = CreateFrame("Frame", nil, DBMRangeCheckRadar)
+				bd:SetPoint("TOPLEFT")
+				bd:SetPoint("BOTTOMRIGHT")
+				bd:SetFrameLevel(0)
+				bd:SetFrameStrata(DBMRangeCheckRadar:GetFrameStrata())
+				bd:SetBackdropColor(.05,.05,.05, .9)
+				bd:SetBackdrop(backdrop)
+				bd:SetBackdropColor(.08,.08,.08, .9)
 
-		CreateStyle(DBMRangeCheckRadar, 2)
+				firstRange = false
+			end
+		end)
 	
 		if croprwicons then
 			local replace = string.gsub

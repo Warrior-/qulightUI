@@ -49,11 +49,6 @@ local shadow = CreateFrame("Frame", nil, tt)
 	shadow:SetBackdrop(shadows)
 	shadow:SetBackdropColor(.08,.08,.08, .9)
 	shadow:SetBackdropBorderColor(0, 0, 0, 1)
- 
-	-- tt:HookScript("OnShow", SetStyle)
-	-- tt.GetBackdrop = function() return shadow end
-	-- tt.GetBackdropColor = function() return shadow end
-	-- tt.GetBackdropBorderColor = function() return shadow end
 end
  
 local ItemRefTooltip = ItemRefTooltip
@@ -376,7 +371,11 @@ oUF_colors = setmetatable({
 local BorderColor = function(self)
 	local GetMouseFocus = GetMouseFocus()
 	local unit = (select(2, self:GetUnit())) or (GetMouseFocus and GetMouseFocus:GetAttribute("unit"))
- 
+		
+	if (not Unit) and (UnitExists("mouseover")) then
+		Unit = 'mouseover'
+	end
+
 	local reaction = unit and UnitReaction(unit, "player")
 	local player = unit and UnitIsPlayer(unit)
 	local tapped = unit and UnitIsTapped(unit)
@@ -402,8 +401,6 @@ local BorderColor = function(self)
 			healthBar:SetStatusBarColor(.15,.15,.15,0)
 		end
 	end
- 
-	NeedBackdropBorderRefresh = true
 end
  
 function frame1px(f)
@@ -434,9 +431,6 @@ Tooltip:SetScript("OnEvent", function(self, event, addon)
 	if event == "PLAYER_ENTERING_WORLD" then
 		for _, tt in pairs(Tooltips) do
 			tt:HookScript("OnShow", SetStyleSafely)
-			-- tt.GetBackdrop = function() return shadow end
-			-- tt.GetBackdropColor = function() return shadow end
-			-- tt.GetBackdropBorderColor = function() return shadow end
 		end
  
 		ItemRefTooltip:HookScript("OnTooltipSetItem", SetStyle)

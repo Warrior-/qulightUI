@@ -118,6 +118,12 @@ MiniMapMailFrame:SetFrameStrata("LOW")
 MiniMapMailIcon:SetTexture("Interface\\AddOns\\QulightUI\\Root\\Media\\mail.tga")
 MiniMapMailBorder:Hide()
 
+--[[Garrison Minimap Icon]]
+GarrisonLandingPageMinimapButton:ClearAllPoints()
+GarrisonLandingPageMinimapButton:SetParent(Minimap)
+GarrisonLandingPageMinimapButton:SetSize(35,35)
+GarrisonLandingPageMinimapButton:SetPoint("BOTTOMLEFT", 0, 0)
+
 MiniMapTracking:ClearAllPoints()
 MiniMapTracking:SetParent(Minimap)
 MiniMapTracking:SetPoint('TOPLEFT', 0, 0)
@@ -454,3 +460,57 @@ HelpOpenTicketButton:ClearAllPoints()
 HelpOpenTicketButton:SetPoint('TOPLEFT', f, 'BOTTOMRIGHT', -26, 26)
 HelpOpenTicketButton:SetScale(0.6)
 HelpOpenTicketButton:SetParent(f)
+
+----------------------------------------------------------------------------------------
+-- Mouseover map, displaying zone and coords
+----------------------------------------------------------------------------------------
+
+local m_coord = CreateFrame("Frame","QuMinimapCoord",minimap)
+m_coord:SetSize(30,15)
+m_coord:SetPoint("TOP", minimaplol, "TOP", 0,0)
+m_coord:SetFrameLevel(3)
+m_coord:SetFrameStrata("MEDIUM")
+m_coord:SetAlpha(0)
+
+local m_coord_text = m_coord:CreateFontString("QuMinimapCoordText","minimap")
+m_coord_text:SetFont(Qulight["media"].font, 8, "OUTLINE")
+m_coord_text:SetPoint("BOTTOMRIGHT", minimaplol, "BOTTOMRIGHT", -35,0)
+m_coord_text:SetAlpha(0)
+m_coord_text:SetText("00,00")
+
+Minimap:SetScript("OnEnter",function()
+	m_coord:SetAlpha(1)
+	m_coord_text:SetAlpha(1)
+end)
+
+Minimap:SetScript("OnLeave",function()
+	m_coord:SetAlpha(0)
+	m_coord_text:SetAlpha(0)
+end)
+ 
+local ela = 0
+local coord_Update = function(self,t)
+	ela = ela - t
+	if ela > 0 then return end
+	local x,y = GetPlayerMapPosition("player")
+	local xt,yt
+	x = math.floor(100 * x)
+	y = math.floor(100 * y)
+	if x == 0 and y == 0 then
+		m_coord_text:SetText("X _ X")
+	else
+		if x < 10 then
+			xt = "0"..x
+		else
+			xt = x
+		end
+		if y < 10 then
+			yt = "0"..y
+		else
+			yt = y
+		end
+		m_coord_text:SetText(xt..","..yt)
+	end
+	ela = .2
+end
+m_coord:SetScript("OnUpdate",coord_Update)

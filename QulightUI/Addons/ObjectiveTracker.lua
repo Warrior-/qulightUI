@@ -51,16 +51,33 @@ for _, headerName in pairs({"QuestHeader", "AchievementHeader", "ScenarioHeader"
 	local header = ObjectiveTrackerFrame.BlocksFrame[headerName].Background:Hide()
 end
 	
---	ReskinClose(ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, nil, "-", true)
+	local button = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+	button:SetSize(17, 17)
+	button.minus = button:CreateTexture(nil, "OVERLAY")
+	button.minus:SetSize(5, 1)
+	button.minus:SetTexCoord(.08, .92, .08, .92)
+	button.minus:SetPoint("CENTER")
+	button.minus:SetTexture("")
+
+	button.plus = button:CreateTexture(nil, "OVERLAY")
+	button.plus:SetSize(1, 5)
+	button.plus:SetTexCoord(.08, .92, .08, .92)
+	button.plus:SetPoint("CENTER")
+	button.plus:SetTexture("")
+
+	button:HookScript("OnEnter", SetModifiedBackdrop)
+	button:HookScript("OnLeave", SetOriginalBackdrop)
+	CreateBD(button, 4)
 	
+
+	button.plus:Hide()
 	hooksecurefunc("ObjectiveTracker_Collapse", function()
-		ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetText("+")
-	end)
-
+	button.plus:Show()
+end)
 	hooksecurefunc("ObjectiveTracker_Expand", function()
-		ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetText("-")
-	end)
-
+	button.plus:Hide()
+end)
+	
 ----------------------------------------------------------------------------------------
 --	Auto collapse ObjectiveTrackerFrame in instance
 ----------------------------------------------------------------------------------------

@@ -50,6 +50,8 @@ do
 		"ChatFrame1",
 		"ChatFrame2",
 		"ExtraActionBarFrame",
+		"DraenorZoneAbilityFrame",
+		"DraenorZoneAbilityFrame.SpellButton",
 	}
 	for _, frame in pairs(uiManagedFrames) do
 		UIPARENT_MANAGED_FRAME_POSITIONS[frame] = nil

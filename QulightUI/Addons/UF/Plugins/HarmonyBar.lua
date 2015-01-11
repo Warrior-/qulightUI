@@ -12,6 +12,7 @@ local Colors = {
 	[3] = {.65, .63, .35, 1},
 	[4] = {.46, .63, .35, 1},
 	[5] = {.33, .63, .33, 1},
+	[6] = {.07, .63, .31, 1},
 }
 
 local function Update(self, event, unit, powerType)
@@ -82,8 +83,9 @@ local function Enable(self, unit)
 		
 		self:RegisterEvent("UNIT_POWER", Path)
 		self:RegisterEvent("UNIT_DISPLAYPOWER", Path)
+		self:RegisterEvent('PLAYER_TALENT_UPDATE', Path)
 		
-		for i = 1, 5 do
+		for i = 1, 6 do
 			local Point = hb[i]
 			if not Point:GetStatusBarTexture() then
 				Point:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])
@@ -94,7 +96,7 @@ local function Enable(self, unit)
 			Point:GetStatusBarTexture():SetHorizTile(false)
 		end
 		
-		hb.maxChi = 5
+		hb.maxChi = 6
 		
 		return true
 	end
@@ -104,6 +106,7 @@ local function Disable(self)
 	if self.HarmonyBar then
 		self:UnregisterEvent("UNIT_POWER", Path)
 		self:UnregisterEvent("UNIT_DISPLAYPOWER", Path)
+		self:UnregisterEvent('PLAYER_TALENT_UPDATE', Path)
 	end
 end
 

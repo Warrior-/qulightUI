@@ -49,9 +49,12 @@ ReminderBuffs = {
 				},
 				["negate_spells"] = {
 					1126,	-- Mark of the Wild
-					20217,	-- Blessing of Kings
+					159988,	-- Bark of the Wild (Dog)
+					160017,	-- Blessing of Kongs (Gorilla)
 					90363,	-- Embrace of the Shale Spider
+					160077,	-- Strength of the Earth (Worm)
 					116781,	-- Legacy of the White Tiger
+					20217,	-- Blessing of Kings
 				},
 				["combat"] = true,
 				["instance"] = true,
@@ -62,7 +65,13 @@ ReminderBuffs = {
 					116781,	-- Legacy of the White Tiger
 				},
 				["negate_spells"] = {
+					91126,	-- Mark of the Wild
+					159988,	-- Bark of the Wild (Dog)
+					160017,	-- Blessing of Kongs (Gorilla)
 					90363,	-- Embrace of the Shale Spider
+					160077,	-- Strength of the Earth (Worm)
+					115921,	-- Legacy of the Emperor
+					20217,	-- Blessing of Kings
 				},
 				["combat"] = true,
 				["instance"] = true,
@@ -84,6 +93,7 @@ ReminderBuffs = {
 				},
 				["negate_spells"] = {
 					1126,	-- Mark of the Wild
+					160017,	-- Blessing of Kongs (Gorilla)
 					115921,	-- Legacy of the Emperor
 					116781,	-- Legacy of the White Tiger
 					90363,	-- Embrace of the Shale Spider

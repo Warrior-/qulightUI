@@ -642,6 +642,11 @@ CreateAnchor(AnchorExtraActionBar, "Move ExtraActionBar", 40, 40)
 ExtraActionBarFrame:SetParent(UIParent)
 ExtraActionBarFrame:ClearAllPoints()
 ExtraActionBarFrame:SetPoint("CENTER", AnchorExtraActionBar, "CENTER")
+DraenorZoneAbilityFrame:SetParent(UIParent)
+DraenorZoneAbilityFrame:ClearAllPoints()
+DraenorZoneAbilityFrame:SetPoint('CENTER', AnchorExtraActionBar, 'CENTER')
+--DraenorZoneAbilityFrame:SetScript("OnShow", DraenorZoneAbilityFrame.Hide)
+DraenorZoneAbilityFrame.ignoreFramePositionManager = true
 
 ------------------------------------------------------------------------------------------
 --	Skin ExtraActionBarFrame(by Zork)
@@ -660,3 +665,17 @@ icon:SetPoint("BOTTOMRIGHT", button, -2,2)
 button.style:SetTexture(nil)
 hooksecurefunc(texture, "SetTexture", disableTexture)
 StyleButton(button, true)
+
+local button = DraenorZoneAbilityFrame.SpellButton
+local texture = button.Style
+local disableTexture = function(style, texture)
+	if texture then
+		style:SetTexture(nil)
+	end
+end
+button:SetSize(40,40)
+button.Icon:SetTexCoord(.08, .92, .08, .92)
+button.Icon:SetPoint("TOPLEFT", button, 2,-2)
+button.Icon:SetPoint("BOTTOMRIGHT", button, -2,2)
+button.Style:SetTexture(nil)
+hooksecurefunc(texture, "SetTexture", disableTexture)

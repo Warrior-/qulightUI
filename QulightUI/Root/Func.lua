@@ -229,3 +229,19 @@ function frame1px(f)
 	f:SetBackdropColor(.05,.05,.05,0)
 	f:SetBackdropBorderColor(.15,.15,.15,0)	
 end
+
+SetModifiedBackdrop = function(self)
+	if self:GetButtonState() == "DISABLED" then return end
+	self:SetBackdropBorderColor(.05,.05,.05,0)
+	if self.overlay then
+		self.overlay:SetVertexColor(0, 0, 0, .4)
+	end
+end
+
+SetOriginalBackdrop = function(self)
+	if self:GetButtonState() == "DISABLED" then return end
+	self:SetBackdropBorderColor(.05,.05,.05,0)
+	if self.overlay then
+		self.overlay:SetVertexColor(0, 0, 0, .4)
+	end
+end

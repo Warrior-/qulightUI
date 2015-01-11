@@ -1221,23 +1221,27 @@ genHarmony = function(self)
 				
 		local hb = CreateFrame("Frame", "Harmony", self)
 		hb:SetPoint("TOPLEFT", self, "TOPLEFT",2,-2)
-		hb:SetWidth(130)
+		hb:SetWidth(120)
 		hb:SetHeight(6)
-		CreateStyle(hb, 4, 1, .9, 0.6)
+		hb:SetBackdrop(backdrop)
+
 		hb:SetBackdropBorderColor(0,0,0,0)
+		hb:SetBackdropColor(0, 0, 0)
+		CreateStyle(hb, 4, 1, .9, 0.6)
 		hb:SetFrameLevel(6)
 			for i = 1, 6 do
 				hb[i] = CreateFrame("StatusBar", nil, hb)
 				hb[i]:SetHeight(6)
 				hb[i]:SetStatusBarTexture(Qulight["media"].texture)
 									
-				if i == 1 then
-					hb[i]:SetWidth(120 / 6)
-					hb[i]:SetPoint("LEFT", hb, "LEFT", 0, 0)
-				else
-					hb[i]:SetWidth((120 / 6) - 1)
-					hb[i]:SetPoint("LEFT", hb[i-1], "RIGHT", 1, 0)
-				end
+					if i == 1 then
+						hb[i]:SetWidth(120 / 6)
+						hb[i]:SetPoint("LEFT", hb, "LEFT", 0, 0)
+					else
+						hb[i]:SetWidth((120 / 6) - 1)
+						hb[i]:SetPoint("LEFT", hb[i-1], "RIGHT", 1, 0)
+					end
+						hb[i].bg = hb[i]:CreateTexture(nil, 'ARTWORK')
 			end
 		self.HarmonyBar = hb
 	end

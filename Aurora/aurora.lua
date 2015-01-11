@@ -531,7 +531,7 @@ F.SetBD = function(f, x, y, x2, y2)
 		bg:SetPoint("TOPLEFT", x, y)
 		bg:SetPoint("BOTTOMRIGHT", x2, y2)
 	end
-	bg:SetFrameLevel(0)
+	bg:SetFrameLevel(f:GetFrameLevel()-1)
 	F.CreateBD(bg)
 	F.CreateSD(bg)
 end
@@ -601,6 +601,79 @@ F.ReskinColourSwatch = function(f)
 	bg:SetTexture(0, 0, 0)
 	bg:SetPoint("TOPLEFT", 2, -2)
 	bg:SetPoint("BOTTOMRIGHT", -2, 2)
+end
+
+F.ReskinFilterButton = function(f)
+	f.TopLeft:Hide()
+	f.TopRight:Hide()
+	f.BottomLeft:Hide()
+	f.BottomRight:Hide()
+	f.TopMiddle:Hide()
+	f.MiddleLeft:Hide()
+	f.MiddleRight:Hide()
+	f.BottomMiddle:Hide()
+	f.MiddleMiddle:Hide()
+	
+	F.Reskin(f)
+	f.Icon:SetTexture(C.media.arrowRight)
+
+	f.Text:SetPoint("CENTER")
+	f.Icon:SetPoint("RIGHT", f, "RIGHT", -5, 0)
+	f.Icon:SetSize(8, 8)
+end
+
+F.ReskinNavBar = function(f)
+	local overflowButton = f.overflowButton
+	f:GetRegions():Hide()
+	f:DisableDrawLayer("BORDER")
+	f.overlay:Hide()
+	f.homeButton:GetRegions():Hide()
+
+	F.Reskin(f.homeButton)
+	F.Reskin(overflowButton, true)
+
+	local tex = overflowButton:CreateTexture(nil, "ARTWORK")
+	tex:SetTexture(C.media.arrowLeft)
+	tex:SetSize(8, 8)
+	tex:SetPoint("CENTER")
+
+	overflowButton.tex = tex
+	overflowButton:HookScript("OnEnter", colourArrow)
+	overflowButton:HookScript("OnLeave", clearArrow)
+end
+
+F.ReskinGarrisonPortrait = function(portrait)
+	local level = portrait.Level
+	local cover = portrait.PortraitRingCover
+
+	portrait.PortraitRing:Hide()
+	portrait.PortraitRingQuality:SetTexture("")
+
+	portrait.LevelBorder:SetTexture(0, 0, 0, .5)
+	portrait.LevelBorder:SetSize(44, 11)
+	portrait.LevelBorder:ClearAllPoints()
+	portrait.LevelBorder:SetPoint("BOTTOM", 0, 12)
+
+	level:ClearAllPoints()
+	level:SetPoint("BOTTOM", portrait, 0, 12)
+
+	local squareBG = CreateFrame("Frame", nil, portrait)
+	squareBG:SetFrameLevel(portrait:GetFrameLevel()-1)
+	squareBG:SetPoint("TOPLEFT", 3, -3)
+	squareBG:SetPoint("BOTTOMRIGHT", -3, 11)
+
+	F.CreateBD(squareBG, 1)
+	portrait.squareBG = squareBG
+
+	if cover then
+		cover:SetTexture(0, 0, 0)
+		cover:SetAllPoints(squareBG)
+	end
+end
+
+F.ReskinIcon = function(icon)
+	icon:SetTexCoord(.08, .92, .08, .92)
+	F.CreateBG(icon)
 end
 
 -- [[ Module handling ]]
@@ -4376,52 +4449,6 @@ WorldMapFrame:HookScript("OnEvent", function(self, event)
 		end
 	end
 end)
-
-			
-local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
-local fontheight = 10*1.1
-coords:SetFrameLevel(90)
-coords.PlayerText = SetFontString(CoordsFrame, Qulight["media"].pxfont, fontheight, "OUTLINE")
-coords.MouseText = SetFontString(CoordsFrame, Qulight["media"].pxfont, fontheight, "OUTLINE")
-coords.PlayerText:SetTextColor(1, 1, 1)
-coords.MouseText:SetTextColor(1, 1, 1)
-coords.PlayerText:SetText("Player:   0, 0")
-coords.MouseText:SetText("Mouse:   0, 0")
-coords.PlayerText:SetPoint("TOPRIGHT", WorldMapButton, "TOPRIGHT", 5, 0)
-coords.MouseText:SetPoint("TOPRIGHT", coords.PlayerText, "BOTTOMRIGHT", 0, -5)
-local int = 0
-			
-WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
-	int = int + 1
-	if int >= 3 then
-		local inInstance, _ = IsInInstance()
-		local x,y = GetPlayerMapPosition("player")
-			x = math.floor(100 * x)
-			y = math.floor(100 * y)
-		if x ~= 0 and y ~= 0 then
-			coords.PlayerText:SetText(PLAYER..":   "..x..", "..y)
-		else
-			coords.PlayerText:SetText(" ")
-		end
-					
-		local scale = WorldMapDetailFrame:GetEffectiveScale()
-		local width = WorldMapDetailFrame:GetWidth()
-		local height = WorldMapDetailFrame:GetHeight()
-		local centerX, centerY = WorldMapDetailFrame:GetCenter()
-		local x, y = GetCursorPosition()
-		local adjustedX = (x / scale - (centerX - (width/2))) / width
-		local adjustedY = (centerY + (height/2) - y / scale) / height	
-
-		if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
-			adjustedX = math.floor(100 * adjustedX)
-			adjustedY = math.floor(100 * adjustedY)
-			coords.MouseText:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
-		else
-			coords.MouseText:SetText(" ")
-		end				
-int = 0
-	end				
-end)	
 
 local Delay = CreateFrame("Frame")
 Delay:RegisterEvent("PLAYER_ENTERING_WORLD")

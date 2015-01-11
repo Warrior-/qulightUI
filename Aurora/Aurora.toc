@@ -1,8 +1,8 @@
-## Interface: 60200
+## Interface: 60300
 ## Title: |cff1784d1Aurora for QulightUI|r
 ## Notes: Minimalistic window theme.
 ## Author: Haleth/Lightsword
-## Version: 6.0.1b
+## Version: 6.1.1
 ## SavedVariables: AuroraConfig
 ## RequiredDeps: QulightUI
 
@@ -38,6 +38,7 @@ AddOns\Blizzard_TalentUI.lua
 AddOns\Blizzard_TimeManager.lua
 AddOns\Blizzard_TradeSkillUI.lua
 AddOns\Blizzard_TrainerUI.lua
+Addons\Blizzard_GarrisonUI.lua
 AddOns\Blizzard_VoidStorageUI.lua
 AddOns\Recount.lua
 
