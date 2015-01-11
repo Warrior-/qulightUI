@@ -124,11 +124,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 							timer.SetFont = dummy
 							timer.styled = true
 						end
-						
-						DBMRangeCheckRadar:HookScript("OnShow",function(self)
-						CreateStyle(self, 2)
-						end)
-						
+												
 						if bar.owner.options.IconLeft then icon1:Show() icon1.overlay:Show() else icon1:Hide() icon1.overlay:Hide() end
 						if bar.owner.options.IconRight then icon2:Show() icon2.overlay:Show() else icon2:Hide() icon2.overlay:Hide() end
 						tbar:SetAlpha(1)
@@ -238,19 +234,13 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 		hooksecurefunc(DBT, "CreateBar", SkinBars)
 		hooksecurefunc(DBM.BossHealth, "Show", SkinBossTitle)
 		hooksecurefunc(DBM.BossHealth, "AddBoss", SkinBoss)
-		hooksecurefunc(DBM.BossHealth,"UpdateSettings",SkinBoss)
+		hooksecurefunc(DBM.BossHealth, "UpdateSettings", SkinBoss)
 		
-		hooksecurefunc(DBM.RangeCheck, "Show", function()
-			DBMRangeCheck:SetTemplate("Transparent")
-			if DBMRangeCheckRadar then
-				DBMRangeCheckRadar:SetTemplate("Transparent")
-			end
-		end)
+		DBM.RangeCheck:Show()
+		DBM.RangeCheck:Hide()
 
-		hooksecurefunc(DBM.InfoFrame, "Show", function()
-			DBMInfoFrame:SetTemplate("Transparent")
-		end)		
-		
+		CreateStyle(DBMRangeCheckRadar, 2)
+	
 		if croprwicons then
 			local replace = string.gsub
 			local old = RaidNotice_AddMessage

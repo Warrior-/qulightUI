@@ -1,22 +1,22 @@
 if not Qulight["tooltip"].enable then return end
 local _, ns = ...
 local oUF = ns.oUF or oUF
-
+ 
 if not oUF then return end
-
+ 
 local shadows = {
-	bgFile =  Qulight["media"].texture,
-	edgeFile = Qulight["media"].glow, 
+	bgFile = Qulight["media"].texture,
+	edgeFile = Qulight["media"].glow,
 	edgeSize = 4,
 	insets = { left = 3, right = 3, top = 3, bottom = 3 }
 }
-
+ 
 local Tooltip = CreateFrame("Frame", "Tooltip", UIParent)
-
+ 
 local _G = getfenv(0)
-
+ 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
-
+ 
 local gsub, find, format = string.gsub, string.find, string.format
 local Tooltips = {
 	GameTooltip,
@@ -38,20 +38,38 @@ local Tooltips = {
 	DropDownList2MenuBackdrop,
 	DropDownList3MenuBackdrop
 }
-
+ 
+for _, tt in pairs(Tooltips) do
+	tt:SetBackdrop(nil)
+ 
+local shadow = CreateFrame("Frame", nil, tt)
+	shadow:SetFrameLevel(0)
+	shadow:SetFrameStrata(tt:GetFrameStrata())
+	shadow:SetPoint("TOPLEFT", -2, 2)
+	shadow:SetPoint("BOTTOMRIGHT", 2, -9)
+	shadow:SetBackdrop(shadows)
+	shadow:SetBackdropColor(.08,.08,.08, .9)
+	shadow:SetBackdropBorderColor(0, 0, 0, 1)
+ 
+	-- tt:HookScript("OnShow", SetStyle)
+	-- tt.GetBackdrop = function() return shadow end
+	-- tt.GetBackdropColor = function() return shadow end
+	-- tt.GetBackdropBorderColor = function() return shadow end
+end
+ 
 local ItemRefTooltip = ItemRefTooltip
-
+ 
 local linkTypes = {item = true, enchant = true, spell = true, quest = true, unit = true, talent = true, achievement = true, glyph = true}
-
+ 
 local classification = {
 	worldboss = "|cffAF5050Boss|r",
 	rareelite = "|cffAF5050+ Rare|r",
 	elite = "|cffAF5050+|r",
 	rare = "|cffAF5050Rare|r",
 }
-
+ 
 local NeedBackdropBorderRefresh = true
-
+ 
 function CreateShadowTooltip(f) --
 	if f.shadow then return end
 	local shadow = CreateFrame("Frame", nil, f)
@@ -65,7 +83,7 @@ function CreateShadowTooltip(f) --
 	f.shadow = shadow
 	return shadow
 end
-
+ 
 local anchor = CreateFrame("Frame", "TooltipAnchor", UIParent)
 anchor:SetSize(160, 160)
 anchor:SetFrameStrata("TOOLTIP")
@@ -73,22 +91,22 @@ anchor:SetFrameLevel(20)
 anchor:SetClampedToScreen(true)
 anchor:SetAlpha(0)
 anchor:SetPoint("TOPRIGHT", RightUpInfoPanel)
-
+ 
 AnchorTooltips = CreateFrame("Frame","Move_Tooltip",UIParent)
 AnchorTooltips:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 195)
 CreateAnchor(AnchorTooltips, "Move tooltips", 100, 110)
-
+ 
 local function UpdateTooltip(self)
 	local owner = self:GetOwner()
-	if not owner then return end	
+	if not owner then return end
 	local name = owner:GetName()
-
+ 
 	local x = 5
-
+ 
 	if self:GetAnchorType() == "ANCHOR_CURSOR" then
 		if NeedBackdropBorderRefresh then
 			self:ClearAllPoints()
-
+ 
 			self:SetBackdropColor(.05,.05,.05,0)
 			if not Qulight["tooltip"].cursor then
 				self:SetBackdropBorderColor(.15,.15,.15,0)
@@ -98,67 +116,67 @@ local function UpdateTooltip(self)
 		self:Hide()
 		return
 	end
-	
+ 
 	if self:GetAnchorType() == "ANCHOR_NONE" and TooltipAnchor then
 		local point = TooltipAnchor:GetPoint()
 		if point == "TOPLEFT" then
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)			
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)
 		elseif point == "TOP" then
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)			
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)
 		elseif point == "TOPRIGHT" then
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)		
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)
 		elseif point == "BOTTOMLEFT" or point == "LEFT" then
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)		
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)
 		elseif point == "BOTTOMRIGHT" or point == "RIGHT" then
 			self:ClearAllPoints()
 			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)
 		else
 			self:ClearAllPoints()
-			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)		
+			self:SetPoint("BOTTOMRIGHT", AnchorTooltips)
 		end
-	end	
+	end
 end
-
+ 
 local function SetTooltipDefaultAnchor(self, parent)
 	if Qulight["tooltip"].cursor == true then
-		if parent ~= UIParent then
-			self:SetOwner(parent, "ANCHOR_NONE")
+			if parent ~= UIParent then
+				self:SetOwner(parent, "ANCHOR_NONE")
+			else
+				self:SetOwner(parent, "ANCHOR_CURSOR")
+			end
 		else
-			self:SetOwner(parent, "ANCHOR_CURSOR")
+			self:SetOwner(parent, "ANCHOR_NONE")
 		end
-	else
-		self:SetOwner(parent, "ANCHOR_NONE")
+ 
+		self:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", -111111, -111111)
 	end
-	
-	self:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", -111111, -111111) 
-end
 hooksecurefunc("GameTooltip_SetDefaultAnchor", SetTooltipDefaultAnchor)
-
+ 
 GameTooltip:HookScript("OnUpdate", function(self, ...) UpdateTooltip(self) end)
-
+ 
 local function Hex(color)
 	return string.format('|cff%02x%02x%02x', color.r * 255, color.g * 255, color.b * 255)
 end
-
+ 
 local function GetColor(unit)
 	if(UnitIsPlayer(unit) and not UnitHasVehicleUI(unit)) then
 		local _, class = UnitClass(unit)
 		local color = RAID_CLASS_COLORS[class]
-		if not color then return end 
+		if not color then return end
 		local r,g,b = color.r, color.g, color.b
-		return Hex(color), r, g, b	
+		return Hex(color), r, g, b
 	else
 		local color = FACTION_BAR_COLORS[UnitReaction(unit, "player")]
-		if not color then return end 
-		local r,g,b = color.r, color.g, color.b		
-		return Hex(color), r, g, b		
+		if not color then return end
+		local r,g,b = color.r, color.g, color.b
+		return Hex(color), r, g, b
 	end
 end
-
+ 
 local function ShortValue(value)
 	if value >= 1e8 then
 		return ("%.0fm"):format(value / 1e6)
@@ -173,9 +191,9 @@ local function ShortValue(value)
 	else
 		return value
 	end
-end	
-
-
+end
+ 
+ 
 local function StatusBarOnValueChanged(self, value)
 	GameTooltipStatusBar:SetScript("OnValueChanged", function(self, value)
 		if not value then return end
@@ -193,43 +211,42 @@ local function StatusBarOnValueChanged(self, value)
 		self.text:Show()
 		local hp = ShortValue(min).." / "..ShortValue(max)
 		self.text:SetText(hp)
-
 		end
 	end)
 end
-
+ 
 GameTooltipStatusBar:SetScript("OnValueChanged", StatusBarOnValueChanged)
-
+ 
 local healthBar = GameTooltipStatusBar
 healthBar:ClearAllPoints()
 healthBar:SetHeight(6)
 healthBar:SetPoint("BOTTOMLEFT", healthBar:GetParent(), "TOPLEFT", 2, 5)
 healthBar:SetPoint("BOTTOMRIGHT", healthBar:GetParent(), "TOPRIGHT", -2, 5)
 healthBar:SetStatusBarTexture(Qulight["media"].texture)
-
+ 
 local healthBarBG = CreateFrame("Frame", "StatusBarBG", healthBar)
 healthBarBG:SetFrameLevel(healthBar:GetFrameLevel() - 1)
 healthBarBG:SetPoint("TOPLEFT", -2, 2)
 healthBarBG:SetPoint("BOTTOMRIGHT", 2, -2)
 CreateStyle(healthBarBG, 2)
-
+ 
 local function OnTooltipSetUnit(self)
 	local lines = self:NumLines()
 	local GMF = GetMouseFocus()
 	local unit = (select(2, self:GetUnit())) or (GMF and GMF:GetAttribute("unit"))
-	
+ 
 	if (not unit) and (UnitExists("mouseover")) then
 		unit = "mouseover"
 	end
-	
+ 
 	if not unit then self:Hide() return end
-	
+ 
 	if (self:GetOwner() ~= UIParent and Qulight["tooltip"].hideuf) then self:Hide() return end
-	
+ 
 	if (UnitIsUnit(unit,"mouseover")) then
 		unit = "mouseover"
 	end
-
+ 
 	local race = UnitRace(unit)
 	local class = UnitClass(unit)
 	local level = UnitLevel(unit)
@@ -239,33 +256,33 @@ local function OnTooltipSetUnit(self)
 	local classif = UnitClassification(unit)
 	local title = UnitPVPName(unit)
 	local r, g, b = GetQuestDifficultyColor(level).r, GetQuestDifficultyColor(level).g, GetQuestDifficultyColor(level).b
-
+ 
 	local color = GetColor(unit)
 	if not color then color = "|CFFFFFFFF" end
 	if not realm then realm = "" end
-	
+ 
 	_G["GameTooltipTextLeft1"]:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
-
+ 
 	if title and Qulight["tooltip"].title == true then
-        local text = GameTooltipTextLeft1:GetText()
-        title = title:gsub(name, "")
-        text = text:gsub(title, "")
-        if text then GameTooltipTextLeft1:SetText(text) end
-    end
-	
+	local text = GameTooltipTextLeft1:GetText()
+	title = title:gsub(name, "")
+	text = text:gsub(title, "")
+	if text then GameTooltipTextLeft1:SetText(text) end
+	end
+ 
 	if(UnitIsPlayer(unit)) then
 		if UnitIsAFK(unit) then
 			self:AppendText((" %s"):format(CHAT_FLAG_AFK))
-		elseif UnitIsDND(unit) then 
+		elseif UnitIsDND(unit) then
 			self:AppendText((" %s"):format(CHAT_FLAG_DND))
 		end
-
+ 
 		local offset = 2
 		if guild then
 			_G["GameTooltipTextLeft2"]:SetFormattedText("%s", IsInGuild() and GetGuildInfo("player") == guild and "|cff0090ff"..guild.."|r" or "|cff00ff10"..guild.."|r")
 			offset = offset + 1
 		end
-
+ 
 		for i= offset, lines do
 			if(_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
 				if race then
@@ -273,7 +290,7 @@ local function OnTooltipSetUnit(self)
 				else
 					_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r %s%s", r*255, g*255, b*255, Level > 0 and Level or "??", color, class .."|r")
 				end
-					      
+ 
 				break
 			end
 		end
@@ -286,7 +303,7 @@ local function OnTooltipSetUnit(self)
 			end
 		end
 	end
-
+ 
 	local pvpLine
 	for i = 1, lines do
 		local text = _G["GameTooltipTextLeft"..i]:GetText()
@@ -296,17 +313,17 @@ local function OnTooltipSetUnit(self)
 			break
 		end
 	end
-
+ 
 	if UnitExists(unit.."target") and unit~="player" then
 		local hex, r, g, b = GetColor(unit.."target")
 		if not r and not g and not b then r, g, b = 1, 1, 1 end
 		GameTooltip:AddLine(UnitName(unit.."target"), r, g, b)
 	end
-
+ 
 	self.fadeOut = nil
 end
 GameTooltip:HookScript("OnTooltipSetUnit", OnTooltipSetUnit)
-
+ 
 oUF_colors = setmetatable({
 	tapped = {0.55, 0.57, 0.61},
 	disconnected = {0.84, 0.75, 0.65},
@@ -328,39 +345,41 @@ oUF_colors = setmetatable({
 		[3] = {.33,.59,.33},
 	}, {__index = oUF.colors.happiness}),
 	runes = setmetatable({
-			[1] = {.69,.31,.31},
-			[2] = {.33,.59,.33},
-			[3] = {.31,.45,.63},
-			[4] = {.84,.75,.65},
+		[1] = {.69,.31,.31},
+		[2] = {.33,.59,.33},
+		[3] = {.31,.45,.63},
+		[4] = {.84,.75,.65},
 	}, {__index = oUF.colors.runes}),
 	reaction = setmetatable({
-		[1] = { 222/255, 95/255,  95/255 }, -- Hated
-		[2] = { 222/255, 95/255,  95/255 }, -- Hostile
-		[3] = { 222/255, 95/255,  95/255 }, -- Unfriendly
+		[1] = { 222/255, 95/255, 95/255 }, -- Hated
+		[2] = { 222/255, 95/255, 95/255 }, -- Hostile
+		[3] = { 222/255, 95/255, 95/255 }, -- Unfriendly
 		[4] = { 218/255, 197/255, 92/255 }, -- Neutral
-		[5] = { 75/255,  175/255, 76/255 }, -- Friendly
-		[6] = { 75/255,  175/255, 76/255 }, -- Honored
-		[7] = { 75/255,  175/255, 76/255 }, -- Revered
-		[8] = { 75/255,  175/255, 76/255 }, -- Exalted	
+		[5] = { 75/255, 175/255, 76/255 }, -- Friendly
+		[6] = { 75/255, 175/255, 76/255 }, -- Honored
+		[7] = { 75/255, 175/255, 76/255 }, -- Revered
+		[8] = { 75/255, 175/255, 76/255 }, -- Exalted
 	}, {__index = oUF.colors.reaction}),
 	class = setmetatable({
-		["DEATHKNIGHT"] = { 196/255,  30/255,  60/255 },
-		["DRUID"]       = { 255/255, 125/255,  10/255 },
-		["HUNTER"]      = { 171/255, 214/255, 116/255 },
-		["MAGE"]        = { 104/255, 205/255, 255/255 },
-		["PALADIN"]     = { 245/255, 140/255, 186/255 },
-		["PRIEST"]      = { 212/255, 212/255, 212/255 },
-		["ROGUE"]       = { 255/255, 243/255,  82/255 },
-		["SHAMAN"]      = {  41/255,  79/255, 155/255 },
-		["WARLOCK"]     = { 148/255, 130/255, 201/255 },
-		["WARRIOR"]     = { 199/255, 156/255, 110/255 },
+		["DEATHKNIGHT"] = { 196/255, 30/255, 60/255 },
+		["DRUID"] = { 255/255, 125/255, 10/255 },
+		["HUNTER"] = { 171/255, 214/255, 116/255 },
+		["MAGE"] = { 104/255, 205/255, 255/255 },
+		["PALADIN"] = { 245/255, 140/255, 186/255 },
+		["PRIEST"] = { 212/255, 212/255, 212/255 },
+		["ROGUE"] = { 255/255, 243/255, 82/255 },
+		["SHAMAN"] = { 41/255, 79/255, 155/255 },
+		["WARLOCK"] = { 148/255, 130/255, 201/255 },
+		["WARRIOR"] = { 199/255, 156/255, 110/255 },
 	}, {__index = oUF.colors.class}),
 }, {__index = oUF.colors})
-
+ 
 local BorderColor = function(self)
 	local GMF = GetMouseFocus()
-	local unit = (select(2, self:GetUnit())) or (GMF and GMF:GetAttribute("unit"))
-		
+	local unit = (select(2, self:GetUnit())) or (GMF and GMF:GetAttribute("unit")) or (UnitExists("mouseover") and "mouseover") or nil
+
+	if not unit then return end
+ 
 	local reaction = unit and UnitReaction(unit, "player")
 	local player = unit and UnitIsPlayer(unit)
 	local tapped = unit and UnitIsTapped(unit)
@@ -368,7 +387,7 @@ local BorderColor = function(self)
 	local connected = unit and UnitIsConnected(unit)
 	local dead = unit and UnitIsDead(unit)
 	local r, g, b
-
+ 
 	if player then
 		local class = select(2, UnitClass(unit))
 		local c = oUF_colors.class[class]
@@ -386,36 +405,43 @@ local BorderColor = function(self)
 			healthBar:SetStatusBarColor(.15,.15,.15,0)
 		end
 	end
-	
+ 
 	NeedBackdropBorderRefresh = true
 end
-
+ 
 function frame1px(f)
 	f:SetBackdrop({
-		bgFile =  [=[Interface\ChatFrame\ChatFrameBackground]=],
-        edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1, 
-		insets = {left = -1, right = -1, top = -1, bottom = -1} 
+		bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=],
+	edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1,
+		insets = {left = -1, right = -1, top = -1, bottom = -1}
 	})
 	f:SetBackdropColor(.05,.05,.05,0)
-	f:SetBackdropBorderColor(.15,.15,.15,0)	
+	f:SetBackdropBorderColor(.15,.15,.15,0)
 end
+
 local SetStyle = function(self)
 	frame1px(self)
 	CreateShadowTooltip(self)
 	BorderColor(self)
 end
-
+ 
+local SetStyleSafely = function(self)
+	--frame1px(self)
+	CreateShadowTooltip(self)
+	BorderColor(self)
+end
+ 
 Tooltip:RegisterEvent("PLAYER_ENTERING_WORLD")
 Tooltip:RegisterEvent("ADDON_LOADED")
 Tooltip:SetScript("OnEvent", function(self, event, addon)
 	if event == "PLAYER_ENTERING_WORLD" then
 		for _, tt in pairs(Tooltips) do
-			tt:HookScript("OnShow", SetStyle)
-			tt.GetBackdrop = function() return shadow end
-			tt.GetBackdropColor = function() return shadow end
-			tt.GetBackdropBorderColor = function() return shadow end
+			tt:HookScript("OnShow", SetStyleSafely)
+			-- tt.GetBackdrop = function() return shadow end
+			-- tt.GetBackdropColor = function() return shadow end
+			-- tt.GetBackdropBorderColor = function() return shadow end
 		end
-		
+ 
 		ItemRefTooltip:HookScript("OnTooltipSetItem", SetStyle)
 		ItemRefTooltip:HookScript("OnShow", SetStyle)	
 		frame1px(FriendsTooltip)

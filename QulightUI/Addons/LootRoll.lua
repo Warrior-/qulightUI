@@ -307,6 +307,7 @@ end
 
 local function CHAT_MSG_LOOT(msg)
 	local playername, itemname, rolltype = ParseRollChoice(msg)
+	local num = 0
 	if playername and itemname and rolltype then
 		for _,f in ipairs(frames) do
 			if f.rollid and f.button.link == itemname and not f.rolls[playername] then

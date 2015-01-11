@@ -2523,14 +2523,12 @@ local QuestMapFrame = QuestMapFrame
 			if IsAddOnLoaded("Blizzard_CompactRaidFrames") then
 				CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG:Hide()
 
-				local boxes = {CompactUnitFrameProfilesRaidStylePartyFrames, CompactUnitFrameProfilesGeneralOptionsFrameKeepGroupsTogether, CompactUnitFrameProfilesGeneralOptionsFrameDisplayIncomingHeals, CompactUnitFrameProfilesGeneralOptionsFrameDisplayPowerBar, CompactUnitFrameProfilesGeneralOptionsFrameDisplayAggroHighlight, CompactUnitFrameProfilesGeneralOptionsFrameUseClassColors, CompactUnitFrameProfilesGeneralOptionsFrameDisplayPets, CompactUnitFrameProfilesGeneralOptionsFrameDisplayMainTankAndAssist, CompactUnitFrameProfilesGeneralOptionsFrameDisplayBorder, CompactUnitFrameProfilesGeneralOptionsFrameShowDebuffs, CompactUnitFrameProfilesGeneralOptionsFrameDisplayOnlyDispellableDebuffs, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate2Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate3Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate5Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate10Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate15Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate25Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate40Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateSpec1, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateSpec2, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivatePvP, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivatePvE}
+				local boxes = {CompactUnitFrameProfilesRaidStylePartyFrames, CompactUnitFrameProfilesGeneralOptionsFrameKeepGroupsTogether, CompactUnitFrameProfilesGeneralOptionsFrameHorizontalGroups, CompactUnitFrameProfilesGeneralOptionsFrameDisplayIncomingHeals, CompactUnitFrameProfilesGeneralOptionsFrameDisplayPowerBar, CompactUnitFrameProfilesGeneralOptionsFrameDisplayAggroHighlight, CompactUnitFrameProfilesGeneralOptionsFrameUseClassColors, CompactUnitFrameProfilesGeneralOptionsFrameDisplayPets, CompactUnitFrameProfilesGeneralOptionsFrameDisplayMainTankAndAssist, CompactUnitFrameProfilesGeneralOptionsFrameDisplayBorder, CompactUnitFrameProfilesGeneralOptionsFrameShowDebuffs, CompactUnitFrameProfilesGeneralOptionsFrameDisplayOnlyDispellableDebuffs, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate2Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate3Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate5Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate10Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate15Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate25Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivate40Players, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateSpec1, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateSpec2, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivatePvP, CompactUnitFrameProfilesGeneralOptionsFrameAutoActivatePvE}
 
 				for _, box in next, boxes do
 					F.ReskinCheck(box)
 				end
 
-				F.ReskinDropDownBox(InterfaceOptionsLanguagesPanelAudioLocaleDropDown)
-				F.ReskinDropDownBox(InterfaceOptionsLanguagesPanelLocaleDropDown)
 				F.Reskin(CompactUnitFrameProfilesSaveButton)
 				F.Reskin(CompactUnitFrameProfilesDeleteButton)
 				F.Reskin(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
@@ -3849,6 +3847,7 @@ local QuestMapFrame = QuestMapFrame
 	end
 end)
 
+
 local function styleCore()
 	local firstInfo = true
 	hooksecurefunc(DBM.InfoFrame, "Show", function()
@@ -3893,8 +3892,10 @@ local function styleCore()
 
 	hooksecurefunc(DBM.BossHealth, "AddBoss", styleBar)
 	hooksecurefunc(DBM.BossHealth, "UpdateSettings", styleBar)
-
+--[[
 	hooksecurefunc(DBM, "ShowUpdateReminder", function()
+
+
 		-- no name or anything
 		-- reverse loop because it's most likely to be somewhere at the end
 		for i = UIParent:GetNumChildren(), 1, -1 do
@@ -3918,6 +3919,7 @@ local function styleCore()
 			end
 		end
 	end)
+--]]	
 end
 
 local function styleGUI()
@@ -4006,6 +4008,7 @@ init:SetScript("OnEvent", function(self, _, addon)
 		init = nil
 	end
 end)
+
 local function Kill(object)
 	object.Show = dummy
 	object:Hide()

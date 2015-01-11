@@ -207,7 +207,7 @@ local style = {
 	edgeSize = 4,
 	insets = { left = 3, right = 3, top = 3, bottom = 3 }
 }
-function CreateStyle(f, size, level, alpha, alphaborder) --
+function CreateStyle(f, size, level, alpha, alphaborder) 
 	if f.shadow then return end
 	local shadow = CreateFrame("Frame", nil, f)
 	shadow:SetFrameLevel(level or 0)
@@ -220,21 +220,6 @@ function CreateStyle(f, size, level, alpha, alphaborder) --
 	f.shadow = shadow
 	return shadow
 end
-
-function CreateShadowback(f)
-	if f.shadow then return end
-	local shadow = CreateFrame("Frame", nil, f)
-	shadow:SetFrameLevel(0)
-	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetPoint("TOPLEFT", -2, 2)
-	shadow:SetPoint("BOTTOMRIGHT", 2, -2)
-	shadow:SetBackdrop(shadows)
-	shadow:SetBackdropColor( .05,.05,.05, .9)
-	shadow:SetBackdropBorderColor(0, 0, 0, 1)
-	f.shadow = shadow
-	return shadow
-end
-
 function frame1px(f)
 	f:SetBackdrop({
 		bgFile =  [=[Interface\ChatFrame\ChatFrameBackground]=],

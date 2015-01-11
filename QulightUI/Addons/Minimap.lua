@@ -400,7 +400,7 @@ local menuList = {
 }
 
 
-local f = CreateFrame('Button', nil, PicoMenuBar)
+local f = CreateFrame('Button', nil, UIParent)
 f:SetSize(11,8)
 f:SetPoint('BOTTOMLEFT', Minimap, 'BOTTOMLEFT', 0, 0)
 f:RegisterForClicks('Anyup')

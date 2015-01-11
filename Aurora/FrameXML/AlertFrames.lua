@@ -246,7 +246,18 @@ tinsert(C.modules["Aurora"], function()
 
 			frame.Icon:SetTexCoord(.08, .92, .08, .92)
 			F.CreateBG(frame.Icon)
+	
+			frame.SpecIcon:SetTexCoord(.08, .92, .08, .92)
+			frame.SpecIcon.bg = F.CreateBG(frame.SpecIcon)
+			frame.SpecIcon.bg:SetDrawLayer("BORDER", 2)
 		end
+
+		frame.Background:Hide()
+		frame.IconBorder:Hide()
+		frame.glow:SetTexture("")
+		frame.PvPBackground:Hide()
+		frame.BGAtlas:Hide()
+		frame.SpecIcon.bg:SetShown(frame.SpecIcon:IsShown())
 	end)
 
 	-- Money won alert
@@ -270,11 +281,6 @@ tinsert(C.modules["Aurora"], function()
 
 			frame.Icon:SetTexCoord(.08, .92, .08, .92)
 			F.CreateBG(frame.Icon)
-			frame.Background:Hide()
-			frame.IconBorder:Hide()
-			frame.glow:SetTexture("")
-			frame.PvPBackground:Hide()
-			frame.BGAtlas:Hide()
 		end
 	end)
 
