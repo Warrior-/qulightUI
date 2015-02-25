@@ -14,7 +14,7 @@ local backdrop = {
 local DBMSkin = CreateFrame("Frame")
 DBMSkin:RegisterEvent("PLAYER_LOGIN")
 DBMSkin:SetScript("OnEvent", function(self, event, addon)
-	if IsAddOnLoaded("DBM-Core") then
+	if IsAddOnLoaded("DBM") then
 		local function SkinBars(self)
 			for bar in self:GetBarIterator() do
 				if not bar.injected then
@@ -266,7 +266,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 	end
 end)
 local UploadDBM = function()
-if IsAddOnLoaded("DBM-Core") then
+if IsAddOnLoaded("DBM") then
 	DBM_SavedOptions.Enabled=true
 	DBM_SavedOptions.WarningIconLeft=false
 	DBM_SavedOptions.WarningIconRight=false
