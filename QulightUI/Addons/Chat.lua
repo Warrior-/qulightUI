@@ -276,6 +276,24 @@ function ReURL_SetItemRef(link, text, button, chatFrame)
 		SetItemRef_orig(link, text, button, chatFrame)
 	end
 end
+
+local SetHyperlink = _G.ItemRefTooltip.SetHyperlink
+function _G.ItemRefTooltip:SetHyperlink(link, ...)
+	if link and (strsub(link, 1, 3) == "url") then
+		local url = strsub(link, 5)
+
+		local editbox = ChatEdit_ChooseBoxForSend()
+		ChatEdit_ActivateChat(editbox)
+		editbox:Insert(string.sub(link, 5))
+		editbox:HighlightText()
+
+		return
+	end
+
+	SetHyperlink(self, link, ...)
+end
+
+
 SetItemRef = ReURL_SetItemRef
 function ReURL_AddLinkSyntax(chatstring)
 	if (type(chatstring) == "string") then
