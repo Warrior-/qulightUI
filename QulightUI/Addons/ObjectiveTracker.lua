@@ -47,6 +47,10 @@ hooksecurefunc(QUEST_TRACKER_MODULE, "SetBlockHeader", function(_, block)
 	end
 end)
 
+----------------------------------------------------------------------------------------
+--	Skin ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+----------------------------------------------------------------------------------------
+
 for _, headerName in pairs({"QuestHeader", "AchievementHeader", "ScenarioHeader"}) do
 	local header = ObjectiveTrackerFrame.BlocksFrame[headerName].Background:Hide()
 end
@@ -58,7 +62,7 @@ end
 	button.minus:SetTexCoord(.08, .92, .08, .92)
 	button.minus:SetPoint("CENTER")
 	button.minus:SetTexture("")
-
+	
 	button.plus = button:CreateTexture(nil, "OVERLAY")
 	button.plus:SetSize(1, 5)
 	button.plus:SetTexCoord(.08, .92, .08, .92)
@@ -67,12 +71,14 @@ end
 
 	button:HookScript("OnEnter", SetModifiedBackdrop)
 	button:HookScript("OnLeave", SetOriginalBackdrop)
+
+	ReskinExpand(button)
 	CreateBD(button, 4)
 	
 
 	button.plus:Hide()
 	hooksecurefunc("ObjectiveTracker_Collapse", function()
-	button.plus:Show()
+	button.plus:Hide()
 end)
 	hooksecurefunc("ObjectiveTracker_Expand", function()
 	button.plus:Hide()

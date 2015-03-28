@@ -265,7 +265,7 @@ local SetItemRef_orig = SetItemRef
 function ReURL_SetItemRef(link, text, button, chatFrame)
 	if (strsub(link, 1, 3) == "url") then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		local url = strsub(link, 5);
+		local url = (link):sub(5)
 		if (not ChatFrameEditBox:IsShown()) then
 			ChatEdit_ActivateChat(ChatFrameEditBox)
 		end

@@ -163,6 +163,40 @@ ReskinClose = function(f, a1, p, a2, x, y)
  	f:HookScript("OnLeave", clearClose)
 end
 
+local function colourExpandOrCollapse(f)
+	if f:IsEnabled() then
+		f.plus:SetVertexColor(r, g, b)
+		f.minus:SetVertexColor(r, g, b)
+	end
+end
+
+local function clearExpandOrCollapse(f)
+	f.plus:SetVertexColor(1, 1, 1)
+	f.minus:SetVertexColor(1, 1, 1)
+end
+
+
+ReskinExpand = function(f)
+	f:SetSize(13, 13)
+
+	Reskin(f, true)
+
+	f.minus = f:CreateTexture(nil, "OVERLAY")
+	f.minus:SetSize(7, 1)
+	f.minus:SetPoint("CENTER")
+	f.minus:SetTexture(Qulight["media"].texture)
+	f.minus:SetVertexColor(1, 1, 1)
+
+	f.plus = f:CreateTexture(nil, "OVERLAY")
+	f.plus:SetSize(1, 7)
+	f.plus:SetPoint("CENTER")
+	f.plus:SetTexture(Qulight["media"].texture)
+	f.plus:SetVertexColor(1, 1, 1)
+
+	f:HookScript("OnEnter", colourExpandOrCollapse)
+	f:HookScript("OnLeave", clearExpandOrCollapse)
+end
+
 function CreatePanel(f, w, h, a1, p, a2, x, y)
 	local _, class = UnitClass("player")
 	local r, g, b = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b

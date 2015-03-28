@@ -514,6 +514,10 @@ Filger_Spells = {
 			{spellID = 126690, unitID = "player", caster = "player", filter = "BUFF"},
 			-- PvP Trinkets (Agility, Proc)
 			{spellID = 126707, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Spirit of the Warlords
+			{spellID = 162915, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Steady Focus
+			{spellID = 177668, unitID = "player", caster = "player", filter = "BUFF"},
 			-- прицел
 			{spellID = 156055, unitID = "player", caster = "player", filter = "BUFF"},
 				-- прицел
@@ -541,8 +545,8 @@ Filger_Spells = {
 
 			-- Black Arrow
 			{spellID = 3674, unitID = "target", caster = "player", filter = "DEBUFF"},
-			-- Вороны
-			{spellID = 131894, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Serpent Sting
+			{spellID = 87935, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Explosive Shot
 			{spellID = 53301, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Narrow Escape
@@ -933,6 +937,11 @@ Filger_Spells = {
 			{spellID = 114163, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Sacred Shield
 			{spellID = 20925, unitID = "player", caster = "player", filter = "BUFF", absID = true},
+				-- Paladins Last Tier Tallant "Empowered Seals"
+			-- Uther's Insight
+			{spellID = 156988, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Liadrin's Righteousness
+			{spellID = 156989, unitID = "player", caster = "player", filter = "BUFF"},
 		},
 		{
 			Name = "P_PROC_ICON",
