@@ -364,10 +364,10 @@ local menuList = {
         notCheckable = true,
     },
     {
-        text = MOUNTS_AND_PETS,
+   	text = COLLECTIONS,
         icon = 'Interface\\MINIMAP\\TRACKING\\StableMaster',
         func = function() 
-            securecall(TogglePetJournal)
+            securecall(ToggleCollectionsJournal)
         end,
         notCheckable = true,
     },
