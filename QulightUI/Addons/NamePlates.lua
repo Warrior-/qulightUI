@@ -475,7 +475,7 @@ end
 
 -- This is where we create most 'Static' objects for the nameplate
 local function SkinObjects(frame, nameFrame)
-	local oldhp, cb = frame:GetChildren()
+	local oldhp, ab, cb = frame:GetChildren()
 	local threat, hpborder, overlay, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
 	local oldname = nameFrame:GetRegions()
 	local _, cbborder, cbshield, cbicon, cbname = cb:GetRegions()
@@ -546,6 +546,10 @@ local function SkinObjects(frame, nameFrame)
 	cbname:SetPoint("LEFT", cb, "LEFT", 3, 0)
 	cbname:SetFont(Qulight["media"].font, 8, "THINOUTLINE")
 
+	-- absorb bar 
+	ab:ClearAllPoints()
+	frame.ab = ab
+	
 
 	-- Create Class Icon
 	if Qulight["nameplate"].class_icons == true then
@@ -712,7 +716,7 @@ local function ShowHealth(frame, ...)
 	local d = (valueHealth / maxHealth) * 100
 
 	if Qulight["nameplate"].health_value == true then
-		frame.hp.value:SetText(ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth / maxHealth) * 100))))
+		frame.hp.value:SetText(string.format("%d%%", math.floor((valueHealth / maxHealth) * 100)))
 	end
 
 	-- Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
