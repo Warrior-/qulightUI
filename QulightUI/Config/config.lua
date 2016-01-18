@@ -1,7 +1,7 @@
 ﻿Qulight["media"] = {
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=], 			        -- main font in Qulight UI
 	["pxfont"] = [=[Interface\Addons\QulightUI\Root\Media\pxFont.ttf]=],
-	["fontsize"] = 10, 														    		-- size of font 
+	["fontsize"] = 11, 														    		-- size of font 
 	["texture"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",				-- main texture in Qulight UI
 	["blank"] = "Interface\\Buttons\\WHITE8x8",											-- clean texture
 	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",	
@@ -13,7 +13,7 @@ Qulight["general"] = {
 	["AutoRepair"] = false,																-- auto repair
 	["AutoGreed"] = false,
 	["topbottompanel"] = true,
-	["centerpanel"] = false,
+	["centerpanel"] = true,
 	["autoinvite"] = true,	
 	["AutoDisenchant"] = false,															-- auto dis green items
 	["BlizzardsErrorFrameHiding"] = true,												-- hide blizzard red errors
@@ -27,7 +27,7 @@ Qulight["actionbar"] = {
 	["petbuttonsize"] = 32,                             -- pet & stance buttons size
 	["buttonspacing"] = 1,                              -- buttons spacing
 	["petbuttonspacing"] = 1,
-	["mainbarWidth"] = 10,		
+	["mainbarWidth"] = 12,		
 	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
 }
 
@@ -36,18 +36,18 @@ Qulight["raidframes"] = {
 	["deficit_health"] = true,					-- Raid deficit health
 	["vertical_health"] = false,				-- Vertical orientation of health
 	["alpha_health"] = false,					-- Alpha of healthbars when 100%hp
-	["power"] = true,					-- Alpha of healthbars when 100%hp
+	["power"] = false,					-- Alpha of healthbars when 100%hp
 	["show_range"] = true,						-- Show range opacity for raidframes
-	["range_alpha"] = 0.7,						-- Alpha of unitframes when unit is out of range
-	["hp_value"] = false,						
-	["width"] = 81.7,						
-	["height"] = 32,						
+	["range_alpha"] = 0.5,						-- Alpha of unitframes when unit is out of range
+	["hp_value"] = true,						
+	["width"] = 80,						
+	["height"] = 30,						
 
 	["show_party"] = true,						-- Show party frames
 	["show_raid"] = true,						-- Show raid frames
 	["solo_mode"] = false,					-- Show player frame always
 	["player_in_party"] = true,					-- Show player frame in party
-	["raid_groups"] = 4,						-- Number of groups in raid
+	["raid_groups"] = 5,						-- Number of groups in raid
 	["raid_groups_vertical"] = false,			-- Vertical raid groups(only for heal layout)
 
 	["icons_role"] = true,						-- Role icon on frames
@@ -76,7 +76,7 @@ Qulight["unitframes"] = {
 	["enable"] = true,																	-- enable/disable action bars
 	["HealthcolorClass"] = false,														-- health color = class color
 	["bigcastbar"] = true,
-		["widthbigcastbar"] = 320,
+		["widthbigcastbar"] = 340,
 		["heightbigcastbar"] = 20,
 	["Powercolor"] = true,																-- power color = class color
 	["showtot"] = true, 																-- show target of target frame
@@ -90,7 +90,7 @@ Qulight["unitframes"] = {
 	["Reputationbar"] = true, 															-- show reputation bar
 	["Experiencebar"] = true, 															-- show experience bar
 	["showPlayerAuras"] = false, 														-- use a custom player buffs/debuffs frame instead of blizzard's default.
-	["showPortrait"] = true,															-- show portraits
+	["showPortrait"] = false,															-- show portraits
 	["showRunebar"] = true, 															-- show dk rune bar
 	["showHolybar"] = true, 															-- show paladin HolyPower bar
 	["showEclipsebar"] = true, 															-- show druid eclipse bar
@@ -200,6 +200,6 @@ Qulight["misk"] = {
 	["raidcooldowns"] = false, 
 	["AutoScreen"] = true,
 	["Threatbar"] = true,
-	["raidmarker"] = false,
-	["raidutility"] = false,														-- enable disable raid utility
+	["raidmarker"] = true,
+	["raidutility"] = true,														-- enable disable raid utility
 }  

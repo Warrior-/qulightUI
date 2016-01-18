@@ -212,7 +212,6 @@ C.modules["Blizzard_GarrisonUI"] = function()
 		end)
 	end
 
-
 	-- [[ Landing page ]]
 
 	local GarrisonLandingPage = GarrisonLandingPage
@@ -222,7 +221,6 @@ C.modules["Blizzard_GarrisonUI"] = function()
 	end
 
 	F.CreateBD(GarrisonLandingPage)
-	CreateStyle(GarrisonLandingPage, 2)
 	F.ReskinClose(GarrisonLandingPage.CloseButton)
 	F.ReskinTab(GarrisonLandingPageTab1)
 	F.ReskinTab(GarrisonLandingPageTab2)
@@ -343,7 +341,6 @@ C.modules["Blizzard_GarrisonUI"] = function()
 		F.CreateBDFrame(xpBar)
 	end
 
-
 	-- Ship follower tab
 
 	local FollowerTab = GarrisonLandingPage.ShipFollowerTab
@@ -389,7 +386,6 @@ C.modules["Blizzard_GarrisonUI"] = function()
 	F.ReskinClose(GarrisonMissionFrame.CloseButton)
 	F.ReskinTab(GarrisonMissionFrameTab1)
 	F.ReskinTab(GarrisonMissionFrameTab2)
-	
 
 	GarrisonMissionFrameTab1:ClearAllPoints()
 	GarrisonMissionFrameTab1:SetPoint("BOTTOMLEFT", 11, -40)
@@ -618,6 +614,15 @@ C.modules["Blizzard_GarrisonUI"] = function()
 		portraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
 	end)
 
+	-- Mechanic tooltip
+
+	if AuroraConfig.tooltips then
+		GarrisonMissionMechanicTooltip:SetBackdrop(nil)
+		GarrisonMissionMechanicFollowerCounterTooltip:SetBackdrop(nil)
+		F.CreateBDFrame(GarrisonMissionMechanicTooltip, .6)
+		F.CreateBDFrame(GarrisonMissionMechanicFollowerCounterTooltip, .6)
+	end
+
 	-- [[ Recruiter frame ]]
 
 	local GarrisonRecruiterFrame = GarrisonRecruiterFrame
@@ -767,6 +772,9 @@ C.modules["Blizzard_GarrisonUI"] = function()
 		end
 	end
 
+	hooksecurefunc(GarrisonMissionFrameFollowers, "UpdateData", onUpdateData)
+	hooksecurefunc(GarrisonLandingPageFollowerList, "UpdateData", onUpdateData)
+
 	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(self, index)
 		local ability = self.Abilities[index]
 
@@ -811,7 +819,6 @@ C.modules["Blizzard_GarrisonUI"] = function()
 	hooksecurefunc(GarrisonMissionFrame.FollowerList, "ShowFollower", onShowFollower)
 	hooksecurefunc(GarrisonLandingPageFollowerList, "ShowFollower", onShowFollower)
 
-
 	-- [[ Shipyard ]]
 
 	if AuroraConfig.tooltips then
@@ -835,7 +842,6 @@ C.modules["Blizzard_GarrisonUI"] = function()
 
 		F.ReskinIcon(equipment.Icon)
 	end
-
 
 	-- [[ Master plan support ]]
 

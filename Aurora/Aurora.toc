@@ -2,7 +2,7 @@
 ## Title: |cff1784d1Aurora for QulightUI|r
 ## Notes: Minimalistic window theme.
 ## Author: Haleth/Lightsword
-## Version: 6.3
+## Version: 6.3.1
 ## SavedVariables: AuroraConfig
 ## RequiredDeps: QulightUI
 

@@ -35,7 +35,7 @@ function StyleButton(self)
  
 	Count:ClearAllPoints()
 	Count:SetPoint("BOTTOMRIGHT", 0, 2)
-	Count:SetFont(Qulight["media"].pxfont, 12, "OUTLINE")
+	Count:SetFont(Qulight["media"].font, 12, "OUTLINE")
 
 	if Btname then
 		Btname:SetText("")
@@ -61,7 +61,7 @@ function StyleButton(self)
 
 	HotKey:ClearAllPoints()
 	HotKey:SetPoint("TOPRIGHT", 0, -3)
-	HotKey:SetFont(Qulight["media"].pxfont, 12, "OUTLINE")
+	HotKey:SetFont(Qulight["media"].font, 12, "OUTLINE")
 	HotKey.ClearAllPoints = dummy
 	HotKey.SetPoint = dummy
  

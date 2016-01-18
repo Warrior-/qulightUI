@@ -6,27 +6,31 @@ Filger_Settings = {
 }
 
 AnchorBUFF_ICON = CreateFrame("Frame","Move_BUFF_ICON",UIParent)
-AnchorBUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -211, -173)
+AnchorBUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -213, -115)
 CreateAnchor(AnchorBUFF_ICON, "Move BUFF_ICON", 37, 37)
 
 AnchorT_BUFF_ICON = CreateFrame("Frame","Move_T_BUFF_ICON",UIParent)
-AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 211, -160)
+AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -75)
 CreateAnchor(AnchorT_BUFF_ICON, "Move T_BUFF_ICON", 37, 37)
 
 AnchorP_PROC_ICON = CreateFrame("Frame","Move_P_PROC_ICON",UIParent)
-AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -211, -217)
+AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -213, -159)
 CreateAnchor(AnchorP_PROC_ICON, "Move P_PROC_ICON", 37, 37)
 
 AnchorT_DEBUFF_ICON = CreateFrame("Frame","Move_T_DEBUFF_ICON",UIParent)
-AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 211, -217)
+AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -117)
 CreateAnchor(AnchorT_DEBUFF_ICON, "Move T_DEBUFF_ICON", 37, 37)
 
 AnchorT_SPECIAL_P_BUFF_ICON = CreateFrame("Frame","Move_SPECIAL_P_BUFF_ICON",UIParent)
-AnchorT_SPECIAL_P_BUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -211, -130)
+AnchorT_SPECIAL_P_BUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -213, -72)
 CreateAnchor(AnchorT_SPECIAL_P_BUFF_ICON, "Move SPECIAL_P_BUFF_ICON", 37, 37)
 
+Anchor_CD = CreateFrame("Frame","Move_CD",UIParent)
+Anchor_CD:SetPoint("BOTTOM", UIParent, "BOTTOM", -172, 380)
+CreateAnchor(Anchor_CD, "Move CD", 40, 40)
+
 Anchor_PVEPVPCD = CreateFrame("Frame","Move_PVEPVPCD",UIParent)
-Anchor_PVEPVPCD:SetPoint("LEFT", UIParent, "CENTER", 211, -87)
+Anchor_PVEPVPCD:SetPoint("LEFT", UIParent, "CENTER", 213, -17)
 CreateAnchor(Anchor_PVEPVPCD, "Move PVEPVPCD", 25, 25)
 
 Anchor_PVEDEBUFF = CreateFrame("Frame","Move_PVEDEBUFF",UIParent)
