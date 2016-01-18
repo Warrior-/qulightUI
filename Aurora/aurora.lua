@@ -2214,6 +2214,7 @@ local QuestMapFrame = QuestMapFrame
 	-- [[ Quest rewards ]]
 
 	restyleSpellButton(QuestInfoRewardSpell)
+	restyleSpellButton(QuestInfoSpellObjectiveFrame)
 
 	local function restyleRewardButton(bu, isMapQuestInfo)
 		bu.NameFrame:Hide()

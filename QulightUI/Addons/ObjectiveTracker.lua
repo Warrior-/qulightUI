@@ -55,6 +55,8 @@ for _, headerName in pairs({"QuestHeader", "AchievementHeader", "ScenarioHeader"
 	local header = ObjectiveTrackerFrame.BlocksFrame[headerName].Background:Hide()
 end
 	
+BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:Hide()
+
 	local button = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
 	button:SetSize(17, 17)
 	button.minus = button:CreateTexture(nil, "OVERLAY")

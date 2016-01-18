@@ -72,6 +72,7 @@ end
 -- Universal Mount macro : /script Mountz ("your_ground_mount","your_flying_mount") 
 ----------------------------------------------------------------------------------------
 function Mountz(groundmount, flyingmount, underwatermount)
+	if not underwatermount then underwatermount = groundmount end
 	local flyablex, swimablex, vjswim, InVj, nofly
 	local num = C_MountJournal.GetNumMounts()
 	if not num or IsMounted() then
@@ -82,7 +83,7 @@ function Mountz(groundmount, flyingmount, underwatermount)
 		VehicleExit()
 		return
 	end
-	if IsUsableSpell(59569) == nil then
+	if IsUsableSpell(59569) == true then
 		nofly = true
 	end
 	if not nofly and IsFlyableArea() then
@@ -97,11 +98,13 @@ function Mountz(groundmount, flyingmount, underwatermount)
 	if InVj and IsSwimming() then
 		vjswim = true
 	end
-	if IsSwimming() and nofly and not vjswim then
+	if IsSwimming() and not flyablex and not vjswim then
 		swimablex = true
 	end
 	if IsControlKeyDown() then
-		if not vjswim then
+		if IsSwimming() and not vjswim then
+			swimablex = not swimablex
+		elseif not vjswim then
 			flyablex = not flyablex
 		else
 			vjswim = not vjswim

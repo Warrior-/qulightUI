@@ -633,7 +633,7 @@ hooksecurefunc("MultiCastSummonSpellButton_Update", function(self) StyleTotemSpe
 hooksecurefunc("MultiCastRecallSpellButton_Update", function(self) StyleTotemSpellButton(self,5) end)
 
 ------------------------------------------------------------------------------------------
---	Make ExtraActionBarFrame movable(use macro /click ExtraActionButton1)
+--	Make ExtraActionBarFrame movable (use macro /click ExtraActionButton1)
 ------------------------------------------------------------------------------------------
 AnchorExtraActionBar = CreateFrame("Frame","Move_ExtraActionBar",UIParent)
 AnchorExtraActionBar:SetPoint("BOTTOM", 172, 380)

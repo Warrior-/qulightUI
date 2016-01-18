@@ -50,6 +50,7 @@ tinsert(C.modules["Aurora"], function()
 
 	F.Reskin(SearchPanel.RefreshButton)
 	F.Reskin(SearchPanel.BackButton)
+	F.Reskin(SearchPanel.FilterButton)
 	F.Reskin(SearchPanel.SignUpButton)
 	F.Reskin(SearchPanel.ScrollFrame.StartGroupButton)
 	F.ReskinInput(SearchPanel.SearchBox)
@@ -57,6 +58,8 @@ tinsert(C.modules["Aurora"], function()
 
 	SearchPanel.RefreshButton:SetSize(24, 24)
 	SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
+
+	LFGListFrame.SearchPanel.FilterButton:SetPoint("LEFT", LFGListFrame.SearchPanel.SearchBox, "RIGHT", 5, 0)
 
 	-- Auto complete frame
 

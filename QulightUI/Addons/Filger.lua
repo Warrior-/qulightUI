@@ -947,6 +947,8 @@ Filger_Spells = {
 			{spellID = 114163, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Sacred Shield
 			{spellID = 20925, unitID = "player", caster = "player", filter = "BUFF", absID = true},
+			-- Seraphim
+			{spellID = 152262, unitID = "player", caster = "player", filter = "BUFF"},
 				-- Paladins Last Tier Tallant "Empowered Seals"
 			-- Uther's Insight
 			{spellID = 156988, unitID = "player", caster = "player", filter = "BUFF"},
@@ -967,14 +969,20 @@ Filger_Spells = {
 			{spellID = 54149, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Bastion of Glory
 			{spellID = 114637, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Final Verdict
+			{spellID = 157048, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Selfless Healer
 			{spellID = 114250, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Supplication
+			{spellID = 94686, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Divine Purpose
 			{spellID = 90174, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Grand Crusader
 			{spellID = 85416, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Daybreak
 			{spellID = 88819, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Divine Crusader
+			{spellID = 144595, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Long Arm of the Law
 			{spellID = 87173, unitID = "player", caster = "player", filter = "BUFF"},
 

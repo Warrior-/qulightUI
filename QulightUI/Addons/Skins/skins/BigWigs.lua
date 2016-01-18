@@ -89,7 +89,9 @@ local applystyle = function(bar)
 	bar.candyBarBar.OldSetPoint = bar.candyBarBar.SetPoint
 	bar.candyBarBar.SetPoint= dummy
 	bar.candyBarBar:SetStatusBarTexture(Qulight["media"].texture)
-	if barcolor and not bar.data["bigwigs:emphasized"]==true then bar.candyBarBar:SetStatusBarColor(barcolor.r, barcolor.g, barcolor.b, 1) end
+	if barcolor and not bar.data["bigwigs:emphasized"]==true then
+		bar.candyBarBar:SetStatusBarColor(barcolor.r, barcolor.g, barcolor.b, 1)
+	end
 	bar.candyBarBackground:SetTexture(Qulight["media"].texture)
 	-- setup icon positions and other things
 	bar.candyBarIconFrame:ClearAllPoints()
@@ -115,8 +117,8 @@ local function registerStyle()
 		})
 	end
 	bars.db.profile.barStyle = "BigWigs"
-	if prox and bars.db.profile.barStyle == "BigWigs" then
-		hooksecurefunc(prox, "RestyleWindow", function()
+	if BigWigsLoader and bars.db.profile.barStyle == "BigWigs" then
+		BigWigsLoader.RegisterMessage("BigWigs_Plugins", "BigWigs_FrameCreated", function()
 			CreateStyle(BigWigsProximityAnchor, 2)
 		end)
 	end
