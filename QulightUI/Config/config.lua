@@ -1,7 +1,7 @@
 ﻿Qulight["media"] = {
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=], 			        -- main font in Qulight UI
 	["pxfont"] = [=[Interface\Addons\QulightUI\Root\Media\pxFont.ttf]=],
-	["fontsize"] = 11, 														    		-- size of font 
+	["fontsize"] = 10, 														    		-- size of font 
 	["texture"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",				-- main texture in Qulight UI
 	["blank"] = "Interface\\Buttons\\WHITE8x8",											-- clean texture
 	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",	
@@ -13,7 +13,7 @@ Qulight["general"] = {
 	["AutoRepair"] = false,																-- auto repair
 	["AutoGreed"] = false,
 	["topbottompanel"] = true,
-	["centerpanel"] = true,
+	["centerpanel"] = false1,
 	["autoinvite"] = true,	
 	["AutoDisenchant"] = false,															-- auto dis green items
 	["BlizzardsErrorFrameHiding"] = true,												-- hide blizzard red errors
@@ -40,8 +40,8 @@ Qulight["raidframes"] = {
 	["show_range"] = true,						-- Show range opacity for raidframes
 	["range_alpha"] = 0.5,						-- Alpha of unitframes when unit is out of range
 	["hp_value"] = true,						
-	["width"] = 80,						
-	["height"] = 30,						
+	["width"] = 81.5,						
+	["height"] = 24,						
 
 	["show_party"] = true,						-- Show party frames
 	["show_raid"] = true,						-- Show raid frames
@@ -76,7 +76,7 @@ Qulight["unitframes"] = {
 	["enable"] = true,																	-- enable/disable action bars
 	["HealthcolorClass"] = false,														-- health color = class color
 	["bigcastbar"] = true,
-		["widthbigcastbar"] = 340,
+		["widthbigcastbar"] = 392,
 		["heightbigcastbar"] = 20,
 	["Powercolor"] = true,																-- power color = class color
 	["showtot"] = true, 																-- show target of target frame
@@ -90,7 +90,7 @@ Qulight["unitframes"] = {
 	["Reputationbar"] = true, 															-- show reputation bar
 	["Experiencebar"] = true, 															-- show experience bar
 	["showPlayerAuras"] = false, 														-- use a custom player buffs/debuffs frame instead of blizzard's default.
-	["showPortrait"] = false,															-- show portraits
+	["showPortrait"] = true,															-- show portraits
 	["showRunebar"] = true, 															-- show dk rune bar
 	["showHolybar"] = true, 															-- show paladin HolyPower bar
 	["showEclipsebar"] = true, 															-- show druid eclipse bar
@@ -152,8 +152,8 @@ Qulight["nameplate"] = {
 	["name_abbrev"] = false,					-- Display the abbreviated names
 	["track_auras"] = true,						-- Show debuffs
 	["healer_icon"] = false,					-- Show icon above enemy healers nameplate in battlegrounds
-	["height"] = 15,							-- Nameplate height
-	["width"] = 150,							-- Nameplate width
+	["height"] = 10,							-- Nameplate height
+	["width"] = 110,							-- Nameplate width
 	["ad_height"] = 0,							-- Additional height for selected nameplate
 	["ad_width"] = 0,							-- Additional width for selected nameplate
 	["good_color"] = {0.2, 0.8, 0.2},			-- Good threat color
@@ -193,13 +193,13 @@ Qulight["misk"] = {
 	["addonmanager"] = true,														-- enable disable addonmanager	
 	["armory_link"] = false,															-- enable armory_link
 	["filger"] = true,																	-- enable disable filger
-	["classtimer"] = false,																-- enable disable classtimer
+	["classtimer"] = true,																-- enable disable classtimer
 	["BuffReminderRaidBuffs"] = true,													-- enable disable raid buffs reminder
 	["Reminder"] = true,																-- enable disable reminder(self buff)
 	["CooldownFlash"] = true,															-- enable disable cooldown flash
 	["raidcooldowns"] = false, 
 	["AutoScreen"] = true,
 	["Threatbar"] = true,
-	["raidmarker"] = true,
-	["raidutility"] = true,														-- enable disable raid utility
+	["raidmarker"] = false,
+	["raidutility"] = false,														-- enable disable raid utility
 }  

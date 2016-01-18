@@ -1637,6 +1637,9 @@ Filger_Spells = {
 			{spellID = 111400, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Fire and Brimstone
 			{spellID = 108683, unitID = "player", caster = "player", filter = "BUFF"},
+	-- Fire and Brimstone
+			{spellID = 157698, unitID = "player", caster = "player", filter = "BUFF"},
+
 		},
 		{
 			Name = "P_PROC_ICON",
