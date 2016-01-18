@@ -394,7 +394,7 @@ WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
 	end
 end)
 ----------------------------------------------------------------------------------------
---	Item level on slot buttons in Character/InspectFrame(by Tukz) 		
+--	Item level on slot buttons in Character/InspectFrame(by Tukz)
 ----------------------------------------------------------------------------------------
 local time = 3
 local slots = {
@@ -442,7 +442,7 @@ local function UpdateButtonsText(frame)
 		elseif item then
 			local oldilevel = text:GetText()
 			local _, _, _, ilevel = GetItemInfo(item)
-			local upgrade = item:match(":(%d+)\124h%[")
+			local upgrade = item:match(":(%d+)\124h%[")		
 
 			if ilevel then
 				if ilevel ~= oldilevel then

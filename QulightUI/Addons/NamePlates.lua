@@ -2,7 +2,6 @@ if not Qulight["nameplate"].enable == true then return end
 ----------------------------------------------------------------------------------------
 --	Based on dNameplates(by Dawn, editor Elv22)
 ----------------------------------------------------------------------------------------
-
 local function SpellName(id)
 	local name = select(1, GetSpellInfo(id))
 	return name
@@ -15,6 +14,7 @@ DebuffWhiteList = {
 	[SpellName(47476)] = true,	-- Strangulate
 	[SpellName(55078)] = true,	-- Blood Plague
 	[SpellName(55095)] = true,	-- Frost Fever
+	[SpellName(152281)] = true,	-- Necrotic Plague
 	-- Druid
 	[SpellName(33786)] = true,	-- Cyclone
 	[SpellName(339)] = true,	-- Entangling Roots
@@ -62,7 +62,7 @@ DebuffWhiteList = {
 	[SpellName(3600)] = true,	-- Earthbind
 	[SpellName(8056)] = true,	-- Frost Shock
 	[SpellName(8050)] = true,	-- Flame Shock
-	[SpellName(63685)] = true,	-- Freeze
+	[SpellName(63685)] = true,	-- Frozen Power
 	-- Warlock
 	[SpellName(710)] = true,	-- Banish
 	[SpellName(6789)] = true,	-- Mortal Coil
@@ -88,30 +88,31 @@ DebuffWhiteList = {
 
 
 local PlateBlacklist = {
-	--Shaman Totems (Ones that don't matter)
-	["Earth Elemental Totem"] = true,
-	["Fire Elemental Totem"] = true,
-	["Fire Resistance Totem"] = true,
-	["Flametongue Totem"] = true,
-	["Frost Resistance Totem"] = true,
-	["Healing Stream Totem"] = true,
-	["Magma Totem"] = true,
-	["Mana Spring Totem"] = true,
-	["Nature Resistance Totem"] = true,
-	["Searing Totem"] = true,
-	["Stoneclaw Totem"] = true,
-	["Stoneskin Totem"] = true,
-	["Strength of Earth Totem"] = true,
-	["Windfury Totem"] = true,
-	["Totem of Wrath"] = true,
-	["Wrath of Air Totem"] = true,
-	["Air Totem"] = true,
-	["Water Totem"] = true,
-	["Fire Totem"] = true,
-	["Earth Totem"] = true,
-
-	--Army of the Dead
+	-- Army of the Dead
 	["Army of the Dead Ghoul"] = true,
+	["Вурдалак из войска мертвых"] = true,
+	-- Hunter Trap
+	["Venomous Snake"] = true,
+	["Ядовитая змея"] = true,
+	["Viper"] = true,
+	["Гадюка"] = true,
+	-- Raid
+	["Liquid Obsidian"] = true,
+	["Жидкий обсидиан"] = true,
+	["Lava Parasites"] = true,
+	["Лавовый паразит"] = true,
+	-- Gundrak
+	["Fanged Pit Viper"] = true,
+	["Клыкастая глубинная гадюка"] = true,
+	-- Totems
+	["Air Totem"] = true,
+	["Тотем воздуха"] = true,
+	["Water Totem"] = true,
+	["Тотем воды"] = true,
+	["Fire Totem"] = true,
+	["Тотем огня"] = true,
+	["Earth Totem"] = true,
+	["Тотем земли"] = true,
 }
 
 

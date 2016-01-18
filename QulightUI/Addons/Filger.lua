@@ -72,6 +72,9 @@ Filger_Spells = {
 			{spellID = 96268, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Unholy Blight
 			{spellID = 115989, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Death's Advance
+			{spellID = 96268, unitID = "player", caster = "player", filter = "BUFF"},
+
 		},
 		{
 			Name = "P_PROC_ICON",
@@ -186,6 +189,9 @@ Filger_Spells = {
 			{spellID = 55078, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Frost Fever
 			{spellID = 55095, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Necrotic Plague
+			{spellID = 152281, unitID = "target", caster = "player", filter = "DEBUFF"},
+
 		},
 	},
 	["DRUID"] = {
@@ -1637,9 +1643,8 @@ Filger_Spells = {
 			{spellID = 111400, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Fire and Brimstone
 			{spellID = 108683, unitID = "player", caster = "player", filter = "BUFF"},
-	-- Fire and Brimstone
+			-- Fire and Brimstone
 			{spellID = 157698, unitID = "player", caster = "player", filter = "BUFF"},
-
 		},
 		{
 			Name = "P_PROC_ICON",
@@ -1929,6 +1934,9 @@ Filger_Spells = {
 			{spellID = 90355, unitID = "player", caster = "all", filter = "BUFF"},
 			-- Drums of Rage
 			{spellID = 146555, unitID = "player", caster = "all", filter = "BUFF"},
+			-- Drums of Fury
+			{spellID = 178207, unitID = "player", caster = "all", filter = "BUFF"},
+
 
 			-- Professions
 			-- Synapse Springs

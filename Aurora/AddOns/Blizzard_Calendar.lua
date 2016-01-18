@@ -205,6 +205,7 @@ C.modules["Blizzard_Calendar"] = function()
 	F.ReskinScroll(CalendarCreateEventInviteListScrollFrameScrollBar)
 	F.ReskinScroll(CalendarCreateEventDescriptionScrollFrameScrollBar)
 	F.ReskinDropDown(CalendarCreateEventTypeDropDown)
+
 	F.ReskinDropDown(CalendarCreateEventHourDropDown)
 	F.ReskinDropDown(CalendarCreateEventMinuteDropDown)
 	F.ReskinDropDown(CalendarCreateEventAMPMDropDown)

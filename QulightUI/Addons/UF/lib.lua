@@ -1784,25 +1784,11 @@ end)
 ----------------------------------------------------------------------------------------
 --	Test UnitFrames(by community)
 ----------------------------------------------------------------------------------------
+local moving = false
 SlashCmdList.TEST_UF = function(msg)
-	if msg == "hide" or msg == "ршву" then
-		for _, frames in pairs({"oUF_Target", "oUF_TargetTarget", "oUF_Pet", "oUF_Focus", "oUF_FocusTarget"}) do
-			_G[frames].Hide = nil
-		end
+	if InCombatLockdown() then print("|cffffff00"..ERR_NOT_IN_COMBAT.."|r") return end
+	if not moving then
 
-		
-			for i = 1, 5 do
-				_G["oUF_Arena"..i].Hide = nil
-				_G["oUF_Arena"..i.."Target"].Hide = nil
-			end
-		
-
-		
-			for i = 1, MAX_BOSS_FRAMES do
-				_G["oUF_Boss"..i].Hide = nil
-			end
-		
-	else
 			for i = 1, 5 do
 				_G["oUF_Arena"..i].Hide = function() end
 				_G["oUF_Arena"..i].unit = "player"
@@ -1825,7 +1811,26 @@ SlashCmdList.TEST_UF = function(msg)
 				_G["oUF_Boss"..i]:Show()
 				_G["oUF_Boss"..i]:UpdateAllElements()
 			end
+
+		moving = true
+
+	else
+		for _, frames in pairs({"oUF_Target", "oUF_TargetTarget", "oUF_Pet", "oUF_Focus", "oUF_FocusTarget"}) do
+			_G[frames].Hide = nil
+		end
+
 		
+			for i = 1, 5 do
+				_G["oUF_Arena"..i].Hide = nil
+				_G["oUF_Arena"..i.."Target"].Hide = nil
+			end
+		
+
+		
+			for i = 1, MAX_BOSS_FRAMES do
+				_G["oUF_Boss"..i].Hide = nil
+			end
+		moving = false
 	end
 end
 SLASH_TEST_UF1 = "/testui"

@@ -852,8 +852,10 @@ C.modules["Blizzard_GarrisonUI"] = function()
 			if addon == "MasterPlan" then
 				local minimize = MissionPage.MinimizeButton
 
+				F.ReskinTab(GarrisonLandingPageTab4)
 				F.ReskinTab(GarrisonMissionFrameTab3)
 				F.ReskinTab(GarrisonMissionFrameTab4)
+				F.ReskinTab(GarrisonShipyardFrameTab3)
 
 				MissionPage.CloseButton:SetSize(17, 17)
 				MissionPage.CloseButton:ClearAllPoints()

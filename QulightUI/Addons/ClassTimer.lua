@@ -214,7 +214,7 @@ local CLASS_FILTERS = {
 				CreateSpellEntry( 33745 ), -- Lacerate
 				CreateSpellEntry( 5211 ), -- Bash
 				CreateSpellEntry( 80964 ), -- Skull Bash (Bear)
-				CreateSpellEntry( 80965 ), -- Skull Bash (Cat)
+				CreateSpellEntry( 106839 ), -- Skull Bash (Cat)
 				CreateSpellEntry( 22570 ), -- Maim
 				CreateSpellEntry( 1822 ), -- Rake
 				CreateSpellEntry( 1079 ), -- Rip

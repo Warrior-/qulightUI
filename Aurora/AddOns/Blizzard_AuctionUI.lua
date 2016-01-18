@@ -211,8 +211,6 @@ C.modules["Blizzard_AuctionUI"] = function()
 	AuctionsItemButtonNameFrame:Hide()
 
 	F.ReskinClose(AuctionFrameCloseButton, "TOPRIGHT", AuctionFrame, "TOPRIGHT", -4, -14)
-	F.ReskinScroll(BrowseScrollFrameScrollBar)
-	F.ReskinScroll(AuctionsScrollFrameScrollBar)
 	F.ReskinScroll(BrowseFilterScrollFrameScrollBar)
 	F.ReskinDropDown(PriceDropDown)
 	F.ReskinDropDown(DurationDropDown)
