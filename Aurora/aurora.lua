@@ -47,16 +47,16 @@ C.defaults = {
 	["acknowledgedSplashScreen"] = false,
 
 	["alpha"] = 0.9,
-	["bags"] = true,
+	["bags"] = false,
 	["buttonGradientColour"] = {0, 0, 0, .3},
 	["buttonSolidColour"] = {.35, .35, .35, .35},
 	["useButtonGradientColour"] = true,
 	["chatBubbles"] = true,
-	["enableFont"] = true,
-	["loot"] = true,
+	["enableFont"] = false,
+	["loot"] = false,
 	["useCustomColour"] = false,
 		["customColour"] = {r = 1, g = 1, b = 1},
-	["tooltips"] = true,
+	["tooltips"] = false,
 }
 
 C.frames = {}
@@ -76,6 +76,19 @@ end
 local r, g, b = C.classcolours[class].r, C.classcolours[class].g, C.classcolours[class].b
 
 F.dummy = function() end
+F.CreateSD = function(parent, size, r, g, b, alpha, offset)
+	local sd = CreateFrame("Frame", nil, parent)
+	sd.size = size or 5	
+	sd.offset = offset or 0
+	sd:SetBackdrop({
+		edgeFile = C.media.glow,
+		edgeSize = sd.size,
+	})
+	sd:SetPoint("TOPLEFT", parent, -4, 4)
+	sd:SetPoint("BOTTOMRIGHT", parent, 4, -4)
+	sd:SetBackdropBorderColor(r or 0, g or 0, b or 0)
+	sd:SetAlpha(alpha or 1)
+end
 
 F.CreateBD = function(f, a)
 	f:SetBackdrop({
@@ -99,20 +112,6 @@ F.CreateBG = function(frame)
 	bg:SetVertexColor(0, 0, 0)
 
 	return bg
-end
-
-F.CreateSD = function(parent, size, r, g, b, alpha, offset)
-	local sd = CreateFrame("Frame", nil, parent)
-	sd.size = size or 5	
-	sd.offset = offset or 0
-	sd:SetBackdrop({
-		edgeFile = C.media.glow,
-		edgeSize = sd.size,
-	})
-	sd:SetPoint("TOPLEFT", parent, -4, 4)
-	sd:SetPoint("BOTTOMRIGHT", parent, 4, -4)
-	sd:SetBackdropBorderColor(r or 0, g or 0, b or 0)
-	sd:SetAlpha(alpha or 1)
 end
 
 -- we assign these after loading variables for caching
