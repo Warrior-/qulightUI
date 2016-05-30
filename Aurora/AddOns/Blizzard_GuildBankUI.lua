@@ -1,10 +1,8 @@
-
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_GuildBankUI"] = function()
+C.themes["Blizzard_GuildBankUI"] = function()
 	GuildBankFrame:DisableDrawLayer("BACKGROUND")
 	GuildBankFrame:DisableDrawLayer("BORDER")
-
 
 	GuildBankFrame.TopLeftCorner:Hide()
 	GuildBankFrame.TopRightCorner:Hide()
@@ -71,6 +69,7 @@ C.modules["Blizzard_GuildBankUI"] = function()
 		for j = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local bu = _G["GuildBankColumn"..i.."Button"..j]
 			local border = bu.IconBorder
+			local searchOverlay = bu.searchOverlay
 
 			bu:SetNormalTexture("")
 			bu:SetPushedTexture("")
@@ -81,6 +80,9 @@ C.modules["Blizzard_GuildBankUI"] = function()
 			border:SetPoint("TOPLEFT", -1, 1)
 			border:SetPoint("BOTTOMRIGHT", 1, -1)
 			border:SetDrawLayer("BACKGROUND")
+
+			searchOverlay:SetPoint("TOPLEFT", -1, 1)
+			searchOverlay:SetPoint("BOTTOMRIGHT", 1, -1)
 		end
 	end
 
@@ -89,19 +91,18 @@ C.modules["Blizzard_GuildBankUI"] = function()
 		local bu = _G["GuildBankTab"..i.."Button"]
 		local ic = _G["GuildBankTab"..i.."ButtonIconTexture"]
 		local nt = _G["GuildBankTab"..i.."ButtonNormalTexture"]
-		
+
 		bu:SetPushedTexture("")
 		tb:GetRegions():Hide()
 		nt:SetAlpha(0)
 
 		bu:SetCheckedTexture(C.media.checked)
 		F.CreateBG(bu)
-		F.CreateSD(bu)
+
 		local a1, p, a2, x, y = bu:GetPoint()
 		bu:SetPoint(a1, p, a2, x + 1, y)
 
 		ic:SetTexCoord(.08, .92, .08, .92)
-
 	end
 
 	for i = 1, NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_ICON_ROWS do

@@ -1,15 +1,13 @@
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_GuildUI"] = function()
+C.themes["Blizzard_GuildUI"] = function()
 	local r, g, b = C.r, C.g, C.b
 
 	F.ReskinPortraitFrame(GuildFrame, true)
 	F.CreateBD(GuildMemberDetailFrame)
-	F.CreateSD(GuildMemberDetailFrame)
 	F.CreateBD(GuildMemberNoteBackground, .25)
 	F.CreateBD(GuildMemberOfficerNoteBackground, .25)
 	F.CreateBD(GuildLogFrame)
-	F.CreateSD(GuildLogFrame)
 	F.CreateBD(GuildLogContainer, .25)
 	F.CreateBD(GuildNewsFiltersFrame)
 	F.CreateBD(GuildTextEditFrame)
@@ -102,10 +100,12 @@ C.modules["Blizzard_GuildUI"] = function()
 	F.ReskinDropDown(GuildRosterViewDropdown)
 	F.ReskinDropDown(GuildMemberRankDropdown)
 	F.ReskinInput(GuildRecruitmentCommentInputFrame)
+
 	GuildRecruitmentCommentInputFrame:SetWidth(312)
 	GuildRecruitmentCommentEditBox:SetWidth(284)
 	GuildRecruitmentCommentFrame:ClearAllPoints()
 	GuildRecruitmentCommentFrame:SetPoint("TOPLEFT", GuildRecruitmentLevelFrame, "BOTTOMLEFT", 0, 1)
+
 	F.ReskinCheck(GuildRosterShowOfflineButton)
 	for i = 1, 6 do
 		F.ReskinCheck(_G["GuildNewsFilterButton"..i])
@@ -136,7 +136,6 @@ C.modules["Blizzard_GuildUI"] = function()
 
 	for i = 1, 5 do
 		local bu = _G["GuildInfoFrameApplicantsContainerButton"..i]
-		F.CreateBD(bu, .25)
 
 		bu:SetBackdrop(nil)
 		bu:SetHighlightTexture("")
@@ -194,8 +193,6 @@ C.modules["Blizzard_GuildUI"] = function()
 		F.CreateBG(bu.icon)
 	end
 
-
-
 	local UpdateIcons = function()
 		local index
 		local offset = HybridScrollFrame_GetOffset(GuildRosterContainer)
@@ -234,7 +231,7 @@ C.modules["Blizzard_GuildUI"] = function()
 	F.Reskin(select(4, GuildTextEditFrame:GetChildren()))
 	F.Reskin(select(3, GuildLogFrame:GetChildren()))
 
-	 local gbuttons = {"GuildAddMemberButton", "GuildViewLogButton", "GuildControlButton", "GuildTextEditFrameAcceptButton", "GuildMemberGroupInviteButton", "GuildMemberRemoveButton", "GuildRecruitmentInviteButton", "GuildRecruitmentMessageButton", "GuildRecruitmentDeclineButton", "GuildRecruitmentListGuildButton"}
+	local gbuttons = {"GuildAddMemberButton", "GuildViewLogButton", "GuildControlButton", "GuildTextEditFrameAcceptButton", "GuildMemberGroupInviteButton", "GuildMemberRemoveButton", "GuildRecruitmentInviteButton", "GuildRecruitmentMessageButton", "GuildRecruitmentDeclineButton", "GuildRecruitmentListGuildButton"}
 	for i = 1, #gbuttons do
 		F.Reskin(_G[gbuttons[i]])
 	end

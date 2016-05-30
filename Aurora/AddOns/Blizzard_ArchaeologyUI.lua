@@ -1,7 +1,6 @@
-
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_ArchaeologyUI"] = function()
+C.themes["Blizzard_ArchaeologyUI"] = function()
 	F.SetBD(ArchaeologyFrame)
 	F.Reskin(ArchaeologyFrameArtifactPageSolveFrameSolveButton)
 	F.Reskin(ArchaeologyFrameArtifactPageBackButton)
@@ -27,6 +26,7 @@ C.modules["Blizzard_ArchaeologyUI"] = function()
 	for i = 1, ARCHAEOLOGY_MAX_RACES do
 		_G["ArchaeologyFrameSummaryPageRace"..i]:GetRegions():SetTextColor(1, 1, 1)
 	end
+
 	for i = 1, ARCHAEOLOGY_MAX_COMPLETED_SHOWN do
 		local bu = _G["ArchaeologyFrameCompletedPageArtifact"..i]
 		bu:GetRegions():Hide()

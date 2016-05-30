@@ -1,8 +1,7 @@
-
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_BarbershopUI"] = function()
-	BarberShopFrameGetRegions:Hide()
+C.themes["Blizzard_BarbershopUI"] = function()
+	BarberShopFrame:GetRegions():Hide()
 	BarberShopFrameMoneyFrame:GetRegions():Hide()
 	BarberShopAltFormFrameBackground:Hide()
 	BarberShopAltFormFrameBorder:Hide()
@@ -18,11 +17,11 @@ C.modules["Blizzard_BarbershopUI"] = function()
 	F.Reskin(BarberShopFrameResetButton)
 
 	for i = 1, 5 do
-	F.ReskinArrow(_G["BarberShopFrameSelector"..i.."Prev"], "left")
-	F.ReskinArrow(_G["BarberShopFrameSelector"..i.."Next"], "right")
+		F.ReskinArrow(_G["BarberShopFrameSelector"..i.."Prev"], "left")
+		F.ReskinArrow(_G["BarberShopFrameSelector"..i.."Next"], "right")
 	end
 
-	 -- [[ Banner frame ]]
+	-- [[ Banner frame ]]
 
 	BarberShopBannerFrameBGTexture:Hide()
 

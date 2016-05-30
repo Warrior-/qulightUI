@@ -1,6 +1,6 @@
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_DeathRecap"] = function()
+C.themes["Blizzard_DeathRecap"] = function()
 	local DeathRecapFrame = DeathRecapFrame
 
 	DeathRecapFrame:DisableDrawLayer("BORDER")

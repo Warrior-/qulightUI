@@ -1,6 +1,6 @@
 local F, C = unpack(select(2, ...))
 
-tinsert(C.modules["Aurora"], function()
+tinsert(C.themes["Aurora"], function()
 	local r, g, b = C.r, C.g, C.b
 
 	local LFGListFrame = LFGListFrame
@@ -34,12 +34,12 @@ tinsert(C.modules["Aurora"], function()
 			bu.styled = true
 		end
 	end)
+
 	-- [[ Nothing available ]]
 
 	local NothingAvailable = LFGListFrame.NothingAvailable
 
 	NothingAvailable.Inset:DisableDrawLayer("BORDER")
-
 
 	-- [[ Search panel ]]
 
@@ -50,7 +50,6 @@ tinsert(C.modules["Aurora"], function()
 
 	F.Reskin(SearchPanel.RefreshButton)
 	F.Reskin(SearchPanel.BackButton)
-	F.Reskin(SearchPanel.FilterButton)
 	F.Reskin(SearchPanel.SignUpButton)
 	F.Reskin(SearchPanel.ScrollFrame.StartGroupButton)
 	F.ReskinInput(SearchPanel.SearchBox)
@@ -58,8 +57,6 @@ tinsert(C.modules["Aurora"], function()
 
 	SearchPanel.RefreshButton:SetSize(24, 24)
 	SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
-
-	LFGListFrame.SearchPanel.FilterButton:SetPoint("LEFT", LFGListFrame.SearchPanel.SearchBox, "RIGHT", 5, 0)
 
 	-- Auto complete frame
 
@@ -187,7 +184,7 @@ tinsert(C.modules["Aurora"], function()
 	F.ReskinCheck(EntryCreation.VoiceChat.CheckButton)
 
 	-- [[ Role count ]]
-	
+
 	hooksecurefunc("LFGListGroupDataDisplayRoleCount_Update", function(self)
 		if not self.styled then
 			for _, roleButton in pairs({self.TankIcon, self.HealerIcon, self.DamagerIcon}) do
@@ -253,7 +250,6 @@ tinsert(C.modules["Aurora"], function()
 		end
 	end)
 
-
 	-- Activity finder
 
 	local ActivityFinder = EntryCreation.ActivityFinder
@@ -277,14 +273,13 @@ tinsert(C.modules["Aurora"], function()
 	local LFGListApplicationDialog = LFGListApplicationDialog
 
 	for i = 1, 9 do
-	select(i, LFGListApplicationDialog.Description:GetRegions()):Hide()
+		select(i, LFGListApplicationDialog.Description:GetRegions()):Hide()
 	end
 
 	F.CreateBD(LFGListApplicationDialog)
 	F.CreateBD(LFGListApplicationDialog.Description, .25)
 	F.Reskin(LFGListApplicationDialog.SignUpButton)
 	F.Reskin(LFGListApplicationDialog.CancelButton)
-
 
 	-- [[ Invite dialog ]]
 

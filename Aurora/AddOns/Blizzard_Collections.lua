@@ -1,6 +1,6 @@
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_Collections"] = function()
+C.themes["Blizzard_Collections"] = function()
 	local r, g, b = C.r, C.g, C.b
 
 	-- [[ General ]]
@@ -468,9 +468,11 @@ C.modules["Blizzard_Collections"] = function()
 
 		if button.iconTexture:IsShown() then
 			button.name:SetTextColor(1, 1, 1)
+			button.bg:SetVertexColor(.9, .8, .5)
 			button.newLevelBg:Show()
 		else
 			button.name:SetTextColor(.5, .5, .5)
+			button.bg:SetVertexColor(0, 0, 0)
 			button.newLevelBg:Hide()
 		end
 	end)

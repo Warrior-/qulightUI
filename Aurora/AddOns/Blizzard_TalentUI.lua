@@ -1,7 +1,6 @@
-
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_TalentUI"] = function()
+C.themes["Blizzard_TalentUI"] = function()
 	local r, g, b = C.r, C.g, C.b
 
 	PlayerTalentFrameTalents:DisableDrawLayer("BORDER")
@@ -272,7 +271,7 @@ C.modules["Blizzard_TalentUI"] = function()
 		bg:SetPoint("BOTTOMRIGHT", 1, -1)
 		bg:SetFrameLevel(tab:GetFrameLevel()-1)
 		F.CreateBD(bg)
-		F.CreateSD(tab)
+
 		select(2, tab:GetRegions()):SetTexCoord(.08, .92, .08, .92)
 	end
 

@@ -1,6 +1,6 @@
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_PVPUI"] = function()
+C.themes["Blizzard_PVPUI"] = function()
 	local r, g, b = C.r, C.g, C.b
 
 	local PVPUIFrame = PVPUIFrame
@@ -83,7 +83,7 @@ C.modules["Blizzard_PVPUI"] = function()
 	F.Reskin(BonusFrame.DiceButton)
 
 	for _, bonusButton in pairs({"RandomBGButton", "Arena1Button", "Arena2Button"}) do
-	local bu = BonusFrame[bonusButton]
+		local bu = BonusFrame[bonusButton]
 
 		F.Reskin(bu, true)
 

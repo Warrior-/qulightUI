@@ -1,6 +1,6 @@
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_VoidStorageUI"] = function()
+C.themes["Blizzard_VoidStorageUI"] = function()
 	F.SetBD(VoidStorageFrame, 20, 0, 0, 20)
 	F.CreateBD(VoidStoragePurchaseFrame)
 
@@ -64,8 +64,6 @@ C.modules["Blizzard_VoidStorageUI"] = function()
 
 		_G["VoidStorageStorageButton"..i.."Bg"]:Hide()
 		_G["VoidStorageStorageButton"..i.."IconTexture"]:SetTexCoord(.08, .92, .08, .92)
-			
-			F.CreateBDFrame(bu, .25)
 	end
 
 	for i = 1, 2 do

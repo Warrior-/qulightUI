@@ -1,10 +1,9 @@
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_AchievementUI"] = function()
+C.themes["Blizzard_AchievementUI"] = function()
 	local r, g, b = C.r, C.g, C.b
 
 	F.CreateBD(AchievementFrame)
-	F.CreateSD(AchievementFrame)
 	AchievementFrameCategories:SetBackdrop(nil)
 	AchievementFrameSummary:SetBackdrop(nil)
 	for i = 1, 17 do
@@ -36,25 +35,26 @@ C.modules["Blizzard_AchievementUI"] = function()
 	do
 		local first = true
 		hooksecurefunc("AchievementFrameCategories_Update", function()
-		if first then
-			for i = 1, 19 do
-			local bu = _G["AchievementFrameCategoriesContainerButton"..i]
+			if first then
+				for i = 1, 19 do
+					local bu = _G["AchievementFrameCategoriesContainerButton"..i]
 
-			bu.background:Hide()
+					bu.background:Hide()
 
-			local bg = F.CreateBDFrame(bu, .25)
-			bg:SetPoint("TOPLEFT", 0, -1)
-			bg:SetPoint("BOTTOMRIGHT")
+					local bg = F.CreateBDFrame(bu, .25)
+					bg:SetPoint("TOPLEFT", 0, -1)
+					bg:SetPoint("BOTTOMRIGHT")
 
-			bu:SetHighlightTexture(C.media.backdrop)
-			local hl = bu:GetHighlightTexture()
-			hl:SetVertexColor(r, g, b, .2)
-			hl:SetPoint("TOPLEFT", 1, -2)
-			hl:SetPoint("BOTTOMRIGHT", -1, 1)
-		end
-		first = false
+					bu:SetHighlightTexture(C.media.backdrop)
+					local hl = bu:GetHighlightTexture()
+					hl:SetVertexColor(r, g, b, .2)
+					hl:SetPoint("TOPLEFT", 1, -2)
+					hl:SetPoint("BOTTOMRIGHT", -1, 1)
+				end
+				first = false
+			end
+		end)
 	end
-end)
 
 	AchievementFrameHeaderPoints:SetPoint("TOP", AchievementFrame, "TOP", 0, -6)
 	AchievementFrameFilterDropDown:SetPoint("TOPRIGHT", AchievementFrame, "TOPRIGHT", -98, 1)
@@ -76,20 +76,17 @@ end)
 	bg:SetPoint("BOTTOMRIGHT", 1, -1)
 	bg:SetFrameLevel(AchievementFrameSummaryCategoriesStatusBar:GetFrameLevel()-1)
 	F.CreateBD(bg, .25)
-	
-	if LoadAddOn('Overachiever_Tabs') then
- 		  for i = 1, 6 do
-  			 local tab = _G["AchievementFrameTab"..i]
-  			 if tab then
-  			 	F.ReskinTab(tab)
-    			 end
-  		 end
+
+	for i = 1, 3 do
+		local tab = _G["AchievementFrameTab"..i]
+		if tab then
+			F.ReskinTab(tab)
+		end
 	end
 
 	for i = 1, 7 do
 		local bu = _G["AchievementFrameAchievementsContainerButton"..i]
 		bu:DisableDrawLayer("BORDER")
-
 		bu.background:Hide()
 
 		_G["AchievementFrameAchievementsContainerButton"..i.."TitleBackground"]:Hide()
@@ -101,9 +98,6 @@ end)
 		_G["AchievementFrameAchievementsContainerButton"..i.."GuildCornerL"]:SetAlpha(0)
 		_G["AchievementFrameAchievementsContainerButton"..i.."GuildCornerR"]:SetAlpha(0)
 
-		bu.background:SetTexture(C.media.backdrop)
-		bu.background:SetVertexColor(0, 0, 0, .25)
-
 		bu.description:SetTextColor(.9, .9, .9)
 		bu.description.SetTextColor = F.dummy
 		bu.description:SetShadowOffset(1, -1)
@@ -112,7 +106,6 @@ end)
 		local bg = F.CreateBDFrame(bu, .25)
 		bg:SetPoint("TOPLEFT", 1, -1)
 		bg:SetPoint("BOTTOMRIGHT", 0, 2)
-		F.CreateBD(bg, 0)
 
 		bu.icon.texture:SetTexCoord(.08, .92, .08, .92)
 		F.CreateBG(bu.icon.texture)
@@ -137,8 +130,7 @@ end)
 		local tex = F.CreateGradient(ch)
 		tex:SetPoint("TOPLEFT", 4, -4)
 		tex:SetPoint("BOTTOMRIGHT", -4, 4)
-		tex:SetTexture(C.media.backdrop)
-		
+
 		local left = ch:CreateTexture(nil, "BACKGROUND")
 		left:SetWidth(1)
 		left:SetTexture(0, 0, 0)
@@ -215,6 +207,9 @@ end)
 			bar.reskinned = true
 		end
 	end)
+
+	-- this is hidden behind other stuff in default UI
+	AchievementFrameSummaryAchievementsEmptyText:SetText("")
 
 	hooksecurefunc("AchievementFrameSummary_UpdateAchievements", function()
 		for i = 1, ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
@@ -375,5 +370,4 @@ end)
 	F.ReskinScroll(AchievementFrameCategoriesContainerScrollBar)
 	F.ReskinScroll(AchievementFrameComparisonContainerScrollBar)
 	F.ReskinDropDown(AchievementFrameFilterDropDown)
-	end
 end

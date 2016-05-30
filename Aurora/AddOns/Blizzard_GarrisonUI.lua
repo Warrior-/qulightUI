@@ -1,6 +1,6 @@
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_GarrisonUI"] = function()
+C.themes["Blizzard_GarrisonUI"] = function()
 	local r, g, b = C.r, C.g, C.b
 
 	-- [[ Building frame ]]
@@ -850,13 +850,12 @@ C.modules["Blizzard_GarrisonUI"] = function()
 		f:RegisterEvent("ADDON_LOADED")
 		f:SetScript("OnEvent", function(self, event, addon)
 			if addon == "MasterPlan" then
-				local minimize = MissionPage.MinimizeButton
-
 				F.ReskinTab(GarrisonLandingPageTab4)
+
 				F.ReskinTab(GarrisonMissionFrameTab3)
 				F.ReskinTab(GarrisonMissionFrameTab4)
-				F.ReskinTab(GarrisonShipyardFrameTab3)
 
+				local minimize = MissionPage.MinimizeButton
 				MissionPage.CloseButton:SetSize(17, 17)
 				MissionPage.CloseButton:ClearAllPoints()
 				MissionPage.CloseButton:SetPoint("TOPRIGHT", -10, -5)

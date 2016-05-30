@@ -1,6 +1,6 @@
 local F, C = unpack(select(2, ...))
 
-C.modules["Blizzard_LookingForGuildUI"] = function()
+C.themes["Blizzard_LookingForGuildUI"] = function()
 	local r, g, b = C.r, C.g, C.b
 
 	F.SetBD(LookingForGuildFrame)
@@ -36,7 +36,7 @@ C.modules["Blizzard_LookingForGuildUI"] = function()
 	LookingForGuildFramePortraitFrame:Hide()
 	LookingForGuildFrameTopBorder:Hide()
 	LookingForGuildFrameTopRightCorner:Hide()
-	
+
 	F.Reskin(LookingForGuildBrowseButton)
 	F.Reskin(GuildFinderRequestMembershipFrameAcceptButton)
 	F.Reskin(GuildFinderRequestMembershipFrameCancelButton)
@@ -56,24 +56,23 @@ C.modules["Blizzard_LookingForGuildUI"] = function()
 	F.ReskinScroll(LookingForGuildBrowseFrameContainerScrollBar)
 
 	for i = 1, 5 do
-	local bu = _G["LookingForGuildBrowseFrameContainerButton"..i]
+		local bu = _G["LookingForGuildBrowseFrameContainerButton"..i]
 
-	bu:SetBackdrop(nil)
-	bu:SetHighlightTexture("")
+		bu:SetBackdrop(nil)
+		bu:SetHighlightTexture("")
 
-	-- my client crashes if I put this in a var? :x
-	bu:GetRegions():SetTexture(C.media.backdrop)
-	bu:GetRegions():SetVertexColor(r, g, b, .2)
-	bu:GetRegions():SetPoint("TOPLEFT", 1, -1)
-	bu:GetRegions():SetPoint("BOTTOMRIGHT", -1, 2)
+		-- my client crashes if I put this in a var? :x
+		bu:GetRegions():SetTexture(C.media.backdrop)
+		bu:GetRegions():SetVertexColor(r, g, b, .2)
+		bu:GetRegions():SetPoint("TOPLEFT", 1, -1)
+		bu:GetRegions():SetPoint("BOTTOMRIGHT", -1, 2)
 
-	local bg = F.CreateBDFrame(bu, .25)
-	bg:SetPoint("TOPLEFT")
-	bg:SetPoint("BOTTOMRIGHT", 0, 1)
+		local bg = F.CreateBDFrame(bu, .25)
+		bg:SetPoint("TOPLEFT")
+		bg:SetPoint("BOTTOMRIGHT", 0, 1)
 	end
 
 	-- [[ Role buttons ]]
-
 
 	for _, roleButton in pairs({LookingForGuildTankButton, LookingForGuildHealerButton, LookingForGuildDamagerButton}) do
 		roleButton.cover:SetTexture(C.media.roleIcons)

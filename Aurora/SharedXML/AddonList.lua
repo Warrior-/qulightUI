@@ -1,6 +1,6 @@
 local F, C = unpack(select(2, ...))
 
-tinsert(C.modules["Aurora"], function()
+tinsert(C.themes["Aurora"], function()
 	F.ReskinPortraitFrame(AddonList, true)
 	F.Reskin(AddonListEnableAllButton)
 	F.Reskin(AddonListDisableAllButton)
@@ -14,5 +14,6 @@ tinsert(C.modules["Aurora"], function()
 
 	for i = 1, MAX_ADDONS_DISPLAYED do
 		F.ReskinCheck(_G["AddonListEntry"..i.."Enabled"])
+		F.Reskin(_G["AddonListEntry"..i.."Load"])
 	end
 end)

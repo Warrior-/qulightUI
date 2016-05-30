@@ -1,7 +1,6 @@
-
 local F, C = unpack(select(2, ...))
-	
-tinsert(C.modules["Aurora"], function()
+
+tinsert(C.themes["Aurora"], function()
 	SpellBookFrame:DisableDrawLayer("BACKGROUND")
 	SpellBookFrame:DisableDrawLayer("BORDER")
 	SpellBookFrame:DisableDrawLayer("OVERLAY")
@@ -82,7 +81,7 @@ tinsert(C.modules["Aurora"], function()
 				tab:SetCheckedTexture(C.media.checked)
 
 				F.CreateBG(tab)
-				F.CreateSD(tab)
+
 				tab:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
 
 				tab.styled = true
@@ -101,7 +100,7 @@ tinsert(C.modules["Aurora"], function()
 			tab:SetCheckedTexture(C.media.checked)
 
 			F.CreateBG(tab)
-			F.CreateSD(tab)
+
 			tab:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
 
 			if i == 1 then
@@ -134,7 +133,6 @@ tinsert(C.modules["Aurora"], function()
 		end
 	end)
 
-	
 	SpellBookFrameTutorialButton.Ring:Hide()
 	SpellBookFrameTutorialButton:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", -12, 12)
 end)
