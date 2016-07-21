@@ -118,8 +118,6 @@ oUF.Tags.Methods['color'] = function(u, r)
 	
 	if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
 		return "|cffA0A0A0"
-	elseif (UnitIsTapped(u) and not UnitIsTappedByPlayer(u)) then
-		return hex(oUF.colors.tapped)
 	elseif (UnitIsPlayer(u)) then
 		return hex(oUF.colors.class[class])
 	elseif reaction then

@@ -9,19 +9,19 @@ end
 
 DebuffWhiteList = {
 	-- Death Knight
-	[SpellName(115001)] = true,	-- Remorseless Winter
+	--[SpellName(115001)] = true,	-- Remorseless Winter
 	[SpellName(108194)] = true,	-- Asphyxiate
 	[SpellName(47476)] = true,	-- Strangulate
 	[SpellName(55078)] = true,	-- Blood Plague
 	[SpellName(55095)] = true,	-- Frost Fever
-	[SpellName(152281)] = true,	-- Necrotic Plague
+	--[SpellName(152281)] = true,	-- Necrotic Plague
 	-- Druid
 	[SpellName(33786)] = true,	-- Cyclone
 	[SpellName(339)] = true,	-- Entangling Roots
 	[SpellName(164812)] = true,	-- Moonfire
 	[SpellName(164815)] = true,	-- Sunfire
 	[SpellName(58180)] = true,	-- Infected Wounds
-	[SpellName(33745)] = true,	-- Lacerate
+	--[SpellName(33745)] = true,	-- Lacerate
 	[SpellName(155722)] = true,	-- Rake
 	[SpellName(1079)] = true,	-- Rip
 	-- Hunter
@@ -30,22 +30,22 @@ DebuffWhiteList = {
 	[SpellName(118)] = true,	-- Polymorph
 	[SpellName(31661)] = true,	-- Dragon's Breath
 	[SpellName(122)] = true,	-- Frost Nova
-	[SpellName(111340)] = true,	-- Ice Ward
-	[SpellName(44457)] = true,	-- Living Bomb
+	--[SpellName(111340)] = true,	-- Ice Ward
+	--[SpellName(44457)] = true,	-- Living Bomb
 	[SpellName(114923)] = true,	-- Nether Tempest
 	[SpellName(112948)] = true,	-- Frost Bomb
-	[SpellName(83853)] = true,	-- Combustion
-	[SpellName(44572)] = true,	-- Deep Freeze
+	--[SpellName(83853)] = true,	-- Combustion
+	--[SpellName(44572)] = true,	-- Deep Freeze
 	[SpellName(120)] = true,	-- Cone of Cold
-	[SpellName(102051)] = true,	-- Frostjaw
+	--[SpellName(102051)] = true,	-- Frostjaw
 	-- Monk
 	[SpellName(115078)] = true,	-- Paralysis
 	-- Paladin
 	[SpellName(20066)] = true,	-- Repentance
-	[SpellName(10326)] = true,	-- Turn Evil
+	--[SpellName(10326)] = true,	-- Turn Evil
 	[SpellName(853)] = true,	-- Hammer of Justice
-	[SpellName(105593)] = true,	-- Fist of Justice
-	[SpellName(31803)] = true,	-- Censure
+	--[SpellName(105593)] = true,	-- Fist of Justice
+	--[SpellName(31803)] = true,	-- Censure
 	-- Priest
 	[SpellName(9484)] = true,	-- Shackle Undead
 	[SpellName(8122)] = true,	-- Psychic Scream
@@ -60,9 +60,9 @@ DebuffWhiteList = {
 	-- Shaman
 	[SpellName(51514)] = true,	-- Hex
 	[SpellName(3600)] = true,	-- Earthbind
-	[SpellName(8056)] = true,	-- Frost Shock
-	[SpellName(8050)] = true,	-- Flame Shock
-	[SpellName(63685)] = true,	-- Frozen Power
+	--[SpellName(8056)] = true,	-- Frost Shock
+	--[SpellName(8050)] = true,	-- Flame Shock
+	--[SpellName(63685)] = true,	-- Frozen Power
 	-- Warlock
 	[SpellName(710)] = true,	-- Banish
 	[SpellName(6789)] = true,	-- Mortal Coil
@@ -126,14 +126,9 @@ RoleUpdater:RegisterEvent("UNIT_INVENTORY_CHANGED")
 RoleUpdater:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 RoleUpdater:SetScript("OnEvent", function() Role = CheckRole() end)
 
-function UIScale()
-	if Qulight["general"].AutoScale == true then
-	Qulight["general"].UiScale = min(2, max(.64, 768/string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)")))
-	end
-end
-UIScale()
+
 -- pixel perfect script of custom ui scale.
-local mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/Qulight["general"].UiScale
+local mult = 768/string.match(getscreenresolution, "%d+x(%d+)")/Qulight["general"].UiScale
 local function scale(x)
     return mult*math.floor(x/mult+.5)
 end
@@ -166,7 +161,7 @@ end
 local function HideObjects(frame)
 	for object in pairs(frame.queue) do
 		if object:GetObjectType() == "Texture" then
-			object:SetTexture(nil)
+			object:SetColorTexture(nil)
 		elseif object:GetObjectType() == "FontString" then
 			object:SetWidth(0.001)
 		else
@@ -184,7 +179,7 @@ local function CreateVirtualFrame(frame, point)
 	frame.backdrop:SetDrawLayer("BORDER", -8)
 	frame.backdrop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult, noscalemult)
 	frame.backdrop:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult, -noscalemult)
-	frame.backdrop:SetTexture(0.05, 0.05, 0.05, 1)
+	frame.backdrop:SetColorTexture(0.05, 0.05, 0.05, 1)
 end
 
 local function SetVirtualBorder(frame, r, g, b)
@@ -199,16 +194,16 @@ local function CreateAuraIcon(frame)
 	CreateStyle(button, 4)
 	
 	button.bg = button:CreateTexture(nil, "BACKGROUND")
-	button.bg:SetTexture(0.05, 0.05, 0.05, 1)
+	button.bg:SetColorTexture(0.05, 0.05, 0.05, 1)
 	button.bg:SetAllPoints(button)
 
 	button.bord = button:CreateTexture(nil, "BORDER")
-	button.bord:SetTexture(.6,.6,.6,0)
+	button.bord:SetColorTexture(.6,.6,.6,0)
 	button.bord:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
 	button.bord:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 
 	button.bg2 = button:CreateTexture(nil, "ARTWORK")
-	button.bg2:SetTexture(0.05, 0.05, 0.05, 1)
+	button.bg2:SetColorTexture(0.05, 0.05, 0.05, 1)
 	button.bg2:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
 	button.bg2:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 
@@ -233,7 +228,7 @@ end
 local function UpdateAuraIcon(button, unit, index, filter)
 	local name, _, icon, count, debuffType, duration, expirationTime, _, _, _, spellID = UnitAura(unit, index, filter)
 
-	button.icon:SetTexture(icon)
+	button.icon:SetColorTexture(icon)
 	button.cd:SetCooldown(expirationTime - duration, duration)
 	button.expirationTime = expirationTime
 	button.duration = duration
@@ -283,10 +278,10 @@ local function UpdateCastbar(frame)
 	frame:SetSize(Qulight["nameplate"].width * noscalemult, Qulight["nameplate"].height * noscalemult)
 	frame:SetPoint("TOP", frame:GetParent().hp, "BOTTOM", 0, -8)
 	frame:GetStatusBarTexture():SetHorizTile(true)
-	frame.bg:SetTexture(0.75, 0.75, 0.25, 0.2)
+	frame.bg:SetColorTexture(0.75, 0.75, 0.25, 0.2)
 	if frame.shield:IsShown() then
 		frame:SetStatusBarColor(0.78, 0.25, 0.25)
-		frame.bg:SetTexture(0.78, 0.25, 0.25, 0.2)
+		frame.bg:SetColorTexture(0.78, 0.25, 0.25, 0.2)
 	end
 end
 
@@ -373,7 +368,7 @@ local function Colorize(frame)
 			end
 			frame.hp.name:SetTextColor(unpack(oUF_colors.class[class]))
 			frame.hp:SetStatusBarColor(unpack(oUF_colors.class[class]))
-			frame.hp.bg:SetTexture(oUF_colors.class[class][1], oUF_colors.class[class][2], oUF_colors.class[class][3], 0.2)
+			frame.hp.bg:SetColorTexture(oUF_colors.class[class][1], oUF_colors.class[class][2], oUF_colors.class[class][3], 0.2)
 			return
 		end
 	end
@@ -411,7 +406,7 @@ local function Colorize(frame)
 	end
 
 	frame.hp:SetStatusBarColor(r, g, b)
-	frame.hp.bg:SetTexture(r, g, b, 0.2)
+	frame.hp.bg:SetColorTexture(r, g, b, 0.2)
 	frame.hp.name:SetTextColor(r, g, b)
 end
 
@@ -517,7 +512,7 @@ local function SkinObjects(frame, nameFrame)
 
 	hp.bg = hp:CreateTexture(nil, "BORDER")
 	hp.bg:SetAllPoints(hp)
-	hp.bg:SetTexture(1, 1, 1, 0.2)
+	hp.bg:SetColorTexture(1, 1, 1, 0.2)
 
 	hp:HookScript("OnShow", UpdateObjects)
 	frame.hp = hp
@@ -534,7 +529,7 @@ local function SkinObjects(frame, nameFrame)
 	
 	cb.bg = cb:CreateTexture(nil, "BORDER")
 	cb.bg:SetAllPoints(cb)
-	cb.bg:SetTexture(0.75, 0.75, 0.25, 0.2)
+	cb.bg:SetColorTexture(0.75, 0.75, 0.25, 0.2)
 
 	-- Create Cast Time Text
 	cb.time = cb:CreateFontString(nil, "ARTWORK")
@@ -556,7 +551,7 @@ local function SkinObjects(frame, nameFrame)
 	if Qulight["nameplate"].class_icons == true then
 		local cIconTex = hp:CreateTexture(nil, "OVERLAY")
 		cIconTex:SetPoint("TOPRIGHT", hp, "TOPLEFT", -5, 2)
-		cIconTex:SetTexture("Interface\\WorldStateFrame\\Icons-Classes")
+		cIconTex:SetColorTexture("Interface\\WorldStateFrame\\Icons-Classes")
 		cIconTex:SetSize(Qulight["nameplate"].height, Qulight["nameplate"].height)
 		frame.class = cIconTex
 
@@ -599,7 +594,7 @@ local function SkinObjects(frame, nameFrame)
 
 	-- Highlight texture
 	if not frame.overlay then
-		overlay:SetTexture(1, 1, 1, 0.15)
+		overlay:SetColorTexture(1, 1, 1, 0.15)
 		overlay:SetParent(frame.hp)
 		overlay:SetAllPoints()
 		frame.overlay = overlay
@@ -654,15 +649,15 @@ local function UpdateThreat(frame, elapsed)
 				-- No Threat
 				if Role == "Tank" then
 					frame.hp:SetStatusBarColor(badR, badG, badB)
-					frame.hp.bg:SetTexture(badR, badG, badB, 0.2)
+					frame.hp.bg:SetColorTexture(badR, badG, badB, 0.2)
 				else
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
-					frame.hp.bg:SetTexture(goodR, goodG, goodB, 0.2)
+					frame.hp.bg:SetColorTexture(goodR, goodG, goodB, 0.2)
 				end
 			-- else
 				-- Set colors to their original, not in combat
 				-- frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
-				-- frame.hp.bg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.2)
+				-- frame.hp.bg:SetColorTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.2)
 			end
 		else
 			-- Ok we either have threat or we're losing/gaining it
@@ -671,15 +666,15 @@ local function UpdateThreat(frame, elapsed)
 				-- Have Threat
 				if Role == "Tank" then
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
-					frame.hp.bg:SetTexture(goodR, goodG, goodB, 0.2)
+					frame.hp.bg:SetColorTexture(goodR, goodG, goodB, 0.2)
 				else
 					frame.hp:SetStatusBarColor(badR, badG, badB)
-					frame.hp.bg:SetTexture(badR, badG, badB, 0.2)
+					frame.hp.bg:SetColorTexture(badR, badG, badB, 0.2)
 				end
 			else
 				-- Losing/Gaining Threat
 				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)
-				frame.hp.bg:SetTexture(transitionR, transitionG, transitionB, 0.2)
+				frame.hp.bg:SetColorTexture(transitionR, transitionG, transitionB, 0.2)
 			end
 		end
 	end

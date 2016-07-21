@@ -379,8 +379,6 @@ local BorderColor = function(self)
 
 	local reaction = unit and UnitReaction(unit, "player")
 	local player = unit and UnitIsPlayer(unit)
-	local tapped = unit and UnitIsTapped(unit)
-	local tappedbyme = unit and UnitIsTappedByPlayer(unit)
 	local connected = unit and UnitIsConnected(unit)
 	local dead = unit and UnitIsDead(unit)
 	local r, g, b
@@ -925,14 +923,13 @@ hooksecurefunc("PaperDollFrame_SetItemLevel", function(self, unit)
 	if (equip > 0) then equip = string.format("%.1f", equip) end
 
 	local ilvl = equip
---
-	if (equip < total) then
+	if (equip ~= total) then
 		ilvl = equip .. " / " .. total
 	end
 
-	local ilvlLine = _G[self:GetName() .. "StatText"]
-	ilvlLine:SetText(ilvl)
---
+	--local ilvlLine = _G[self:GetName() .. "StatText"]
+	--ilvlLine:SetText(ilvl)
+
 	self.tooltip = detailColor .. STAT_AVERAGE_ITEM_LEVEL .. " " .. ilvl
 end)
 

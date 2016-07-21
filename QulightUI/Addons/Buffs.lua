@@ -2,7 +2,7 @@ if not Qulight["buffdebuff"].enable or not Qulight["unitframes"].enable == true 
 local addon, ns = ...
 
 AnchorBuff = CreateFrame("Frame","Move_Buff",UIParent)
-AnchorBuff:SetPoint("TOPRIGHT", UIParent, -150, -5)
+AnchorBuff:SetPoint("TOPRIGHT", UIParent, -150, -3)
 CreateAnchor(AnchorBuff, "Move Buff", 300, 70)
 
 local mainhand, _, _, offhand, _, _, hand3 = GetWeaponEnchantInfo()
@@ -19,26 +19,26 @@ local GetFormattedTime = function(s)
 	return floor(s + 0.5)
 end
 
-ConsolidatedBuffs:ClearAllPoints()
-ConsolidatedBuffs:SetPoint("TOPRIGHT", AnchorBuff)
-ConsolidatedBuffs:SetSize(Qulight["buffdebuff"].iconsize, Qulight["buffdebuff"].iconsize)
-ConsolidatedBuffs.SetPoint = nil
+--ConsolidatedBuffs:ClearAllPoints()
+--ConsolidatedBuffs:SetPoint("TOPRIGHT", AnchorBuff)
+--ConsolidatedBuffs:SetSize(Qulight["buffdebuff"].iconsize, Qulight["buffdebuff"].iconsize)
+--ConsolidatedBuffs.SetPoint = nil
 
-ConsolidatedBuffsIcon:SetTexture("Interface\\Icons\\Spell_ChargePositive")
-ConsolidatedBuffsIcon:SetTexCoord(0.03,0.97,0.03,0.97)
-ConsolidatedBuffsIcon:SetSize(Qulight["buffdebuff"].iconsize-2,Qulight["buffdebuff"].iconsize-2)
+--ConsolidatedBuffsIcon:SetTexture("Interface\\Icons\\Spell_ChargePositive")
+--ConsolidatedBuffsIcon:SetTexCoord(0.03,0.97,0.03,0.97)
+--ConsolidatedBuffsIcon:SetSize(Qulight["buffdebuff"].iconsize-2,Qulight["buffdebuff"].iconsize-2)
 
-local h = CreateFrame("Frame")
-h:SetParent(ConsolidatedBuffs)
-h:SetAllPoints(ConsolidatedBuffs)
-h:SetFrameLevel(30)
+--local h = CreateFrame("Frame")
+--h:SetParent(ConsolidatedBuffs)
+--h:SetAllPoints(ConsolidatedBuffs)
+--h:SetFrameLevel(30)
 
-ConsolidatedBuffsCount:SetParent(h)
-ConsolidatedBuffsCount:SetPoint("TOPRIGHT")
-ConsolidatedBuffsCount:SetFont(Qulight["media"].pxfont, Qulight["buffdebuff"].countfontsize, "OUTLINE")
+--ConsolidatedBuffsCount:SetParent(h)
+--ConsolidatedBuffsCount:SetPoint("TOPRIGHT")
+--ConsolidatedBuffsCount:SetFont(Qulight["media"].pxfont, Qulight["buffdebuff"].countfontsize, "OUTLINE")
 
-local CBbg = CreateFrame("Frame", nil, ConsolidatedBuffs)
-CreateStyle(CBbg, 2)
+--local CBbg = CreateFrame("Frame", nil, ConsolidatedBuffs)
+--CreateStyle(CBbg, 2)
 
 for i = 1, 3 do
 	local te 			= _G["TempEnchant"..i]

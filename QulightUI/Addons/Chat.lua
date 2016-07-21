@@ -54,7 +54,6 @@ for i = 1, 10 do
 	local x=({_G["ChatFrame"..i.."EditBox"]:GetRegions()})
 	x[9]:SetAlpha(0)
 	x[10]:SetAlpha(0)
-	x[11]:SetAlpha(0)
 end
 
 -- Function to rename channel and other stuff
@@ -155,7 +154,11 @@ local function SetChatStyle(frame)
 	Kill(_G[format("ChatFrame%sEditBoxFocusMid", id)])
 	Kill(_G[format("ChatFrame%sEditBoxFocusRight", id)])
 
-	local a, b, c = select(6, _G[chat.."EditBox"]:GetRegions()); Kill (a); Kill (b); Kill (c)
+	-- Kills off the retarded new circle around the editbox
+	Kill(_G[format("ChatFrame%sEditBoxLeft", id)])
+	Kill(_G[format("ChatFrame%sEditBoxMid", id)])
+	Kill(_G[format("ChatFrame%sEditBoxRight", id)])
+	
 				
 	_G[chat.."EditBox"]:SetAltArrowKeyMode(false)
 	_G[chat.."EditBox"]:Hide()

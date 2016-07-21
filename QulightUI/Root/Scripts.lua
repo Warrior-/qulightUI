@@ -107,8 +107,8 @@ end
 --	Based on AchievementMover
 ----------------------------------------------------------------------------------------
 local AchievementAnchor = CreateFrame("Frame", "AchievementAnchor", UIParent)
-AchievementAnchor:SetWidth(DungeonCompletionAlertFrame1:GetWidth() - 36)
-AchievementAnchor:SetHeight(DungeonCompletionAlertFrame1:GetHeight() - 4)
+AchievementAnchor:SetWidth(DungeonCompletionAlertFrame:GetWidth() - 36)
+AchievementAnchor:SetHeight(DungeonCompletionAlertFrame:GetHeight() - 4)
 AchievementAnchor:SetPoint("CENTER", 0, 0)
 
 local POSITION, ANCHOR_POINT, YOFFSET = "BOTTOM", "TOP", -9
@@ -132,7 +132,7 @@ local function fixAnchors()
 	GroupLootContainer:ClearAllPoints()
 	GroupLootContainer:SetPoint(POSITION, AlertFrame, ANCHOR_POINT, -100, YOFFSET)
 end
-hooksecurefunc("AlertFrame_FixAnchors", fixAnchors)
+--hooksecurefunc("AlertFrame_FixAnchors", fixAnchors)
 
 local function AlertFrame_SetLootAnchors(alertAnchor)
 	if MissingLootFrame:IsShown() then
@@ -147,7 +147,7 @@ local function AlertFrame_SetLootAnchors(alertAnchor)
 		GroupLootContainer:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
-hooksecurefunc("AlertFrame_SetLootAnchors", AlertFrame_SetLootAnchors)
+--hooksecurefunc("AlertFrame_SetLootAnchors", AlertFrame_SetLootAnchors)
 
 local function AlertFrame_SetLootWonAnchors(alertAnchor)
 	for i = 1, #LOOT_WON_ALERT_FRAMES do
@@ -159,7 +159,7 @@ local function AlertFrame_SetLootWonAnchors(alertAnchor)
 		end
 	end
 end
-hooksecurefunc("AlertFrame_SetLootWonAnchors", AlertFrame_SetLootWonAnchors)
+--hooksecurefunc("AlertFrame_SetLootWonAnchors", AlertFrame_SetLootWonAnchors)
 
 local function AlertFrame_SetMoneyWonAnchors(alertAnchor)
 	for i = 1, #MONEY_WON_ALERT_FRAMES do
@@ -171,7 +171,7 @@ local function AlertFrame_SetMoneyWonAnchors(alertAnchor)
 		end
 	end
 end
-hooksecurefunc("AlertFrame_SetMoneyWonAnchors", AlertFrame_SetMoneyWonAnchors)
+--hooksecurefunc("AlertFrame_SetMoneyWonAnchors", AlertFrame_SetMoneyWonAnchors)
 
 local function AlertFrame_SetAchievementAnchors(alertAnchor)
 	if AchievementAlertFrame1 then
@@ -185,7 +185,7 @@ local function AlertFrame_SetAchievementAnchors(alertAnchor)
 		end
 	end
 end
-hooksecurefunc("AlertFrame_SetAchievementAnchors", AlertFrame_SetAchievementAnchors)
+--hooksecurefunc("AlertFrame_SetAchievementAnchors", AlertFrame_SetAchievementAnchors)
 
 local function AlertFrame_SetCriteriaAnchors(alertAnchor)
 	if CriteriaAlertFrame1 then
@@ -199,7 +199,7 @@ local function AlertFrame_SetCriteriaAnchors(alertAnchor)
 		end
 	end
 end
-hooksecurefunc("AlertFrame_SetCriteriaAnchors", AlertFrame_SetCriteriaAnchors)
+--hooksecurefunc("AlertFrame_SetCriteriaAnchors", AlertFrame_SetCriteriaAnchors)
 
 local function AlertFrame_SetChallengeModeAnchors(alertAnchor)
 	local frame = ChallengeModeAlertFrame1
@@ -208,7 +208,7 @@ local function AlertFrame_SetChallengeModeAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
-hooksecurefunc("AlertFrame_SetChallengeModeAnchors", AlertFrame_SetChallengeModeAnchors)
+--hooksecurefunc("AlertFrame_SetChallengeModeAnchors", AlertFrame_SetChallengeModeAnchors)
 
 local function AlertFrame_SetDungeonCompletionAnchors(alertAnchor)
 	local frame = DungeonCompletionAlertFrame1
@@ -217,7 +217,7 @@ local function AlertFrame_SetDungeonCompletionAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
-hooksecurefunc("AlertFrame_SetDungeonCompletionAnchors", AlertFrame_SetDungeonCompletionAnchors)
+--hooksecurefunc("AlertFrame_SetDungeonCompletionAnchors", AlertFrame_SetDungeonCompletionAnchors)
 
 local function AlertFrame_SetScenarioAnchors(alertAnchor)
 	local frame = ScenarioAlertFrame1
@@ -226,7 +226,7 @@ local function AlertFrame_SetScenarioAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
-hooksecurefunc("AlertFrame_SetScenarioAnchors", AlertFrame_SetScenarioAnchors)
+--hooksecurefunc("AlertFrame_SetScenarioAnchors", AlertFrame_SetScenarioAnchors)
 
 local function AlertFrame_SetGuildChallengeAnchors(alertAnchor)
 	local frame = GuildChallengeAlertFrame
@@ -235,14 +235,14 @@ local function AlertFrame_SetGuildChallengeAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
-hooksecurefunc("AlertFrame_SetGuildChallengeAnchors", AlertFrame_SetGuildChallengeAnchors)
+--hooksecurefunc("AlertFrame_SetGuildChallengeAnchors", AlertFrame_SetGuildChallengeAnchors)
 
 hooksecurefunc(GroupLootContainer, "SetPoint", function(self, point, anchorTo, attachPoint, xOffset, yOffset)
 	if _G[anchorTo] == UIParent or _G[anchorTo] == AchievementAnchor then
 		fixAnchors()
 	end
 end)
-hooksecurefunc("AlertFrame_SetGarrisonFollowerAlertFrameAnchors", AlertFrame_SetGarrisonFollowerAlertFrameAnchors)
+--hooksecurefunc("AlertFrame_SetGarrisonFollowerAlertFrameAnchors", AlertFrame_SetGarrisonFollowerAlertFrameAnchors)
 
 function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 	local frame = GarrisonBuildingAlertFrame
@@ -251,7 +251,7 @@ function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
-hooksecurefunc("AlertFrame_SetGarrisonBuildingAlertFrameAnchors", AlertFrame_SetGarrisonBuildingAlertFrameAnchors)
+--hooksecurefunc("AlertFrame_SetGarrisonBuildingAlertFrameAnchors", AlertFrame_SetGarrisonBuildingAlertFrameAnchors)
 
 function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 	local frame = GarrisonBuildingAlertFrame
@@ -260,7 +260,7 @@ function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
-hooksecurefunc("AlertFrame_SetGarrisonMissionAlertFrameAnchors", AlertFrame_SetGarrisonMissionAlertFrameAnchors)
+--hooksecurefunc("AlertFrame_SetGarrisonMissionAlertFrameAnchors", AlertFrame_SetGarrisonMissionAlertFrameAnchors)
 
 function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 	local frame = GarrisonMissionAlertFrame
@@ -393,10 +393,10 @@ WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
 		int = 0
 	end
 end)
+--[[
 ----------------------------------------------------------------------------------------
 --	Item level on slot buttons in Character/InspectFrame(by Tukz)
 ----------------------------------------------------------------------------------------
-local time = 3
 local slots = {
 	"HeadSlot", "NeckSlot", "ShoulderSlot", "BackSlot", "ChestSlot", "ShirtSlot", "TabardSlot",
 	"WristSlot", "MainHandSlot", "SecondaryHandSlot", "HandsSlot", "WaistSlot",
@@ -410,15 +410,49 @@ local upgrades = {
 	["466"] = 4, ["467"] = 8, ["469"] = 4, ["470"] = 8, ["471"] = 12, ["472"] = 16,
 	["477"] = 4, ["478"] = 8, ["480"] = 8, ["492"] = 4, ["493"] = 8, ["495"] = 4,
 	["496"] = 8, ["497"] = 12, ["498"] = 16, ["504"] = 12, ["505"] = 16, ["506"] = 20,
-	["507"] = 24, ["529"] = 0, ["530"] = 5, ["531"] = 10
+	["507"] = 24, ["530"] = 5, ["531"] = 10
+}
+
+local function BOALevel(level, id)
+	if level > 97 then
+		if id == 133585 or id == 133595 or id == 133596 or id == 133597 or id == 133598 then
+			level = 715
+		else
+			level = 605 - (100 - level) * 5
+		end
+	elseif level > 90 then
+		level = 590 - (97 - level) * 10
+	elseif level > 85 then
+		level = 463 - (90 - level) * 19.75
+	elseif level > 80 then
+		level = 333 - (85 - level) * 13.5
+	elseif level > 67 then
+		level = 187 - (80 - level) * 4
+	elseif level > 57 then
+		level = 105 - (67 - level) * 2.9
+	elseif level > 5 then
+		level = level + 5
+	else
+		level = 10
+	end
+
+	return floor(level + 0.5)
+end
+
+local timewarped = {
+	[615] = 660, -- Dungeon drops
+	[692] = 675, -- Timewarped badge vendors
+}
+
+local timewarped_warforged = {
+	[656] = 675, -- Dungeon drops
 }
 
 local function CreateButtonsText(frame)
 	for _, slot in pairs(slots) do
 		local button = _G[frame..slot]
 		button.t = button:CreateFontString(nil, "OVERLAY", "SystemFont_Outline_Small")
-		button.t:SetFont(Qulight["media"].font, 9, "OUTLINE")
-		button.t:SetPoint("TOPLEFT", button, "TOPLEFT", 2, -2)
+		button.t:SetPoint("TOP", button, "TOP", 0, -2)
 		button.t:SetText("")
 	end
 end
@@ -428,33 +462,38 @@ local function UpdateButtonsText(frame)
 
 	for _, slot in pairs(slots) do
 		local id = GetInventorySlotInfo(slot)
-		local item
 		local text = _G[frame..slot].t
+		local item
+		local ulvl
 
 		if frame == "Inspect" then
 			item = GetInventoryItemLink("target", id)
+			ulvl = UnitLevel("target")
 		else
 			item = GetInventoryItemLink("player", id)
+			ulvl = UnitLevel("player")
 		end
 
 		if slot == "ShirtSlot" or slot == "TabardSlot" then
 			text:SetText("")
 		elseif item then
 			local oldilevel = text:GetText()
-			local _, _, _, ilevel = GetItemInfo(item)
-			local upgrade = item:match(":(%d+)\124h%[")		
-
+			local _, _, quality, ilevel = GetItemInfo(item)
 			if ilevel then
 				if ilevel ~= oldilevel then
-					if ilevel == 1 then
+					if quality == 7 and ilevel == 1 then
+						local id = tonumber(strmatch(item, "item:(%d+)"))
+						text:SetText("|cFFFFFF00"..BOALevel(ulvl, id))
+					elseif ilevel == 1 then
 						text:SetText("")
 					else
-						if upgrades[upgrade] == nil then upgrades[upgrade] = 0 end
-						if upgrades[upgrade] > 0 then
-							text:SetText("|cffffd200"..ilevel + upgrades[upgrade])
-						else
-							text:SetText("|cFFFFFF00"..ilevel + upgrades[upgrade])
-						end
+						local warped = select(15, strsplit(":", item))
+						local warforged = select(16, strsplit(":", item))
+						ilevel = timewarped[tonumber(warped)] or ilevel
+						ilevel = timewarped_warforged[tonumber(warforged)] or ilevel
+						--local upgrade = item:match(":(%d+)\124h%[")
+						--if upgrades[upgrade] == nil then upgrades[upgrade] = 0 end
+						--text:SetText("|cFFFFFF00"..ilevel + upgrades[upgrade])
 					end
 				end
 			else
@@ -474,20 +513,11 @@ OnEvent:SetScript("OnEvent", function(self, event)
 		CreateButtonsText("Character")
 		UpdateButtonsText("Character")
 		self:UnregisterEvent("PLAYER_LOGIN")
-	elseif event == "PLAYER_TARGET_CHANGED" or event == "INSPECT_READY" then
-		UpdateButtonsText("Inspect")
-	else
+		CharacterFrame:HookScript("OnShow", function(self) UpdateButtonsText("Character") end)
+	elseif event == "PLAYER_EQUIPMENT_CHANGED" then
 		UpdateButtonsText("Character")
-	end
-end)
-OnEvent:SetScript("OnUpdate", function(self, elapsed)
-	time = time + elapsed
-	if time >= 3 then
-		if InspectFrame and InspectFrame:IsShown() then
-			UpdateButtonsText("Inspect")
-		else
-			UpdateButtonsText("Character")
-		end
+	else
+		UpdateButtonsText("Inspect")
 	end
 end)
 
@@ -497,8 +527,10 @@ OnLoad:SetScript("OnEvent", function(self, event, addon)
 	if addon == "Blizzard_InspectUI" then
 		CreateButtonsText("Inspect")
 		InspectFrame:HookScript("OnShow", function(self) UpdateButtonsText("Inspect") end)
+		OnEvent:RegisterEvent("UNIT_INVENTORY_CHANGED")
 		OnEvent:RegisterEvent("PLAYER_TARGET_CHANGED")
 		OnEvent:RegisterEvent("INSPECT_READY")
 		self:UnregisterEvent("ADDON_LOADED")
 	end
 end)
+--]]

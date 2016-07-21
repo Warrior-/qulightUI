@@ -536,7 +536,7 @@ RaidDebuffs = {
 -- PvP
 -----------------------------------------------------------------
 	-- Death Knight
-	[SpellName(115001)] = 3,	-- Remorseless Winter
+	--[SpellName(115001)] = 3,	-- Remorseless Winter
 	[SpellName(108194)] = 3,	-- Asphyxiate
 	[SpellName(47476)] = 3,		-- Strangulate
 	[SpellName(91800)] = 3,		-- Gnaw (Ghoul)
@@ -552,18 +552,18 @@ RaidDebuffs = {
 	-- Mage
 	[SpellName(31661)] = 3,		-- Dragon's Breath
 	[SpellName(82691)] = 3,		-- Ring of Frost
-	[SpellName(44572)] = 3,		-- Deep Freeze
+	--[SpellName(44572)] = 3,		-- Deep Freeze
 	[SpellName(61305)] = 3,		-- Polymorph
-	[SpellName(102051)] = 3,	-- Frostjaw
+	--[SpellName(102051)] = 3,	-- Frostjaw
 	[SpellName(122)] = 2,		-- Frost Nova
-	[SpellName(111340)] = 2,	-- Ice Ward
+	--[SpellName(111340)] = 2,	-- Ice Ward
 	-- Monk
 	[SpellName(115078)] = 3,	-- Paralysis
 	[SpellName(119381)] = 3,	-- Leg Sweep
 	-- Paladin
 	[SpellName(20066)] = 3,		-- Repentance
 	[SpellName(853)] = 3,		-- Hammer of Justice
-	[SpellName(105593)] = 3,	-- Fist of Justice
+	--[SpellName(105593)] = 3,	-- Fist of Justice
 	[SpellName(105421)] = 3,	-- Blinding Light
 	-- Priest
 	[SpellName(605)] = 3,		-- Dominate Mind
@@ -578,7 +578,7 @@ RaidDebuffs = {
 	-- Shaman
 	[SpellName(51514)] = 3,		-- Hex
 	[SpellName(118905)] = 3,	-- Static Charge
-	[SpellName(63685)] = 2,		-- Freeze
+	--[SpellName(63685)] = 2,		-- Freeze
 	-- Warlock
 	[SpellName(118699)] = 3,	-- Fear
 	[SpellName(6789)] = 3,		-- Mortal Coil

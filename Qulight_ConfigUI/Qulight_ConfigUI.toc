@@ -1,4 +1,4 @@
-## Interface: 60200
+## Interface: 70000
 ## Title: |cff1784d1Qulight Config UI|r
 ## Notes: Someday there is only pantesaur left.
 ## Author: Qulight

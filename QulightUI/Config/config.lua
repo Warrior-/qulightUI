@@ -7,7 +7,7 @@
 	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",	
 }
 Qulight["general"] = {
-	["AutoScale"] = true,  																-- mainly enabled for users that don't want to mess with the config file
+	["AutoScale"] = false,  																-- mainly enabled for users that don't want to mess with the config file
 	["UiScale"] = 0.75,																	-- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["MultisampleProtect"] = false,    													-- 1x antialazing
 	["AutoRepair"] = false,																-- auto repair
@@ -27,7 +27,7 @@ Qulight["actionbar"] = {
 	["petbuttonsize"] = 32,                             -- pet & stance buttons size
 	["buttonspacing"] = 1,                              -- buttons spacing
 	["petbuttonspacing"] = 1,
-	["mainbarWidth"] = 12,		
+	["mainbarWidth"] = 10,		
 	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
 }
 
@@ -112,15 +112,15 @@ Qulight["buffdebuff"] = {
 }
 Qulight["addonskins"] = {
 	["DBM"] = true, 																	-- Deadly Boss Mod skinning
-	["PallyPower"] = true, 																-- Pally Power skinning
+	["PallyPower"] = false, 																-- Pally Power skinning
 	["Skada"] = true, 																	-- Skada skinning
-	["Recount"] = true, 																-- Recount skinning
-	["Omen"] = true, 																	-- Omen skinning
-	["KLE"] = true, 																	-- KLE skinning
-	["Quartz"] = true, 																	-- Quartz skinning
-	["Bigwigs"] = true, 																-- BigWigs Bossmod skinning
-	["DXE"] = true,
-	["CoolLine"] = true,
+	["Recount"] = false, 																-- Recount skinning
+	["Omen"] = false, 																	-- Omen skinning
+	["KLE"] = false, 																	-- KLE skinning
+	["Quartz"] = false, 																	-- Quartz skinning
+	["Bigwigs"] = false, 																-- BigWigs Bossmod skinning
+	["DXE"] = false,
+	["CoolLine"] = false,
 }
 Qulight["datatext"] = {
 	["Durability"] = 2,                													-- show your equipment durability on panels.
@@ -143,7 +143,7 @@ Qulight["datatext"] = {
 	["color"] = { .7, .7, .7, 1 }, 														-- if ["classcolor"] = false,	
 }
 Qulight["nameplate"] = {
-	["enable"] = true, 							-- Enable nameplate
+	["enable"] = false, 							-- Enable nameplate
 	["combat"] = false,							-- Automatically show nameplate in combat
 	["health_value"] = true,					-- Numeral health value
 	["show_castbar_name"] = false,				-- Show castbar name
@@ -190,12 +190,11 @@ Qulight["cooldown"] = {
 	["enable"] = true,                     												-- enable/disable cooldown addon(for buttons)
 }
 Qulight["misk"] = {
-	["addonmanager"] = true,														-- enable disable addonmanager	
 	["armory_link"] = false,															-- enable armory_link
-	["filger"] = true,																	-- enable disable filger
-	["classtimer"] = true,																-- enable disable classtimer
-	["BuffReminderRaidBuffs"] = true,													-- enable disable raid buffs reminder
-	["Reminder"] = true,																-- enable disable reminder(self buff)
+	["filger"] = false,																	-- enable disable filger
+	["classtimer"] = false,																-- enable disable classtimer
+	["BuffReminderRaidBuffs"] = false,													-- enable disable raid buffs reminder
+	["Reminder"] = false,																-- enable disable reminder(self buff)
 	["CooldownFlash"] = true,															-- enable disable cooldown flash
 	["raidcooldowns"] = false, 
 	["AutoScreen"] = true,

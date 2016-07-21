@@ -11,7 +11,7 @@ frame.SetPoint = function() return end
 
 ObjectiveTrackerFrame:ClearAllPoints()
 ObjectiveTrackerFrame:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, 0)
-ObjectiveTrackerFrame:SetHeight(tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)")) / 1.6)
+ObjectiveTrackerFrame:SetHeight(tonumber(string.match(getscreenresolution, "%d+x(%d+)")) / 1.6)
 
 hooksecurefunc(ObjectiveTrackerFrame, "SetPoint", function(_, _, parent)
 	if parent ~= frame then

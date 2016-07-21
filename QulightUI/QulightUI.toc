@@ -1,7 +1,7 @@
-## Interface: 60200
+## Interface: 70000
 ## Title: |cff1784d1QulightUI|r
 ## Notes: QulightUI
-## Version: 5.7.6
+## Version: 5.7.7
 ## Credits to: Monolit, Shestak, Hanomi, Alza, AlleyKat, Fernir, affli, Nightcracker, Allez, haste, Zork, Tekkub, Tuller, Freebaser, Haleth, drakull, P3lim, Dawn, Tukz, Warrior, Wetxius.
 ## Author: Qulight
 ## X-oUF: oUF

@@ -226,27 +226,22 @@ function tullaRange.UpdateButtonUsable(button)
 	local action = ActionButton_GetPagedID(button)
 	local isUsable, notEnoughMana = IsUsableAction(action)
 
-	--usable
+	-- Usable
 	if isUsable then
-		--but out of range
+		-- Out of range
 		if IsActionInRange(action) == false then
-			tullaRange.SetButtonColor(button, 'oor')
-		--a holy power abilty, and we're less than 3 Holy Power
-		elseif PLAYER_IS_PALADIN and isHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) >= tullaRange:GetHolyPowerThreshold() or UnitBuff('player', HAND_OF_LIGHT)) then
-			tullaRange.SetButtonColor(button, 'ooh')
-		--in range
+			tullaRange.SetButtonColor(button, "oor")
+		-- Holy Power
+		elseif PLAYER_IS_PALADIN and isHolyPowerAbility(action) and not (UnitPower("player", SPELL_POWER_HOLY_POWER) >= 3 or UnitBuff("player", DIVINE_PURPOSE)) then
+			tullaRange.SetButtonColor(button, "ooh")
+		-- In range
 		else
-			tullaRange.SetButtonColor(button, 'normal')
+			tullaRange.SetButtonColor(button, "normal")
 		end
-	--out of mana
+	-- Out of mana
 	elseif notEnoughMana then
-		--a holy power abilty, and we're less than 3 Holy Power
-		if PLAYER_IS_PALADIN and isHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) >= tullaRange:GetHolyPowerThreshold() or UnitBuff('player', HAND_OF_LIGHT)) then
-			tullaRange.SetButtonColor(button, 'ooh')
-		else
-			tullaRange.SetButtonColor(button, 'oom')
-		end
-	--unusable
+		tullaRange.SetButtonColor(button, "oom")
+	-- Unusable
 	else
 		button.tullaRangeColor = "unusuable"
 	end

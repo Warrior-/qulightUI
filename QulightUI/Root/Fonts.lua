@@ -28,7 +28,7 @@ Fonts:SetScript("OnEvent", function(self, event, addon)
 	local NUMBER     =  Qulight["media"].font
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 	
-	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 10
+	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
 	CHAT_FONT_HEIGHTS = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 	
 	UNIT_NAME_FONT     = NORMAL

@@ -164,7 +164,7 @@ local function OnAuraChange(self, event, arg1, unit)
 
 	for i, statbuffs in pairs(statbuffs) do
 		local spellname = select(1, GetSpellInfo(statbuffs))
-		if UnitAura("player", spellname) then
+		if UnitAura("player", name) then
 			StatFrame:SetAlpha(1)
 			StatFrame.t:SetTexture(select(3, GetSpellInfo(statbuffs)))
 			stat = true
@@ -178,7 +178,7 @@ local function OnAuraChange(self, event, arg1, unit)
 
 	for i, staminabuffs in pairs(staminabuffs) do
 		local spellname = select(1, GetSpellInfo(staminabuffs))
-		if UnitAura("player", spellname) then
+		if UnitAura("player", name) then
 			StaminaFrame:SetAlpha(1)
 			StaminaFrame.t:SetTexture(select(3, GetSpellInfo(staminabuffs)))
 			stamina = true
@@ -192,7 +192,7 @@ local function OnAuraChange(self, event, arg1, unit)
 
 	for i, Spell5Buff in pairs(Spell5Buff) do
 		local spellname = select(1, GetSpellInfo(Spell5Buff))
-		if UnitAura("player", spellname) then
+		if UnitAura("player", name) then
 			Spell5Frame:SetAlpha(1)
 			Spell5Frame.t:SetTexture(select(3, GetSpellInfo(Spell5Buff)))
 			spell5 = true
@@ -206,7 +206,7 @@ local function OnAuraChange(self, event, arg1, unit)
 
 	for i, Spell6Buff in pairs(Spell6Buff) do
 		local spellname = select(1, GetSpellInfo(Spell6Buff))
-		if UnitAura("player", spellname) then
+		if UnitAura("player", name) then
 			Spell6Frame:SetAlpha(1)
 			Spell6Frame.t:SetTexture(select(3, GetSpellInfo(Spell6Buff)))
 			spell6 = true
