@@ -7,7 +7,7 @@
 	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",	
 }
 Qulight["general"] = {
-	["AutoScale"] = false,  																-- mainly enabled for users that don't want to mess with the config file
+	["AutoScale"] = true,  																-- mainly enabled for users that don't want to mess with the config file
 	["UiScale"] = 0.75,																	-- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["MultisampleProtect"] = false,    													-- 1x antialazing
 	["AutoRepair"] = false,																-- auto repair
@@ -36,10 +36,10 @@ Qulight["raidframes"] = {
 	["deficit_health"] = true,					-- Raid deficit health
 	["vertical_health"] = false,				-- Vertical orientation of health
 	["alpha_health"] = false,					-- Alpha of healthbars when 100%hp
-	["power"] = false,					-- Alpha of healthbars when 100%hp
+	["power"] = true,					-- Alpha of healthbars when 100%hp
 	["show_range"] = true,						-- Show range opacity for raidframes
 	["range_alpha"] = 0.5,						-- Alpha of unitframes when unit is out of range
-	["hp_value"] = true,						
+	["hp_value"] = false,						
 	["width"] = 81.5,						
 	["height"] = 24,						
 
@@ -99,7 +99,10 @@ Qulight["unitframes"] = {
 }
 Qulight["chatt"] = {				 
 	["enable"] = true,																	-- enable/disable chat
+	["combatlog"] = true,
+	["fontsize"] = 10,
 	["chatbar"] = false,																-- enable/disable chatbar
+	["sticky"] = true,																
 }
 Qulight["buffdebuff"] = {
 	["enable"] = true,  
@@ -170,14 +173,24 @@ Qulight["tooltip"] = {
 	["hidecombat"] = false,               												-- hide bottom-right tooltip when in combat
 	["hidebuttons"] = false,                											-- always hide action bar buttons tooltip.
 	["hideuf"] = false,                     											-- hide tooltip on unitframes
+	["shift_modifer"] = false,
+	["health_value"] = false,
+	["realm"] = true,
+	["arena_experience"] = false,
+	["target"] = true,		
+	["raid_icon"] = true,						-- Raid icon
+	["who_targetting"] = true,					-- Show who is targetting the unit(in raid or party)
+	["rank"] = true,	
 	["cursor"] = false,                     											-- tooltip via cursor only
 	["itemlevel"] = true,																-- show item level
 	["spellid"] = true,
-	["title"] = false,	-- show speel id
+	["title"] = true,	-- show speel id
+	["unit_role"] = true,	-- show speel id
 }
 Qulight["bags"] = {
 	["Enable"] = true,																	-- enable/disable bags 
 	["buttonsize"] = 32,																	-- Buttons size
+	["ilvl"] = true,																	-- enable/disable bags 
 	["buttonspace"] = 3,																	-- Buttons space
 	["bankcolumns"] = 17,																	-- Horizontal number of columns in bank
 	["BagBars"] = true,																	-- enable/disable bags bar

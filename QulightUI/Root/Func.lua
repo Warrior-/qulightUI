@@ -1,27 +1,3 @@
-
-getscreenheight = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"))
-getscreenwidth = tonumber(string.match(({GetScreenResolutions()})[GetCurrentResolution()], "(%d+)x+%d"))
-
-
-
-		SetCVar("useUiScale", 1)
-		if Qulight["general"].UiScale > 1.28 then Qulight["general"].UiScale = 1.28 end
-		if Qulight["general"].UiScale < 0.64 then Qulight["general"].UiScale = 0.64 end
-
-		-- Set our uiscale
-		SetCVar("uiScale", Qulight["general"].UiScale)
-
-		-- Hack for 4K and WQHD Resolution
-		local monitorIndex = (tonumber(GetCVar('gxMonitor')) or 0) + 1
-		local resolution = select(GetCurrentResolution(monitorIndex), GetScreenResolutions(monitorIndex))
-		local customScale = min(2, max(0.32, 768 / string.match(resolution, "%d+x(%d+)")))
-		if Qulight["general"].UiScale == true and customScale < 0.64 then
-			UIParent:SetScale(customScale)
-		elseif customScale < 0.64 then
-			UIParent:SetScale(Qulight["general"].UiScale)
-		end
-
-
 local mult = 768/string.match(getscreenresolution, "%d+x(%d+)")/Qulight["general"].UiScale
 local function scale(x)
     return mult*math.floor(x/mult+.5)
