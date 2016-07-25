@@ -41,7 +41,7 @@ C.themes["Blizzard_AchievementUI"] = function()
 
 					bu.background:Hide()
 
-					local bg = F.CreateBDFrame(bu, .25)
+					local bg = F.CreateBDFrame1(bu, .25)
 					bg:SetPoint("TOPLEFT", 0, -1)
 					bg:SetPoint("BOTTOMRIGHT")
 
@@ -103,7 +103,7 @@ C.themes["Blizzard_AchievementUI"] = function()
 		bu.description:SetShadowOffset(1, -1)
 		bu.description.SetShadowOffset = F.dummy
 
-		local bg = F.CreateBDFrame(bu, .25)
+		local bg = F.CreateBDFrame1(bu, .25)
 		bg:SetPoint("TOPLEFT", 1, -1)
 		bg:SetPoint("BOTTOMRIGHT", 0, 2)
 
@@ -243,7 +243,6 @@ C.themes["Blizzard_AchievementUI"] = function()
 				local bg = CreateFrame("Frame", nil, bu)
 				bg:SetPoint("TOPLEFT", 2, -2)
 				bg:SetPoint("BOTTOMRIGHT", -2, 2)
-				F.CreateBD(bg, 0)
 
 				local ic = _G["AchievementFrameSummaryAchievement"..i.."IconTexture"]
 				ic:SetTexCoord(.08, .92, .08, .92)
@@ -272,7 +271,7 @@ C.themes["Blizzard_AchievementUI"] = function()
 
 		bu.text:SetPoint("RIGHT", bu, "RIGHT", -5, 0)
 
-		F.CreateBDFrame(bu, .25)
+		F.CreateBDFrame1(bu, .1)
 	end
 
 	for i = 1, 20 do

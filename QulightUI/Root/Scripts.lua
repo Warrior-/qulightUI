@@ -393,10 +393,11 @@ WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
 		int = 0
 	end
 end)
---[[
+
 ----------------------------------------------------------------------------------------
 --	Item level on slot buttons in Character/InspectFrame(by Tukz)
 ----------------------------------------------------------------------------------------
+--[[
 local slots = {
 	"HeadSlot", "NeckSlot", "ShoulderSlot", "BackSlot", "ChestSlot", "ShirtSlot", "TabardSlot",
 	"WristSlot", "MainHandSlot", "SecondaryHandSlot", "HandsSlot", "WaistSlot",
@@ -491,9 +492,9 @@ local function UpdateButtonsText(frame)
 						local warforged = select(16, strsplit(":", item))
 						ilevel = timewarped[tonumber(warped)] or ilevel
 						ilevel = timewarped_warforged[tonumber(warforged)] or ilevel
-						--local upgrade = item:match(":(%d+)\124h%[")
-						--if upgrades[upgrade] == nil then upgrades[upgrade] = 0 end
-						--text:SetText("|cFFFFFF00"..ilevel + upgrades[upgrade])
+						local upgrade = item:match(":(%d+)\124h%[")
+						if upgrades[upgrade] == nil then upgrades[upgrade] = 0 end
+						text:SetText("|cFFFFFF00"..ilevel + upgrades[upgrade])
 					end
 				end
 			else

@@ -1,17 +1,5 @@
 if not Qulight["chatt"].chatbar == true then return end
-function UIScale()
-	if Qulight["general"].AutoScale == true then
-	Qulight["general"].UiScale = min(2, max(.64, 768/string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)")))
-	end
-end
-UIScale()
--- pixel perfect script of custom ui scale.
-local mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/Qulight["general"].UiScale
-local function scale(x)
-    return mult*math.floor(x/mult+.5)
-end
-function Scale(x) return scale(x) end
-mult = mult
+
 
 local addon = CreateFrame('Frame', 'qChatBar', qChatBar)
 addon:SetScript('OnEvent', function(self, event, ...) self[event](self, event, ...) end)

@@ -596,7 +596,24 @@ F.CreateBDFrame = function(f, a)
 	F.CreateSD(bg)
 	return bg
 end
+F.CreateBDFrame1 = function(f, a)
+	local frame
+	if f:GetObjectType() == "Texture" then
+		frame = f:GetParent()
+	else
+		frame = f
+	end
 
+	local lvl = frame:GetFrameLevel()
+
+	local bg = CreateFrame("Frame", nil, frame)
+	bg:SetPoint("TOPLEFT", f, -1, 1)
+	bg:SetPoint("BOTTOMRIGHT", f, 1, -1)
+	bg:SetFrameLevel(lvl == 0 and 1 or lvl - 1)
+
+	F.CreateBD(bg, a or .5)
+	return bg
+end
 F.ReskinColourSwatch = function(f)
 	local name = f:GetName()
 

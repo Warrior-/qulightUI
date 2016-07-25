@@ -1,59 +1,16 @@
 if not Qulight["chatt"].enable == true then return end
 
-ToggleChatColorNamesByClassGroup(true, "SAY")
-ToggleChatColorNamesByClassGroup(true, "EMOTE")
-ToggleChatColorNamesByClassGroup(true, "YELL")
-ToggleChatColorNamesByClassGroup(true, "GUILD")
-ToggleChatColorNamesByClassGroup(true, "OFFICER")
-ToggleChatColorNamesByClassGroup(true, "GUILD_ACHIEVEMENT")
-ToggleChatColorNamesByClassGroup(true, "ACHIEVEMENT")
-ToggleChatColorNamesByClassGroup(true, "WHISPER")
-ToggleChatColorNamesByClassGroup(true, "PARTY")
-ToggleChatColorNamesByClassGroup(true, "PARTY_LEADER")
-ToggleChatColorNamesByClassGroup(true, "RAID")
-ToggleChatColorNamesByClassGroup(true, "RAID_LEADER")
-ToggleChatColorNamesByClassGroup(true, "RAID_WARNING")
-ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT")
-ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT_LEADER")	
-ToggleChatColorNamesByClassGroup(true, "CHANNEL1")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL2")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL6")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL7")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL8")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL9")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL10")
-ToggleChatColorNamesByClassGroup(true, "CHANNEL11")			
-
---General
-ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255)
---Trade
-ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255)
---Local Defense
-ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255)
-			
-local Chat = CreateFrame("Frame")
-local tabalpha = 1
-local tabnoalpha = 0
-local _G = _G
-local origs = {}
-local type = type
-hidecombat = true
-
-local function Kill(object)
-	if object.UnregisterAllEvents then
-		object:UnregisterAllEvents()
-	end
-	object.Show = dummy
-	object:Hide()
+RGBToHex1 = function(r, g, b)
+	r = r <= 1 and r >= 0 and r or 0
+	g = g <= 1 and g >= 0 and g or 0
+	b = b <= 1 and b >= 0 and b or 0
+	return string.format("|cff%02x%02x%02x", r*255, g*255, b*255)
 end
-dummy = function() return end
-for i = 1, 10 do
-	local x=({_G["ChatFrame"..i.."EditBox"]:GetRegions()})
-	x[9]:SetAlpha(0)
-	x[10]:SetAlpha(0)
+
+local origs = {}
+
+local function Strip(info, name)
+	return string.format("|Hplayer:%s|h[%s]|h", info, name:gsub("%-[^|]+", ""))
 end
 
 -- Function to rename channel and other stuff
@@ -88,46 +45,60 @@ _G.CHAT_FLAG_GM = "|cff4154F5".."[GM]".."|r "
 _G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h ".."has come |cff298F00online|r."
 _G.ERR_FRIEND_OFFLINE_S = "[%s] ".."has gone |cffff0000offline|r."
 
-for i = 1, NUM_CHAT_WINDOWS do
-	 if ( i ~= 6 ) then
-      local f = _G["ChatFrame"..i]
-      local am = f.AddMessage
-      f.AddMessage = function(frame, text, ...)
-        return am(frame, text:gsub('|h%[(%d+)%. .-%]|h', '|h[%1]|h'), ...)
-      end
-    end
+local function Kill(object)
+	if object.UnregisterAllEvents then
+		object:UnregisterAllEvents()
+	end
+	object.Show = dummy
+	object:Hide()
 end
+dummy = function() return end
 
-local function ShortChannel(channel)
-	return string.format("|Hchannel:%s|h[%s]|h", channel, strings[channel] or channel:gsub("channel:", ""))
-end
 Kill(FriendsMicroButton)
 Kill(ChatFrameMenuButton)
 
-if hidecombat==true then
-    local EventFrame = CreateFrame("Frame");
-    EventFrame:RegisterEvent("ADDON_LOADED");
-    local function EventHandler(self, event, ...)
-        if ... == "Blizzard_CombatLog" then
-            local topbar = _G["CombatLogQuickButtonFrame_Custom"];
-            if not topbar then return end
-            topbar:Hide();
-            topbar:HookScript("OnShow", function(self) topbar:Hide(); end);
-            topbar:SetHeight(0);
-        end
-    end
-    EventFrame:SetScript("OnEvent", EventHandler);
+local function CreateBackdrop(f, t, tex)
+	if f.backdrop then return end
+	
+	local b = CreateFrame("Frame", nil, f)
+	b:SetPoint("TOPLEFT", -2, 2)
+	b:SetPoint("BOTTOMRIGHT", 2, -2)
+	CreateStyle(b, 2)
+	
+	f.backdrop = b
 end
+
+local function StripTextures(object, kill)
+	for i = 1, object:GetNumRegions() do
+		local region = select(i, object:GetRegions())
+		if region:GetObjectType() == "Texture" then
+			if kill then
+				Kill(region)
+			else
+				region:SetTexture(nil)
+			end
+		end
+	end
+end
+-- Set chat style
 local function SetChatStyle(frame)
 	local id = frame:GetID()
 	local chat = frame:GetName()
-	
-	_G[chat]:SetClampRectInsets(0,0,0,0)
-		
+
+	_G[chat]:SetFrameLevel(5)
+
+	-- Removes crap from the bottom of the chatbox so it can go to the bottom of the screen
+	_G[chat]:SetClampedToScreen(false)
+
+	-- Stop the chat chat from fading out
+	_G[chat]:SetFading(false)
+
+	-- Hide textures
 	for j = 1, #CHAT_FRAME_TEXTURES do
 		_G[chat..CHAT_FRAME_TEXTURES[j]]:SetTexture(nil)
 	end
-			
+
+	-- Removes Default ChatFrame Tabs texture
 	Kill(_G[format("ChatFrame%sTabLeft", id)])
 	Kill(_G[format("ChatFrame%sTabMiddle", id)])
 	Kill(_G[format("ChatFrame%sTabRight", id)])
@@ -135,256 +106,249 @@ local function SetChatStyle(frame)
 	Kill(_G[format("ChatFrame%sTabSelectedLeft", id)])
 	Kill(_G[format("ChatFrame%sTabSelectedMiddle", id)])
 	Kill(_G[format("ChatFrame%sTabSelectedRight", id)])
-	
+
 	Kill(_G[format("ChatFrame%sTabHighlightLeft", id)])
 	Kill(_G[format("ChatFrame%sTabHighlightMiddle", id)])
 	Kill(_G[format("ChatFrame%sTabHighlightRight", id)])
 
+	-- Killing off the new chat tab selected feature
 	Kill(_G[format("ChatFrame%sTabSelectedLeft", id)])
 	Kill(_G[format("ChatFrame%sTabSelectedMiddle", id)])
 	Kill(_G[format("ChatFrame%sTabSelectedRight", id)])
-		
+
 	Kill(_G[format("ChatFrame%sButtonFrameUpButton", id)])
 	Kill(_G[format("ChatFrame%sButtonFrameDownButton", id)])
 	Kill(_G[format("ChatFrame%sButtonFrameBottomButton", id)])
 	Kill(_G[format("ChatFrame%sButtonFrameMinimizeButton", id)])
 	Kill(_G[format("ChatFrame%sButtonFrame", id)])
-
+	
 	Kill(_G[format("ChatFrame%sEditBoxFocusLeft", id)])
 	Kill(_G[format("ChatFrame%sEditBoxFocusMid", id)])
 	Kill(_G[format("ChatFrame%sEditBoxFocusRight", id)])
-
+	
 	-- Kills off the retarded new circle around the editbox
 	Kill(_G[format("ChatFrame%sEditBoxLeft", id)])
 	Kill(_G[format("ChatFrame%sEditBoxMid", id)])
 	Kill(_G[format("ChatFrame%sEditBoxRight", id)])
+
+	Kill(_G[format("ChatFrame%sTabGlow", id)])
 	
-				
+	
+	
+	-- Kill bubble tex/glow
+	if _G[chat.."Tab"].conversationIcon then Kill(_G[chat.."Tab"].conversationIcon) end
+
+	-- Disable alt key usage
 	_G[chat.."EditBox"]:SetAltArrowKeyMode(false)
 	_G[chat.."EditBox"]:Hide()
+	
+		-- Script to hide editbox instead of fading editbox to 0.35 alpha via IM Style
+	_G[chat.."EditBox"]:HookScript("OnEditFocusGained", function(self) self:Show() end)
 	_G[chat.."EditBox"]:HookScript("OnEditFocusLost", function(self) self:Hide() end)
+	
 	_G[chat.."Tab"]:HookScript("OnClick", function() _G[chat.."EditBox"]:Hide() end)
 
 	local editbox = _G["ChatFrame"..id.."EditBox"]
 	local left, mid, right = select(6, editbox:GetRegions())
-	left:Hide(); mid:Hide(); right:Hide()
+	Kill(left); Kill(mid); Kill(right)
 	editbox:ClearAllPoints();
 	editbox:SetPoint("CENTER", DataLeftPanel)
 	editbox:SetWidth(440)
 	editbox:SetHeight(15)
-	CreateStyle(editbox, 2, 0 , 1, 0)
+	editbox:SetFrameLevel(1)
+	CreateStyle(editbox, 2, 1 , 1, 1)
+
+	
+	-- Rename combat log tab
+	if _G[chat] == _G["ChatFrame2"] then
+		StripTextures(CombatLogQuickButtonFrame_Custom)
+		CreateBackdrop(CombatLogQuickButtonFrame_Custom)
+		CombatLogQuickButtonFrame_Custom.backdrop:SetPoint("TOPLEFT", 1, -4)
+		CombatLogQuickButtonFrame_Custom.backdrop:SetPoint("BOTTOMRIGHT", 0, 0)
+		CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetSize(12, 12)
+		CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetHitRectInsets (0, 0, 0, 0)
+		CombatLogQuickButtonFrame_CustomProgressBar:ClearAllPoints()
+		CombatLogQuickButtonFrame_CustomProgressBar:SetPoint("TOPLEFT", CombatLogQuickButtonFrame_Custom.backdrop, 2, -2)
+		CombatLogQuickButtonFrame_CustomProgressBar:SetPoint("BOTTOMRIGHT", CombatLogQuickButtonFrame_Custom.backdrop, -2, 2)
+		CombatLogQuickButtonFrame_CustomProgressBar:SetStatusBarTexture(Qulight["media"].texture)
+		CombatLogQuickButtonFrameButton1:SetPoint("BOTTOM", 0, 0)
+	end
+
+	frame.skinned = true
 end
-local function SetupChat(self)	
+
+-- Setup chatframes 1 to 10 on login
+local function SetupChat(self)
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
 		SetChatStyle(frame)
-		FCFTab_UpdateAlpha(frame)
 	end
 
-	ChatTypeInfo.WHISPER.sticky = 1
-	ChatTypeInfo.BN_WHISPER.sticky = 1
-	ChatTypeInfo.OFFICER.sticky = 1
-	ChatTypeInfo.RAID_WARNING.sticky = 1
-	ChatTypeInfo.CHANNEL.sticky = 1
+	-- Remember last channel
+	local var
+	if Qulight["chatt"].sticky == true then
+		var = 1
+	else
+		var = 0
+	end
+	ChatTypeInfo.SAY.sticky = var
+	ChatTypeInfo.PARTY.sticky = var
+	ChatTypeInfo.PARTY_LEADER.sticky = var
+	ChatTypeInfo.GUILD.sticky = var
+	ChatTypeInfo.OFFICER.sticky = var
+	ChatTypeInfo.RAID.sticky = var
+	ChatTypeInfo.RAID_WARNING.sticky = var
+	ChatTypeInfo.INSTANCE_CHAT.sticky = var
+	ChatTypeInfo.INSTANCE_CHAT_LEADER.sticky = var
+	ChatTypeInfo.WHISPER.sticky = var
+	ChatTypeInfo.BN_WHISPER.sticky = var
+	ChatTypeInfo.CHANNEL.sticky = var
 end
 
-for i=1, BNToastFrame:GetNumRegions() do
-	if i ~= 10 then
-		local region = select(i, BNToastFrame:GetRegions())
-		if region:GetObjectType() == "Texture" then
-			region:SetTexture(nil)
-		end
-	end
-end	
-
-CreateStyle(BNToastFrame, 2)
-
-BNToastFrame:HookScript("OnShow", function(self)
-	self:ClearAllPoints()
-	self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", -6, 82)
-end)
-
-local function SetupChatPosAndFont(self)	
+local function SetupChatPosAndFont(self)
 	for i = 1, NUM_CHAT_WINDOWS do
 		local chat = _G[format("ChatFrame%s", i)]
-		local tab = _G[format("ChatFrame%sTab", i)]
 		local id = chat:GetID()
-		local name = FCF_GetChatWindowInfo(id)
-		local point = GetChatWindowSavedPosition(id)
 		local _, fontSize = FCF_GetChatWindowInfo(id)
-		local _, _, _, _, _, _, _, _, docked, _ = GetChatWindowInfo(id)
-		local _, fontSize = FCF_GetChatWindowInfo(id)
-		
-		FCF_SetChatWindowFontSize(nil, chat, Qulight["media"].fontsize)	
-		ChatFrame1:ClearAllPoints()
-		ChatFrame1:SetPoint("BOTTOMLEFT", ChatBackground, "BOTTOMLEFT", 6, 22)
-	end	
+
+		-- Min. size for chat font
+		if fontSize < 11 then
+			FCF_SetChatWindowFontSize(nil, chat, 11)
+		else
+			FCF_SetChatWindowFontSize(nil, chat, fontSize)
+		end
+
+		-- Font and font style for chat
+		chat:SetFont(Qulight["media"].font, Qulight["media"].fontsize, "OVERLAY")
+		chat:SetShadowOffset(1, -1)
+
+		-- Force chat position
+		if i == 1 then
+			chat:ClearAllPoints()
+			chat:SetSize(410, 124)
+			chat:SetPoint("BOTTOMLEFT", ChatBackground, "BOTTOMLEFT", 6, 22)
+			
+			FCF_SavePositionAndDimensions(chat)
+		elseif i == 2 then
+			if Qulight["chatt"].combatlog ~= true then
+				FCF_DockFrame(chat)
+				ChatFrame2Tab:EnableMouse(false)
+				ChatFrame2Tab:SetText("")
+				ChatFrame2Tab.SetText = dummy
+				ChatFrame2Tab:SetWidth(0.001)
+				ChatFrame2Tab.SetWidth = dummy
+			end
+		end
+	end
+
+	-- Reposition battle.net popup over chat #1
+		BNToastFrame:HookScript("OnShow", function(self)
+		self:ClearAllPoints()
+		self:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 3,200)
+	end)
 end
-Chat:RegisterEvent("ADDON_LOADED")
-Chat:RegisterEvent("PLAYER_ENTERING_WORLD")
-Chat:SetScript("OnEvent", function(self, event, ...)
-	for i = 1, NUM_CHAT_WINDOWS do
-		_G["ChatFrame"..i]:SetClampRectInsets(0,0,0,0)
-		_G["ChatFrame"..i]:SetWidth(410)
-		_G["ChatFrame"..i]:SetHeight(124)
-	end		
-	local addon = ...
+
+local UIChat = CreateFrame("Frame")
+UIChat:RegisterEvent("ADDON_LOADED")
+UIChat:RegisterEvent("PLAYER_ENTERING_WORLD")
+UIChat:SetScript("OnEvent", function(self, event, addon)
 	if event == "ADDON_LOADED" then
 		if addon == "Blizzard_CombatLog" then
 			self:UnregisterEvent("ADDON_LOADED")
 			SetupChat(self)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" then
-		SetupChatPosAndFont(self)
-		Chat:UnregisterEvent("PLAYER_ENTERING_WORLD")
-	end
-	if event == "PLAYER_LOGIN" then
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 		SetupChatPosAndFont(self)
 	end
 end)
+
+-- Setup temp chat (BN, WHISPER) when needed
 local function SetupTempChat()
 	local frame = FCF_GetCurrentChatFrame()
+	if frame.skinned then return end
 	SetChatStyle(frame)
 end
 hooksecurefunc("FCF_OpenTemporaryWindow", SetupTempChat)
+
+-- Disable pet battle tab
+local old = FCFManager_GetNumDedicatedFrames
+function FCFManager_GetNumDedicatedFrames(...)
+	return select(1, ...) ~= "PET_BATTLE_COMBAT_LOG" and old(...) or 1
+end
+
+realm = GetRealmName()
+
+-- Remove player's realm name
+local function RemoveRealmName(self, event, msg, author, ...)
+	local realm = string.gsub(realm, " ", "")
+	if msg:find("-" .. realm) then
+		return false, gsub(msg, "%-"..realm, ""), author, ...
+	end
+end
+ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", RemoveRealmName)
+
+----------------------------------------------------------------------------------------
+--	Save slash command typo
+----------------------------------------------------------------------------------------
+local function TypoHistory_Posthook_AddMessage(chat, text)
+	if strfind(text, HELP_TEXT_SIMPLE) then
+		ChatEdit_AddHistory(chat.editBox)
+	end
+end
+
 for i = 1, NUM_CHAT_WINDOWS do
-	local editBox = _G["ChatFrame"..i.."EditBox"]
-	editBox:HookScript("OnTextChanged", function(self)
-	   local text = self:GetText()
-	   if text:len() < 5 then
-		  if text:sub(1, 4) == "/tt " then
-			 local unitname, realm
-			 unitname, realm = UnitName("target")
-			 if unitname then unitname = gsub(unitname, " ", "") end
-			 if unitname and not UnitIsSameServer("player", "target") then
-				unitname = unitname .. "-" .. gsub(realm, " ", "")
-			 end
-			 ChatFrame_SendTell((unitname or "Invalid Target"), ChatFrame1)
-		  end
-	   end
-	end)
-end
-local SetItemRef_orig = SetItemRef
-function ReURL_SetItemRef(link, text, button, chatFrame)
-	if (strsub(link, 1, 3) == "url") then
-		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		local url = (link):sub(5)
-		if (not ChatFrameEditBox:IsShown()) then
-			ChatEdit_ActivateChat(ChatFrameEditBox)
-		end
-		ChatFrameEditBox:Insert(url)
-		ChatFrameEditBox:HighlightText()
-
-	else
-		SetItemRef_orig(link, text, button, chatFrame)
+	if i ~= 2 then
+		hooksecurefunc(_G["ChatFrame"..i], "AddMessage", TypoHistory_Posthook_AddMessage)
 	end
 end
 
-local SetHyperlink = _G.ItemRefTooltip.SetHyperlink
-function _G.ItemRefTooltip:SetHyperlink(link, ...)
-	if link and (strsub(link, 1, 3) == "url") then
-		local url = strsub(link, 5)
 
-		local editbox = ChatEdit_ChooseBoxForSend()
-		ChatEdit_ActivateChat(editbox)
-		editbox:Insert(string.sub(link, 5))
-		editbox:HighlightText()
+----------------------------------------------------------------------------------------
+--	Based on Fane(by Haste)
+----------------------------------------------------------------------------------------
+local Fane = CreateFrame("Frame")
 
-		return
-	end
-
-	SetHyperlink(self, link, ...)
-end
-
-
-SetItemRef = ReURL_SetItemRef
-function ReURL_AddLinkSyntax(chatstring)
-	if (type(chatstring) == "string") then
-		local extraspace;
-		if (not strfind(chatstring, "^ ")) then
-			extraspace = true;
-			chatstring = " "..chatstring;
-		end
-		chatstring = gsub (chatstring, " www%.([_A-Za-z0-9-]+)%.(%S+)%s?", ReURL_Link("www.%1.%2"))
-		chatstring = gsub (chatstring, " (%a+)://(%S+)%s?", ReURL_Link("%1://%2"))
-		chatstring = gsub (chatstring, " ([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", ReURL_Link("%1@%2%3%4"))
-		chatstring = gsub (chatstring, " (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?", ReURL_Link("%1.%2.%3.%4:%5"))
-		chatstring = gsub (chatstring, " (%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", ReURL_Link("%1.%2.%3.%4"))
-		if (extraspace) then
-			chatstring = strsub(chatstring, 2);
-		end
-	end
-	return chatstring
-end
-
-REURL_COLOR = "16FF5D"
-ReURL_Brackets = false
-ReUR_CustomColor = true
-
-function ReURL_Link(url)
-	if (ReUR_CustomColor) then
-		if (ReURL_Brackets) then
-			url = " |cff"..REURL_COLOR.."|Hurl:"..url.."|h["..url.."]|h|r "
-		else
-			url = " |cff"..REURL_COLOR.."|Hurl:"..url.."|h"..url.."|h|r "
-		end
-	else
-		if (ReURL_Brackets) then
-			url = " |Hurl:"..url.."|h["..url.."]|h "
-		else
-			url = " |Hurl:"..url.."|h"..url.."|h "
-		end
-	end
-	return url
-end
-for i=1, NUM_CHAT_WINDOWS do
-	local frame = getglobal("ChatFrame"..i)
-	local addmessage = frame.AddMessage
-	frame.AddMessage = function(self, text, ...) addmessage(self, ReURL_AddLinkSyntax(text), ...) end
-end
-
-local Fane = CreateFrame'Frame'
-local inherit = GameFontNormalSmall
-
-local updateFS = function(self, inc, flags, ...)
+local updateFS = function(self, inc, ...)
 	local fstring = self:GetFontString()
 
-	local font, fontSize = inherit:GetFont()
-	fstring:SetFont(Qulight["media"].font, Qulight["media"].fontsize, flags)
-	if((...)) then
+	fstring:SetFont(Qulight["media"].font, Qulight["media"].fontsize, "OVERLAY")
+	fstring:SetShadowOffset(1, -1)
+
+	if (...) then
 		fstring:SetTextColor(...)
 	end
 end
 
 local OnEnter = function(self)
-	local emphasis = _G["ChatFrame"..self:GetID()..'TabFlash']:IsShown()
-	updateFS(self, emphasis, nil, unpack(Qulight["datatext"].color))
+	local emphasis = _G["ChatFrame"..self:GetID().."TabFlash"]:IsShown()
+	updateFS(self, emphasis, 1, 0, 0)
 end
 
 local OnLeave = function(self)
-	local r, g, b, al
+	local r, g, b
 	local id = self:GetID()
-	local emphasis = _G["ChatFrame"..id..'TabFlash']:IsShown()
+	local emphasis = _G["ChatFrame"..id.."TabFlash"]:IsShown()
 
-	if (_G["ChatFrame"..id] == SELECTED_CHAT_FRAME) then
-		r, g, b, al = 1, 0.7, 0.7, 1
+	if _G["ChatFrame"..id] == SELECTED_CHAT_FRAME then
+		r, g, b = 1, 0, 0
 	elseif emphasis then
-		r, g, b, al = 1, 0, 0, 1
+		r, g, b = 1, 0, 0
 	else
-		r, g, b, al = 1, 1, 1, 1
+		r, g, b = 1, 1, 1
 	end
 
-	updateFS(self, emphasis, nil, r, g, b, al)
+	updateFS(self, emphasis, r, g, b)
 end
 
 local ChatFrame2_SetAlpha = function(self, alpha)
-	if(CombatLogQuickButtonFrame_Custom) then
+	if CombatLogQuickButtonFrame_Custom then
 		CombatLogQuickButtonFrame_Custom:SetAlpha(alpha)
 	end
 end
 
 local ChatFrame2_GetAlpha = function(self)
-	if(CombatLogQuickButtonFrame_Custom) then
+	if CombatLogQuickButtonFrame_Custom then
 		return CombatLogQuickButtonFrame_Custom:GetAlpha()
 	end
 end
@@ -392,77 +356,60 @@ end
 local faneifyTab = function(frame, sel)
 	local i = frame:GetID()
 
-	if(not frame.Fane) then
-		frame.leftTexture:Hide()
-		frame.middleTexture:Hide()
-		frame.rightTexture:Hide()
+	if not frame.Fane then
+		frame:HookScript("OnEnter", OnEnter)
+		frame:HookScript("OnLeave", OnLeave)
+		if Qulight["chatt"].tabsmouseover ~= true then
+			frame:SetAlpha(1)
 
-		frame.leftSelectedTexture:Hide()
-		frame.middleSelectedTexture:Hide()
-		frame.rightSelectedTexture:Hide()
-		
-		frame.glow:SetTexture(nil)
+			if i ~= 2 then
+				-- Might not be the best solution, but we avoid hooking into the UIFrameFade
+				-- system this way.
+				frame.SetAlpha = UIFrameFadeRemoveFrame
+			else
+				frame.SetAlpha = ChatFrame2_SetAlpha
+				frame.GetAlpha = ChatFrame2_GetAlpha
 
-		frame.leftSelectedTexture.Show = frame.leftSelectedTexture.Hide
-		frame.middleSelectedTexture.Show = frame.middleSelectedTexture.Hide
-		frame.rightSelectedTexture.Show = frame.rightSelectedTexture.Hide
-
-		frame.leftHighlightTexture:Hide()
-		frame.middleHighlightTexture:Hide()
-		frame.rightHighlightTexture:Hide()
-
-		frame:HookScript('OnEnter', OnEnter)
-		frame:HookScript('OnLeave', OnLeave)
-
-		frame:SetAlpha(1)
-
-		if(i ~= 2) then
-			frame.SetAlpha = UIFrameFadeRemoveFrame
-		else
-			frame.SetAlpha = ChatFrame2_SetAlpha
-			frame.GetAlpha = ChatFrame2_GetAlpha
-
-			-- We do this here as people might be using AddonLoader together with Fane.
-			if(CombatLogQuickButtonFrame_Custom) then
-				CombatLogQuickButtonFrame_Custom:SetAlpha(.4)
+				-- We do this here as people might be using AddonLoader together with Fane
+				if CombatLogQuickButtonFrame_Custom then
+					CombatLogQuickButtonFrame_Custom:SetAlpha(0.4)
+				end
 			end
 		end
 
 		frame.Fane = true
 	end
-	
-	-- We can't trust sel. :(
-	if(i == SELECTED_CHAT_FRAME:GetID()) then
-		updateFS(frame, nil, nil, 1, 0.7, 0.7, 1)
+
+	-- We can't trust sel
+	if i == SELECTED_CHAT_FRAME:GetID() then
+		updateFS(frame, nil, 1, 0, 0)
 	else
-		updateFS(frame, nil, nil, unpack(Qulight["datatext"].color))
+		updateFS(frame, nil, 1, 1, 1)
 	end
 end
 
-hooksecurefunc('FCF_StartAlertFlash', function(frame)
-	local tab = _G['ChatFrame' .. frame:GetID() .. 'Tab']
-	updateFS(tab, true, nil, 1, 0, 0)
+hooksecurefunc("FCF_StartAlertFlash", function(frame)
+	local tab = _G["ChatFrame"..frame:GetID().."Tab"]
+	updateFS(tab, true, 1, 0, 0)
 end)
 
-hooksecurefunc('FCFTab_UpdateColors', faneifyTab)
+hooksecurefunc("FCFTab_UpdateColors", faneifyTab)
 
-
-for i=1, NUM_CHAT_WINDOWS do
-	faneifyTab(_G['ChatFrame' .. i .. 'Tab'])
+for i = 1, NUM_CHAT_WINDOWS do
+	faneifyTab(_G["ChatFrame"..i.."Tab"])
 end
+
 function Fane:ADDON_LOADED(event, addon)
-	if(addon == 'Blizzard_CombatLog') then
+	if addon == "Blizzard_CombatLog" then
 		self:UnregisterEvent(event)
 		self[event] = nil
 
-		return CombatLogQuickButtonFrame_Custom:SetAlpha(.4)
+		return CombatLogQuickButtonFrame_Custom:SetAlpha(0.4)
 	end
 end
-Fane:RegisterEvent'ADDON_LOADED'
+Fane:RegisterEvent("ADDON_LOADED")
 
-Fane:SetScript('OnEvent', function(self, event, ...)
-	return self[event](self, event, ...)
-end)
+
 -----------------------------------------------------------------------------
 -- Copy Chat (by Shestak)
 -----------------------------------------------------------------------------
@@ -631,27 +578,6 @@ ChatFrame_OnHyperlinkShow = function(self, link, ...)
 		return
 	end
 	ChatFrame_OnHyperlinkShow_Original(self, link, ...)
-end
-
-local numlines = 3
-function FloatingChatFrame_OnMouseScroll(self, delta)
-	if delta < 0 then
-		if IsShiftKeyDown() then
-			self:ScrollToBottom()
-		else
-			for i=1, numlines do
-				self:ScrollDown()
-			end
-		end
-	elseif delta > 0 then
-		if IsShiftKeyDown() then
-			self:ScrollToTop()
-		else
-			for i=1, numlines do
-				self:ScrollUp()
-			end
-		end
-	end
 end
 
 for i=1, NUM_CHAT_WINDOWS do

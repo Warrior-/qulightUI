@@ -37,7 +37,7 @@ end
 
 local LeftInfoPanel = CreateFrame("Frame", "DataLeftPanel", UIParent)
 SimpleBackground(LeftInfoPanel, 430, 15, "BOTTOM", ChatPanel, "BOTTOM", 0, 5)
-CreateStyle(LeftInfoPanel, 3, 1)
+CreateStyle(LeftInfoPanel, 3, 0)
 
 local LeftTabPanel = CreateFrame("Frame", "LeftTabPanel", UIParent)
 SimpleBackground(LeftTabPanel, 430, 15, "TOP", ChatPanel, "TOP", 0, -5)

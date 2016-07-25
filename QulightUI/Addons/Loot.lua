@@ -70,7 +70,7 @@ media = {
 	["backdrop1"] = Qulight["media"].texture,
 	["backdrop"] =  Qulight["media"].texture,
 	["checked"] = "Interface\\AddOns\\Aurora\\CheckButtonHilight",
-	["glow"] = "Interface\\AddOns\\Aurora\\glow",
+	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",
 }
 
 dummy = function() end
@@ -231,9 +231,7 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 			if texture then
 				local color = ITEM_QUALITY_COLORS[quality]
 
-				if texture and texture:find('INV_Misc_Coin') then
-					item = item:gsub("\n", ", ")
-				end
+				
 
 				if(quantity > 1) then
 					slot.count:SetText(quantity)
@@ -267,7 +265,7 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 
 		slot.name:SetText(L.loot_empty)
 		slot.name:SetTextColor(color.r, color.g, color.b)
-		slot.icon:SetTexture[[Interface\Icons\INV_Misc_Herb_AncientLichen]]
+		slot.icon:SetColorTexture[[Interface\Icons\INV_Misc_Herb_AncientLichen]]
 
 		items = 1
 		w = math.max(w, slot.name:GetStringWidth())

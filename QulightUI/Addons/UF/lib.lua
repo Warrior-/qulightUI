@@ -25,6 +25,7 @@ local retVal = function(f, val1, val2, val3, val4)
 end
 menu = function(self)
     local unit = self.unit:sub(1, -2)
+    local unit = self.unit:sub(1, -2)
     local cunit = self.unit:gsub("(.)", string.upper, 1)
     if(unit == "party" or unit == "partypet") then
 		ToggleDropDownMenu(1, nil, _G["PartyMemberFrame"..self.id.."DropDown"], "cursor", 0, 0)
@@ -1062,6 +1063,7 @@ genRunes = function(self)
 			runes[i]:SetPoint("LEFT", runes[i-1], "RIGHT", 1, 0)
 		end
 		runes[i]:SetStatusBarTexture(Qulight["media"].texture)
+		runes[i]:SetStatusBarColor(0.69, 0.31, 0.31)
 		runes[i]:GetStatusBarTexture():SetHorizTile(false)
 	end
 				
@@ -1246,26 +1248,26 @@ genHarmony = function(self)
 end
 genShards = function(self)
 	if myclass == "WARLOCK" then
-		local wb = CreateFrame("Frame", "WarlockSpecBars", self)
+		local wb = CreateFrame("Frame", "SoulShards", self)
 		wb:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 4, -9)
-		wb:SetWidth(120)
+		wb:SetWidth(123)
 		wb:SetHeight(5)
 		wb:SetBackdrop(backdrop)
 					
 		wb:SetBackdropColor(0, 0, 0)
 		wb:SetBackdropBorderColor(0, 0, 0)	
-		CreateStyle(wb, 4, 1, .9, 0.6)
+		CreateStyle(wb, 5, 1, .9, 0.6)
 		wb:SetFrameLevel(6)
-			for i = 1, 4 do
-				wb[i] = CreateFrame("StatusBar", "WarlockSpecBars"..i, wb)
+			for i = 1, 5 do
+				wb[i] = CreateFrame("StatusBar", "SoulShards"..i, wb)
 				wb[i]:SetHeight(5)
 				wb[i]:SetStatusBarTexture(Qulight["media"].texture)
 						
 					if i == 1 then
-						wb[i]:SetWidth((123 / 4))
+						wb[i]:SetWidth((120 / 5))
 						wb[i]:SetPoint("LEFT", wb, "LEFT", 0, 0)
 					else
-						wb[i]:SetWidth((123 / 4))
+						wb[i]:SetWidth((120 / 5))
 						wb[i]:SetPoint("LEFT", wb[i-1], "RIGHT", 1, 0)
 					end
 						wb[i].bg = wb[i]:CreateTexture(nil, 'ARTWORK')
@@ -1278,37 +1280,7 @@ genShards = function(self)
 		local f = self:GetParent()
 		end)
 					
-		self.WarlockSpecBars = wb				
-	end
-end
-genShadowOrbsBar = function(self)
-	if myclass == "PRIEST" then
-				
-		self.ShadowOrbsBar = CreateFrame("Frame", self:GetName().."_ShadowOrbsBar", self)
-		CreateStyle(self.ShadowOrbsBar, 4, 1, .9, 0.6)
-		self.ShadowOrbsBar:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 4, -9)
-		self.ShadowOrbsBar:SetSize(122, 6)
-		self.ShadowOrbsBar:SetFrameLevel(6)
-			
-			for i = 1, 5 do
-				self.ShadowOrbsBar[i] = CreateFrame("StatusBar", nil, self.ShadowOrbsBar)
-				self.ShadowOrbsBar[i]:SetSize(120 / 5, 6)
-				if i == 1 then
-					self.ShadowOrbsBar[i]:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 4, -9)
-				else
-					self.ShadowOrbsBar[i]:SetPoint("TOPLEFT", self.ShadowOrbsBar[i-1], "TOPRIGHT", 1, 0)
-				end
-				self.ShadowOrbsBar[i]:SetStatusBarTexture(Qulight["media"].texture)
-				self.ShadowOrbsBar[i]:SetStatusBarColor(0.70, 0.32, 0.75)
-
-				self.ShadowOrbsBar[i].bg = self.ShadowOrbsBar[i]:CreateTexture(nil, "BORDER")
-				self.ShadowOrbsBar[i].bg:SetAllPoints()
-				self.ShadowOrbsBar[i].bg:SetTexture(Qulight["media"].texture)
-				self.ShadowOrbsBar[i].bg:SetVertexColor(0.70, 0.32, 0.75, 0.25)
-				self.ShadowOrbsBar[i].width = self.ShadowOrbsBar[i]:GetWidth()
-			end
-
-			self.ShadowOrbsBar.Override = UpdateShadowOrb
+		self.SoulShards = wb				
 	end
 end
 AltPowerBar = function(self)
@@ -1441,7 +1413,6 @@ local function CreatePlayerStyle(self, unit, isSingle)
 	Reputation(self)
 	AltPowerBar(self)
 	genHarmony(self)
-	genShadowOrbsBar(self)
 	if Qulight["unitframes"].showPortrait then gen_portrait(self) end
 	if Qulight["unitframes"].showRunebar then genRunes(self) end
 	if Qulight["unitframes"].showHolybar then genHolyPower(self) end

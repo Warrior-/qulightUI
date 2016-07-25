@@ -32,9 +32,6 @@ StaticPopupDialogs.CANNOT_BUY_BANK_SLOT = {
 	preferredIndex = 5,
 }
 
--- Hide bags options in default interface
---InterfaceOptionsDisplayPanelShowFreeBagSpace:Hide()
-
 Stuffing = CreateFrame("Frame", nil, UIParent)
 Stuffing:RegisterEvent("ADDON_LOADED")
 Stuffing:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -115,42 +112,6 @@ end
 local trashButton = {}
 local trashBag = {}
 
-local upgrades = {
-	["1"] = 8, ["373"] = 4, ["374"] = 8, ["375"] = 4, ["376"] = 4, ["377"] = 4,
-	["379"] = 4, ["380"] = 4, ["446"] = 4, ["447"] = 8, ["452"] = 8, ["454"] = 4,
-	["455"] = 8, ["457"] = 8, ["459"] = 4, ["460"] = 8, ["461"] = 12, ["462"] = 16,
-	["466"] = 4, ["467"] = 8, ["469"] = 4, ["470"] = 8, ["471"] = 12, ["472"] = 16,
-	["477"] = 4, ["478"] = 8, ["480"] = 8, ["492"] = 4, ["493"] = 8, ["495"] = 4,
-	["496"] = 8, ["497"] = 12, ["498"] = 16, ["504"] = 12, ["505"] = 16, ["506"] = 20,
-	["507"] = 24, ["530"] = 5, ["531"] = 10
-}
-
-local function BOALevel(level, id)
-	if level > 97 then
-		if id == 133585 or id == 133595 or id == 133596 or id == 133597 or id == 133598 then
-			level = 715
-		else
-			level = 605 - (100 - level) * 5
-		end
-	elseif level > 90 then
-		level = 590 - (97 - level) * 10
-	elseif level > 85 then
-		level = 463 - (90 - level) * 19.75
-	elseif level > 80 then
-		level = 333 - (85 - level) * 13.5
-	elseif level > 67 then
-		level = 187 - (80 - level) * 4
-	elseif level > 57 then
-		level = 105 - (67 - level) * 2.9
-	elseif level > 5 then
-		level = level + 5
-	else
-		level = 10
-	end
-
-	return floor(level + 0.5)
-end
-
 function Stuffing:SlotUpdate(b)
 	local texture, count, locked = GetContainerItemInfo(b.bag, b.slot)
 	local clink = GetContainerItemLink(b.bag, b.slot)
@@ -158,11 +119,6 @@ function Stuffing:SlotUpdate(b)
 
 	if not b.frame.lock then
 		b.frame:SetBackdropBorderColor(.15,.15,.15,0)
-	end
-
-	if b.cooldown and StuffingFrameBags and StuffingFrameBags:IsShown() then
-		local start, duration, enable = GetContainerItemCooldown(b.bag, b.slot)
-		CooldownFrame_Set(b.cooldown, start, duration, enable)
 	end
 
 	if clink then
@@ -183,15 +139,6 @@ function Stuffing:SlotUpdate(b)
 
 	b.frame:Show()
 end
-
-local timewarped = {
-	[615] = 660, -- Dungeon drops
-	[692] = 675, -- Timewarped badge vendors
-}
-
-local timewarped_warforged = {
-	[656] = 675, -- Dungeon drops
-}
 
 function Stuffing:BagSlotUpdate(bag)
 	if not self.buttons then
