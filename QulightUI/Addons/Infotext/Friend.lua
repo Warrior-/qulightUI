@@ -104,6 +104,37 @@ local function SortAlphabeticName(a, b)
 	end
 end
 
+local localizedMapNames = {}
+local ZoneIDToContinentName = {
+	[473] = "Outland",
+	[477] = "Outland",
+}
+local MapIdLookupTable = {
+	[466] = "Outland",
+	[473] = "Shadowmoon Valley",
+	[477] = "Nagrand",
+}
+
+local function LocalizeZoneNames()
+	local localizedZoneName
+
+	for mapID, englishName in pairs(MapIdLookupTable) do
+		localizedZoneName = GetMapNameByID(mapID)
+		if localizedZoneName then
+			-- Add combination of English and localized name to lookup table
+			if not localizedMapNames[englishName] then
+				localizedMapNames[englishName] = localizedZoneName
+			end
+		end
+	end
+end
+LocalizeZoneNames()
+
+--Add " (Outland)" to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
+--We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
+--which adds the " (Outland)" part unlike the GetRealZoneText() API.
+
+
 local function GetZoneText(zoneAreaID)
 	local zoneName = GetMapNameByID(zoneAreaID)
 	local continent = ZoneIDToContinentName[zoneAreaID]

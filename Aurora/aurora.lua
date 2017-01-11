@@ -687,7 +687,7 @@ F.ReskinNavBar = function(f)
 	overflowButton:HookScript("OnLeave", clearArrow)
 end
 
-F.ReskinGarrisonPortrait = function(portrait)
+F.ReskinGarrisonPortrait = function(portrait, isTroop)
 	local level = portrait.Level
 	local cover = portrait.PortraitRingCover
 
@@ -698,9 +698,15 @@ F.ReskinGarrisonPortrait = function(portrait)
 	portrait.LevelBorder:SetSize(44, 11)
 	portrait.LevelBorder:ClearAllPoints()
 	portrait.LevelBorder:SetPoint("BOTTOM", 0, 12)
+	if not isTroop then
+		local lvlBG = portrait:CreateTexture(nil, "BORDER")
+		lvlBG:SetColorTexture(0, 0, 0, 0.5)
+		lvlBG:SetPoint("TOPLEFT", portrait, "BOTTOMLEFT", 1, 12)
+		lvlBG:SetPoint("BOTTOMRIGHT", portrait, -1, 1)
 
-	level:ClearAllPoints()
-	level:SetPoint("BOTTOM", portrait, 0, 12)
+		level:ClearAllPoints()
+		level:SetPoint("BOTTOM", portrait, 0, 12)
+	end
 
 	local squareBG = CreateFrame("Frame", nil, portrait)
 	squareBG:SetFrameLevel(portrait:GetFrameLevel()-1)

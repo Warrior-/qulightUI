@@ -607,19 +607,6 @@ C.themes["Blizzard_GarrisonUI"] = function()
 		bg:SetPoint("BOTTOMRIGHT", 0, 1)
 	end
 
-	-- Portraits
-
-	hooksecurefunc("GarrisonMissionPortrait_SetFollowerPortrait", function(portraitFrame, followerInfo)
-		if not portraitFrame.styled then
-			F.ReskinGarrisonPortrait(portraitFrame)
-			portraitFrame.styled = true
-		end
-
-		local color = ITEM_QUALITY_COLORS[followerInfo.quality]
-
-		portraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
-	end)
-
 	-- Mechanic tooltip
 
 	if AuroraConfig.tooltips then

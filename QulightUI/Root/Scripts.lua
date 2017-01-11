@@ -413,11 +413,6 @@ local upgrades = {
 	["507"] = 24, ["530"] = 5, ["531"] = 10, ["535"] = 15, ["536"] = 30, ["537"] = 45
 }
 
-local legionUpgrades = {
-	["664"] = 689, ["767"] = 685, ["768"] = 693, ["1735"] = 705, ["1736"] = 699, ["1738"] = 709,
-	["1739"] = 703, ["1741"] = 713, ["1792"] = 699, ["1793"] = 703, ["1794"] = 695, ["1795"] = 700,
-}
-
 local function BOALevel(level, id)
 	if level > 97 then
 		if id == 133585 or id == 133595 or id == 133596 or id == 133597 or id == 133598 then
@@ -450,11 +445,17 @@ local timewarped = {
 	["656"] = 675, -- Warforged Dungeon drops
 }
 
-local timewarped_warforged = {
-	[656] = 675, -- Dungeon drops
+local itemLevelPattern = gsub(ITEM_LEVEL, "%%d", "(%%d+)")
+local tooltipLines = {
+	"QulightUI_ItemScanningTooltipTextLeft2",
+	"QulightUI_ItemScanningTooltipTextLeft3",
+	"QulightUI_ItemScanningTooltipTextLeft4"
 }
 
-local function GetItemLevel(itemLink)
+local tooltip = CreateFrame("GameTooltip", "QulightUI_ItemScanningTooltip", UIParent, "GameTooltipTemplate")
+tooltip:SetOwner(UIParent, "ANCHOR_NONE")
+
+local function GetItemLevelFromTooltip(itemLink)
 	if not itemLink or not GetItemInfo(itemLink) then
 		return
 	end
@@ -519,9 +520,33 @@ local function UpdateButtonsText(frame)
 							level = timewarped[tid]
 						end
 
-						local uid = strmatch(itemLink, ".+:(%d+)")
-						if upgrades[uid] then
-							level = level + upgrades[uid]
+						local upgradeTypeID = select(12, strsplit(":", itemLink))
+						if upgradeTypeID and upgradeTypeID ~= "" then
+							local uid = itemLink:match("[-:%d]+:([-%d]+)")
+							if upgrades[uid] then
+								level = level + upgrades[uid]
+							end
+						end
+
+						local numBonusIDs = tonumber(strmatch(itemLink, ".+:%d+:512:%d*:(%d+).+"))
+						if numBonusIDs then
+							if GetDetailedItemLevelInfo then
+								local effectiveLevel, previewLevel, origLevel = GetDetailedItemLevelInfo(itemLink)
+								level = effectiveLevel or level
+							end
+						end
+
+						if quality == 6 then
+							if id == 17 then
+								if frame == "Inspect" then
+									itemLink = GetInventoryItemLink("target", 16)
+								else
+									itemLink = GetInventoryItemLink("player", 16)
+								end
+								level = GetItemLevelFromTooltip(itemLink) or level
+							else
+								level = GetItemLevelFromTooltip(itemLink) or level
+							end
 						end
 
 						text:SetText("|cFFFFFF00"..level)

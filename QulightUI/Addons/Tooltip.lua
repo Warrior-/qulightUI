@@ -1171,11 +1171,6 @@ local upgrades = {
 	["507"] = 24, ["530"] = 5, ["531"] = 10, ["535"] = 15, ["536"] = 30, ["537"] = 45
 }
 
-local legionUpgrades = {
-	["664"] = 689, ["767"] = 685, ["768"] = 693, ["1735"] = 705, ["1736"] = 699, ["1738"] = 709,
-	["1739"] = 703, ["1741"] = 713, ["1792"] = 699, ["1793"] = 703, ["1794"] = 695, ["1795"] = 700,
-}
-
 local function BOALevel(level, id)
 	if level > 97 then
 		if id == 133585 or id == 133595 or id == 133596 or id == 133597 or id == 133598 then
@@ -1203,15 +1198,22 @@ local function BOALevel(level, id)
 end
 
 local timewarped = {
-	[615] = 660, -- Dungeon drops
-	[692] = 675, -- Timewarped badge vendors
+	["615"] = 660, -- Dungeon drops
+	["692"] = 675, -- Timewarped badge vendors
+	["656"] = 675, -- Warforged Dungeon drops
 }
 
-local timewarped_warforged = {
-	[656] = 675, -- Dungeon drops
+local itemLevelPattern = gsub(ITEM_LEVEL, "%%d", "(%%d+)")
+local tooltipLines = {
+	"QulightUI_ItemScanningTooltipTextLeft2",
+	"QulightUI_ItemScanningTooltipTextLeft3",
+	"QulightUI_ItemScanningTooltipTextLeft4"
 }
 
-local function GetItemLevel(itemLink)
+local tooltip = CreateFrame("GameTooltip", "QulightUI_ItemScanningTooltip", UIParent, "GameTooltipTemplate")
+tooltip:SetOwner(UIParent, "ANCHOR_NONE")
+
+local function GetItemLevelFromTooltip(itemLink)
 	if not itemLink or not GetItemInfo(itemLink) then
 		return
 	end
@@ -1231,6 +1233,7 @@ local function GetItemLevel(itemLink)
 		end
 	end
 end
+
 
 --- Unit Gear Info
 local function UnitGear(unit)
@@ -1255,6 +1258,10 @@ local function UnitGear(unit)
 				else
 					local _, _, quality, level, _, _, _, _, slot = GetItemInfo(itemLink)
 
+					if level == nil then
+						level = 0
+					end
+
 					if (not quality) or (not level) then
 						delay = true
 					else
@@ -1267,16 +1274,37 @@ local function UnitGear(unit)
 								pvp = pvp + 1
 							end
 
-							local warped = select(15, strsplit(":", itemLink))
-							local warforged = select(16, strsplit(":", itemLink))
-							level = timewarped[tonumber(warped)] or level
-							level = timewarped_warforged[tonumber(warforged)] or level
+							local tid = strmatch(itemLink, ".+:512:22.+:(%d+):100")
+							if timewarped[tid] then
+								level = timewarped[tid]
+							end
 
-							--BETA local upgrade = itemLink:match(":(%d+)\124h%[")
-							local upgrade = 0
-							if upgrades[upgrade] == nil then upgrades[upgrade] = 0 end
+							local upgradeTypeID = select(12, strsplit(":", itemLink))
+							if upgradeTypeID and upgradeTypeID ~= "" then
+								local uid = itemLink:match("[-:%d]+:([-%d]+)")
+								if upgrades[uid] then
+									level = level + upgrades[uid]
+								end
+							end
 
-							total = total + (level + upgrades[upgrade])
+							local numBonusIDs = tonumber(strmatch(itemLink, ".+:%d+:512:%d*:(%d+).+"))
+							if numBonusIDs then
+								if GetDetailedItemLevelInfo then
+									local effectiveLevel, previewLevel, origLevel = GetDetailedItemLevelInfo(itemLink)
+									level = effectiveLevel or level
+								end
+							end
+
+							if quality == 6 then
+								if i == 17 then
+									itemLink = GetInventoryItemLink("player", 16)
+									level = GetItemLevelFromTooltip(itemLink) or level
+								else
+									level = GetItemLevelFromTooltip(itemLink) or level
+								end
+							end
+
+							total = total + level
 						end
 
 						if i >= 16 then

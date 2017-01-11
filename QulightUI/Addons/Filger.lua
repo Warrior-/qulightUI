@@ -355,6 +355,8 @@ Filger_Spells = {
 			{spellID = 224509, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Nemesis (Talent)
 			{spellID = 206491, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Bloodletting
+			{spellID = 207690, unitID = "target", caster = "player", filter = "DEBUFF"},
 		},
 		{
 			Name = "PVE/PVP_CC",

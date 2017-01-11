@@ -134,7 +134,6 @@ local function SetChatStyle(frame)
 	Kill(_G[format("ChatFrame%sTabGlow", id)])
 	
 	
-	
 	-- Kill bubble tex/glow
 	if _G[chat.."Tab"].conversationIcon then Kill(_G[chat.."Tab"].conversationIcon) end
 
@@ -158,6 +157,20 @@ local function SetChatStyle(frame)
 	editbox:SetFrameLevel(1)
 	CreateStyle(editbox, 2, 1 , 1, 1)
 
+	hooksecurefunc("ChatEdit_UpdateHeader", function()
+		local type = editbox:GetAttribute("chatType")
+		if ( type == "CHANNEL" ) then
+			local id = GetChannelName(editbox:GetAttribute("channelTarget"))
+			if id == 0 then
+				editbox:SetBackdropBorderColor(.15,.15,.15)
+			else
+				editbox:SetBackdropBorderColor(ChatTypeInfo[type..id].r,ChatTypeInfo[type..id].g,ChatTypeInfo[type..id].b)
+			end
+		elseif type then
+			editbox:SetBackdropBorderColor(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
+		end
+	end)
+
 	
 	-- Rename combat log tab
 	if _G[chat] == _G["ChatFrame2"] then
@@ -176,6 +189,7 @@ local function SetChatStyle(frame)
 
 	frame.skinned = true
 end
+
 
 -- Setup chatframes 1 to 10 on login
 local function SetupChat(self)
