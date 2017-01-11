@@ -222,8 +222,22 @@ Filger_Spells = {
 			IconSize = 37,
 			Position = {"RIGHT", AnchorBUFF_ICON},
 
-			-- Incarnation: Chosen of Elune
-			-- {spellID = 102560, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Metamorphosis
+			{spellID = 187827, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Empower Wards
+			{spellID = 218256, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Darkness
+			{spellID = 196718, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Immolation Aura
+			{spellID = 178470, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Demon Spikes
+			{spellID = 203720, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Soul Barrier (Talent)
+			{spellID = 227225, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Netherwalk (Talent)
+			{spellID = 196555, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Nether Bond (Talent)
+			{spellID = 207810, unitID = "player", caster = "player", filter = "BUFF"},
 		},
 		{
 			Name = "P_PROC_ICON",
@@ -235,8 +249,12 @@ Filger_Spells = {
 			Position = {"RIGHT", AnchorP_PROC_ICON},
 
 			-- Buffs
-			-- Bloodtalons
-			-- {spellID = 145152, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Soul Fragments
+			{spellID = 203981, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Painbringer (Vengeance Artifact)
+			{spellID = 212988, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Momentum (Talent)
+			{spellID = 208628, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Trinkets
 			-- 1.0: Darkmoon Cards
@@ -346,8 +364,20 @@ Filger_Spells = {
 			IconSize = 37,
 			Position = {"LEFT", AnchorT_DEBUFF_ICON},
 
-			-- Moonfire
-			-- {spellID = 164812, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Sigil of Flame
+			{spellID = 204598, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Sigil of Silence
+			{spellID = 204490, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Sigil of Misery
+			{spellID = 207685, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Sigil of Grasp
+			{spellID = 204843, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Fiery Brand
+			{spellID = 207744, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Frailty (Spirit Bomb Talent)
+			{spellID = 224509, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Nemesis (Talent)
+			{spellID = 206491, unitID = "target", caster = "player", filter = "DEBUFF"},
 		},
 		{
 			Name = "PVE/PVP_CC",
@@ -360,8 +390,8 @@ Filger_Spells = {
 			BarWidth = 189,
 			Position = {"LEFT", Anchor_PVEPVPCD},
 
-			-- Cyclone
-			-- {spellID = 33786, unitID = "focus", caster = "all", filter = "DEBUFF"},
+			-- Imprison
+			{spellID = 217832, unitID = "focus", caster = "all", filter = "DEBUFF"},
 		},
 	},
 	["DRUID"] = {
@@ -1969,8 +1999,10 @@ Filger_Spells = {
 			--BETA {spellID = 113860, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Dark Soul: Instability
 			--BETA {spellID = 113858, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Soulburn
-			--BETA {spellID = 74434, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Soul Harvest
+			{spellID = 196098, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Mana Tap
+			{spellID = 196104, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Soul Swap
 			{spellID = 86211, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Kiljaeden's Cunning
@@ -2002,7 +2034,7 @@ Filger_Spells = {
 			--BETA {spellID = 122355, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Backdraft
 			{spellID = 117828, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Demonic Synergy
+			-- Grimore of Synergy
 			{spellID = 171982, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Trinkets
@@ -3027,6 +3059,18 @@ Filger_Spells = {
 			{spellID = 170996, unitID = "target", caster = "all", filter = "DEBUFF"},
 			-- Unstable Affliction
 			{spellID = 31117, unitID = "target", caster = "all", filter = "DEBUFF", absID = true},
+			-- Siphon Life
+			{spellID = 63106, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Soul Effigy
+			{spellID = 205178, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Phantom Singularity
+			{spellID = 205179, unitID = "target", caster = "player", filter = "DEBUFF"},
+ 			-- Haunt
+ 			{spellID = 48181, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Shadowflame
+			{spellID = 205181, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Eradication
+			{spellID = 196414, unitID = "target", caster = "player", filter = "DEBUFF"},
 
 			-- Warrior
 			-- Bladestorm

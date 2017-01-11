@@ -32,9 +32,6 @@ StaticPopupDialogs.CANNOT_BUY_BANK_SLOT = {
 	preferredIndex = 5,
 }
 
--- Hide bags options in default interface
---InterfaceOptionsDisplayPanelShowFreeBagSpace:Hide()
-
 Stuffing = CreateFrame("Frame", nil, UIParent)
 Stuffing:RegisterEvent("ADDON_LOADED")
 Stuffing:RegisterEvent("PLAYER_ENTERING_WORLD")

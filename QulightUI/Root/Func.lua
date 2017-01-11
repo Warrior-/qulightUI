@@ -17,6 +17,7 @@ classcolours = {
 	["SHAMAN"] = { r = 0, g = 0.6, b = 0.6 };
 	["WARRIOR"] = { r = 0.9, g = 0.65, b = 0.45 },
 	["DEATHKNIGHT"] = { r = 0.77, g = 0.12 , b = 0.23 },
+	["DEMONHUNTER"] = { r = 0.64, g = 0.19, b = 0.79 },
 }
 
 local _, class = UnitClass("player")

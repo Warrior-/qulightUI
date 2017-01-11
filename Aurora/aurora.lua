@@ -31,6 +31,7 @@ C.classcolours = {
 	["SHAMAN"] = { r = 0, g = 0.6, b = 0.6 };
 	["WARRIOR"] = { r = 0.9, g = 0.65, b = 0.45 },
 	["DEATHKNIGHT"] = { r = 0.77, g = 0.12 , b = 0.23 },
+	["DEMONHUNTER"] = { r = 0.64, g = 0.19, b = 0.79 },
 }
 
 C.media = {
@@ -200,11 +201,14 @@ end
 F.ReskinScroll = function(f)
 	local frame = f:GetName()
 
-	if _G[frame.."Track"] then _G[frame.."Track"]:Hide() end
-	if _G[frame.."BG"] then _G[frame.."BG"]:Hide() end
-	if _G[frame.."Top"] then _G[frame.."Top"]:Hide() end
-	if _G[frame.."Middle"] then _G[frame.."Middle"]:Hide() end
-	if _G[frame.."Bottom"] then _G[frame.."Bottom"]:Hide() end
+	local track = (f.trackBG or f.Background) or (_G[frame.."Track"] or _G[frame.."BG"])
+	if track then track:Hide() end
+	local top = (f.ScrollBarTop or f.Top) or _G[frame.."Top"]
+	if top then top:Hide() end
+	local middle = (f.ScrollBarMiddle or f.Middle) or _G[frame.."Middle"]
+	if middle then middle:Hide() end
+	local bottom = (f.ScrollBarBottom or f.Bottom) or _G[frame.."Bottom"]
+	if bottom then bottom:Hide() end
 
 	local bu = _G[frame.."ThumbTexture"]
 	bu:SetAlpha(0)
@@ -1804,7 +1808,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		-- Item text
 
 		select(18, ItemTextFrame:GetRegions()):Hide()
-		InboxFrameBg:Hide()
+		ItemTextFramePageBg:SetAlpha(0)
 		ItemTextPrevPageButton:GetRegions():Hide()
 		ItemTextNextPageButton:GetRegions():Hide()
 		ItemTextMaterialTopLeft:SetAlpha(0)

@@ -2,7 +2,7 @@ if not Qulight["nameplate"].enable == true then return end
 ----------------------------------------------------------------------------------------
 --	Based on dNameplates(by Dawn, editor Elv22)
 ----------------------------------------------------------------------------------------
---[[ local function SpellName(id)
+local function SpellName(id)
 	local name = select(1, GetSpellInfo(id))
 	return name
 end
@@ -838,76 +838,4 @@ function NamePlates:PLAYER_ENTERING_WORLD()
 	if Qulight["nameplate"].enhance_threat == true then
 		SetCVar("threatWarning", 3)
 	end
-end --]]
-
--------------------------
-
-SetCVar("namePlateMinScale", 1)
-SetCVar("namePlateMaxScale", 1)
-
-
-
-local groups = {
-  "Friendly",
-  "Enemy",
-}
-
-local options = {
-  useClassColors = true,
-  --displayNameWhenSelected = true,
-  --displayNameByPlayerNameRules = true,
-  --playLoseAggroHighlight = false,
-  --displayAggroHighlight = true,
-  displaySelectionHighlight = false,
-  --considerSelectionInCombatAsHostile = false,
-  --colorNameWithExtendedColors = true,
-  --colorHealthWithExtendedColors = true,
-  selectedBorderColor = CreateColor(0, 0, 0, 0.8),
-  tankBorderColor = false,
-  defaultBorderColor = CreateColor(0, 0, 0, 0.5),
-  showClassificationIndicator = false,
-}
-
-for i, group  in next, groups do
-  for key, value in next, options do
-    _G["DefaultCompactNamePlate"..group.."FrameOptions"][key] = value
-  end
 end
-
------------------------------
--- Functions
------------------------------
-
---SetupNamePlate
-local function SetupNamePlate(frame, setupOptions, frameOptions)
-  --frame.healthBar:SetStatusBarTexture(mediapath.."statusbar")
-  --frame.castBar:SetStatusBarTexture(mediapath.."statusbar")
-  if GetCVar("NamePlateVerticalScale") == "1" then
-    frame.castBar:SetHeight(11)
-    frame.castBar.Icon:SetTexCoord(0.1,0.9,0.1,0.9)
-    frame.castBar.Icon:SetSize(18, 18)
-    frame.castBar.Icon:ClearAllPoints()
-    frame.castBar.Icon:SetPoint("BOTTOMRIGHT",frame.castBar,"BOTTOMLEFT",-2,0)
-  end
-end
-hooksecurefunc("DefaultCompactNamePlateFrameSetupInternal", SetupNamePlate)
-
-local function IsTank()
-  local assignedRole = UnitGroupRolesAssigned("player")
-  if assignedRole == "TANK" then return true end
-  local role = GetSpecializationRole(GetSpecialization())
-  if role == "TANK" then return true end
-  return false
-end
-
---UpdateHealthBorder
-local function UpdateHealthBorder(frame)
-  if frame.displayedUnit:match("(nameplate)%d?$") ~= "nameplate" then return end
-  if not IsTank() then return end
-  local status = UnitThreatSituation("player", frame.displayedUnit)
-  if status and status >= 3 then
-    frame.healthBar.border:SetVertexColor(0, 1, 0, 0.8)
-  end
-end
-hooksecurefunc("CompactUnitFrame_UpdateHealthBorder", UpdateHealthBorder)
-

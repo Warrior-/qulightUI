@@ -85,6 +85,48 @@ end)
 	hooksecurefunc("ObjectiveTracker_Expand", function()
 	button.plus:Hide()
 end)
+
+----------------------------------------------------------------------------------------
+--	Skin bonus objective progress bar
+----------------------------------------------------------------------------------------
+hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, block, line)
+	local progressBar = line.ProgressBar
+	local bar = progressBar.Bar
+	local icon = bar.Icon
+	local dummy = function() return end
+
+	if not progressBar.styled then
+		local label = bar.Label
+
+		bar.BarFrame:Hide()
+		bar.BarGlow:Kill()
+		bar.IconBG:Kill()
+		bar:SetSize(200, 20)
+		bar:SetStatusBarTexture(Qulight["media"].texture)
+		bar:SetTemplate("Transparent")
+		bar:SetBackdropColor(0, 0, 0, 0)
+
+		label:ClearAllPoints()
+		label:SetPoint("CENTER", 0, -1)
+		label:SetFont(Qulight["media"].font, Qulight["media"].fontsize, "OUTLINE")
+
+		icon:SetPoint("RIGHT", 24, 0)
+		icon:SetSize(20, 20)
+
+		local border = CreateFrame("Frame", "$parentBorder", bar)
+		border:SetAllPoints(icon)
+		border:SetTemplate("Transparent")
+		border:SetBackdropColor(0, 0, 0, 0)
+		bar.newIconBg = border
+
+		bar.AnimIn.Play = dummy
+		BonusObjectiveTrackerProgressBar_PlayFlareAnim = dummy
+		progressBar.styled = true
+	end
+
+	bar.newIconBg:SetShown(icon:IsShown())
+end)
+
 	
 ----------------------------------------------------------------------------------------
 --	Auto collapse ObjectiveTrackerFrame in instance

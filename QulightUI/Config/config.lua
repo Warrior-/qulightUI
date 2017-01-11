@@ -1,7 +1,7 @@
 ﻿Qulight["media"] = {
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=], 			        -- main font in Qulight UI
 	["pxfont"] = [=[Interface\Addons\QulightUI\Root\Media\pxFont.ttf]=],
-	["fontsize"] = 11, 														    		-- size of font 
+	["fontsize"] = 10, 														    		-- size of font 
 	["texture"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",				-- main texture in Qulight UI
 	["blank"] = "Interface\\Buttons\\WHITE8x8",											-- clean texture
 	["glow"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\glowTex",	
@@ -13,7 +13,7 @@ Qulight["general"] = {
 	["AutoRepair"] = false,																-- auto repair
 	["AutoGreed"] = false,
 	["topbottompanel"] = true,
-	["centerpanel"] = true,
+	["centerpanel"] = false1,
 	["autoinvite"] = true,	
 	["AutoDisenchant"] = false,															-- auto dis green items
 	["BlizzardsErrorFrameHiding"] = true,												-- hide blizzard red errors
@@ -27,7 +27,7 @@ Qulight["actionbar"] = {
 	["petbuttonsize"] = 32,                             -- pet & stance buttons size
 	["buttonspacing"] = 1,                              -- buttons spacing
 	["petbuttonspacing"] = 1,
-	["mainbarWidth"] = 12,		
+	["mainbarWidth"] = 10,		
 	["ownshdbar"] = false,                              -- use a complete new stance bar for shadow dance (rogue only)
 }
 
@@ -36,12 +36,12 @@ Qulight["raidframes"] = {
 	["deficit_health"] = true,					-- Raid deficit health
 	["vertical_health"] = false,				-- Vertical orientation of health
 	["alpha_health"] = false,					-- Alpha of healthbars when 100%hp
-	["power"] = false,					-- Alpha of healthbars when 100%hp
+	["power"] = true,					-- Alpha of healthbars when 100%hp
 	["show_range"] = true,						-- Show range opacity for raidframes
 	["range_alpha"] = 0.5,						-- Alpha of unitframes when unit is out of range
-	["hp_value"] = true,						
-	["width"] = 80,						
-	["height"] = 30,						
+	["hp_value"] = false,						
+	["width"] = 81.5,						
+	["height"] = 24,						
 
 	["show_party"] = true,						-- Show party frames
 	["show_raid"] = true,						-- Show raid frames
@@ -76,7 +76,7 @@ Qulight["unitframes"] = {
 	["enable"] = true,																	-- enable/disable action bars
 	["HealthcolorClass"] = false,														-- health color = class color
 	["bigcastbar"] = true,
-		["widthbigcastbar"] = 340,
+		["widthbigcastbar"] = 321,
 		["heightbigcastbar"] = 20,
 	["Powercolor"] = true,																-- power color = class color
 	["showtot"] = true, 																-- show target of target frame
@@ -90,7 +90,7 @@ Qulight["unitframes"] = {
 	["Reputationbar"] = true, 															-- show reputation bar
 	["Experiencebar"] = true, 															-- show experience bar
 	["showPlayerAuras"] = false, 														-- use a custom player buffs/debuffs frame instead of blizzard's default.
-	["showPortrait"] = false,															-- show portraits
+	["showPortrait"] = true,															-- show portraits
 	["showRunebar"] = true, 															-- show dk rune bar
 	["showHolybar"] = true, 															-- show paladin HolyPower bar
 	["showEclipsebar"] = true, 															-- show druid eclipse bar
@@ -99,7 +99,10 @@ Qulight["unitframes"] = {
 }
 Qulight["chatt"] = {				 
 	["enable"] = true,																	-- enable/disable chat
+	["combatlog"] = true,
+	["fontsize"] = 10,
 	["chatbar"] = false,																-- enable/disable chatbar
+	["sticky"] = true,																
 }
 Qulight["buffdebuff"] = {
 	["enable"] = true,  
@@ -112,15 +115,15 @@ Qulight["buffdebuff"] = {
 }
 Qulight["addonskins"] = {
 	["DBM"] = true, 																	-- Deadly Boss Mod skinning
-	["PallyPower"] = true, 																-- Pally Power skinning
+	["PallyPower"] = false, 																-- Pally Power skinning
 	["Skada"] = true, 																	-- Skada skinning
-	["Recount"] = true, 																-- Recount skinning
-	["Omen"] = true, 																	-- Omen skinning
-	["KLE"] = true, 																	-- KLE skinning
-	["Quartz"] = true, 																	-- Quartz skinning
-	["Bigwigs"] = true, 																-- BigWigs Bossmod skinning
-	["DXE"] = true,
-	["CoolLine"] = true,
+	["Recount"] = false, 																-- Recount skinning
+	["Omen"] = false, 																	-- Omen skinning
+	["KLE"] = false, 																	-- KLE skinning
+	["Quartz"] = false, 																	-- Quartz skinning
+	["Bigwigs"] = false, 																-- BigWigs Bossmod skinning
+	["DXE"] = false,
+	["CoolLine"] = false,
 }
 Qulight["datatext"] = {
 	["Durability"] = 2,                													-- show your equipment durability on panels.
@@ -143,7 +146,7 @@ Qulight["datatext"] = {
 	["color"] = { .7, .7, .7, 1 }, 														-- if ["classcolor"] = false,	
 }
 Qulight["nameplate"] = {
-	["enable"] = true, 							-- Enable nameplate
+	["enable"] = false, 							-- Enable nameplate
 	["combat"] = false,							-- Automatically show nameplate in combat
 	["health_value"] = true,					-- Numeral health value
 	["show_castbar_name"] = false,				-- Show castbar name
@@ -152,8 +155,8 @@ Qulight["nameplate"] = {
 	["name_abbrev"] = false,					-- Display the abbreviated names
 	["track_auras"] = true,						-- Show debuffs
 	["healer_icon"] = false,					-- Show icon above enemy healers nameplate in battlegrounds
-	["height"] = 25,							-- Nameplate height
-	["width"] = 150,							-- Nameplate width
+	["height"] = 10,							-- Nameplate height
+	["width"] = 110,							-- Nameplate width
 	["ad_height"] = 0,							-- Additional height for selected nameplate
 	["ad_width"] = 0,							-- Additional width for selected nameplate
 	["good_color"] = {0.2, 0.8, 0.2},			-- Good threat color
@@ -170,14 +173,24 @@ Qulight["tooltip"] = {
 	["hidecombat"] = false,               												-- hide bottom-right tooltip when in combat
 	["hidebuttons"] = false,                											-- always hide action bar buttons tooltip.
 	["hideuf"] = false,                     											-- hide tooltip on unitframes
+	["shift_modifer"] = false,
+	["health_value"] = false,
+	["realm"] = true,
+	["arena_experience"] = false,
+	["target"] = true,		
+	["raid_icon"] = true,						-- Raid icon
+	["who_targetting"] = true,					-- Show who is targetting the unit(in raid or party)
+	["rank"] = true,	
 	["cursor"] = false,                     											-- tooltip via cursor only
 	["itemlevel"] = true,																-- show item level
 	["spellid"] = true,
-	["title"] = false,	-- show speel id
+	["title"] = true,	-- show speel id
+	["unit_role"] = true,	-- show speel id
 }
 Qulight["bags"] = {
 	["Enable"] = true,																	-- enable/disable bags 
 	["buttonsize"] = 32,																	-- Buttons size
+	["ilvl"] = true,																	-- enable/disable bags 
 	["buttonspace"] = 3,																	-- Buttons space
 	["bankcolumns"] = 17,																	-- Horizontal number of columns in bank
 	["BagBars"] = true,																	-- enable/disable bags bar
@@ -190,16 +203,15 @@ Qulight["cooldown"] = {
 	["enable"] = true,                     												-- enable/disable cooldown addon(for buttons)
 }
 Qulight["misk"] = {
-	["addonmanager"] = true,														-- enable disable addonmanager	
 	["armory_link"] = false,															-- enable armory_link
-	["filger"] = true,																	-- enable disable filger
+	["filger"] = false,																	-- enable disable filger
 	["classtimer"] = false,																-- enable disable classtimer
-	["BuffReminderRaidBuffs"] = true,													-- enable disable raid buffs reminder
-	["Reminder"] = true,																-- enable disable reminder(self buff)
+	["BuffReminderRaidBuffs"] = false,													-- enable disable raid buffs reminder
+	["Reminder"] = false,																-- enable disable reminder(self buff)
 	["CooldownFlash"] = true,															-- enable disable cooldown flash
 	["raidcooldowns"] = false, 
 	["AutoScreen"] = true,
 	["Threatbar"] = true,
-	["raidmarker"] = true,
-	["raidutility"] = true,														-- enable disable raid utility
+	["raidmarker"] = false,
+	["raidutility"] = false,														-- enable disable raid utility
 }  
