@@ -236,7 +236,7 @@ C.themes["Blizzard_AchievementUI"] = function()
 			local bg = CreateFrame("Frame", nil, bar)
 			bg:SetPoint("TOPLEFT", -1, 1)
 			bg:SetPoint("BOTTOMRIGHT", 1, -1)
-			F.CreateBD(bg, 0)
+			F.CreateBD1(bg, 0)
 
 			bar.reskinned = true
 		end
@@ -277,7 +277,6 @@ C.themes["Blizzard_AchievementUI"] = function()
 				local bg = CreateFrame("Frame", nil, bu)
 				bg:SetPoint("TOPLEFT", 2, -2)
 				bg:SetPoint("BOTTOMRIGHT", -2, 2)
-				F.CreateBD(bg, 0)
 
 				local ic = _G["AchievementFrameSummaryAchievement"..i.."IconTexture"]
 				ic:SetTexCoord(.08, .92, .08, .92)

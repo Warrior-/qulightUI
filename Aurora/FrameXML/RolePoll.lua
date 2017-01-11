@@ -1,11 +1,18 @@
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+local pairs = _G.pairs
+
+-- [[ Core ]]
 local F, C = unpack(select(2, ...))
 
-tinsert(C.themes["Aurora"], function()
-	F.CreateBD(RolePollPopup)
-	F.Reskin(RolePollPopupAcceptButton)
-	F.ReskinClose(RolePollPopupCloseButton)
+_G.tinsert(C.themes["Aurora"], function()
+	F.CreateBD(_G.RolePollPopup)
+	F.Reskin(_G.RolePollPopupAcceptButton)
+	F.ReskinClose(_G.RolePollPopupCloseButton)
 
-	for _, roleButton in pairs({RolePollPopupRoleButtonTank, RolePollPopupRoleButtonHealer, RolePollPopupRoleButtonDPS}) do
+	for _, roleButton in pairs({_G.RolePollPopupRoleButtonTank, _G.RolePollPopupRoleButtonHealer, _G.RolePollPopupRoleButtonDPS}) do
 		roleButton.cover:SetTexture(C.media.roleIcons)
 		roleButton:SetNormalTexture(C.media.roleIcons)
 

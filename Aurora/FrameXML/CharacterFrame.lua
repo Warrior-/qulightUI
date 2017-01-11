@@ -1,10 +1,16 @@
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+
+-- [[ Core ]]
 local F, C = unpack(select(2, ...))
 
-tinsert(C.themes["Aurora"], function()
-	CharacterFrameInsetRight:DisableDrawLayer("BACKGROUND")
-	CharacterFrameInsetRight:DisableDrawLayer("BORDER")
+_G.tinsert(C.themes["Aurora"], function()
+	_G.CharacterFrameInsetRight:DisableDrawLayer("BACKGROUND")
+	_G.CharacterFrameInsetRight:DisableDrawLayer("BORDER")
 
-	F.ReskinPortraitFrame(CharacterFrame, true)
+	F.ReskinPortraitFrame(_G.CharacterFrame, true)
 
 	local i = 1
 	while _G["CharacterFrameTab"..i] do

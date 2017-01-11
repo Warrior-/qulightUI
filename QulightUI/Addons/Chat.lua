@@ -85,7 +85,7 @@ local function SetChatStyle(frame)
 	local id = frame:GetID()
 	local chat = frame:GetName()
 
-	_G[chat]:SetFrameLevel(5)
+	_G[chat]:SetFrameLevel(1)
 
 	-- Removes crap from the bottom of the chatbox so it can go to the bottom of the screen
 	_G[chat]:SetClampedToScreen(false)

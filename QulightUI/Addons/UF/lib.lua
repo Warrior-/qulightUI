@@ -721,7 +721,7 @@ gen_bigcastbar = function(f)
     if f.mystyle == "player" then
         local z = s:CreateTexture(nil,"OVERLAY")
         z:SetTexture(Qulight["media"].texture)
-        z:SetVertexColor(1,0.1,0,.6)
+        z:SetVertexColor(0.34,0.34,0.34,.6)
         z:SetPoint("TOPRIGHT")
         z:SetPoint("BOTTOMRIGHT")
 	    s:SetFrameLevel(10)
@@ -1113,7 +1113,7 @@ if Qulight["unitframes"].TotemBars then
 	totems.backdrop:SetBackdropBorderColor(.2,.2,.2,1)
 	totems.backdrop:SetPoint("TOPLEFT", -2, 2)
 	totems.backdrop:SetPoint("BOTTOMRIGHT", 2, -2)
-	totems.backdrop:SetFrameLevel(5)
+	totems.backdrop:SetFrameLevel(1)
 	self.TotemBar = totems			
 	end
 end

@@ -15,14 +15,15 @@ StaticPopupDialogs.SET_BN_BROADCAST = {
 	editBoxWidth = 350,
 	maxLetters = 127,
 	OnAccept = function(self) BNSetCustomMessage(self.editBox:GetText()) end,
-	OnShow = function(self) self.editBox:SetText(select(3, BNGetInfo()) ) self.editBox:SetFocus() end,
+	OnShow = function(self) self.editBox:SetText(select(4, BNGetInfo()) ) self.editBox:SetFocus() end,
 	OnHide = ChatEdit_FocusActiveWindow,
 	EditBoxOnEnterPressed = function(self) BNSetCustomMessage(self:GetText()) self:GetParent():Hide() end,
 	EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
 	timeout = 0,
 	exclusive = 1,
 	whileDead = 1,
-	hideOnEscape = 1
+	hideOnEscape = 1,
+	preferredIndex = 3
 }
 
 -- localized references for global functions (about 50% faster)
@@ -39,7 +40,7 @@ Stat:SetFrameLevel(3)
 local Text  = DataLeftPanel:CreateFontString(nil, "OVERLAY")
 Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
 PP(Qulight["datatext"].Friends, Text)
---Stat:SetParent(Text:GetParent())
+Stat:SetParent(Text:GetParent())
 
 local menuFrame = CreateFrame("Frame", "FriendRightClickMenu", UIParent, "UIDropDownMenuTemplate")
 local menuList = {
@@ -79,9 +80,9 @@ end
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local clientLevelNameString = "%s |cff%02x%02x%02x(%d|r |cff%02x%02x%02x%s|r%s) |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
-local worldOfWarcraftString = "World of Warcraft"
-local battleNetString = "Battle.NET"
-local wowString = "WoW"
+local worldOfWarcraftString = WORLD_OF_WARCRAFT
+local battleNetString = BATTLENET_OPTIONS_LABEL
+local wowString, scString, d3String, wtcgString, appString, hotsString, owString  = BNET_CLIENT_WOW, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, "App", BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH
 local otherGameInfoString = "%s (%s)"
 local otherGameInfoString2 = "%s %s"
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
@@ -90,10 +91,33 @@ local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = join("", "%s: ", qColor, "%d|r")
 local statusTable = { "[AFK]", "[DND]", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" } 
-local friendTable, BNTable = {}, {}
+local friendTable, BNTable, BNTableWoW, BNTableD3, BNTableSC, BNTableWTCG, BNTableApp, BNTableHOTS, BNTableOW = {}, {}, {}, {}, {}, {}, {}, {}, {}
+local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [scString] = BNTableSC, [wtcgString] = BNTableWTCG, [appString] = BNTableApp, [hotsString] = BNTableHOTS, [owString] = BNTableOW}
+local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local dataValid = false
 local totalOnline, BNTotalOnline = 0, 0
 
+
+local function SortAlphabeticName(a, b)
+	if a[1] and b[1] then
+		return a[1] < b[1]
+	end
+end
+
+local function GetZoneText(zoneAreaID)
+	local zoneName = GetMapNameByID(zoneAreaID)
+	local continent = ZoneIDToContinentName[zoneAreaID]
+
+	if continent and continent == "Outland" then
+		if zoneName == localizedMapNames["Nagrand"] or zoneName == "Nagrand"  then
+			zoneName = localizedMapNames["Nagrand"].." ("..localizedMapNames["Outland"]..")"
+		elseif zoneName == localizedMapNames["Shadowmoon Valley"] or zoneName == "Shadowmoon Valley"  then
+			zoneName = localizedMapNames["Shadowmoon Valley"].." ("..localizedMapNames["Outland"]..")"
+		end
+	end
+
+	return zoneName
+end 
 
 local function BuildFriendTable(total)
 	totalOnline = 0
@@ -101,544 +125,227 @@ local function BuildFriendTable(total)
 	local name, level, class, area, connected, status, note
 	for i = 1, total do
 		name, level, class, area, connected, status, note = GetFriendInfo(i)
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-		
 		if status == "<"..AFK..">" then
-			status = "|cffff0000[AFK]|r"
+			status = "|cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
 		elseif status == "<"..DND..">" then
-			status = "|cffff0000[DND]|r"
+			status = "|cffFFFFFF[|r|cffFF0000"..L["DND"].."|r|cffFFFFFF]|r"
 		end
-		
-		friendTable[i] = { name, level, class, area, connected, status, note }
-		if connected then totalOnline = totalOnline + 1 end
+
+		if connected then
+			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+			friendTable[i] = { name, level, class, area, connected, status, note }
+		end
 	end
-end
-local function RemoveTagNumber(tag)
-    local symbol = string.find(tag, "#")
-    
-    if (symbol) then
-        return string.sub(tag, 1, symbol - 1)
-    else
-        return tag
-    end
+	sort(friendTable, SortAlphabeticName)
 end
 
-local function GetTableIndex(table, fieldIndex, value)
-	for k,v in ipairs(table) do
-		if v[fieldIndex] == value then return k end
+local function Sort(a, b)
+	if a[2] and b[2] and a[3] and b[3] then
+		if a[2] == b[2] then return a[3] < b[3] end
+		return a[2] < b[2]
 	end
-	return -1
-end
-local function UpdateFriendTable(total)
-totalOnline = 0
-
-    local name, level, class, area, connected, status, note
-
-    for i = 1, #friendTable do
-        name, level, class, area, connected, status, note = GetFriendInfo(i)
-
-        for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do
-            if class == v then
-                class = k
-            end
-        end
-
-        -- get the correct index in our table		
-        local index = GetTableIndex(friendTable, 1, name)
-
-        -- we cannot find a friend in our table, so rebuild it
-        if index == -1 then
-            BuildFriendTable(total)
-            break
-        end
-
-        -- update on-line status for all members
-        friendTable[index][5] = connected
-
-        -- update information only for on-line members
-        if connected then
-            friendTable[index][2] = level
-            friendTable[index][3] = class
-            friendTable[index][4] = area
-            friendTable[index][6] = status
-            friendTable[index][7] = note
-            totalOnline = totalOnline + 1
-        end
-    end
 end
 
 local function BuildBNTable(total)
-	    BNTotalOnline = 0
-    wipe(BNTable)
-    
-    if not BNConnected() then
-        return
-    end
+	wipe(BNTable)
+	wipe(BNTableWoW)
+	wipe(BNTableD3)
+	wipe(BNTableSC)
+	wipe(BNTableWTCG)
+	wipe(BNTableApp)
+	wipe(BNTableHOTS)
+	wipe(BNTableOW)
 
-    for i = 1, total do
-        local presenceID, presenceName, battleTag, isBattleTagPresence, toonName, toonID, client, isOnline, lastOnline, isAFK, isDND, messageText, noteText, isRIDFriend, messageTime, canSoR = BNGetFriendInfo(i)
-        local hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetGameAccountInfo(toonID or presenceID)
+	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
+	local hasFocus, realmName, realmID, faction, race, class, guild, zoneName, level, gameText
+	for i = 1, total do
+		bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
+		hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetGameAccountInfo(bnetIDGameAccount or bnetIDAccount);
 
-        for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do
-            if class == v then
-                class = k
-            end
-        end
+		if isOnline then
+			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
+			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 
-        BNTable[i] = { presenceID, presenceName, battleTag, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
-
-        if isOnline then
-            BNTotalOnline = BNTotalOnline + 1
-        end
-    end
-end
-
-local function UpdateBNTable(total)
-BNTotalOnline = 0
-    
-    if not BNConnected() then
-        wipe(BNTable)
-        
-        return
-    end
-
-    for i = 1, #BNTable do
-        -- get guild roster information
-        local presenceID, presenceName, battleTag, isBattleTagPresence, toonName, toonID, client, isOnline, lastOnline, isAFK, isDND, messageText, noteText, isRIDFriend, messageTime, canSoR = BNGetFriendInfo(i)
-        local hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetGameAccountInfo(toonID or presenceID)
-
-        for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do
-            if class == v then
-                class = k
-            end
-        end
-
-        -- get the correct index in our table		
-        local index = GetTableIndex(BNTable, 1, presenceID)
-
-        -- we cannot find a BN member in our table, so rebuild it
-        if index == -1 then
-            BuildBNTable(total)
-            return
-        end
-
-        -- update on-line status for all members
-        BNTable[index][7] = isOnline
-
-        -- update information only for on-line members
-        if isOnline then
-            BNTable[index][2] = presenceName
-            BNTable[index][3] = RemoveTagNumber(battleTag)
-            BNTable[index][4] = toonName
-            BNTable[index][5] = toonID
-            BNTable[index][6] = client
-            BNTable[index][8] = isAFK
-            BNTable[index][9] = isDND
-            BNTable[index][10] = noteText
-            BNTable[index][11] = realmName
-            BNTable[index][12] = faction
-            BNTable[index][13] = race
-            BNTable[index][14] = class
-            BNTable[index][15] = zoneName
-            BNTable[index][16] = level
-            BNTable[index][17] = isBattleTagPresence
-
-            BNTotalOnline = BNTotalOnline + 1
-        end
-    end
-end
-local function Update(self, event)
-	if event == "BN_FRIEND_INFO_CHANGED" or "BN_FRIEND_ACCOUNT_ONLINE" or "BN_FRIEND_ACCOUNT_OFFLINE" or "BN_TOON_NAME_UPDATED"
-			or "BN_FRIEND_TOON_ONLINE" or "BN_FRIEND_TOON_OFFLINE" or "PLAYER_ENTERING_WORLD" then
-		local BNTotal = BNGetNumFriends()
-		if BNTotal == #BNTable then
-			UpdateBNTable(BNTotal)
-		else
-			BuildBNTable(BNTotal)
-		end
-	end
-	
-	if event == "FRIENDLIST_UPDATE" or "PLAYER_ENTERING_WORLD" then
-		local total = GetNumFriends()
-		if total == #friendTable then
-			UpdateFriendTable(total)
-		else
-			BuildFriendTable(total)
+			if client == scString then
+				BNTableSC[#BNTableSC + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			elseif client == d3String then
+				BNTableD3[#BNTableD3 + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			elseif client == wtcgString then
+				BNTableWTCG[#BNTableWTCG + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			elseif client == appString then
+				BNTableApp[#BNTableApp + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			elseif client == hotsString then
+				BNTableHOTS[#BNTableHOTS + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			elseif client == owString then
+				BNTableOW[#BNTableOW + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			else
+				BNTableWoW[#BNTableWoW + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			end
 		end
 	end
 
-	Text:SetFormattedText(displayString, "Friends", totalOnline + BNTotalOnline)
+	sort(BNTable, Sort)
+	sort(BNTableWoW, Sort)
+	sort(BNTableSC, Sort)
+	sort(BNTableD3, Sort)
+	sort(BNTableWTCG, Sort)
+	sort(BNTableApp, Sort)
+	sort(BNTableHOTS, Sort)
+	sort(BNTableOW, Sort)
+end
+
+local function Update(self, event, ...)
+	local _, onlineFriends = GetNumFriends()
+	local _, numBNetOnline = BNGetNumFriends()
+
+	-- special handler to detect friend coming online or going offline
+	-- when this is the case, we invalidate our buffered table and update the
+	-- datatext information
+	if event == "CHAT_MSG_SYSTEM" then
+		local message = select(1, ...)
+		if not (find(message, friendOnline) or find(message, friendOffline)) then return end
+	end
+
+	-- force update when showing tooltip
+	dataValid = false
+
+	Text:SetFormattedText(displayString, "Friends", onlineFriends + numBNetOnline)
 	self:SetAllPoints(Text)
 end
 
-Stat:SetScript("OnMouseUp", function(self, btn)
-	  if btn ~= "RightButton" then
-        return
-    end
+Stat:SetScript("OnMouseDown", function(self, btn)
+	GameTooltip:Hide()
 
-    GameTooltip:Hide()
+	if btn == "RightButton" then
+		local menuCountWhispers = 0
+		local menuCountInvites = 0
+		local classc, levelc, info
 
-    local menuCountWhispers = 0
-    local menuCountInvites = 0
-    local classc, levelc
+		menuList[2].menuList = {}
+		menuList[3].menuList = {}
 
-    menuList[2].menuList = {}
-    menuList[3].menuList = {}
+		if #friendTable > 0 then
+			for i = 1, #friendTable do
+				info = friendTable[i]
+				if (info[5]) then
+					menuCountInvites = menuCountInvites + 1
+					menuCountWhispers = menuCountWhispers + 1
 
-    if totalOnline > 0 then
-        for i = 1, #friendTable do
-            if (friendTable[i][5]) then
-                menuCountInvites = menuCountInvites + 1
-                menuCountWhispers = menuCountWhispers + 1
+					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+					classc = classc or GetQuestDifficultyColor(info[2]);
 
-                classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[friendTable[i][3]], GetQuestDifficultyColor(friendTable[i][2])
+					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1],notCheckable=true, func = inviteClick}
+					menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1],notCheckable=true, func = whisperClick}
+				end
+			end
+		end
+		if #BNTable > 0 then
+			local realID, grouped
+			for i = 1, #BNTable do
+				info = BNTable[i]
+				if (info[5]) then
+					realID = info[2]
+					menuCountWhispers = menuCountWhispers + 1
+					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 
-                if classc == nil then
-                    classc = GetQuestDifficultyColor(friendTable[i][2])
-                end
+					if info[6] == wowString and UnitFactionGroup("player") == info[12] then
+						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
+						classc = classc or GetQuestDifficultyColor(info[16])
 
-                menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,friendTable[i][2],classc.r*255,classc.g*255,classc.b*255,friendTable[i][1]), arg1 = friendTable[i][1],notCheckable=true, func = inviteClick}
-                menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,friendTable[i][2],classc.r*255,classc.g*255,classc.b*255,friendTable[i][1]), arg1 = friendTable[i][1],notCheckable=true, func = whisperClick}
-            end
-        end
-    end
+						if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
+						menuCountInvites = menuCountInvites + 1
 
-    if BNTotalOnline > 0 then
-        local realID, grouped
+						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], notCheckable=true, func = inviteClick}
+					end
+				end
+			end
+		end
 
-        for i = 1, #BNTable do
-            if (BNTable[i][7]) then
-                realID = BNTable[i][2]
-                menuCountWhispers = menuCountWhispers + 1
-                menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
-
-                if BNTable[i][6] == wowString and UnitFactionGroup("player") == BNTable[i][12] then
-                    classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[BNTable[i][14]], GetQuestDifficultyColor(BNTable[i][16])
-
-                    if classc == nil then
-                        classc = GetQuestDifficultyColor(BNTable[i][16])
-                    end
-
-                    if UnitInParty(BNTable[i][4]) or UnitInRaid(BNTable[i][4]) then
-                        grouped = 1
-                    else
-                        grouped = 2
-                    end
-
-                    menuCountInvites = menuCountInvites + 1
-                    menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,BNTable[i][16],classc.r*255,classc.g*255,classc.b*255,BNTable[i][4]), arg1 = BNTable[i][5],notCheckable=true, func = inviteClick}
-                end
-            end
-        end
-    end
-
-    EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+	else
+		ToggleFriendsFrame()
+	end
 end)
-	local OnMouseDown = function(self, btn)
-    if btn == "LeftButton" then
-        ToggleFriendsFrame()
-    end
-end
-
-local OnLeave = function()
-    GameTooltip:Hide()
-end
-Stat:SetScript("OnMouseDown", function(self, btn) if btn == "LeftButton" then ToggleFriendsFrame(1) end end)
-
-
-
-local OnEnter = function(self)
-    if InCombatLockdown() then
-        return
-    end
-
-    local totalonline = totalOnline + BNTotalOnline
-    local totalfriends = #friendTable + #BNTable
-    local zonec, classc, levelc, realmc, grouped
-    local onWoW, onHS, onD3, onHotS, onOW, onClient, onS2 = 0, 0, 0, 0, 0, 0, 0
-
-    if (totalonline > 0) then
-        GameTooltip:SetOwner(self:GetTooltipAnchor())
-        GameTooltip:ClearLines()
-        GameTooltip:AddDoubleLine(L.DataText.FriendsList, format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
-
-        if totalOnline > 0 then
-            GameTooltip:AddLine(" ")
-
-            for i = 1, #friendTable do
-                if friendTable[i][5] then
-                    if GetRealZoneText() == friendTable[i][4] then
-                        zonec = activezone
-                    else
-                        zonec = inactivezone
-                    end
-
-                    classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[friendTable[i][3]], GetQuestDifficultyColor(friendTable[i][2])
-
-                    if classc == nil then
-                        classc = GetQuestDifficultyColor(friendTable[i][2])
-                    end
-
-                    if UnitInParty(friendTable[i][1]) or UnitInRaid(friendTable[i][1]) then
-                        grouped = 1
-                    else
-                        grouped = 2
-                    end
-
-                    GameTooltip:AddDoubleLine(format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,friendTable[i][2],friendTable[i][1],groupedTable[grouped]," "..friendTable[i][6]),friendTable[i][4],classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
-                end
-            end
-        end
-
-        if BNTotalOnline > 0 then
-            GameTooltip:AddLine(" ")
-            GameTooltip:AddLine("["..BATTLETAG.."]------------------------ "..battleNetString.." ------------------------["..NAME.."]")
-
-            local status = 0
-
-            for i = 1, #BNTable do
-                if BNTable[i][7] then
-                    if BNTable[i][6] == wowString then
-                        onWoW = onWoW + 1
-
-                        local Client = "World of Warcraft"
-                        local isBattleTag = BNTable[i][17]
-
-                        if onWoW == 1 then
-                            GameTooltip:AddLine(" ")
-                            GameTooltip:AddLine(Client)
-                        end
-
-                        if (BNTable[i][8] == true) then
-                            status = 1
-                        elseif (BNTable[i][9] == true) then
-                            status = 2
-                        else
-                            status = 3
-                        end
-
-                        classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[BNTable[i][14]]
-                        levelc = GetQuestDifficultyColor(BNTable[i][16])
-
-                        if not classc then
-                            classc = {r=1, g=1, b=1}
-                        end
-
-                        if UnitInParty(BNTable[i][4]) or UnitInRaid(BNTable[i][4]) then
-                            grouped = 1
-                        else
-                            grouped = 2
-                        end
-
-                        GameTooltip:AddDoubleLine(format(clientLevelNameString, BNTable[i][3],levelc.r*255,levelc.g*255,levelc.b*255,BNTable[i][16],classc.r*255,classc.g*255,classc.b*255,BNTable[i][4],groupedTable[grouped], 255, 0, 0, statusTable[status]),isBattleTag == false and BNTable[i][2],238,238,238,238,238,238)
-
-                        if IsShiftKeyDown() then
-                            if GetRealZoneText() == BNTable[i][15] then
-                                zonec = activezone
-                            else
-                                zonec = inactivezone
-                            end
-
-                            if GetRealmName() == BNTable[i][11] then
-                                realmc = activezone
-                            else
-                                realmc = inactivezone
-                            end
-
-                            GameTooltip:AddDoubleLine("  "..BNTable[i][15], BNTable[i][11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
-                        end
-                    end
-                end
-            end
-
-            for i = 1, #BNTable do
-                if BNTable[i][7] then
-                    if BNTable[i][6] == "WTCG" then
-                        onHS = onHS + 1
-
-                        local Client = "Hearthstone"
-                        local isBattleTag = BNTable[i][17]
-
-                        if onHS == 1 then
-                            GameTooltip:AddDoubleLine(" ", " ")
-                            GameTooltip:AddDoubleLine("|cffD49E43"..Client.."|r", "")
-                        end
-
-                        GameTooltip:AddDoubleLine("|cffeeeeee"..BNTable[i][3].."|r", isBattleTag == false and BNTable[i][2],238,238,238,238,238,238)
-                    end
-                end
-            end
-
-            for i = 1, #BNTable do
-                if BNTable[i][7] then
-                    if BNTable[i][6] == "D3" then
-                        onD3 = onD3 + 1
-
-                        local Client = "Diablo III"
-                        local isBattleTag = BNTable[i][17]
-
-                        if onD3 == 1 then
-                            GameTooltip:AddDoubleLine(" ", " ")
-                            GameTooltip:AddDoubleLine("|cffCC2200"..Client.."|r", "")
-                        end
-
-                        GameTooltip:AddDoubleLine("|cffeeeeee"..BNTable[i][3].."|r", isBattleTag == false and BNTable[i][2],238,238,238,238,238,238)
-                    end
-                end
-            end
-
-            for i = 1, #BNTable do
-                if BNTable[i][7] then
-                    if BNTable[i][6] == "Hero" then
-                        onHotS = onHotS + 1
-
-                        local Client = "Heroes of the Storm"
-                        local isBattleTag = BNTable[i][17]
-
-                        if onHotS == 1 then
-                            GameTooltip:AddDoubleLine(" ", " ")
-                            GameTooltip:AddDoubleLine("|cffACE5EE"..Client.."|r", "")
-                        end
-
-                        GameTooltip:AddDoubleLine("|cffeeeeee"..BNTable[i][3].."|r", isBattleTag == false and BNTable[i][2],238,238,238,238,238,238)
-                    end
-                end
-            end
-
-            for i = 1, #BNTable do
-                if BNTable[i][7] then
-                    if BNTable[i][6] == "S2" then
-                        onS2 = onS2 + 1
-
-                        local Client = "Starcraft II"
-                        local isBattleTag = BNTable[i][17]
-
-                        if onS2 == 1 then
-                            GameTooltip:AddDoubleLine(" ", " ")
-                            GameTooltip:AddDoubleLine("|cffACE5EE"..Client.."|r", "")
-                        end
-
-                        GameTooltip:AddDoubleLine("|cffeeeeee"..BNTable[i][3].."|r", isBattleTag == false and BNTable[i][2],238,238,238,238,238,238)
-                    end
-                end
-            end
-
-            for i = 1, #BNTable do
-                if BNTable[i][7] then
-                    if BNTable[i][6] == "Pro" then
-                        onOW = onOW + 1
-
-                        local Client = "Overwatch"
-                        local isBattleTag = BNTable[i][17]
-
-                        if onOW == 1 then
-                            GameTooltip:AddDoubleLine(" ", " ")
-                            GameTooltip:AddDoubleLine("|cffACE5EE"..Client.."|r", "")
-                        end
-
-                        GameTooltip:AddDoubleLine("|cffeeeeee"..BNTable[i][3].."|r", isBattleTag == false and BNTable[i][2],238,238,238,238,238,238)
-                    end
-                end
-            end
-
-            for i = 1, #BNTable do
-                if BNTable[i][7] then
-                    if BNTable[i][6] == "App" then
-                        onClient = onClient + 1
-
-                        local Client = "Battle.NET Client"
-                        local isBattleTag = BNTable[i][17]
-
-                        if onClient == 1 then
-                            GameTooltip:AddDoubleLine(" ", " ")
-                            GameTooltip:AddDoubleLine("|cff00B4FF"..Client.."|r", "")
-                        end
-
-                        GameTooltip:AddDoubleLine("|cffeeeeee"..BNTable[i][3].."|r", isBattleTag == false and BNTable[i][2],238,238,238,238,238,238)
-                    end
-                end
-            end
-        end
-
-        GameTooltip:Show()
-    else 
-        GameTooltip:Hide() 
-    end
-end
-
-
 
 Stat:SetScript("OnEnter", function(self)
-	
 
- if btn ~= "RightButton" then
-        return
-    end
+	local numberOfFriends, onlineFriends = GetNumFriends()
+	local totalBNet, numBNetOnline = BNGetNumFriends()
 
-    GameTooltip:Hide()
+	local totalonline = onlineFriends + numBNetOnline
 
-    local menuCountWhispers = 0
-    local menuCountInvites = 0
-    local classc, levelc
+	-- no friends online, quick exit
+  	if totalonline == 0 then return end
 
-    menuList[2].menuList = {}
-    menuList[3].menuList = {}
+	if not dataValid then
+		-- only retrieve information for all on-line members when we actually view the tooltip
+		if numberOfFriends > 0 then BuildFriendTable(numberOfFriends) end
+		if totalBNet > 0 then BuildBNTable(totalBNet) end
+		dataValid = true
+	end
 
-    if totalOnline > 0 then
-        for i = 1, #friendTable do
-            if (friendTable[i][5]) then
-                menuCountInvites = menuCountInvites + 1
-                menuCountWhispers = menuCountWhispers + 1
+	local totalfriends = numberOfFriends + totalBNet
+	local zonec, classc, levelc, realmc, info, grouped
+	GameTooltip:SetOwner(self, "ANCHOR_TOP", -20, 6)
+	GameTooltip:ClearLines()
+	GameTooltip:AddDoubleLine("Friends", format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+	if onlineFriends > 0 then
+		GameTooltip:AddLine(' ')
+		GameTooltip:AddLine(worldOfWarcraftString)
+		for i = 1, #friendTable do
+			info = friendTable[i]
+			if info[5] then
+				if GetZoneText(GetCurrentMapAreaID()) == info[4] then zonec = activezone else zonec = inactivezone end
+				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 
-                classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[friendTable[i][3]], GetQuestDifficultyColor(friendTable[i][2])
+				classc = classc or GetQuestDifficultyColor(info[2])
 
-                if classc == nil then
-                    classc = GetQuestDifficultyColor(friendTable[i][2])
-                end
+				if UnitInParty(info[1]) or UnitInRaid(info[1]) then grouped = 1 else grouped = 2 end
+				GameTooltip:AddDoubleLine(format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],info[1],groupedTable[grouped]," "..info[6]),info[4],classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
+			end
+		end
+	end
 
-                menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,friendTable[i][2],classc.r*255,classc.g*255,classc.b*255,friendTable[i][1]), arg1 = friendTable[i][1],notCheckable=true, func = inviteClick}
-                menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,friendTable[i][2],classc.r*255,classc.g*255,classc.b*255,friendTable[i][1]), arg1 = friendTable[i][1],notCheckable=true, func = whisperClick}
-            end
-        end
-    end
+	if numBNetOnline > 0 then
+		local status = 0
+		for client, BNTable in pairs(tableList) do
+			if #BNTable > 0 then
+				GameTooltip:AddLine(' ')
+				GameTooltip:AddLine(battleNetString..' ('..client..')')
+				for i = 1, #BNTable do
+					info = BNTable[i]
+					if info[6] then
+						if info[5] == wowString then
+							if (info[7] == true) then status = 1 elseif (info[8] == true) then status = 2 else status = 3 end
+							classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[13]]
+							if info[15] ~= '' then
+								levelc = GetQuestDifficultyColor(info[15])
+							else
+								levelc = RAID_CLASS_COLORS["PRIEST"]
+								classc = RAID_CLASS_COLORS["PRIEST"]
+							end
 
-    if BNTotalOnline > 0 then
-        local realID, grouped
+							if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
+							GameTooltip:AddDoubleLine(format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[15],classc.r*255,classc.g*255,classc.b*255,info[3],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2],238,238,238,238,238,238)
+							if IsShiftKeyDown() then
+								if GetZoneText(GetCurrentMapAreaID()) == info[14] then zonec = activezone else zonec = inactivezone end
+								if GetRealmName() == info[10] then realmc = activezone else realmc = inactivezone end
+								GameTooltip:AddDoubleLine(info[14], info[10], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+							end
+						else
+							GameTooltip:AddDoubleLine(info[3], info[2], .9, .9, .9, .9, .9, .9)
+						end
+					end
+				end
+			end
+		end
+	end
 
-        for i = 1, #BNTable do
-            if (BNTable[i][7]) then
-                realID = BNTable[i][2]
-                menuCountWhispers = menuCountWhispers + 1
-                menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
-
-                if BNTable[i][6] == wowString and UnitFactionGroup("player") == BNTable[i][12] then
-                    classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[BNTable[i][14]], GetQuestDifficultyColor(BNTable[i][16])
-
-                    if classc == nil then
-                        classc = GetQuestDifficultyColor(BNTable[i][16])
-                    end
-
-                    if UnitInParty(BNTable[i][4]) or UnitInRaid(BNTable[i][4]) then
-                        grouped = 1
-                    else
-                        grouped = 2
-                    end
-
-                    menuCountInvites = menuCountInvites + 1
-                    menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,BNTable[i][16],classc.r*255,classc.g*255,classc.b*255,BNTable[i][4]), arg1 = BNTable[i][5],notCheckable=true, func = inviteClick}
-                end
-            end
-        end
-    end
-
-    EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+	GameTooltip:Show()
 end)
-
-local OnMouseDown = function(self, btn)
-    if btn == "LeftButton" then
-        ToggleFriendsFrame()
-    end
-end
 
 Stat:RegisterEvent("BN_FRIEND_ACCOUNT_ONLINE")
 Stat:RegisterEvent("BN_FRIEND_ACCOUNT_OFFLINE")
@@ -663,6 +370,7 @@ Stat:RegisterEvent("BN_DISCONNECTED")
 Stat:RegisterEvent("BN_INFO_CHANGED")
 Stat:RegisterEvent("BATTLETAG_INVITE_SHOW")
 Stat:RegisterEvent("PARTY_REFER_A_FRIEND_UPDATED")
+Stat:RegisterEvent("CHAT_MSG_SYSTEM")
 
 
 Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)

@@ -1,7 +1,13 @@
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+
+-- [[ Core ]]
 local F, C = unpack(select(2, ...))
 
-tinsert(C.themes["Aurora"], function()
-	local ProductChoiceFrame = ProductChoiceFrame
+_G.tinsert(C.themes["Aurora"], function()
+	local ProductChoiceFrame = _G.ProductChoiceFrame
 
 	ProductChoiceFrame.Inset.Bg:Hide()
 	ProductChoiceFrame.Inset:DisableDrawLayer("BORDER")

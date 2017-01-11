@@ -1,13 +1,20 @@
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+local select, next = _G.select, _G.next
+
+-- [[ Core ]]
 local F, C = unpack(select(2, ...))
 
-tinsert(C.themes["Aurora"], function()
+_G.tinsert(C.themes["Aurora"], function()
 	local r, g, b = C.r, C.g, C.b
 
-	local QuestMapFrame = QuestMapFrame
+	local QuestMapFrame = _G.QuestMapFrame
 
 	-- [[ Quest scroll frame ]]
 
-	local QuestScrollFrame = QuestScrollFrame
+	local QuestScrollFrame = _G.QuestScrollFrame
 	local StoryHeader = QuestScrollFrame.Contents.StoryHeader
 
 	QuestMapFrame.VerticalSeparator:Hide()
@@ -52,7 +59,7 @@ tinsert(C.themes["Aurora"], function()
 
 	DetailsFrame:GetRegions():Hide()
 	select(2, DetailsFrame:GetRegions()):Hide()
-	select(3, DetailsFrame:GetRegions()):Hide()
+	select(4, DetailsFrame:GetRegions()):Hide()
 	select(6, DetailsFrame.ShareButton:GetRegions()):Hide()
 	select(7, DetailsFrame.ShareButton:GetRegions()):Hide()
 
@@ -81,6 +88,23 @@ tinsert(C.themes["Aurora"], function()
 	-- Scroll frame
 
 	F.ReskinScroll(DetailsFrame.ScrollFrame.ScrollBar)
+	_G.hooksecurefunc("QuestLogQuests_Update", function()
+		for i, questLogHeader in next, QuestMapFrame.QuestsFrame.Contents.Headers do
+			if not questLogHeader.isSkinned then
+				F.ReskinExpandOrCollapse(questLogHeader)
+				questLogHeader.isSkinned = true
+			end
+			questLogHeader:SetHighlightTexture("")
+			if questLogHeader.questLogIndex then
+				local _, _, _, _, isCollapsed = _G.GetQuestLogTitle(questLogHeader.questLogIndex)
+				if isCollapsed then
+					questLogHeader.plus:Show()
+				else
+					questLogHeader.plus:Hide()
+				end
+			end
+		end
+	end)
 
 	-- Complete quest frame
 	CompleteQuestFrame:GetRegions():Hide()
@@ -92,15 +116,15 @@ tinsert(C.themes["Aurora"], function()
 
 	-- [[ Quest log popup detail frame ]]
 
-	local QuestLogPopupDetailFrame = QuestLogPopupDetailFrame
+	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
 
 	select(18, QuestLogPopupDetailFrame:GetRegions()):Hide()
-	QuestLogPopupDetailFrameScrollFrameTop:Hide()
-	QuestLogPopupDetailFrameScrollFrameBottom:Hide()
-	QuestLogPopupDetailFrameScrollFrameMiddle:Hide()
+	_G.QuestLogPopupDetailFrameScrollFrameTop:Hide()
+	_G.QuestLogPopupDetailFrameScrollFrameBottom:Hide()
+	_G.QuestLogPopupDetailFrameScrollFrameMiddle:Hide()
 
 	F.ReskinPortraitFrame(QuestLogPopupDetailFrame, true)
-	F.ReskinScroll(QuestLogPopupDetailFrameScrollFrameScrollBar)
+	F.ReskinScroll(_G.QuestLogPopupDetailFrameScrollFrameScrollBar)
 	F.Reskin(QuestLogPopupDetailFrame.AbandonButton)
 	F.Reskin(QuestLogPopupDetailFrame.TrackButton)
 	F.Reskin(QuestLogPopupDetailFrame.ShareButton)
@@ -123,11 +147,11 @@ tinsert(C.themes["Aurora"], function()
 	F.Reskin(ShowMapButton)
 
 	ShowMapButton:HookScript("OnEnter", function(self)
-		self.Text:SetTextColor(GameFontHighlight:GetTextColor())
+		self.Text:SetTextColor(_G.GameFontHighlight:GetTextColor())
 	end)
 
 	ShowMapButton:HookScript("OnLeave", function(self)
-		self.Text:SetTextColor(GameFontNormal:GetTextColor())
+		self.Text:SetTextColor(_G.GameFontNormal:GetTextColor())
 	end)
 
 	-- Bottom buttons

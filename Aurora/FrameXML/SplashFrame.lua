@@ -1,6 +1,13 @@
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+
+-- [[ Core ]]
 local F, C = unpack(select(2, ...))
 
-tinsert(C.themes["Aurora"], function()
+_G.tinsert(C.themes["Aurora"], function()
+    local SplashFrame = _G.SplashFrame
 	F.Reskin(SplashFrame.BottomCloseButton)
 	F.ReskinClose(SplashFrame.TopCloseButton)
 

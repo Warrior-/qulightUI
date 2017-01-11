@@ -10,7 +10,7 @@ AnchorBUFF_ICON:SetPoint("RIGHT", UIParent, "CENTER", -213, -115)
 CreateAnchor(AnchorBUFF_ICON, "Move BUFF_ICON", 37, 37)
 
 AnchorT_BUFF_ICON = CreateFrame("Frame","Move_T_BUFF_ICON",UIParent)
-AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -75)
+AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -115)
 CreateAnchor(AnchorT_BUFF_ICON, "Move T_BUFF_ICON", 37, 37)
 
 AnchorP_PROC_ICON = CreateFrame("Frame","Move_P_PROC_ICON",UIParent)
@@ -18,7 +18,7 @@ AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -213, -159)
 CreateAnchor(AnchorP_PROC_ICON, "Move P_PROC_ICON", 37, 37)
 
 AnchorT_DEBUFF_ICON = CreateFrame("Frame","Move_T_DEBUFF_ICON",UIParent)
-AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -117)
+AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -159)
 CreateAnchor(AnchorT_DEBUFF_ICON, "Move T_DEBUFF_ICON", 37, 37)
 
 AnchorT_SPECIAL_P_BUFF_ICON = CreateFrame("Frame","Move_SPECIAL_P_BUFF_ICON",UIParent)
@@ -30,7 +30,7 @@ Anchor_CD:SetPoint("BOTTOM", UIParent, "BOTTOM", -172, 380)
 CreateAnchor(Anchor_CD, "Move CD", 40, 40)
 
 Anchor_PVEPVPCD = CreateFrame("Frame","Move_PVEPVPCD",UIParent)
-Anchor_PVEPVPCD:SetPoint("LEFT", UIParent, "CENTER", 213, -17)
+Anchor_PVEPVPCD:SetPoint("LEFT", UIParent, "CENTER", 213, -72)
 CreateAnchor(Anchor_PVEPVPCD, "Move PVEPVPCD", 25, 25)
 
 Anchor_PVEDEBUFF = CreateFrame("Frame","Move_PVEDEBUFF",UIParent)
@@ -373,6 +373,9 @@ Filger_Spells = {
 			{spellID = 224509, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Nemesis (Talent)
 			{spellID = 206491, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- bloodletting
+			{spellID = 207690, unitID = "target", caster = "player", filter = "DEBUFF"},
+
 		},
 		{
 			Name = "PVE/PVP_CC",
@@ -1591,8 +1594,6 @@ Filger_Spells = {
 
 			-- Slice and Dice
 			{spellID = 5171, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Recuperate
-			--BETA {spellID = 73651, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Adrenaline Rush
 			{spellID = 13750, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Evasion
@@ -1600,7 +1601,13 @@ Filger_Spells = {
 			-- Envenom
 			{spellID = 32645, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Shadow Dance
-			--BETA {spellID = 51713, unitID = "player", caster = "player", filter = "BUFF"},
+			{spellID = 185313, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Symbols of Death
+			{spellID = 212283, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Shadow Blades
+			{spellID = 121471, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Alacrity
+			{spellID = 193539, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Master of Subtlety
 			{spellID = 31665, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Cloak of Shadows
@@ -1737,22 +1744,22 @@ Filger_Spells = {
 			{spellID = 703, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Gouge
 			{spellID = 1776, unitID = "target", caster = "player", filter = "DEBUFF"},
-			-- Revealing Strike
-			--BETA {spellID = 84617, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Hemorrhage
 			{spellID = 16511, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Find Weakness
 			{spellID = 91021, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Vendetta
 			{spellID = 79140, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Nightblade
+			{spellID = 195452, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Ghostly Strike
+			{spellID = 196937, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Deadly Poison
 			{spellID = 2818, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Crippling Poison
 			{spellID = 3409, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Wound Poison
 			{spellID = 8680, unitID = "target", caster = "player", filter = "DEBUFF"},
-			-- Ghostly Strike
-			{spellID = 196937, unitID = "target", caster = "player", filter = "DEBUFF"},
 		},
 		{
 			Name = "PVE/PVP_CC",

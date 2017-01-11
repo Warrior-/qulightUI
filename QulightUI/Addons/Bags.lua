@@ -477,7 +477,7 @@ function Stuffing:CreateBagFrame(w)
 	f:EnableMouse(true)
 	f:SetMovable(true)
 	f:SetFrameStrata("HIGH")
-	f:SetFrameLevel(5)
+	f:SetFrameLevel(1)
 	f:SetScript("OnMouseDown", function(self, button)
 		if IsShiftKeyDown() and button == "LeftButton" then
 			self:StartMoving()

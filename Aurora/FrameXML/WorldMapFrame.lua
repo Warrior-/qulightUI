@@ -1,9 +1,16 @@
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+local select, pairs, tinsert = _G.select, _G.pairs, _G.tinsert
+
+-- [[ Core ]]
 local F, C = unpack(select(2, ...))
 
-tinsert(C.themes["Aurora"], function()
+_G.tinsert(C.themes["Aurora"], function()
 	local r, g, b = C.r, C.g, C.b
 
-	local WorldMapFrame = WorldMapFrame
+	local WorldMapFrame = _G.WorldMapFrame
 	local BorderFrame = WorldMapFrame.BorderFrame
 
 	WorldMapFrame.UIElementsFrame.CloseQuestPanelButton:GetRegions():Hide()
@@ -28,12 +35,12 @@ tinsert(C.themes["Aurora"], function()
 	F.ReskinClose(BorderFrame.CloseButton)
 	F.ReskinArrow(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, "left")
 	F.ReskinArrow(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton, "right")
-	F.ReskinDropDown(WorldMapLevelDropDown)
-	F.ReskinNavBar(WorldMapFrameNavBar)
+	F.ReskinDropDown(_G.WorldMapLevelDropDown)
+	F.ReskinNavBar(_G.WorldMapFrameNavBar)
 
 	BorderFrame.CloseButton:SetPoint("TOPRIGHT", -9, -6)
 
-	WorldMapLevelDropDown:SetPoint("TOPLEFT", -14, 2)
+	_G.WorldMapLevelDropDown:SetPoint("TOPLEFT", -14, 2)
 
 	-- [[ Size up / down buttons ]]
 
@@ -94,8 +101,8 @@ tinsert(C.themes["Aurora"], function()
 
 	-- [[ Misc ]]
 
-	WorldMapFrameTutorialButton.Ring:Hide()
-	WorldMapFrameTutorialButton:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", -12, 12)
+	_G.WorldMapFrameTutorialButton.Ring:Hide()
+	_G.WorldMapFrameTutorialButton:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", -12, 12)
 
 	do
 		local topLine = WorldMapFrame.UIElementsFrame:CreateTexture()

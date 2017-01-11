@@ -13,7 +13,7 @@ if Qulight["datatext"].mastery and Qulight["datatext"].mastery > 0 then
 	local function Update(self, t)
 		int = int - t
 		if int < 0 then
-			Text:SetText("Mastery: "..qColor..GetCombatRating(29).."|r")
+			Text:SetText("Mastery: "..qColor..GetCombatRating(26).."|r")
 			int = 1
 		end
 	end

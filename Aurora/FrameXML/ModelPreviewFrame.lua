@@ -1,7 +1,13 @@
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+
+-- [[ Core ]]
 local F, C = unpack(select(2, ...))
 
-tinsert(C.themes["Aurora"], function()
-	local ModelPreviewFrame = ModelPreviewFrame
+_G.tinsert(C.themes["Aurora"], function()
+	local ModelPreviewFrame = _G.ModelPreviewFrame
 	local Display = ModelPreviewFrame.Display
 
 	Display.YesMountsTex:Hide()

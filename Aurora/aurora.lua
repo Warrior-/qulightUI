@@ -54,11 +54,14 @@ C.defaults = {
 	["buttonGradientColour"] = {0, 0, 0, .3},
 	["buttonSolidColour"] = {.35, .35, .35, .35},
 	["useButtonGradientColour"] = false,
+	["chatBubbles"] = true,
 	["useCustomColour"] = false,
 		["customColour"] = {r = 1, g = 1, b = 1},
 }
 
 C.frames = {}
+
+C.TOC = select(4, _G.GetBuildInfo())
 
 -- [[ Cached variables ]]
 
@@ -100,6 +103,16 @@ F.CreateBD = function(f, a)
 	f:SetBackdropBorderColor(0, 0, 0)
 	if not a then tinsert(C.frames, f) end
 end
+F.CreateBD1 = function(f, a)
+	f:SetBackdrop({
+		bgFile = C.media.backdrop,
+		edgeFile = C.media.backdrop,
+		edgeSize = 1,
+	})
+	f:SetBackdropColor(.08,.08,.08, 0)
+	f:SetBackdropBorderColor(0, 0, 0)
+	if not a then tinsert(C.frames, f) end
+end
 
 F.CreateBG = function(frame)
 	local f = frame
@@ -132,22 +145,22 @@ local function colourButton(f)
 	if not f:IsEnabled() then return end
 
 	if useButtonGradientColour then
-		f:SetBackdropColor(r, g, b, .3)
+		f:SetBackdropColor(r, g, b, 1)
 	else
-		f.tex:SetVertexColor(r / 4, g / 4, b / 4)
+		f.tex:SetVertexColor(r / 4, g / 4, b / 4, 1)
 	end
 
-	f:SetBackdropBorderColor(r, g, b)
+	--f:SetBackdropBorderColor(r, g, b)
 end
 
 local function clearButton(f)
 	if useButtonGradientColour then
 		f:SetBackdropColor(0, 0, 0, 0)
 	else
-		f.tex:SetVertexColor(buttonR, buttonG, buttonB, buttonA)
+		f.tex:SetVertexColor(buttonR, buttonG, buttonB, 0.1)
 	end
 
-	f:SetBackdropBorderColor(0, 0, 0)
+	--f:SetBackdropBorderColor(0, 0, 0)
 end
 
 F.Reskin = function(f, noHighlight)
@@ -1439,7 +1452,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 			bu.bg = CreateFrame("Frame", nil, bu)
 			bu.bg:SetAllPoints(ic)
-			F.CreateBD(bu.bg, 0)
+			F.CreateBD1(bu.bg, 0)
 		end
 
 		local function UpdateScroll()
@@ -1716,6 +1729,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		-- Master looter frame
 
+		local MasterLooterFrame = _G.MasterLooterFrame
 		for i = 1, 9 do
 			select(i, MasterLooterFrame:GetRegions()):Hide()
 		end
