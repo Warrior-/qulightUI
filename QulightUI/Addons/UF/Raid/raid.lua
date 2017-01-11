@@ -1368,7 +1368,7 @@ CompactRaidFrameManager:UnregisterAllEvents()
 	oUF:SetActiveStyle("QulightRaid")
 	if Qulight.raidframes.show_party == true then
 		-- Party
-		local party = self:SpawnHeader("oUF_Party", nil, "custom [@raid6,exists] hide;show",
+		local party = self:SpawnHeader("oUF_Party", nil, "custom [@raid6,exists][petbattle] hide;show",
 			"oUF-initialConfigFunction", [[
 				local header = self:GetParent()
 				self:SetWidth(header:GetAttribute("initial-width"))

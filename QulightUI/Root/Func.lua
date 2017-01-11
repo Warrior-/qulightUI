@@ -20,7 +20,6 @@ classcolours = {
 	["DEMONHUNTER"] = { r = 0.64, g = 0.19, b = 0.79 },
 }
 
-
 local _, class = UnitClass("player")
 
 if CUSTOM_CLASS_COLORS then
@@ -28,72 +27,6 @@ if CUSTOM_CLASS_COLORS then
 end
 
 local r, g, b = classcolours[class].r, classcolours[class].g, classcolours[class].b
-
-
-CreateBD = function(f, a)
-	f:SetBackdrop({
-		bgFile = Qulight["media"].texture,
-		edgeFile = Qulight["media"].texture,
-		edgeSize = 1,
-	})
-	f:SetBackdropColor(.05,.05,.05, a or alpha)
-	f:SetBackdropBorderColor(0, 0, 0)
-	if not a then tinsert(frames, f) end
-end
-
-CreateGradient = function(f)
-	local tex = f:CreateTexture(nil, "BORDER")
-	tex:SetPoint("TOPLEFT", 1, -1)
-	tex:SetPoint("BOTTOMRIGHT", -1, 1)
-	tex:SetTexture(useButtonGradientColour and "Interface\\Addons\\QulightUI\\Root\\Media\\gradient" or Qulight["media"].texture)
-	tex:SetVertexColor(0.11, 0.11, 0.11, 1)
-
-	return tex
-end
-
-local function colourButton(f)
-	if not f:IsEnabled() then return end
-
-	if useButtonGradientColour then
-		f:SetBackdropColor(r, g, b, .3)
-	else
-		f.tex:SetVertexColor(r / 4, g / 4, b / 4)
-	end
-
-	f:SetBackdropBorderColor(0, 0, 0)
-end
-
-local function clearButton(f)
-	if useButtonGradientColour then
-		f:SetBackdropColor(0, 0, 0, 0)
-	else
-		f.tex:SetVertexColor(0.11, 0.11, 0.11, 1)
-	end
-
-	f:SetBackdropBorderColor(0, 0, 0)
-end
-
-Reskin = function(f, noHighlight)
-	f:SetNormalTexture("")
-	f:SetHighlightTexture("")
-	f:SetPushedTexture("")
-	f:SetDisabledTexture("")
-
-	if f.Left then f.Left:SetAlpha(0) end
-	if f.Middle then f.Middle:SetAlpha(0) end
-	if f.Right then f.Right:SetAlpha(0) end
-	if f.LeftSeparator then f.LeftSeparator:Hide() end
-	if f.RightSeparator then f.RightSeparator:Hide() end
-
-	CreateBD(f, .0)
-
-	f.tex = CreateGradient(f)
-
-	if not noHighlight then
-		f:HookScript("OnEnter", colourButton)
- 		f:HookScript("OnLeave", clearButton)
-	end
-end
 
 local function colourClose(f)
 	if f:IsEnabled() then

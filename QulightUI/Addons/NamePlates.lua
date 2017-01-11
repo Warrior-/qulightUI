@@ -160,7 +160,8 @@ if Qulight["nameplate"].healer_icon == true then
 			healList = {}
 			for i = 1, GetNumBattlefieldScores() do
 				local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i)
-				if name and healerSpecs[talentSpec] and t.factions[UnitFactionGroup("player")] == faction then
+				name = name:match("(.+)%-.+") or name
+				if name and t.healers[talentSpec] and t.factions[UnitFactionGroup("player")] == faction then
 					name = name:match("(.+)%-.+") or name
 					healList[name] = talentSpec
 				end
@@ -206,7 +207,7 @@ if Qulight["nameplate"].healer_icon == true then
 end
 
 local function Abbrev(name)
-	local newname = (string.len(name) > 18) and string.gsub(name, "%s?(.[\128-\191]*)%S%s", "%1. ") or name
+	local newname = (string.len(name) > 18) and string.gsub(name, "%s?(.[\128-\191]*)%S+%s", "%1. ") or name
 	return utf8sub(newname, 18, false)
 end
 
@@ -258,7 +259,8 @@ end
 
 function Plates:CreateAuraIcon(self)
 	local button = CreateFrame("Frame", nil, frame.hp)
-	button:SetSize(Qulight["nameplate"].auras_size, Qulight["nameplate"].auras_size)
+	button:SetWidth(Qulight["nameplate"].auras_size)
+	button:SetHeight(Qulight["nameplate"].auras_size)
 	
 	button.bg = button:CreateTexture(nil, "BACKGROUND")
 	button.bg:SetColorTexture(0.05, 0.05, 0.05, 1)
@@ -324,7 +326,7 @@ function Plates:OnAura(unit)
 	for index = 1, 40 do
 		if i > Qulight["nameplate"].width / Qulight["nameplate"].auras_size then return end
 		local match
-		local name, _, _, _, _, duration, _, aster, _, nameplateShowPersonal, spellid, _, _, _, nameplateShowAll = UnitAura(unit, index, "HARMFUL")
+		local name, _, _, _, _, duration, _, caster, _, _ = UnitAura(unit, index, "HARMFUL")
 
 		if DebuffWhiteList[name] and caster == "player" then match = true end
 
@@ -479,7 +481,7 @@ function Plates:OnShow()
 		Level = "??"
 		self.NewPlate.level:SetTextColor(0.8, 0.05, 0)
 	elseif Elite:IsShown() then
-		Level = Level..""
+		Level = Level.."+"
 	end
 
 	if Qulight["nameplate"].name_abbrev == true and Qulight["nameplate"].track_auras ~= true then
@@ -784,7 +786,7 @@ function Plates:Skin(obj)
 	if Qulight["nameplate"].healer_icon == true then
 		NewPlate.HPHeal = NewPlate.Health:CreateFontString(nil, "OVERLAY")
 		NewPlate.HPHeal:SetFont(Qulight["media"].font, 8, "THINOUTLINE")
-		NewPlate.HPHeal:SetText("|cFFD53333|r")
+		NewPlate.HPHeal:SetText("|cFFD53333+|r")
 		if Qulight["nameplate"].track_auras == true then
 			NewPlate.HPHeal:SetPoint("BOTTOM", NewPlate.Name, "TOP", 0, 13)
 		else
@@ -1032,10 +1034,10 @@ local function UpdateBuffs(unitFrame)
 
 	for index = 1, 40 do
 		if i > Qulight["nameplate"].width / Qulight["nameplate"].auras_size then return end
-		local name, _, _, _, _, duration, _, caster, _, _, spellid, _, _, _, nameplateShowAll = UnitAura(unit, index, "HARMFUL")
---		local matchdebuff = AuraFilter(caster, name)
+		local dname, _, _, _, _, dduration, _, dcaster, _, _, dspellid = UnitAura(unit, index, 'HARMFUL')
+		local matchdebuff = AuraFilter(dcaster, dname)
 
-		if name and caster == "player" and (((nameplateShowAll or nameplateShowPersonal) and not DebuffBlackList[name]) or DebuffWhiteList[name]) then
+		if dname and matchdebuff then
 			if not unitFrame.icons[i] then
 				unitFrame.icons[i] = CreateAuraIcon(unitFrame)
 			end
@@ -1052,7 +1054,7 @@ local function UpdateBuffs(unitFrame)
 	unitFrame.iconnumber = i - 1
 
 	-- if i > 1 then
-		--unitFrame.icons[1]:SetPoint("LEFT", unitFrame.icons, "CENTER", -((Qulight["nameplate"].auras_size4)*(unitFrame.iconnumber)-4)/2,0)
+		--unitFrame.icons[1]:SetPoint("LEFT", unitFrame.icons, "CENTER", -((Qulight["nameplate"].auras_size+4)*(unitFrame.iconnumber)-4)/2,0)
 	-- end
 	for index = i, #unitFrame.icons do unitFrame.icons[index]:Hide() end
 end
@@ -1151,7 +1153,7 @@ end
 	end
 
 	local Resourcebar = CreateFrame("Frame", "Plateresource", UIParent)
-	Resourcebar:SetWidth(100)	--(103)*6 - 3
+	Resourcebar:SetWidth(100)	--(10+3)*6 - 3
 	Resourcebar:SetHeight(3)
 	Resourcebar.maxbar = 6
 
@@ -1346,12 +1348,12 @@ local function UpdateName(unitFrame)
 			level = "??"
 			r, g, b = 0.8, 0.05, 0
 		else
-			local color = GetCreatureDifficultyColor(level)
+			local color = GetQuestDifficultyColor(level)
 			r, g, b = color.r, color.g, color.b
 		end
 
 		if classification == "elite" or classification == "rareelite" then
-			level = level..""
+			level = level.."+"
 		end
 
 		if (tonumber(level) == UnitLevel("player") and not classification == "elite") or UnitIsUnit(unitFrame.displayedUnit, "player") then
@@ -1371,7 +1373,7 @@ local function UpdateName(unitFrame)
 		if UnitIsUnit(unitFrame.displayedUnit, "player") then
 			unitFrame.name:SetText("")
 		else
-			if Qulight["nameplate"].name_abbrev == true then
+			if Qulight["nameplate"].name_abbrev == true and Qulight["nameplate"].track_auras ~= true then
 				unitFrame.name:SetText(Abbrev(name))
 			else
 				unitFrame.name:SetText(name)
@@ -1570,7 +1572,7 @@ local function UpdateInVehicle(unitFrame)
 	if UnitHasVehicleUI(unitFrame.unit) then
 		if not unitFrame.inVehicle then
 			unitFrame.inVehicle = true
-			local prefix, id, suffix = string.match(unitFrame.unit, "([^%d])([%d]*)(.*)")
+			local prefix, id, suffix = string.match(unitFrame.unit, "([^%d]+)([%d]*)(.*)")
 			unitFrame.displayedUnit = prefix.."pet"..id..suffix
 			UpdateNamePlateEvents(unitFrame)
 		end
@@ -1841,7 +1843,7 @@ local function OnNamePlateCreated(namePlate)
 	if Qulight["nameplate"].healer_icon == true then
 		namePlate.UnitFrame.HPHeal = namePlate.UnitFrame.healthBar:CreateFontString(nil, "OVERLAY")
 		namePlate.UnitFrame.HPHeal:SetFont(Qulight["media"].font, 8, "THINOUTLINE")
-		namePlate.UnitFrame.HPHeal:SetText("|cFFD53333|r")
+		namePlate.UnitFrame.HPHeal:SetText("|cFFD53333+|r")
 		if Qulight["nameplate"].track_auras == true then
 			namePlate.UnitFrame.HPHeal:SetPoint("BOTTOM", namePlate.UnitFrame.name, "TOP", 0, 13)
 		else

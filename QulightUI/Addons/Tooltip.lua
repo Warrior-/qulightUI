@@ -280,14 +280,14 @@ end
 
 local OnTooltipSetUnit = function(self)
 	local lines = self:NumLines()
-	local unit = (select(2, self:GetUnit())) or (GetMouseFocus() and GetMouseFocus().GetAttribute and GetMouseFocus():GetAttribute("unit")) or (UnitExists("mouseover") and "mouseover") or nil
+	local unit = (select(2, self:GetUnit())) or (GetMouseFocus() and GetMouseFocus():GetAttribute("unit")) or (UnitExists("mouseover") and "mouseover") or nil
 
 	if not unit then return end
 
 	local name, realm = UnitName(unit)
 	local race, englishRace = UnitRace(unit)
 	local level = UnitLevel(unit)
-	local levelColor = GetCreatureDifficultyColor(level)
+	local levelColor = GetQuestDifficultyColor(level)
 	local classification = UnitClassification(unit)
 	local creatureType = UnitCreatureType(unit)
 	local _, faction = UnitFactionGroup(unit)
@@ -903,11 +903,12 @@ local function OnHyperlinkEnter(frame, link, ...)
 
 	if orig1[frame] then return orig1[frame](frame, link, ...) end
 end
-
+--[[
 local function OnHyperlinkLeave(frame, link, ...)
-	if BattlePetTooltip:IsShown() then
+	local linktype = link:match("^([^:]+)")
+	if linktype and linktype == "battlepet" then
 		BattlePetTooltip:Hide()
-	else
+	elseif linktype and linktypes[linktype] then
 		GameTooltip:Hide()
 	end
 
@@ -922,7 +923,7 @@ for i = 1, NUM_CHAT_WINDOWS do
 	orig2[frame] = frame:GetScript("OnHyperlinkLeave")
 	frame:SetScript("OnHyperlinkLeave", OnHyperlinkLeave)
 end
-
+--]]
 
 ----------------------------------------------------------------------------------------
 --	Your instance lock status in tooltip(Instance Lock Compare by Dridzt)
@@ -1286,8 +1287,20 @@ local function UnitGear(unit)
 							end
 
 							local numBonusIDs = tonumber(strmatch(itemLink, ".+:%d+:512:%d*:(%d+).+"))
-							if numBonusIDs or quality == 6 then
-								level = GetDetailedItemLevelInfo(itemLink) or level
+							if numBonusIDs then
+								if GetDetailedItemLevelInfo then
+									local effectiveLevel, previewLevel, origLevel = GetDetailedItemLevelInfo(itemLink)
+									level = effectiveLevel or level
+								end
+							end
+
+							if quality == 6 then
+								if i == 17 then
+									itemLink = GetInventoryItemLink("player", 16)
+									level = GetItemLevelFromTooltip(itemLink) or level
+								else
+									level = GetItemLevelFromTooltip(itemLink) or level
+								end
 							end
 
 							total = total + level

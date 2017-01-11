@@ -103,119 +103,133 @@ function Delay(delay, func, ...)
 	tinsert(waitTable,{delay,func,{...}})
 	return true
 end
-----------------------------------------------------------------------------------------
---	Based on AchievementMover
-----------------------------------------------------------------------------------------
-local AchievementAnchor = CreateFrame("Frame", "AchievementAnchor", UIParent)
-AchievementAnchor:SetWidth(230)
-AchievementAnchor:SetHeight(50)
-AchievementAnchor:SetPoint("CENTER", 0, 0)
 
-local POSITION, ANCHOR_POINT, YOFFSET = "BOTTOM", "TOP", -9
-
-local function fixAnchors()
-	local point = select(1, AchievementAnchor:GetPoint())
-
-	if string.find(point, "TOP") or point == "CENTER" or point == "LEFT" or point == "RIGHT" then
-		POSITION = "TOP"
-		ANCHOR_POINT = "BOTTOM"
-		YOFFSET = 9
-	else
-		POSITION = "BOTTOM"
-		ANCHOR_POINT = "TOP"
-		YOFFSET = -9
+local function AlertFrame_SetLootAnchors(alertAnchor)
+	if MissingLootFrame:IsShown() then
+		MissingLootFrame:ClearAllPoints()
+		MissingLootFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+		if GroupLootContainer:IsShown() then
+			GroupLootContainer:ClearAllPoints()
+			GroupLootContainer:SetPoint(POSITION, MissingLootFrame, ANCHOR_POINT, 0, YOFFSET)
+		end
+	elseif GroupLootContainer:IsShown() then
+		GroupLootContainer:ClearAllPoints()
+		GroupLootContainer:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
-
-	AlertFrame:ClearAllPoints()
-	AlertFrame:SetPoint(POSITION, AchievementAnchor, POSITION, 2, YOFFSET)
-
-	GroupLootContainer:ClearAllPoints()
-	GroupLootContainer:SetPoint(POSITION, AlertFrame, ANCHOR_POINT, -100, YOFFSET)
 end
-local ReplaceAnchors do
-	local function QueueAdjustAnchors(self, relativeAlert)
-		CheckGrow()
+--hooksecurefunc("AlertFrame_SetLootAnchors", AlertFrame_SetLootAnchors)
 
-		for alertFrame in self.alertFramePool:EnumerateActive() do
-			alertFrame:ClearAllPoints()
-			alertFrame:SetPoint(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
-			relativeAlert = alertFrame
+local function AlertFrame_SetLootWonAnchors(alertAnchor)
+	for i = 1, #LOOT_WON_ALERT_FRAMES do
+		local frame = LOOT_WON_ALERT_FRAMES[i]
+		if frame:IsShown() then
+			frame:ClearAllPoints()
+			frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+			alertAnchor = frame
 		end
-		return relativeAlert
 	end
+end
+--hooksecurefunc("AlertFrame_SetLootWonAnchors", AlertFrame_SetLootWonAnchors)
 
-	local function SimpleAdjustAnchors(self, relativeAlert)
-		CheckGrow()
-
-		if self.alertFrame:IsShown() then
-			self.alertFrame:ClearAllPoints()
-			self.alertFrame:SetPoint(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
-			return self.alertFrame
+local function AlertFrame_SetMoneyWonAnchors(alertAnchor)
+	for i = 1, #MONEY_WON_ALERT_FRAMES do
+		local frame = MONEY_WON_ALERT_FRAMES[i]
+		if frame:IsShown() then
+			frame:ClearAllPoints()
+			frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+			alertAnchor = frame
 		end
-		return relativeAlert
 	end
+end
+--hooksecurefunc("AlertFrame_SetMoneyWonAnchors", AlertFrame_SetMoneyWonAnchors)
 
-	local function AnchorAdjustAnchors(self, relativeAlert)
-		if self.anchorFrame:IsShown() then
-			return self.anchorFrame
-		end
-		return relativeAlert
-	end
-
-	function ReplaceAnchors(alertFrameSubSystem)
-		if alertFrameSubSystem.alertFramePool then
-			local frame = alertFrameSubSystem.alertFramePool:GetNextActive()
-			if alertBlacklist[alertFrameSubSystem.alertFramePool.frameTemplate] then
-				return alertFrameSubSystem.alertFramePool.frameTemplate, true
-			else
-				alertFrameSubSystem.AdjustAnchors = QueueAdjustAnchors
-			end
-		elseif alertFrameSubSystem.alertFrame then
-			local frame = alertFrameSubSystem.alertFrame
-			if alertBlacklist[frame:GetName()] then
-				return frame:GetName(), true
-			else
-				alertFrameSubSystem.AdjustAnchors = SimpleAdjustAnchors
-			end
-		elseif alertFrameSubSystem.anchorFrame then
-			local frame = alertFrameSubSystem.anchorFrame
-			if alertBlacklist[frame:GetName()] then
-				return frame:GetName(), true
-			else
-				alertFrameSubSystem.AdjustAnchors = AnchorAdjustAnchors
+local function AlertFrame_SetAchievementAnchors(alertAnchor)
+	if AchievementAlertFrame1 then
+		for i = 1, MAX_ACHIEVEMENT_ALERTS do
+			local frame = _G["AchievementAlertFrame"..i]
+			if frame and frame:IsShown() then
+				frame:ClearAllPoints()
+				frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+				alertAnchor = frame
 			end
 		end
 	end
 end
+--hooksecurefunc("AlertFrame_SetAchievementAnchors", AlertFrame_SetAchievementAnchors)
 
-local function SetUpAlert()
-	hooksecurefunc(AlertFrame, "UpdateAnchors", function(self)
-		CheckGrow()
-		self:ClearAllPoints()
-		self:SetPoint(POSITION, AchievementAnchor, POSITION, 2, FIRST_YOFFSET)
-	end)
-
-	hooksecurefunc(AlertFrame, "AddAlertFrameSubSystem", function(self, alertFrameSubSystem)
-		local _, isBlacklisted = ReplaceAnchors(alertFrameSubSystem)
-		if isBlacklisted then
-			for i, alertSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do
-				if alertFrameSubSystem == alertSubSystem then
-					return table.remove(AlertFrame.alertFrameSubSystems, i)
-				end
+local function AlertFrame_SetCriteriaAnchors(alertAnchor)
+	if CriteriaAlertFrame1 then
+		for i = 1, MAX_ACHIEVEMENT_ALERTS do
+			local frame = _G["CriteriaAlertFrame"..i]
+			if frame and frame:IsShown() then
+				frame:ClearAllPoints()
+				frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+				alertAnchor = frame
 			end
 		end
-	end)
-
-	local remove = {}
-	for i, alertFrameSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do
-		local name, isBlacklisted = ReplaceAnchors(alertFrameSubSystem)
-		if isBlacklisted then
-			remove[i] = name
-		end
 	end
+end
+--hooksecurefunc("AlertFrame_SetCriteriaAnchors", AlertFrame_SetCriteriaAnchors)
 
-	for i, name in next, remove do
-		table.remove(AlertFrame.alertFrameSubSystems, i)
+local function AlertFrame_SetChallengeModeAnchors(alertAnchor)
+	local frame = ChallengeModeAlertFrame1
+	if frame:IsShown() then
+		frame:ClearAllPoints()
+		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+	end
+end
+--hooksecurefunc("AlertFrame_SetChallengeModeAnchors", AlertFrame_SetChallengeModeAnchors)
+
+local function AlertFrame_SetDungeonCompletionAnchors(alertAnchor)
+	local frame = DungeonCompletionAlertFrame1
+	if frame:IsShown() then
+		frame:ClearAllPoints()
+		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+	end
+end
+--hooksecurefunc("AlertFrame_SetDungeonCompletionAnchors", AlertFrame_SetDungeonCompletionAnchors)
+
+local function AlertFrame_SetScenarioAnchors(alertAnchor)
+	local frame = ScenarioAlertFrame1
+	if frame:IsShown() then
+		frame:ClearAllPoints()
+		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+	end
+end
+--hooksecurefunc("AlertFrame_SetScenarioAnchors", AlertFrame_SetScenarioAnchors)
+
+local function AlertFrame_SetGuildChallengeAnchors(alertAnchor)
+	local frame = GuildChallengeAlertFrame
+	if frame:IsShown() then
+		frame:ClearAllPoints()
+		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+	end
+end
+--hooksecurefunc("AlertFrame_SetGuildChallengeAnchors", AlertFrame_SetGuildChallengeAnchors)
+
+function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
+	local frame = GarrisonBuildingAlertFrame
+	if frame:IsShown() then
+		frame:ClearAllPoints()
+		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+	end
+end
+--hooksecurefunc("AlertFrame_SetGarrisonBuildingAlertFrameAnchors", AlertFrame_SetGarrisonBuildingAlertFrameAnchors)
+
+function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
+	local frame = GarrisonBuildingAlertFrame
+	if frame:IsShown() then
+		frame:ClearAllPoints()
+		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
+	end
+end
+--hooksecurefunc("AlertFrame_SetGarrisonMissionAlertFrameAnchors", AlertFrame_SetGarrisonMissionAlertFrameAnchors)
+
+function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
+	local frame = GarrisonMissionAlertFrame
+	if frame:IsShown() then
+		frame:ClearAllPoints()
+		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
 ----------------------------------------------------------------------------------------
@@ -408,7 +422,7 @@ local tooltipLines = {
 local tooltip = CreateFrame("GameTooltip", "QulightUI_ItemScanningTooltip", UIParent, "GameTooltipTemplate")
 tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 
-local function GetDetailedItemLevelInfo(itemLink)
+local function GetItemLevelFromTooltip(itemLink)
 	if not itemLink or not GetItemInfo(itemLink) then
 		return
 	end
@@ -482,8 +496,24 @@ local function UpdateButtonsText(frame)
 						end
 
 						local numBonusIDs = tonumber(strmatch(itemLink, ".+:%d+:512:%d*:(%d+).+"))
-						if numBonusIDs or quality == 6 then
-							level = GetDetailedItemLevelInfo(itemLink) or level
+						if numBonusIDs then
+							if GetDetailedItemLevelInfo then
+								local effectiveLevel, previewLevel, origLevel = GetDetailedItemLevelInfo(itemLink)
+								level = effectiveLevel or level
+							end
+						end
+
+						if quality == 6 then
+							if id == 17 then
+								if frame == "Inspect" then
+									itemLink = GetInventoryItemLink("target", 16)
+								else
+									itemLink = GetInventoryItemLink("player", 16)
+								end
+								level = GetItemLevelFromTooltip(itemLink) or level
+							else
+								level = GetItemLevelFromTooltip(itemLink) or level
+							end
 						end
 
 						text:SetText("|cFFFFFF00"..level)
