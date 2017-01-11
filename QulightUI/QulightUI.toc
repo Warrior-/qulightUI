@@ -1,4 +1,4 @@
-## Interface: 70300
+## Interface: 70100
 ## Title: |cff1784d1QulightUI|r
 ## Notes: QulightUI
 ## Version: 6.0.3

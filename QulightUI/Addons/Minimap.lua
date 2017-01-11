@@ -494,10 +494,17 @@ local coord_Update = function(self,t)
 	if ela > 0 then return end
 	local x,y = GetPlayerMapPosition("player")
 	local xt,yt
+
+	if not GetPlayerMapPosition("player") then
+		x = 0
+		y = 0
+	end
+
 	x = math.floor(100 * x)
 	y = math.floor(100 * y)
+
 	if x == 0 and y == 0 then
-		m_coord_text:SetText("X _ X")
+		m_coord_text:SetText("?, ?")
 	else
 		if x < 10 then
 			xt = "0"..x
@@ -511,6 +518,6 @@ local coord_Update = function(self,t)
 		end
 		m_coord_text:SetText(xt..","..yt)
 	end
-	ela = .2
+	ela = .5
 end
 m_coord:SetScript("OnUpdate",coord_Update)

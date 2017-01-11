@@ -439,14 +439,14 @@ F.ReskinArrow = function(f, direction)
 	f:HookScript("OnLeave", clearArrow)
 end
 
-F.ReskinCheck = function(f)
+F.ReskinCheck = function(f, isTriState)
 	f:SetNormalTexture("")
 	f:SetPushedTexture("")
 	f:SetHighlightTexture(C.media.backdrop)
 	local hl = f:GetHighlightTexture()
 	hl:SetPoint("TOPLEFT", 5, -5)
 	hl:SetPoint("BOTTOMRIGHT", -5, 5)
-	hl:SetVertexColor(r, g, b, .2)
+	hl:SetVertexColor(red, green, blue, .2)
 
 	local bd = CreateFrame("Frame", nil, f)
 	bd:SetPoint("TOPLEFT", 4, -4)
@@ -460,7 +460,26 @@ F.ReskinCheck = function(f)
 
 	local ch = f:GetCheckedTexture()
 	ch:SetDesaturated(true)
-	ch:SetVertexColor(r, g, b)
+	ch:SetVertexColor(red, green, blue)
+
+	if isTriState then
+		function f:SetTriState(state)
+			if ( not state or state == 0 ) then
+				-- nil or 0 means not checked
+				self:SetChecked(false)
+			else
+				ch:SetDesaturated(true)
+				self:SetChecked(true)
+				if ( state == 2 ) then
+					-- 2 is a normal check
+					ch:SetVertexColor(red, green, blue)
+				else
+					-- 1 is a dark check
+					ch:SetVertexColor(red * 0.5, green * 0.5, blue * 0.5)
+				end
+			end
+		end
+	end
 end
 
 local function colourRadio(f)
