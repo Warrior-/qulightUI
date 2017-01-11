@@ -344,52 +344,48 @@ end)
 ----------------------------------------------------------------------------------------
 --	Creating Coordinate 
 ----------------------------------------------------------------------------------------
-
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 coords:SetFrameLevel(90)
 coords.PlayerText = coords:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 coords.PlayerText:SetPoint("BOTTOMLEFT", WorldMapFrame.UIElementsFrame, "BOTTOMLEFT", 5, 5)
 coords.PlayerText:SetJustifyH("LEFT")
 coords.PlayerText:SetText(UnitName("player")..": 0,0")
-coords.PlayerText:SetTextColor(1, 1, 1)
-coords.PlayerText:SetFontObject(SystemFont_Med1)
+--coords.PlayerText:SetTextColor(1, 1, 1)
 
 coords.MouseText = coords:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 coords.MouseText:SetJustifyH("LEFT")
 coords.MouseText:SetPoint("BOTTOMLEFT", coords.PlayerText, "TOPLEFT", 0, 5)
 coords.MouseText:SetText("Mouse:   0, 0")
-coords.MouseText:SetTextColor(1, 1, 1)
-coords.MouseText:SetFontObject(SystemFont_Med1)
+--coords.MouseText:SetTextColor(1, 1, 1)
 
 local int = 0
 WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
 	int = int + 1
 	if int >= 3 then
-		local inInstance, _ = IsInInstance()
-		local x,y = GetPlayerMapPosition("player")
-			x = math.floor(100 * x)
-			y = math.floor(100 * y)
+		local x, y = GetPlayerMapPosition("player")
+		x = math.floor(100 * x)
+		y = math.floor(100 * y)
 		if x ~= 0 and y ~= 0 then
 			coords.PlayerText:SetText(UnitName("player")..":   "..x..", "..y)
 		else
 			coords.PlayerText:SetText(" ")
 		end
-					
+
 		local scale = WorldMapDetailFrame:GetEffectiveScale()
 		local width = WorldMapDetailFrame:GetWidth()
 		local height = WorldMapDetailFrame:GetHeight()
 		local centerX, centerY = WorldMapDetailFrame:GetCenter()
 		local x, y = GetCursorPosition()
 		local adjustedX = (x / scale - (centerX - (width/2))) / width
-		local adjustedY = (centerY + (height/2) - y / scale) / height	
+		local adjustedY = (centerY + (height/2) - y / scale) / height
 
-		if (adjustedX >= 0  and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1) then
+		if adjustedX >= 0 and adjustedY >= 0 and adjustedX <= 1 and adjustedY <= 1 then
 			adjustedX = math.floor(100 * adjustedX)
 			adjustedY = math.floor(100 * adjustedY)
 			coords.MouseText:SetText(MOUSE_LABEL..":   "..adjustedX..", "..adjustedY)
 		else
 			coords.MouseText:SetText(" ")
-		end				
+		end
 		int = 0
 	end
 end)

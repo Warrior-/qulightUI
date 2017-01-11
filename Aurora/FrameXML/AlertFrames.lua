@@ -63,12 +63,13 @@ _G.tinsert(C.themes["Aurora"], function()
 		end
 	end
 
+	if not C.is71 then
 	--[[ Dungeon completion rewards ]]
 	local DungeonCompletionAlertFrame = _G.DungeonCompletionAlertFrame
 	local bg = CreateFrame("Frame", nil, DungeonCompletionAlertFrame)
 	bg:SetPoint("TOPLEFT", 6, -14)
 	bg:SetPoint("BOTTOMRIGHT", -6, 6)
-	bg:SetFrameLevel(DungeonCompletionAlertFrame1:GetFrameLevel()-1)
+	bg:SetFrameLevel(DungeonCompletionAlertFrame:GetFrameLevel()-1)
 	F.CreateBD(bg)
 
 	DungeonCompletionAlertFrame.dungeonTexture:SetDrawLayer("ARTWORK")
@@ -119,6 +120,7 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.GuildChallengeAlertFrameGlow:SetTexture("")
 	_G.GuildChallengeAlertFrameShine:SetTexture("")
 	_G.GuildChallengeAlertFrameEmblemBorder:SetTexture("")
+	end
 
     _G.hooksecurefunc(_G.AlertFrame, "AddAlertFrame", function(self, frame)
     	local frameName = frame:GetName()
