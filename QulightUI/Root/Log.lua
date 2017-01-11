@@ -1,10 +1,6 @@
 local csf = CreateFrame("Frame")
 csf:SetScript("OnEvent", function()
-	if select(4, GetBuildInfo()) >= 70100 then
-		SetCVar("cameraDistanceMaxZoomFactor", 3.6)
-	else
-		SetCVar("cameraDistanceMaxFactor", 3.6)
-	end
+SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 SetCVar("ShowClassColorInNameplate", 1)
 SetCVar("buffDurations",1)
 SetCVar("scriptErrors", 1)

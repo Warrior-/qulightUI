@@ -209,6 +209,8 @@ Filger_Spells = {
 
 			-- Metamorphosis
 			{spellID = 187827, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Chaos Blades
+			{spellID = 211048, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Empower Wards
 			{spellID = 218256, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Darkness
@@ -2291,6 +2293,19 @@ Filger_Spells = {
 			-- Wand of Lightning Shield
 			{spellID = 171725, unitID = "player", caster = "all", filter = "BUFF"},
 
+ 			-- Potions: Legion
+			-- Potion of Prolonged Power
+			{spellID = 229206, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Potion of the Old War
+			{spellID = 188028, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Potion of Deadly Grace
+			{spellID = 188027, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Leytorrent Potion
+			{spellID = 188030, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Skaggldrynk
+			{spellID = 188023, unitID = "player", caster = "player", filter = "BUFF"},
+ 			-- Unbending Potion
+ 			{spellID = 188029, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Potions: Draenor
 			-- Draenic Agility Potion
 			{spellID = 156423, unitID = "player", caster = "player", filter = "BUFF"},

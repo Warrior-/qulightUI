@@ -14,7 +14,6 @@ end
 
 DebuffWhiteList = {
 	-- Death Knight
-	-- BETA [SpellName(115001)] = true,	-- Remorseless Winter
 	[SpellName(108194)] = true,	-- Asphyxiate
 	[SpellName(47476)] = true,	-- Strangulate
 	[SpellName(55078)] = true,	-- Blood Plague
@@ -25,7 +24,6 @@ DebuffWhiteList = {
 	[SpellName(164812)] = true,	-- Moonfire
 	[SpellName(164815)] = true,	-- Sunfire
 	[SpellName(58180)] = true,	-- Infected Wounds
-	-- BETA [SpellName(33745)] = true,	-- Lacerate
 	[SpellName(155722)] = true,	-- Rake
 	[SpellName(1079)] = true,	-- Rip
 	-- Hunter
@@ -34,22 +32,15 @@ DebuffWhiteList = {
 	[SpellName(118)] = true,	-- Polymorph
 	[SpellName(31661)] = true,	-- Dragon's Breath
 	[SpellName(122)] = true,	-- Frost Nova
-	--BETA [SpellName(111340)] = true,	-- Ice Ward
 	[SpellName(44457)] = true,	-- Living Bomb
 	[SpellName(114923)] = true,	-- Nether Tempest
 	[SpellName(112948)] = true,	-- Frost Bomb
-	--BETA [SpellName(83853)] = true,	-- Combustion
-	-- BETA [SpellName(44572)] = true,	-- Deep Freeze
 	[SpellName(120)] = true,	-- Cone of Cold
-	-- BETA [SpellName(102051)] = true,	-- Frostjaw
 	-- Monk
 	[SpellName(115078)] = true,	-- Paralysis
 	-- Paladin
 	[SpellName(20066)] = true,	-- Repentance
-	-- BETA [SpellName(10326)] = true,	-- Turn Evil
 	[SpellName(853)] = true,	-- Hammer of Justice
-	-- BETA [SpellName(105593)] = true,	-- Fist of Justice
-	--BETA [SpellName(31803)] = true,	-- Censure
 	-- Priest
 	[SpellName(9484)] = true,	-- Shackle Undead
 	[SpellName(8122)] = true,	-- Psychic Scream
@@ -64,9 +55,8 @@ DebuffWhiteList = {
 	-- Shaman
 	[SpellName(51514)] = true,	-- Hex
 	[SpellName(3600)] = true,	-- Earthbind
-	--BETA [SpellName(8056)] = true,	-- Frost Shock
-	--BETA [SpellName(8050)] = true,	-- Flame Shock
-	--BETA [SpellName(63685)] = true,	-- Frozen Power
+	[SpellName(196840)] = true,	-- Frost Shock
+	[SpellName(188389)] = true,	-- Flame Shock
 	-- Warlock
 	[SpellName(710)] = true,	-- Banish
 	[SpellName(6789)] = true,	-- Mortal Coil
@@ -88,6 +78,10 @@ DebuffWhiteList = {
 	[SpellName(25046)] = true,	-- Arcane Torrent
 	[SpellName(20549)] = true,	-- War Stomp
 	[SpellName(107079)] = true,	-- Quaking Palm
+}
+
+DebuffBlackList = {
+	-- [SpellName(spellID)] = true,	-- Spell Name
 }
 
 
@@ -166,8 +160,8 @@ if Qulight["nameplate"].healer_icon == true then
 			healList = {}
 			for i = 1, GetNumBattlefieldScores() do
 				local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i)
-				name = name:match("(.+)%-.+") or name
-				if name and t.healers[talentSpec] and t.factions[UnitFactionGroup("player")] == faction then
+				if name and healerSpecs[talentSpec] and t.factions[UnitFactionGroup("player")] == faction then
+					name = name:match("(.+)%-.+") or name
 					healList[name] = talentSpec
 				end
 			end
@@ -212,7 +206,7 @@ if Qulight["nameplate"].healer_icon == true then
 end
 
 local function Abbrev(name)
-	local newname = (string.len(name) > 18) and string.gsub(name, "%s?(.[\128-\191]*)%S+%s", "%1. ") or name
+	local newname = (string.len(name) > 18) and string.gsub(name, "%s?(.[\128-\191]*)%S%s", "%1. ") or name
 	return utf8sub(newname, 18, false)
 end
 
@@ -264,8 +258,7 @@ end
 
 function Plates:CreateAuraIcon(self)
 	local button = CreateFrame("Frame", nil, frame.hp)
-	button:SetWidth(Qulight["nameplate"].auras_size)
-	button:SetHeight(Qulight["nameplate"].auras_size)
+	button:SetSize(Qulight["nameplate"].auras_size, Qulight["nameplate"].auras_size)
 	
 	button.bg = button:CreateTexture(nil, "BACKGROUND")
 	button.bg:SetColorTexture(0.05, 0.05, 0.05, 1)
@@ -331,7 +324,7 @@ function Plates:OnAura(unit)
 	for index = 1, 40 do
 		if i > Qulight["nameplate"].width / Qulight["nameplate"].auras_size then return end
 		local match
-		local name, _, _, _, _, duration, _, caster, _, _ = UnitAura(unit, index, "HARMFUL")
+		local name, _, _, _, _, duration, _, aster, _, nameplateShowPersonal, spellid, _, _, _, nameplateShowAll = UnitAura(unit, index, "HARMFUL")
 
 		if DebuffWhiteList[name] and caster == "player" then match = true end
 
@@ -486,7 +479,7 @@ function Plates:OnShow()
 		Level = "??"
 		self.NewPlate.level:SetTextColor(0.8, 0.05, 0)
 	elseif Elite:IsShown() then
-		Level = Level.."+"
+		Level = Level..""
 	end
 
 	if Qulight["nameplate"].name_abbrev == true and Qulight["nameplate"].track_auras ~= true then
@@ -791,7 +784,7 @@ function Plates:Skin(obj)
 	if Qulight["nameplate"].healer_icon == true then
 		NewPlate.HPHeal = NewPlate.Health:CreateFontString(nil, "OVERLAY")
 		NewPlate.HPHeal:SetFont(Qulight["media"].font, 8, "THINOUTLINE")
-		NewPlate.HPHeal:SetText("|cFFD53333+|r")
+		NewPlate.HPHeal:SetText("|cFFD53333|r")
 		if Qulight["nameplate"].track_auras == true then
 			NewPlate.HPHeal:SetPoint("BOTTOM", NewPlate.Name, "TOP", 0, 13)
 		else
@@ -1039,10 +1032,10 @@ local function UpdateBuffs(unitFrame)
 
 	for index = 1, 40 do
 		if i > Qulight["nameplate"].width / Qulight["nameplate"].auras_size then return end
-		local dname, _, _, _, _, dduration, _, dcaster, _, _, dspellid = UnitAura(unit, index, 'HARMFUL')
-		local matchdebuff = AuraFilter(dcaster, dname)
+		local name, _, _, _, _, duration, _, caster, _, _, spellid, _, _, _, nameplateShowAll = UnitAura(unit, index, "HARMFUL")
+--		local matchdebuff = AuraFilter(caster, name)
 
-		if dname and matchdebuff then
+		if name and caster == "player" and (((nameplateShowAll or nameplateShowPersonal) and not DebuffBlackList[name]) or DebuffWhiteList[name]) then
 			if not unitFrame.icons[i] then
 				unitFrame.icons[i] = CreateAuraIcon(unitFrame)
 			end
@@ -1059,7 +1052,7 @@ local function UpdateBuffs(unitFrame)
 	unitFrame.iconnumber = i - 1
 
 	-- if i > 1 then
-		--unitFrame.icons[1]:SetPoint("LEFT", unitFrame.icons, "CENTER", -((Qulight["nameplate"].auras_size+4)*(unitFrame.iconnumber)-4)/2,0)
+		--unitFrame.icons[1]:SetPoint("LEFT", unitFrame.icons, "CENTER", -((Qulight["nameplate"].auras_size4)*(unitFrame.iconnumber)-4)/2,0)
 	-- end
 	for index = i, #unitFrame.icons do unitFrame.icons[index]:Hide() end
 end
@@ -1158,7 +1151,7 @@ end
 	end
 
 	local Resourcebar = CreateFrame("Frame", "Plateresource", UIParent)
-	Resourcebar:SetWidth(100)	--(10+3)*6 - 3
+	Resourcebar:SetWidth(100)	--(103)*6 - 3
 	Resourcebar:SetHeight(3)
 	Resourcebar.maxbar = 6
 
@@ -1353,12 +1346,12 @@ local function UpdateName(unitFrame)
 			level = "??"
 			r, g, b = 0.8, 0.05, 0
 		else
-			local color = GetQuestDifficultyColor(level)
+			local color = GetCreatureDifficultyColor(level)
 			r, g, b = color.r, color.g, color.b
 		end
 
 		if classification == "elite" or classification == "rareelite" then
-			level = level.."+"
+			level = level..""
 		end
 
 		if (tonumber(level) == UnitLevel("player") and not classification == "elite") or UnitIsUnit(unitFrame.displayedUnit, "player") then
@@ -1378,7 +1371,7 @@ local function UpdateName(unitFrame)
 		if UnitIsUnit(unitFrame.displayedUnit, "player") then
 			unitFrame.name:SetText("")
 		else
-			if Qulight["nameplate"].name_abbrev == true and Qulight["nameplate"].track_auras ~= true then
+			if Qulight["nameplate"].name_abbrev == true then
 				unitFrame.name:SetText(Abbrev(name))
 			else
 				unitFrame.name:SetText(name)
@@ -1577,7 +1570,7 @@ local function UpdateInVehicle(unitFrame)
 	if UnitHasVehicleUI(unitFrame.unit) then
 		if not unitFrame.inVehicle then
 			unitFrame.inVehicle = true
-			local prefix, id, suffix = string.match(unitFrame.unit, "([^%d]+)([%d]*)(.*)")
+			local prefix, id, suffix = string.match(unitFrame.unit, "([^%d])([%d]*)(.*)")
 			unitFrame.displayedUnit = prefix.."pet"..id..suffix
 			UpdateNamePlateEvents(unitFrame)
 		end
@@ -1848,7 +1841,7 @@ local function OnNamePlateCreated(namePlate)
 	if Qulight["nameplate"].healer_icon == true then
 		namePlate.UnitFrame.HPHeal = namePlate.UnitFrame.healthBar:CreateFontString(nil, "OVERLAY")
 		namePlate.UnitFrame.HPHeal:SetFont(Qulight["media"].font, 8, "THINOUTLINE")
-		namePlate.UnitFrame.HPHeal:SetText("|cFFD53333+|r")
+		namePlate.UnitFrame.HPHeal:SetText("|cFFD53333|r")
 		if Qulight["nameplate"].track_auras == true then
 			namePlate.UnitFrame.HPHeal:SetPoint("BOTTOM", namePlate.UnitFrame.name, "TOP", 0, 13)
 		else

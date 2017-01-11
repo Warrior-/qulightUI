@@ -20,6 +20,7 @@ classcolours = {
 	["DEMONHUNTER"] = { r = 0.64, g = 0.19, b = 0.79 },
 }
 
+
 local _, class = UnitClass("player")
 
 if CUSTOM_CLASS_COLORS then

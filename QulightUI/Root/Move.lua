@@ -25,6 +25,33 @@ function framemove(f)
 	f:SetBackdropColor(.05,.05,.05,0.5)
 	f:SetBackdropBorderColor(.23,.45,.13, 1)	
 end
+
+local getObjectInformation = function(obj)
+	-- This won't be set if we're dealing with oUF <1.3.22. Due to this we're just
+	-- setting it to Unknown. It will only break if the user has multiple layouts
+	-- spawning the same unit or change between layouts.
+	local style = obj.style or "Unknown"
+	local identifier = obj:GetName() or obj.unit
+
+	-- Are we dealing with header units?
+	local isHeader
+	local parent = obj:GetParent()
+
+	if parent then
+		if parent:GetAttribute("initialConfigFunction") and parent.style then
+			isHeader = parent
+
+			identifier = parent:GetName()
+		elseif parent:GetAttribute("oUF-onlyProcessChildren") then
+			isHeader = parent:GetParent()
+
+			identifier = isHeader:GetName()
+		end
+	end
+
+	return style, identifier, isHeader
+end
+
 function CreateAnchor(f, text, width, height)
 	f:SetScale(1)
 	f:SetFrameStrata("TOOLTIP")

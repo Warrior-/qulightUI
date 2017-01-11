@@ -161,7 +161,7 @@ oUF.Tags.Methods["level"] = function(unit)
 	
 	local c = UnitClassification(unit)
 	local l = UnitLevel(unit)
-	local d = GetQuestDifficultyColor(l)
+	local d = GetCreatureDifficultyColor(l)
 	
 	local str = l
 		

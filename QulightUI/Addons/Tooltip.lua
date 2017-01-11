@@ -280,14 +280,14 @@ end
 
 local OnTooltipSetUnit = function(self)
 	local lines = self:NumLines()
-	local unit = (select(2, self:GetUnit())) or (GetMouseFocus() and GetMouseFocus():GetAttribute("unit")) or (UnitExists("mouseover") and "mouseover") or nil
+	local unit = (select(2, self:GetUnit())) or (GetMouseFocus() and GetMouseFocus().GetAttribute and GetMouseFocus():GetAttribute("unit")) or (UnitExists("mouseover") and "mouseover") or nil
 
 	if not unit then return end
 
 	local name, realm = UnitName(unit)
 	local race, englishRace = UnitRace(unit)
 	local level = UnitLevel(unit)
-	local levelColor = GetQuestDifficultyColor(level)
+	local levelColor = GetCreatureDifficultyColor(level)
 	local classification = UnitClassification(unit)
 	local creatureType = UnitCreatureType(unit)
 	local _, faction = UnitFactionGroup(unit)
@@ -890,13 +890,12 @@ local orig1, orig2, GameTooltip = {}, {}, GameTooltip
 local linktypes = {item = true, enchant = true, spell = true, quest = true, unit = true, talent = true, achievement = true, glyph = true, instancelock = true, currency = true}
 
 local function OnHyperlinkEnter(frame, link, ...)
-	local linktype = link:match("^([^:]+)")
-	if linktype and linktype == "battlepet" then
+	if BattlePetTooltip:IsShown() then
 		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", -3, 0)
 		GameTooltip:Show()
 		local _, speciesID, level, breedQuality, maxHealth, power, speed = strsplit(":", link)
 		BattlePetToolTip_Show(tonumber(speciesID), tonumber(level), tonumber(breedQuality), tonumber(maxHealth), tonumber(power), tonumber(speed))
-	elseif linktype and linktypes[linktype] then
+	else
 		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", -3, 0)
 		GameTooltip:SetHyperlink(link)
 		GameTooltip:Show()
@@ -1288,20 +1287,8 @@ local function UnitGear(unit)
 							end
 
 							local numBonusIDs = tonumber(strmatch(itemLink, ".+:%d+:512:%d*:(%d+).+"))
-							if numBonusIDs then
-								if GetDetailedItemLevelInfo then
-									local effectiveLevel, previewLevel, origLevel = GetDetailedItemLevelInfo(itemLink)
-									level = effectiveLevel or level
-								end
-							end
-
-							if quality == 6 then
-								if i == 17 then
-									itemLink = GetInventoryItemLink("player", 16)
-									level = GetItemLevelFromTooltip(itemLink) or level
-								else
-									level = GetItemLevelFromTooltip(itemLink) or level
-								end
+							if numBonusIDs or quality == 6 then
+								level = GetDetailedItemLevelInfo(itemLink) or level
 							end
 
 							total = total + level

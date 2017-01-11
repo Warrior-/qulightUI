@@ -132,7 +132,7 @@ local function fixAnchors()
 	GroupLootContainer:ClearAllPoints()
 	GroupLootContainer:SetPoint(POSITION, AlertFrame, ANCHOR_POINT, -100, YOFFSET)
 end
---hooksecurefunc("AlertFrame_FixAnchors", fixAnchors)
+hooksecurefunc("AlertFrame_FixAnchors", fixAnchors)
 
 local function AlertFrame_SetLootAnchors(alertAnchor)
 	if MissingLootFrame:IsShown() then
@@ -147,7 +147,7 @@ local function AlertFrame_SetLootAnchors(alertAnchor)
 		GroupLootContainer:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
---hooksecurefunc("AlertFrame_SetLootAnchors", AlertFrame_SetLootAnchors)
+hooksecurefunc("AlertFrame_SetLootAnchors", AlertFrame_SetLootAnchors)
 
 local function AlertFrame_SetLootWonAnchors(alertAnchor)
 	for i = 1, #LOOT_WON_ALERT_FRAMES do
@@ -159,7 +159,7 @@ local function AlertFrame_SetLootWonAnchors(alertAnchor)
 		end
 	end
 end
---hooksecurefunc("AlertFrame_SetLootWonAnchors", AlertFrame_SetLootWonAnchors)
+hooksecurefunc("AlertFrame_SetLootWonAnchors", AlertFrame_SetLootWonAnchors)
 
 local function AlertFrame_SetMoneyWonAnchors(alertAnchor)
 	for i = 1, #MONEY_WON_ALERT_FRAMES do
@@ -171,7 +171,7 @@ local function AlertFrame_SetMoneyWonAnchors(alertAnchor)
 		end
 	end
 end
---hooksecurefunc("AlertFrame_SetMoneyWonAnchors", AlertFrame_SetMoneyWonAnchors)
+hooksecurefunc("AlertFrame_SetMoneyWonAnchors", AlertFrame_SetMoneyWonAnchors)
 
 local function AlertFrame_SetAchievementAnchors(alertAnchor)
 	if AchievementAlertFrame1 then
@@ -185,7 +185,7 @@ local function AlertFrame_SetAchievementAnchors(alertAnchor)
 		end
 	end
 end
---hooksecurefunc("AlertFrame_SetAchievementAnchors", AlertFrame_SetAchievementAnchors)
+hooksecurefunc("AlertFrame_SetAchievementAnchors", AlertFrame_SetAchievementAnchors)
 
 local function AlertFrame_SetCriteriaAnchors(alertAnchor)
 	if CriteriaAlertFrame1 then
@@ -199,7 +199,7 @@ local function AlertFrame_SetCriteriaAnchors(alertAnchor)
 		end
 	end
 end
---hooksecurefunc("AlertFrame_SetCriteriaAnchors", AlertFrame_SetCriteriaAnchors)
+hooksecurefunc("AlertFrame_SetCriteriaAnchors", AlertFrame_SetCriteriaAnchors)
 
 local function AlertFrame_SetChallengeModeAnchors(alertAnchor)
 	local frame = ChallengeModeAlertFrame1
@@ -208,7 +208,7 @@ local function AlertFrame_SetChallengeModeAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
---hooksecurefunc("AlertFrame_SetChallengeModeAnchors", AlertFrame_SetChallengeModeAnchors)
+hooksecurefunc("AlertFrame_SetChallengeModeAnchors", AlertFrame_SetChallengeModeAnchors)
 
 local function AlertFrame_SetDungeonCompletionAnchors(alertAnchor)
 	local frame = DungeonCompletionAlertFrame1
@@ -217,7 +217,7 @@ local function AlertFrame_SetDungeonCompletionAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
---hooksecurefunc("AlertFrame_SetDungeonCompletionAnchors", AlertFrame_SetDungeonCompletionAnchors)
+hooksecurefunc("AlertFrame_SetDungeonCompletionAnchors", AlertFrame_SetDungeonCompletionAnchors)
 
 local function AlertFrame_SetScenarioAnchors(alertAnchor)
 	local frame = ScenarioAlertFrame1
@@ -226,7 +226,7 @@ local function AlertFrame_SetScenarioAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
---hooksecurefunc("AlertFrame_SetScenarioAnchors", AlertFrame_SetScenarioAnchors)
+hooksecurefunc("AlertFrame_SetScenarioAnchors", AlertFrame_SetScenarioAnchors)
 
 local function AlertFrame_SetGuildChallengeAnchors(alertAnchor)
 	local frame = GuildChallengeAlertFrame
@@ -235,14 +235,14 @@ local function AlertFrame_SetGuildChallengeAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
---hooksecurefunc("AlertFrame_SetGuildChallengeAnchors", AlertFrame_SetGuildChallengeAnchors)
+hooksecurefunc("AlertFrame_SetGuildChallengeAnchors", AlertFrame_SetGuildChallengeAnchors)
 
 hooksecurefunc(GroupLootContainer, "SetPoint", function(self, point, anchorTo, attachPoint, xOffset, yOffset)
 	if _G[anchorTo] == UIParent or _G[anchorTo] == AchievementAnchor then
 		fixAnchors()
 	end
 end)
---hooksecurefunc("AlertFrame_SetGarrisonFollowerAlertFrameAnchors", AlertFrame_SetGarrisonFollowerAlertFrameAnchors)
+hooksecurefunc("AlertFrame_SetGarrisonFollowerAlertFrameAnchors", AlertFrame_SetGarrisonFollowerAlertFrameAnchors)
 
 function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 	local frame = GarrisonBuildingAlertFrame
@@ -251,7 +251,7 @@ function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
---hooksecurefunc("AlertFrame_SetGarrisonBuildingAlertFrameAnchors", AlertFrame_SetGarrisonBuildingAlertFrameAnchors)
+hooksecurefunc("AlertFrame_SetGarrisonBuildingAlertFrameAnchors", AlertFrame_SetGarrisonBuildingAlertFrameAnchors)
 
 function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 	local frame = GarrisonBuildingAlertFrame
@@ -260,7 +260,7 @@ function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET)
 	end
 end
---hooksecurefunc("AlertFrame_SetGarrisonMissionAlertFrameAnchors", AlertFrame_SetGarrisonMissionAlertFrameAnchors)
+hooksecurefunc("AlertFrame_SetGarrisonMissionAlertFrameAnchors", AlertFrame_SetGarrisonMissionAlertFrameAnchors)
 
 function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
 	local frame = GarrisonMissionAlertFrame
@@ -350,19 +350,25 @@ coords.PlayerText = coords:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 coords.PlayerText:SetPoint("BOTTOMLEFT", WorldMapFrame.UIElementsFrame, "BOTTOMLEFT", 5, 5)
 coords.PlayerText:SetJustifyH("LEFT")
 coords.PlayerText:SetText(UnitName("player")..": 0,0")
---coords.PlayerText:SetTextColor(1, 1, 1)
+coords.PlayerText:SetTextColor(1, 1, 1)
 
 coords.MouseText = coords:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 coords.MouseText:SetJustifyH("LEFT")
 coords.MouseText:SetPoint("BOTTOMLEFT", coords.PlayerText, "TOPLEFT", 0, 5)
 coords.MouseText:SetText("Mouse:   0, 0")
---coords.MouseText:SetTextColor(1, 1, 1)
+coords.MouseText:SetTextColor(1, 1, 1)
 
 local int = 0
-WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
+WWorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
 	int = int + 1
 	if int >= 3 then
 		local x, y = GetPlayerMapPosition("player")
+
+		if not GetPlayerMapPosition("player") then
+			x = 0
+			y = 0
+		end
+
 		x = math.floor(100 * x)
 		y = math.floor(100 * y)
 		if x ~= 0 and y ~= 0 then
@@ -451,7 +457,7 @@ local tooltipLines = {
 local tooltip = CreateFrame("GameTooltip", "QulightUI_ItemScanningTooltip", UIParent, "GameTooltipTemplate")
 tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 
-local function GetItemLevelFromTooltip(itemLink)
+local function GetDetailedItemLevelInfo(itemLink)
 	if not itemLink or not GetItemInfo(itemLink) then
 		return
 	end
@@ -525,24 +531,8 @@ local function UpdateButtonsText(frame)
 						end
 
 						local numBonusIDs = tonumber(strmatch(itemLink, ".+:%d+:512:%d*:(%d+).+"))
-						if numBonusIDs then
-							if GetDetailedItemLevelInfo then
-								local effectiveLevel, previewLevel, origLevel = GetDetailedItemLevelInfo(itemLink)
-								level = effectiveLevel or level
-							end
-						end
-
-						if quality == 6 then
-							if id == 17 then
-								if frame == "Inspect" then
-									itemLink = GetInventoryItemLink("target", 16)
-								else
-									itemLink = GetInventoryItemLink("player", 16)
-								end
-								level = GetItemLevelFromTooltip(itemLink) or level
-							else
-								level = GetItemLevelFromTooltip(itemLink) or level
-							end
+						if numBonusIDs or quality == 6 then
+							level = GetDetailedItemLevelInfo(itemLink) or level
 						end
 
 						text:SetText("|cFFFFFF00"..level)

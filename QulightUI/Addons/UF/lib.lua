@@ -271,37 +271,147 @@ do
 	end
 			
 	ComboDisplay = function(self, event, unit)
+		if powerType and powerType ~= 'COMBO_POINTS' then return end
 		if(unit == 'pet') then return end
 		
 		local cpoints = self.CPoints
-		local cp
+		local cp = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and UnitPower("vehicle", 4) or UnitPower("player", 4)
+		local cpOld = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and GetComboPoints("vehicle", "target") or GetComboPoints("player", "target")
+		if cpOld and cp and (cpOld > cp) then cp = cpOld end
+
+		local numMax
 		if (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) then
-			cp = GetComboPoints('vehicle', 'target')
+			numMax = MAX_COMBO_POINTS
 		else
-			cp = GetComboPoints('player', 'target')
+			numMax = UnitPowerMax("player", SPELL_POWER_COMBO_POINTS)
+			if numMax == 0 then
+				numMax = MAX_COMBO_POINTS
+			end
 		end
 
-		for i=1, MAX_COMBO_POINTS do
-			if(i <= cp) then
+		local spacing = select(4, cpoints[5]:GetPoint())
+		local w = cpoints:GetWidth()
+		local s = 0
+
+		if cpoints.numMax ~= numMax then
+			if numMax == 8 then
+				cpoints[6]:Show()
+				cpoints[7]:Show()
+				cpoints[8]:Show()
+			elseif numMax == 6 then
+				cpoints[6]:Show()
+				cpoints[7]:Hide()
+				cpoints[8]:Hide()
+			else
+				cpoints[6]:Hide()
+				cpoints[7]:Hide()
+				cpoints[8]:Hide()
+			end
+
+			for i = 1, numMax do
+				if i ~= numMax then
+					cpoints[i]:SetWidth(w / numMax - spacing)
+					s = s + (w / numMax)
+				else
+					cpoints[i]:SetWidth(w - s)
+				end
+			end
+
+			cpoints.numMax = numMax
+		end
+
+		for i = 1, numMax do
+			if i <= cp then
 				cpoints[i]:SetAlpha(1)
 			else
-				cpoints[i]:SetAlpha(0.15)
+				cpoints[i]:SetAlpha(0.2)
 			end
 		end
-		
-		if cpoints[1]:GetAlpha() == 1 then
-			for i=1, MAX_COMBO_POINTS do
-				cpoints[i]:Show()
+		if playerClass == "DRUID" then
+			local form = GetShapeshiftFormID()
+
+			if form == CAT_FORM or ((UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and cp > 0) then
+				cpoints:Show()
+				if self.Debuffs then self.Debuffs:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 2, 19) end
+			else
+				cpoints:Hide()
+				if self.Debuffs then self.Debuffs:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 2, 5) end
 			end
-			
-		else
-			for i=1, MAX_COMBO_POINTS do
-				cpoints[i]:Hide()
-			end
-			
 		end
 	end
+
+	ComboDisplayOld = function(self, event, unit)
+		if powerType and powerType ~= 'COMBO_POINTS' then return end
+		if unit == "pet" then return end
+
+		local cpoints = self.CPoints
+		local cp
+		local numMax
+
+		if UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle") then
+			cp = GetComboPoints("vehicle", "target")
+			numMax = MAX_COMBO_POINTS
+		else
+			cp = GetComboPoints("player", "target")
+			numMax = UnitPowerMax("player", SPELL_POWER_COMBO_POINTS)
+			if numMax == 0 then
+				numMax = MAX_COMBO_POINTS
+			end
+		end
+
+		local spacing = select(4, cpoints[5]:GetPoint())
+		local w = cpoints:GetWidth()
+		local s = 0
+
+		if cpoints.numMax ~= numMax then
+			if numMax == 8 then
+				cpoints[6]:Show()
+				cpoints[7]:Show()
+				cpoints[8]:Show()
+			elseif numMax == 6 then
+				cpoints[6]:Show()
+				cpoints[7]:Hide()
+				cpoints[8]:Hide()
+			else
+				cpoints[6]:Hide()
+				cpoints[7]:Hide()
+				cpoints[8]:Hide()
+			end
+
+			for i = 1, numMax do
+				if i ~= numMax then
+					cpoints[i]:SetWidth(w / numMax - spacing)
+					s = s + (w / numMax)
+				else
+					cpoints[i]:SetWidth(w - s)
+				end
+			end
+
+			cpoints.numMax = numMax
+		end
+
+		for i = 1, numMax do
+			if i <= cp then
+				cpoints[i]:SetAlpha(1)
+			else
+				cpoints[i]:SetAlpha(0.2)
+			end
+		end
+
+		if cpoints[1]:GetAlpha() == 1 then
+			for i = 1, numMax do
+				cpoints:Show()
+				cpoints[i]:Show()
+			end
+		else
+			for i = 1, numMax do
+				cpoints:Hide()
+				cpoints[i]:Hide()
+			end
+		end	
+	end
 end
+
 function AltPowerBarOnToggle(self)
 	local unit = self:GetParent().unit or self:GetParent():GetParent().unit					
 end
@@ -1186,7 +1296,7 @@ genCPoints = function(self)
 	bars:SetBackdropBorderColor(0,0,0,0)
 	bars:SetBackdropColor(0,0,0,0)
 		
-	for i = 1, 5 do					
+	for i = 1, 8 do					
 		bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, bars)
 		bars[i]:SetHeight(6)					
 		bars[i]:SetStatusBarTexture(Qulight["media"].texture)
@@ -1206,9 +1316,15 @@ genCPoints = function(self)
 	bars[3]:SetStatusBarColor(0.65, 0.63, 0.35)
 	bars[4]:SetStatusBarColor(0.65, 0.63, 0.35)
 	bars[5]:SetStatusBarColor(0.33, 0.59, 0.33)
+	bars[6]:SetStatusBarColor(0.33, 0.59, 0.33)
+	bars[7]:SetStatusBarColor(0.26, 0.55, 0.31)
+	bars[8]:SetStatusBarColor(0.26, 0.55, 0.31)
 		
 	self.CPoints = bars
-	self.CPoints.Override = ComboDisplay
+	if playerClass == "DRUID" then
+		self:RegisterEvent("UPDATE_SHAPESHIFT_FORM", ComboDisplay)
+	end
+	self.CPoints.Override = ComboDisplayOld
 		
 	bars.FrameBackdrop = CreateFrame("Frame", nil, bars[1])
 	
