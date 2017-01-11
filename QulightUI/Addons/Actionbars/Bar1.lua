@@ -40,13 +40,11 @@ end
 
 bar:RegisterEvent("PLAYER_LOGIN")
 bar:RegisterEvent("PLAYER_ENTERING_WORLD")
-bar:RegisterEvent("KNOWN_CURRENCY_TYPES_UPDATE")
-bar:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
-bar:RegisterEvent("BAG_UPDATE")
 bar:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
 bar:RegisterEvent("UPDATE_OVERRIDE_ACTIONBAR")
+bar:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 bar:SetScript("OnEvent", function(self, event, unit, ...)
-	if event == "PLAYER_LOGIN" or event == "ACTIVE_TALENT_GROUP_CHANGED" then
+	if event == "PLAYER_LOGIN" then
 		local button
 		for i = 1, NUM_ACTIONBAR_BUTTONS do
 			button = _G["ActionButton"..i]

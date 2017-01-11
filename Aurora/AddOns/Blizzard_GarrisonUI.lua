@@ -182,6 +182,8 @@ C.themes["Blizzard_GarrisonUI"] = function()
 	do
 		local icon = CapacitiveDisplay.ShipmentIconFrame.Icon
 
+		F.ReskinGarrisonPortrait(CapacitiveDisplay.ShipmentIconFrame.Follower, true)
+
 		icon:SetTexCoord(.08, .92, .08, .92)
 		F.CreateBG(icon)
 	end
@@ -337,6 +339,10 @@ C.themes["Blizzard_GarrisonUI"] = function()
 		select(4, xpBar:GetRegions()):Hide()
 
 		xpBar:SetStatusBarTexture(C.media.backdrop)
+		xpBar:ClearAllPoints()
+		xpBar:SetPoint("TOPLEFT", FollowerTab.PortraitFrame, "BOTTOMLEFT", 0, -3)
+		xpBar:SetPoint("TOPRIGHT", FollowerTab.Class, "BOTTOMRIGHT", 0, -3)
+
 
 		F.CreateBDFrame(xpBar)
 	end

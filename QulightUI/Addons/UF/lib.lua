@@ -138,7 +138,7 @@ cast.OnCastbarUpdate = function(self, elapsed)
 end
 cast.OnCastSent = function(self, event, unit, spell, rank)
 	if self.unit ~= unit or not self.Castbar.SafeZone then return end
-	self.Castbar.SafeZone.sendTime = GetTime()
+	self.Castbar.SafeZone.sendTime = UnitCastingInfo(unit)
 end
 cast.PostCastStart = function(self, unit, name, rank, text)
 	local pcolor = {255/255, 128/255, 128/255}
@@ -147,8 +147,9 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 	self.Spark:Show()
 	self:SetStatusBarColor(unpack(self.casting and self.CastingColor or self.ChannelingColor))
 	if unit == "player" then
+		local _, _, _, lag = GetNetStats()
 		local sf = self.SafeZone
-		sf.timeDiff = GetTime() - sf.sendTime
+		sf.timeDiff = GetTime() - 0
 		sf.timeDiff = sf.timeDiff > self.max and self.max or sf.timeDiff
 		sf:SetWidth(self:GetWidth() * sf.timeDiff / self.max)
 		sf:Show()
@@ -165,6 +166,7 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 		self:SetStatusBarColor(pcolor[1], pcolor[2], pcolor[3],1)
 	end	
 end
+
 cast.PostCastStop = function(self, unit, name, rank, castid)
 	if not unit == "party" then
 	if not self.fadeOut then 
@@ -639,7 +641,7 @@ gen_castbar = function(f)
         l:SetJustifyH("RIGHT")
 	    l:Hide()
         s.Lag = l
-        f:RegisterEvent("UNIT_SPELLCAST_SENT", cast.OnCastSent)
+        f:RegisterEvent("CURRENT_SPELL_CAST_CHANGED", cast.OnCastSent)
     end
     s.OnUpdate = cast.OnCastbarUpdate
     s.PostCastStart = cast.PostCastStart
@@ -731,7 +733,7 @@ gen_bigcastbar = function(f)
         l:SetJustifyH("RIGHT")
 	    l:Hide()
         s.Lag = l
-        f:RegisterEvent("UNIT_SPELLCAST_SENT", cast.OnCastSent)
+        f:RegisterEvent("CURRENT_SPELL_CAST_CHANGED", cast.OnCastSent)
     end
     s.OnUpdate = cast.OnCastbarUpdate
     s.PostCastStart = cast.PostCastStart

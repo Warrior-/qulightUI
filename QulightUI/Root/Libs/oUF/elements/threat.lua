@@ -85,6 +85,7 @@ end
 local Disable = function(self)
 	local threat = self.Threat
 	if(threat) then
+		threat:Hide()
 		self:UnregisterEvent("UNIT_THREAT_SITUATION_UPDATE", Path)
 	end
 end

@@ -383,7 +383,7 @@ local CLASS_FILTERS = {
 		PRIEST = { 
 			target = { 
 				CreateSpellEntry( 17 ), -- Power Word: Shield
-				CreateSpellEntry( 6788, true, nil, 1 ), -- Weakened Soul
+				CreateSpellEntry( 194384, true, nil, 1 ), -- Atonement
 				CreateSpellEntry( 139 ), -- Renew
 				CreateSpellEntry( 33076 ), -- Prayer of Mending
 				CreateSpellEntry( 552 ), -- Abolish Disease

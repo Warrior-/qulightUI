@@ -150,7 +150,7 @@ local function colourButton(f)
 		f.tex:SetVertexColor(r / 4, g / 4, b / 4, 1)
 	end
 
-	--f:SetBackdropBorderColor(r, g, b)
+	f:SetBackdropBorderColor(r, g, b)
 end
 
 local function clearButton(f)
@@ -160,7 +160,7 @@ local function clearButton(f)
 		f.tex:SetVertexColor(buttonR, buttonG, buttonB, 0.1)
 	end
 
-	--f:SetBackdropBorderColor(0, 0, 0)
+	f:SetBackdropBorderColor(0, 0, 0)
 end
 
 F.Reskin = function(f, noHighlight)
@@ -211,7 +211,7 @@ local function clearScroll(f)
 	f.tex:SetVertexColor(1, 1, 1)
 end
 
-F.ReskinScroll = function(f)
+F.ReskinScroll = function(f, parent)
 	local frame = f:GetName()
 
 	local track = (f.trackBG or f.Background) or (_G[frame.."Track"] or _G[frame.."BG"])

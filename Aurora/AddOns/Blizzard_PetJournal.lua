@@ -404,7 +404,7 @@ C.modules["Blizzard_PetJournal"] = function()
 		if PlayerHasToy(self.itemID) then
 			local _, _, quality = GetItemInfo(self.itemID)
 			if quality then
-				toyString:SetTextColor(GetItemQualityColor(quality))
+				toyString:SetTextColor(ITEM_QUALITY_COLORS[quality-1])
 			else
 				toyString:SetTextColor(1, 1, 1)
 			end

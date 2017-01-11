@@ -84,6 +84,8 @@ _G.tinsert(C.themes["Aurora"], function()
 	F.Reskin(_G.QuestFrameDeclineButton)
 	F.Reskin(_G.QuestFrameDetailPanel.IgnoreButton)
 	F.Reskin(_G.QuestFrameDetailPanel.UnignoreButton)
+	F.Reskin(_G.QuestFrameProgressPanel.IgnoreButton)
+	F.Reskin(QuestFrameProgressPanel.UnignoreButton)
 	F.Reskin(_G.QuestFrameAcceptButton)
 
 	_G.QuestDetailScrollFrame:SetWidth(302) -- else these buttons get cut off

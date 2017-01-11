@@ -603,7 +603,7 @@ function Plates:UpdateHealthText()
 	local Percent = (CurrentHP / MaxHP) * 100
 
 	if Qulight["nameplate"].health_value == true then
-		--self.NewPlate.Health.Text:SetText(T.ShortValue(CurrentHP).." / "..T.ShortValue(MaxHP))
+		self.NewPlate.Health.Text:SetText(ShortValue(CurrentHP).." / "..ShortValue(MaxHP))
 		self.NewPlate.Health.Text:SetFormattedText("%d%%", Percent)
 	end
 
@@ -1402,6 +1402,20 @@ local function UpdateName(unitFrame)
 				end
 			end
 		end
+
+		if UnitGUID("target") == nil then
+			unitFrame:SetAlpha(1)
+		else
+			if C_NamePlate.GetNamePlateForUnit("target") ~= nil then
+				unitFrame:SetAlpha(0.5)
+				C_NamePlate.GetNamePlateForUnit("target").UnitFrame:SetAlpha(1)
+				if C_NamePlate.GetNamePlateForUnit("player") ~= nil then
+					C_NamePlate.GetNamePlateForUnit("player").UnitFrame:SetAlpha(1)
+				end
+			else
+				unitFrame:SetAlpha(1)
+			end
+		end
 	end
 end
 
@@ -1417,7 +1431,7 @@ local function UpdateHealth(unitFrame)
 		if UnitIsUnit("player", unitFrame.displayedUnit) then
 			unitFrame.healthBar.value:SetText("")
 		else
-			unitFrame.healthBar.value:SetText(perc_text)
+			unitFrame.healthBar.value:SetText(ShortValue(minHealth).." - "..perc_text)
 		end
 	end
 
@@ -1462,6 +1476,7 @@ end
 local function UpdateHealthColor(unitFrame)
 	local unit = unitFrame.displayedUnit
 	local r, g, b
+	local threat
 
 	if not UnitIsConnected(unit) then
 		r, g, b = 0.7, 0.7, 0.7
@@ -1483,6 +1498,7 @@ local function UpdateHealthColor(unitFrame)
 					SetVirtualBorder(unitFrame.healthBar, unpack(IsOnThreatList(unitFrame.displayedUnit)))
 				else
 					r, g, b = IsOnThreatList(unitFrame.displayedUnit)
+					threat = true
 				end
 			else
 				local reaction = oUF_colors.reaction[UnitReaction(unit, "player")]
@@ -1499,6 +1515,15 @@ local function UpdateHealthColor(unitFrame)
 		unitFrame.healthBar:SetStatusBarColor(r, g, b)
 		unitFrame.healthBar.Background:SetColorTexture(r, g, b, 0.2)
 		unitFrame.name:SetTextColor(r, g, b)
+		if threat then
+			local reaction = oUF_colors.reaction[UnitReaction(unit, "player")]
+			if reaction then
+				red, green, blue = reaction[1], reaction[2], reaction[3]
+			else
+				red, green, blue = UnitSelectionColor(unit, true)
+			end
+			unitFrame.name:SetTextColor(red, green, blue)
+		end
 		unitFrame.r, unitFrame.g, unitFrame.b = r, g, b
 	end
 end
@@ -1653,6 +1678,9 @@ local function HideBlizzard()
 
 	SetCVar("namePlateMinScale", 1)
 	SetCVar("namePlateMaxScale", 1)
+	SetCVar("nameplateLargerScale", 1)
+	SetCVar("nameplateMaxAlpha", 1)
+	SetCVar("nameplateMinAlpha", 1)
 
 	local checkBox = InterfaceOptionsNamesPanelUnitNameplatesMakeLarger
 	function checkBox.setFunc(value)
@@ -1791,6 +1819,7 @@ local function OnNamePlateCreated(namePlate)
 	namePlate.UnitFrame.castBar:SetScript("OnEvent", CastingBarFrame_OnEvent)
 	namePlate.UnitFrame.castBar:SetScript("OnUpdate", CastingBarFrame_OnUpdate)
 	namePlate.UnitFrame.castBar:SetScript("OnShow", CastingBarFrame_OnShow)
+	namePlate.UnitFrame.castBar:SetScript("OnHide", function() namePlate.UnitFrame.castBar:Hide() end)
 	namePlate.UnitFrame.castBar:HookScript("OnValueChanged", function() NamePlates_UpdateCastBar(namePlate.UnitFrame.castBar) end)
 
 	namePlate.UnitFrame.RaidTargetFrame = CreateFrame("Frame", nil, namePlate.UnitFrame)

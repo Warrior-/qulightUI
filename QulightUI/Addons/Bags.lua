@@ -294,6 +294,18 @@ function Stuffing:BagFrameSlotNew(p, slot)
 		end
 	else
 		ret.frame = CreateFrame("CheckButton", "StuffingFBag"..slot.."Slot", p, "BagSlotButtonTemplate")
+
+		hooksecurefunc(ret.frame.IconBorder, "SetVertexColor", function(self, r, g, b)
+			if r ~= 0.65882 and g ~= 0.65882 and b ~= 0.65882 then
+				self:GetParent():SetBackdropBorderColor(r, g, b)
+			end
+			self:SetTexture("")
+		end)
+
+		hooksecurefunc(ret.frame.IconBorder, "Hide", function(self)
+			self:GetParent():SetBackdropBorderColor(.15,.15,.15,0)
+		end)
+
 		ret.slot = slot
 		table.insert(self.bagframe_buttons, ret)
 	end

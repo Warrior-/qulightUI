@@ -410,13 +410,18 @@ local upgrades = {
 	["466"] = 4, ["467"] = 8, ["469"] = 4, ["470"] = 8, ["471"] = 12, ["472"] = 16,
 	["477"] = 4, ["478"] = 8, ["480"] = 8, ["492"] = 4, ["493"] = 8, ["495"] = 4,
 	["496"] = 8, ["497"] = 12, ["498"] = 16, ["504"] = 12, ["505"] = 16, ["506"] = 20,
-	["507"] = 24, ["530"] = 5, ["531"] = 10
+	["507"] = 24, ["530"] = 5, ["531"] = 10, ["535"] = 15, ["536"] = 30, ["537"] = 45
+}
+
+local legionUpgrades = {
+	["664"] = 689, ["767"] = 685, ["768"] = 693, ["1735"] = 705, ["1736"] = 699, ["1738"] = 709,
+	["1739"] = 703, ["1741"] = 713, ["1792"] = 699, ["1793"] = 703, ["1794"] = 695, ["1795"] = 700,
 }
 
 local function BOALevel(level, id)
 	if level > 97 then
 		if id == 133585 or id == 133595 or id == 133596 or id == 133597 or id == 133598 then
-			level = 715
+			level = 815 - (110 - level) * 10
 		else
 			level = 605 - (100 - level) * 5
 		end
@@ -444,6 +449,31 @@ local timewarped = {
 	["692"] = 675, -- Timewarped badge vendors
 	["656"] = 675, -- Warforged Dungeon drops
 }
+
+local timewarped_warforged = {
+	[656] = 675, -- Dungeon drops
+}
+
+local function GetItemLevel(itemLink)
+	if not itemLink or not GetItemInfo(itemLink) then
+		return
+	end
+
+	tooltip:ClearLines()
+	tooltip:SetHyperlink(itemLink)
+
+	local text, itemLevel
+	for index = 1, #tooltipLines do
+		text = _G[tooltipLines[index]]:GetText()
+
+		if text then
+			itemLevel = tonumber(string.match(text, itemLevelPattern))
+			if itemLevel then
+				return itemLevel
+			end
+		end
+	end
+end
 
 local function CreateButtonsText(frame)
 	for _, slot in pairs(slots) do

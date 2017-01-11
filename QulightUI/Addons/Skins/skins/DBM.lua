@@ -239,7 +239,7 @@ DBMSkin:SetScript("OnEvent", function(self, event, addon)
 		local firstRange = true
 		hooksecurefunc(DBM.RangeCheck, "Show", function()
 			if firstRange then
-				DBMRangeCheck:SetBackdrop(nil)
+				--DBMRangeCheck:SetBackdrop(nil)
 				local bd = CreateFrame("Frame", nil, DBMRangeCheckRadar)
 				bd:SetPoint("TOPLEFT")
 				bd:SetPoint("BOTTOMRIGHT")
