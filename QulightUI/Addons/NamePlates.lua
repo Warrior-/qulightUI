@@ -1438,19 +1438,19 @@ local function IsOnThreatList(unit)
 	local _, threatStatus = UnitDetailedThreatSituation("player", unit)
 	if threatStatus == 3 then  -- securely tanking, highest threat
 		if role == "TANK" then
-			return unpack(goodR, goodG, goodB)
+			return unpack(Qulight["nameplate"].good_color)
 		else
-			return unpack(badR, badG, badB)
+			return unpack(Qulight["nameplate"].bad_color)
 		end
 	elseif threatStatus == 2 then  -- insecurely tanking, another unit have higher threat but not tanking
-		return unpack(transitionR, transitionG, transitionB)
+		return unpack(Qulight["nameplate"].near_color)
 	elseif threatStatus == 1 then  -- not tanking, higher threat than tank
-		return unpack(transitionR, transitionG, transitionB)
+		return unpack(Qulight["nameplate"].near_color)
 	elseif threatStatus == 0 then  -- not tanking, lower threat than tank
 		if role == "TANK" then
-			return unpack(badR, badG, badB)
+			return unpack(Qulight["nameplate"].bad_color)
 		else
-			return unpack(goodR, goodG, goodB)
+			return unpack(Qulight["nameplate"].good_color)
 		end
 	end
 end
