@@ -99,7 +99,7 @@ hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, 
 		local label = bar.Label
 
 		bar.BarFrame:Hide()
-		bar.BarGlow:Kill()
+		--bar.BarGlow:Kill()
 		bar.IconBG:Kill()
 		bar:SetSize(200, 20)
 		bar:SetStatusBarTexture(Qulight["media"].texture)

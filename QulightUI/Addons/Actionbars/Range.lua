@@ -69,12 +69,17 @@ end
 
 --stuff for holy power detection
 local PLAYER_IS_PALADIN = select(2, UnitClass('player')) == 'PALADIN'
-local HAND_OF_LIGHT = GetSpellInfo(90174)
+local DIVINE_JUDGMENT= GetSpellInfo(76672)
+local DIVINE_PURPOSE = GetSpellInfo(223819)
+local HAND_OF_LIGHT = GetSpellInfo(90174);
+local DIVINE_CRUSADER = GetSpellInfo(144595)
 local isHolyPowerAbility
 do
 	local HOLY_POWER_SPELLS = {
 		[85256] = GetSpellInfo(85256), --Templar's Verdict
-		[53600] = GetSpellInfo(53600), --Shield of the Righteous
+		[53385] = GetSpellInfo(53385), --Divine Storm
+		[157048] = GetSpellInfo(157048), -- Final Verdict
+		[152262] = GetSpellInfo(152262), --Seraphim
 	}
 
 	isHolyPowerAbility = function(actionId)

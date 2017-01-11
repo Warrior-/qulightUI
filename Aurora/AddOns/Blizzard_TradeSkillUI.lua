@@ -1,16 +1,11 @@
 local F, C = unpack(select(2, ...))
 
-local function onEnable(self)
-	self:SetHeight(self.storedHeight) -- prevent it from resizing
-	self:SetBackdropColor(0, 0, 0, 0)
-end
-
-local function onDisable(self)
-	self:SetBackdropColor(r, g, b, .2)
-end
-
-local function onClick(self)
-	self:GetFontString():SetTextColor(1, 1, 1)
+local function updateCollapsedState(button)
+	if button.tradeSkillInfo and button.tradeSkillInfo.collapsed then
+		button.plus:Show()
+	else
+		button.plus:Hide()
+	end
 end
 
 C.themes["Blizzard_TradeSkillUI"] = function()
@@ -39,6 +34,16 @@ C.themes["Blizzard_TradeSkillUI"] = function()
 	recipeInset:DisableDrawLayer("BORDER")
 	local recipeList = TradeSkillFrame.RecipeList
 	F.ReskinScroll(recipeList.scrollBar, "TradeSkillFrame")
+	for i = 1, #recipeList.Tabs do
+		local tab = recipeList.Tabs[i]
+		tab.LeftDisabled:SetAlpha(0)
+		tab.MiddleDisabled:SetAlpha(0)
+		tab.RightDisabled:SetAlpha(0)
+
+		tab.Left:SetAlpha(0)
+		tab.Middle:SetAlpha(0)
+		tab.Right:SetAlpha(0)
+	end
 
 	hooksecurefunc(recipeList, "RefreshDisplay", function(self)
 		for i = 1, #self.buttons do
@@ -77,32 +82,15 @@ C.themes["Blizzard_TradeSkillUI"] = function()
 
 				tradeSkillButton._isSkinned = true
 			end
+
+			updateCollapsedState(tradeSkillButton)
 		end
 	end)
-
-	for _, tab in pairs({TradeSkillFrame.RecipeList.LearnedTab, TradeSkillFrame.RecipeList.UnlearnedTab}) do
-		tab.LeftDisabled:SetAlpha(0)
-		tab.MiddleDisabled:SetAlpha(0)
-		tab.RightDisabled:SetAlpha(0)
-
-		tab.Left:SetAlpha(0)
-		tab.Middle:SetAlpha(0)
-		tab.Right:SetAlpha(0)
-
-		tab.Text:SetPoint("CENTER")
-		tab.Text:SetTextColor(1, 1, 1)
-
-		tab:HookScript("OnEnable", onEnable)
-		tab:HookScript("OnDisable", onDisable)
-		tab:HookScript("OnClick", onClick)
-
-		tab:SetHeight(25)
-		tab.SetHeight = function() end
-
-		F.Reskin(tab)
-	end
-
-	TradeSkillFrame.RecipeList.LearnedTab:SetBackdropColor(r, g, b, .2)
+	recipeList.scrollBar:HookScript("OnValueChanged", function()
+		for i = 1, #recipeList.buttons do
+			updateCollapsedState(recipeList.buttons[i])
+		end
+	end)
 
 	--[[ Recipe Details ]]--
 	local detailsInset = TradeSkillFrame.DetailsInset

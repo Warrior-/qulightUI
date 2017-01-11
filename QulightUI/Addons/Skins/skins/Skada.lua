@@ -8,11 +8,11 @@ local function CreateBackdrop(f, t, tex)
 	b:SetPoint("BOTTOMRIGHT", 2, -2)
 	CreateStyle(b, 2)
 
-	if f:GetFrameLevel() - 1 >= 0 then
-		b:SetFrameLevel(f:GetFrameLevel() - 1)
-	else
-		b:SetFrameLevel(0)
-	end
+	--if f:GetFrameLevel() - 1 >= 0 then
+	--	b:SetFrameLevel(f:GetFrameLevel() - 1)
+	--else
+	--	b:SetFrameLevel(0)
+	--end
 	
 	f.backdrop = b
 end

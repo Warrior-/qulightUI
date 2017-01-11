@@ -78,8 +78,8 @@ function CreateStyleTT(f, size, level, alpha, alphaborder)
 	local shadow = CreateFrame("Frame", nil, f)
 	shadow:SetFrameLevel(level or 0)
 	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:SetPoint("TOPLEFT", -size, size)
-	shadow:SetPoint("BOTTOMRIGHT", size, -size-7)
+	shadow:SetPoint("TOPLEFT", -2, 2)
+	shadow:SetPoint("BOTTOMRIGHT", 2, -9)
 	shadow:SetBackdrop(style)
 	shadow:SetBackdropColor(.08,.08,.08, alpha or .9)
 	shadow:SetBackdropBorderColor(0, 0, 0, alphaborder or 1)
@@ -88,7 +88,7 @@ function CreateStyleTT(f, size, level, alpha, alphaborder)
 end
 
 for _, tt in pairs(tooltips) do
-	if not IsAddOnLoaded("Aurora") then
+	if IsAddOnLoaded("Aurora") then
 		tt:SetBackdrop(nil)
 		if tt.BackdropFrame then
 			tt.BackdropFrame:SetBackdrop(nil)

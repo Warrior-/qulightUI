@@ -1,6 +1,6 @@
 local csf = CreateFrame("Frame")
 csf:SetScript("OnEvent", function()
-SetCVar("cameraDistanceMaxFactor", 3.4)
+SetCVar("cameraDistanceMaxFactor", 3.6)
 SetCVar("ShowClassColorInNameplate", 1)
 SetCVar("buffDurations",1)
 SetCVar("scriptErrors", 1)

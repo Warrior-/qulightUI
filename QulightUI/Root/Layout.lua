@@ -73,7 +73,7 @@ if Qulight["actionbar"].enable then
 	local mbWidth = Qulight.actionbar.mainbarWidth
 	
 	AnchorQuBar1 = CreateFrame("Frame","Move_Bar1",UIParent)
-	AnchorQuBar1:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 278)
+	AnchorQuBar1:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 275)
 	CreateAnchor(AnchorQuBar1, "Move Bar1", (buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)), buttonsize)
 
 	local QuBar1 = CreateFrame("Frame", "QuBar1", UIParent, "SecureHandlerStateTemplate")
@@ -127,23 +127,23 @@ if Qulight["actionbar"].enable then
 	
 	AnchorQuBar6 = CreateFrame("Frame","Move_Bar6",UIParent)
 	AnchorQuBar6:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 4)
-	CreateAnchor(AnchorQuBar6, "Move Bar6", (buttonsize * 12) + (buttonspacing * 13), buttonsize)
+	CreateAnchor(AnchorQuBar6, "Move Bar6", (buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)), buttonsize)
 	
 	local QuBar6 = CreateFrame("Frame", "QuBar6", UIParent)
-	QuBar6:SetWidth((buttonsize * 12) + (buttonspacing * 13))
-	QuBar6:SetHeight(buttonsize)
+	QuBar6:SetWidth((buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)))
+	QuBar6:SetHeight((buttonsize * 2) + (buttonspacing * 3))
 	QuBar6:SetPoint("TOP", AnchorQuBar6, "TOP")
 	QuBar6:SetFrameStrata("BACKGROUND")
 	QuBar6:SetFrameLevel(2)
 	QuBar6:SetAlpha(0)
 
 	AnchorQuBar7 = CreateFrame("Frame","Move_Bar7",UIParent)
-	AnchorQuBar7:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 41)
-	CreateAnchor(AnchorQuBar7, "Move Bar7", (buttonsize * 12) + (buttonspacing * 13), buttonsize)
+	AnchorQuBar7:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 38)
+	CreateAnchor(AnchorQuBar7, "Move Bar7", (buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)), buttonsize)
 	
 	local QuBar7 = CreateFrame("Frame", "QuBar7", UIParent)
-	QuBar7:SetWidth((buttonsize * 12) + (buttonspacing * 13))
-	QuBar7:SetHeight(buttonsize)
+	QuBar7:SetWidth((buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)))
+	QuBar7:SetHeight((buttonsize * 2) + (buttonspacing * 3))
 	QuBar7:SetPoint("TOP", AnchorQuBar7, "TOP")
 	QuBar7:SetFrameStrata("BACKGROUND")
 	QuBar7:SetFrameLevel(2)

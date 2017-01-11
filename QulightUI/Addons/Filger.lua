@@ -37,10 +37,6 @@ Anchor_PVEDEBUFF = CreateFrame("Frame","Move_PVEDEBUFF",UIParent)
 Anchor_PVEDEBUFF:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 720)
 CreateAnchor(Anchor_PVEDEBUFF, "Move PVEDEBUFF", 37, 37)
 
-Anchor_TIGERPOWER = CreateFrame("Frame","Move_TIGERPOWER",UIParent)
-Anchor_TIGERPOWER:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 665)
-CreateAnchor(Anchor_TIGERPOWER, "Move TIGERPOWER", 50, 50)
-
 Filger_Spells = {
 ["DEATHKNIGHT"] = {
 		{
@@ -74,7 +70,6 @@ Filger_Spells = {
 			{spellID = 115989, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Summon Gargoyle
 			{spellID = 49206, filter = "ICD", trigger = "NONE", duration = 40},
-
 		},
 		{
 			Name = "P_PROC_ICON",
@@ -404,34 +399,38 @@ Filger_Spells = {
 			IconSize = 37,
 			Position = {"RIGHT", AnchorBUFF_ICON},
 
-			-- Incarnation: Tree of Life
-			{spellID = 117679, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Incarnation: Chosen of Elunee
+			-- Incarnation: Chosen of Elune
 			{spellID = 102560, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Incarnation: King of the Jungle
 			{spellID = 102543, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Incarnation: Son of Ursoc
 			{spellID = 102558, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Nature's Vigil
-			{spellID = 124974, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Incarnation: Tree of Life
+			{spellID = 117679, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Survival Instincts
 			{spellID = 61336, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Barkskin
 			{spellID = 22812, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Savage Defense
-			{spellID = 132402, unitID = "player", caster = "player", filter = "BUFF"},
+			--BETA {spellID = 132402, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Savage Roar
 			{spellID = 52610, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Heart of the Wild
+			--BETA {spellID = 108294, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Berserk
-			{spellID = 50334, unitID = "player", caster = "player", filter = "BUFF"},
+			--BETA {spellID = 50334, unitID = "player", caster = "player", filter = "BUFF", absID = true},
 			-- Tiger's Fury
 			{spellID = 5217, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Celestial Alignment
-			{spellID = 112071, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Heart of the Wild
-			{spellID = 108294, unitID = "player", caster = "player", filter = "BUFF"},
+			--BETA {spellID = 112071, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Nature's Vigil
+			{spellID = 124974, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Lunar Empowerment
+			{spellID = 164547, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Solar Empowerment
+			{spellID = 164545, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Starfall
-			{spellID = 48505, unitID = "player", caster = "player", filter = "BUFF"},
+			--BETA {spellID = 184989, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Nature's Grasp
 			{spellID = 170856, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Dash
@@ -1752,6 +1751,8 @@ Filger_Spells = {
 			{spellID = 3409, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Wound Poison
 			{spellID = 8680, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Ghostly Strike
+			{spellID = 196937, unitID = "target", caster = "player", filter = "DEBUFF"},
 		},
 		{
 			Name = "PVE/PVP_CC",
