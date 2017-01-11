@@ -2025,6 +2025,7 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 
 		F.Reskin(CombatLogDefaultButton)
 		F.Reskin(ChatConfigCombatSettingsFiltersCopyFilterButton)
+		F.Reskin(ChatConfigFrameRedockButton)
 		F.Reskin(ChatConfigCombatSettingsFiltersAddFilterButton)
 		F.Reskin(ChatConfigCombatSettingsFiltersDeleteButton)
 		F.Reskin(CombatConfigSettingsSaveButton)

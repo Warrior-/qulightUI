@@ -107,8 +107,8 @@ end
 --	Based on AchievementMover
 ----------------------------------------------------------------------------------------
 local AchievementAnchor = CreateFrame("Frame", "AchievementAnchor", UIParent)
-AchievementAnchor:SetWidth(DungeonCompletionAlertFrame:GetWidth() - 36)
-AchievementAnchor:SetHeight(DungeonCompletionAlertFrame:GetHeight() - 4)
+AchievementAnchor:SetWidth(DungeonCompletionAlertFrame1:GetWidth() - 36)
+AchievementAnchor:SetHeight(DungeonCompletionAlertFrame1:GetHeight() - 4)
 AchievementAnchor:SetPoint("CENTER", 0, 0)
 
 local POSITION, ANCHOR_POINT, YOFFSET = "BOTTOM", "TOP", -9

@@ -1715,7 +1715,13 @@ function NamePlates_UpdateNamePlateOptions()
 	local baseNamePlateWidth = Qulight["nameplate"].width * noscalemult
 	local baseNamePlateHeight = 45
 	local horizontalScale = tonumber(GetCVar("NamePlateHorizontalScale"))
-	C_NamePlate.SetNamePlateOtherSize(baseNamePlateWidth * horizontalScale, baseNamePlateHeight)
+	if select(4, GetBuildInfo()) >= 70100 then
+		C_NamePlate.SetNamePlateFriendlySize(baseNamePlateWidth * horizontalScale, baseNamePlateHeight)
+		C_NamePlate.SetNamePlateEnemySize(baseNamePlateWidth * horizontalScale, baseNamePlateHeight)
+	else
+		C_NamePlate.SetNamePlateOtherSize(baseNamePlateWidth * horizontalScale, baseNamePlateHeight)
+	end
+
 	C_NamePlate.SetNamePlateSelfSize(baseNamePlateWidth, baseNamePlateHeight)
 
 	for i, namePlate in ipairs(C_NamePlate.GetNamePlates()) do

@@ -68,7 +68,7 @@ _G.tinsert(C.themes["Aurora"], function()
 	local bg = CreateFrame("Frame", nil, DungeonCompletionAlertFrame)
 	bg:SetPoint("TOPLEFT", 6, -14)
 	bg:SetPoint("BOTTOMRIGHT", -6, 6)
-	bg:SetFrameLevel(DungeonCompletionAlertFrame:GetFrameLevel()-1)
+	bg:SetFrameLevel(DungeonCompletionAlertFrame1:GetFrameLevel()-1)
 	F.CreateBD(bg)
 
 	DungeonCompletionAlertFrame.dungeonTexture:SetDrawLayer("ARTWORK")

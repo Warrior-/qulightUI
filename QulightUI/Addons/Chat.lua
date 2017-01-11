@@ -54,7 +54,11 @@ local function Kill(object)
 end
 dummy = function() return end
 
-Kill(FriendsMicroButton)
+if select(4, GetBuildInfo()) >= 70100 then
+	Kill(QuickJoinToastButton)
+else
+	Kill(FriendsMicroButton)
+end
 Kill(ChatFrameMenuButton)
 
 local function CreateBackdrop(f, t, tex)
