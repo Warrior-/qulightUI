@@ -20,6 +20,8 @@ hooksecurefunc(ObjectiveTrackerFrame, "SetPoint", function(_, _, parent)
 	end
 end)
 
+BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:Hide()
+WORLD_QUEST_TRACKER_MODULE.Header.Background:Hide()
 ----------------------------------------------------------------------------------------
 --	Skin ObjectiveTrackerFrame item buttons
 ----------------------------------------------------------------------------------------

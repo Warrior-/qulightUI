@@ -882,7 +882,6 @@ end
 GameTooltip:HookScript("OnTooltipSetItem", WIMtooltip)
 ItemRefTooltip:HookScript("OnTooltipSetItem", WIMtooltip)
 
-
 ----------------------------------------------------------------------------------------
 --	Based on tekKompare(by Tekkub)
 ----------------------------------------------------------------------------------------
@@ -890,13 +889,14 @@ local orig1, orig2, GameTooltip = {}, {}, GameTooltip
 local linktypes = {item = true, enchant = true, spell = true, quest = true, unit = true, talent = true, achievement = true, glyph = true, instancelock = true, currency = true}
 
 local function OnHyperlinkEnter(frame, link, ...)
-	if BattlePetTooltip:IsShown() then
-		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", -3, 0)
+	local linktype = link:match("^([^:]+)")
+	if linktype and linktype == "battlepet" then
+		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", -3, 50)
 		GameTooltip:Show()
 		local _, speciesID, level, breedQuality, maxHealth, power, speed = strsplit(":", link)
 		BattlePetToolTip_Show(tonumber(speciesID), tonumber(level), tonumber(breedQuality), tonumber(maxHealth), tonumber(power), tonumber(speed))
-	else
-		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", -3, 0)
+	elseif linktype and linktypes[linktype] then
+		GameTooltip:SetOwner(frame, "ANCHOR_TOPLEFT", -3, 50)
 		GameTooltip:SetHyperlink(link)
 		GameTooltip:Show()
 	end
@@ -905,10 +905,9 @@ local function OnHyperlinkEnter(frame, link, ...)
 end
 
 local function OnHyperlinkLeave(frame, link, ...)
-	local linktype = link:match("^([^:]+)")
-	if linktype and linktype == "battlepet" then
+	if BattlePetTooltip:IsShown() then
 		BattlePetTooltip:Hide()
-	elseif linktype and linktypes[linktype] then
+	else
 		GameTooltip:Hide()
 	end
 

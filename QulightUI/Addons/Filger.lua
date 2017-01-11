@@ -164,6 +164,8 @@ Filger_Spells = {
 			{spellID = 165822, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Unending Hunger (Strength, Proc)
 			{spellID = 183941, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Eye of Command (Strength, Proc)
+			{spellID = 230152, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Enchants
 			-- Mark of Blackrock (Bonus Armor)
@@ -319,6 +321,8 @@ Filger_Spells = {
 			{spellID = 184293, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Witherbark's Branch (Haste, Proc)
 			{spellID = 165822, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Eye of Command (Agility, Proc)
+			{spellID = 230152, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Enchants
 			-- Mark of Blackrock (Bonus Armor)
@@ -577,6 +581,8 @@ Filger_Spells = {
 			{spellID = 165535, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Voidmender's Shadowgem (Crit, Use)
 			{spellID = 165532, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Eye of Command (Agility, Proc)
+			{spellID = 230152, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Enchants
 			-- Mark of Blackrock (Bonus Armor)
@@ -736,6 +742,8 @@ Filger_Spells = {
 			{spellID = 184293, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Witherbark's Branch (Haste, Proc)
 			{spellID = 165822, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Eye of Command (Agility, Proc)
+			{spellID = 230152, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Enchants
 			-- Hemet's Heartseeker (Mastery)
@@ -1132,6 +1140,8 @@ Filger_Spells = {
 			{spellID = 165535, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Voidmender's Shadowgem (Crit, Use)
 			{spellID = 165532, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Eye of Command (Agility, Proc)
+			{spellID = 230152, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Enchants
 			-- Mark of Blackrock (Bonus Armor)
@@ -1319,6 +1329,8 @@ Filger_Spells = {
 			{spellID = 165833, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Tharbek's Lucky Pebble (Mastery, Use)
 			{spellID = 165535, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Eye of Command (Strength, Proc)
+			{spellID = 230152, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Enchants
 			-- Mark of Blackrock (Bonus Armor)
@@ -1685,6 +1697,8 @@ Filger_Spells = {
 			{spellID = 184293, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Witherbark's Branch (Haste, Proc)
 			{spellID = 165822, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Eye of Command (Agility, Proc)
+			{spellID = 230152, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Enchants
 			-- Mark of Bleeding Hollow (Mastery)
@@ -1904,6 +1918,8 @@ Filger_Spells = {
 			{spellID = 165535, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Voidmender's Shadowgem (Crit, Use)
 			{spellID = 165532, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Eye of Command (Agility, Proc)
+			{spellID = 230152, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Enchants
 			-- Mark of Bleeding Hollow (Mastery)
@@ -2233,6 +2249,8 @@ Filger_Spells = {
 			{spellID = 165822, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Unending Hunger (Strength, Proc)
 			{spellID = 183941, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Eye of Command (Strength, Proc)
+			{spellID = 230152, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Enchants
 			-- Mark of Blackrock (Bonus Armor)
