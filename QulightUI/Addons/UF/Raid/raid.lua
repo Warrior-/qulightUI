@@ -10,8 +10,8 @@ RaidBuffs = {
 	},
 	MONK = {
 		{119611, "TOPRIGHT", {0.2, 0.7, 0.7}},				-- Renewing Mist
-		{132120, "TOPLEFT", {0.4, 0.8, 0.2}},			-- Enveloping Mist
-		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}},				-- Zen Sphere
+		{124682, "TOPLEFT", {0.4, 0.8, 0.2}},				-- Enveloping Mist
+		{115175, "BOTTOMRIGHT", {0.7, 0.4, 0}},				-- Soothing Mist
 		{116849, "LEFT", {0.81, 0.85, 0.1}, true},			-- Life Cocoon
 	},
 	PALADIN = {

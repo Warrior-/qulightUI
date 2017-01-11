@@ -642,13 +642,11 @@ CreateAnchor(AnchorExtraActionBar, "Move ExtraActionBar", 40, 40)
 ExtraActionBarFrame:SetParent(UIParent)
 ExtraActionBarFrame:ClearAllPoints()
 ExtraActionBarFrame:SetPoint("CENTER", AnchorExtraActionBar, "CENTER")
-
 ZoneAbilityFrame:SetParent(UIParent)
 ZoneAbilityFrame:ClearAllPoints()
 ZoneAbilityFrame:SetPoint('CENTER', AnchorExtraActionBar, 'CENTER')
 --DraenorZoneAbilityFrame:SetScript("OnShow", DraenorZoneAbilityFrame.Hide)
 ZoneAbilityFrame.ignoreFramePositionManager = true
-
 
 ------------------------------------------------------------------------------------------
 --	Skin ExtraActionBarFrame(by Zork)

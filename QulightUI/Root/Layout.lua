@@ -3,6 +3,10 @@ buttonspacing = Qulight["actionbar"].buttonspacing
 petbuttonsize = Qulight["actionbar"].petbuttonsize
 petbuttonspacing = Qulight["actionbar"].petbuttonspacing
 
+---------------------
+--Panels
+---------------------
+
 if Qulight["general"].topbottompanel then
 	local BottomPanel = CreateFrame("Frame", "BottomPanel", UIParent)
 	CreatePanel(BottomPanel, 4000, 25, "BOTTOM", 0, -5)
@@ -58,7 +62,7 @@ if Qulight["general"].centerpanel then
 end
 
 Anchorminimaplol = CreateFrame("Frame","Move_minimaplol",UIParent)
-Anchorminimaplol:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -3, -3)
+Anchorminimaplol:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -15, -25)
 CreateAnchor(Anchorminimaplol, "Move Minimap", Qulight["minimapp"].size+4, Qulight["minimapp"].size+4)
 	
 local minimaplol = CreateFrame("Frame", "minimaplol", UIParent)
@@ -73,13 +77,13 @@ if Qulight["actionbar"].enable then
 	local mbWidth = Qulight.actionbar.mainbarWidth
 	
 	AnchorQuBar1 = CreateFrame("Frame","Move_Bar1",UIParent)
-	AnchorQuBar1:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 278)
-	CreateAnchor(AnchorQuBar1, "Move Bar1", (buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)), buttonsize)
+	AnchorQuBar1:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 67)
+	CreateAnchor(AnchorQuBar1, "Move Bar1", (buttonsize * 12) + (buttonspacing * 13), buttonsize)
 
 	local QuBar1 = CreateFrame("Frame", "QuBar1", UIParent, "SecureHandlerStateTemplate")
 	CreatePanel(QuBar1, 1, 1, "BOTTOM", AnchorQuBar1, "BOTTOM")
-	QuBar1:SetWidth((buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)))
-	QuBar1:SetHeight((buttonsize * 2) + (buttonspacing * 3))
+	QuBar1:SetWidth((buttonsize * 12) + (buttonspacing * 13))
+	QuBar1:SetHeight(buttonsize)
 	QuBar1:SetFrameStrata("BACKGROUND")
 	QuBar1:SetFrameLevel(1)
 
@@ -98,35 +102,37 @@ if Qulight["actionbar"].enable then
 	QuBar3:SetFrameLevel(2)
 
 	AnchorQuBar5 = CreateFrame("Frame","Move_Bar5",UIParent)
-	AnchorQuBar5:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 243)
-	CreateAnchor(AnchorQuBar5, "Move Bar5", (buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)), buttonsize)
+	AnchorQuBar5:SetPoint("RIGHT", UIParent, "RIGHT", -10, 50)
+	CreateAnchor(AnchorQuBar5, "Move Bar5", (buttonsize) + (buttonspacing), (buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)))
 	
 	local QuBar5 = CreateFrame("Frame", "QuBar5", UIParent)
-	CreatePanel(QuBar5, 1, 1, "TOP", AnchorQuBar5, "TOP")
-	QuBar5:SetWidth((buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)))
-	QuBar5:SetHeight((buttonsize * 2) + (buttonspacing * 3))
+	CreatePanel(QuBar5, 1, 1, "BOTTOM", AnchorQuBar5, "BOTTOM", -15, 0)
+	QuBar5:SetHeight((buttonsize * mbWidth) + (buttonspacing * (mbWidth-1)))
+	QuBar5:SetWidth((buttonsize * 2) + (buttonspacing * 3))
 	QuBar5:SetFrameStrata("BACKGROUND")
 	QuBar5:SetFrameLevel(2)
+
 	
 	AnchorQuBar4 = CreateFrame("Frame","Move_Bar4",UIParent)
 		if Qulight["general"].centerpanel then
-			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 53)
+			AnchorQuBar4:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 365)
 		else
-			AnchorQuBar4:SetPoint("TOPLEFT", ChatPanelTwo, "TOPLEFT", -3, 36)
+			AnchorQuBar4:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 365)
 		end
 	CreateAnchor(AnchorQuBar4, "Move Bar4", (buttonsize * 12) + (buttonspacing * 13), buttonsize)
+	AnchorQuBar4:SetScale(0.88)
 	
 	local QuBar4 = CreateFrame("Frame", "QuBar4", UIParent)
-	CreatePanel(QuBar4, 1, 1, "TOP", AnchorQuBar4, "TOP")
+	CreatePanel(QuBar4, 20, 20, "TOP", AnchorQuBar4, "TOP")
 	QuBar4:SetWidth((buttonsize * 12) + (buttonspacing * 13))
 	QuBar4:SetHeight(buttonsize)
 	QuBar4:SetFrameStrata("BACKGROUND")
 	QuBar4:SetFrameLevel(2)
 	QuBar4:SetAlpha(0)
-	QuBar4:SetScale(0.99)
+	QuBar4:SetScale(0.88)
 	
 	AnchorQuBar6 = CreateFrame("Frame","Move_Bar6",UIParent)
-	AnchorQuBar6:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 4)
+	AnchorQuBar6:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 0)
 	CreateAnchor(AnchorQuBar6, "Move Bar6", (buttonsize * 12) + (buttonspacing * 13), buttonsize)
 	
 	local QuBar6 = CreateFrame("Frame", "QuBar6", UIParent)
@@ -138,7 +144,7 @@ if Qulight["actionbar"].enable then
 	QuBar6:SetAlpha(0)
 
 	AnchorQuBar7 = CreateFrame("Frame","Move_Bar7",UIParent)
-	AnchorQuBar7:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 41)
+	AnchorQuBar7:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 34)
 	CreateAnchor(AnchorQuBar7, "Move Bar7", (buttonsize * 12) + (buttonspacing * 13), buttonsize)
 	
 	local QuBar7 = CreateFrame("Frame", "QuBar7", UIParent)
@@ -168,8 +174,8 @@ if Qulight["actionbar"].enable then
 	local invbarbg = CreateFrame("Frame", "InvQuActionBarBackground", UIParent)
 	invbarbg:SetPoint("TOPLEFT", QuBar2)
 	invbarbg:SetPoint("BOTTOMRIGHT", QuBar3)
-end
 
+end
 
 for i = 1, NUM_CHAT_WINDOWS do
 	local SkadaButton = _G[format("DataRightPanel",  i)]

@@ -98,7 +98,7 @@ local function Update(frame, event, unit)
 			if watch.strictMatching then
 				key = spellID
 			else
-				key = name..texture
+				key = name
 			end
 			icon = icons[key]
 			if icon and not RaidBuffsIgnore[spellID] and (icon.anyUnit or (caster and icon.fromUnits and icon.fromUnits[caster])) then

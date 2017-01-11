@@ -172,7 +172,15 @@ C.themes["Blizzard_Collections"] = function()
 		F.CreateBG(ic)
 	end
 
-	
+	if AuroraConfig.tooltips then
+		for _, f in pairs({PetJournalPrimaryAbilityTooltip, PetJournalSecondaryAbilityTooltip}) do
+			f:DisableDrawLayer("BACKGROUND")
+			local bg = CreateFrame("Frame", nil, f)
+			bg:SetAllPoints()
+			bg:SetFrameLevel(0)
+			F.CreateBD(bg)
+		end
+	end
 
 	PetJournalLoadoutBorderSlotHeaderText:SetParent(PetJournal)
 	PetJournalLoadoutBorderSlotHeaderText:SetPoint("CENTER", PetJournalLoadoutBorderTop, "TOP", 0, 4)

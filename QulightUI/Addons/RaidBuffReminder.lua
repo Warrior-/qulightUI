@@ -1,77 +1,81 @@
 	if not Qulight["misk"].BuffReminderRaidBuffs == true then return end
 ReminderBuffs = {
 	Flask = {
-			156071,	-- Draenic Strength Flask
-			156077,	-- Draenic Stamina Flask
-			156070,	-- Draenic Intellect Flask
-			156073,	-- Draenic Agility Flask
-			156080,	-- Greater Draenic Strength Flask
-			156064,	-- Greater Draenic Agility Flask
-			156084,	-- Greater Draenic Stamina Flask
-			156079,	-- Greater Draenic Intellect Flask
-			105694,	-- Flask of the Earth
-			105691,	-- Flask of the Warm Sun
-			105696,	-- Flask of Winter's Bite
-			105693,	-- Flask of Falling Leaves
-			105689,	-- Flask of Spring Blossoms
+			188033,	-- Flask of the Seventh Demon (Agility)
+			188034,	-- Flask of the Countless Armies (Strenght)
+			188035,	-- Flask of Ten Thousand Scars (Stamina)
+			188031,	-- Flask of the Whispered Pact (Intellect)
 		},
+		--BETA - Not any viable Battle/Guardian Elixir to replace Flask
 		BattleElixir = {
-			105686,	-- Elixir of Perfection
-			105688,	-- Monk's Elixir
-			105685,	-- Elixir of Peace
-			105682,	-- Mad Hozen Elixir
-			105683,	-- Elixir of Weaponry
-			105684,	-- Elixir of the Rapids
+			--105686,	-- Elixir of Perfection
+			--105688,	-- Monk's Elixir
+			--105685,	-- Elixir of Peace
+			--105682,	-- Mad Hozen Elixir
+			--105683,	-- Elixir of Weaponry
+			--105684,	-- Elixir of the Rapids
 		},
 		GuardianElixir = {
-			105687,	-- Elixir of Mirrors
-			105681,	-- Mantid Elixir
+			--105687,	-- Elixir of Mirrors
+			--105681,	-- Mantid Elixir
 		},
 		Food = {
 			104280,	-- Well Fed
 		},
 		Stat = {
-			20217,	-- Blessing of Kings
-			115921,	-- Legacy of the Emperor
-			116781,	-- Legacy of the White Tiger
-			90363,	-- Embrace of the Shale Spider
-			1126,	-- Mark of the Wild
+			--BETA 1126,	-- Mark of the Wild
+			--BETA 160206,	-- Lone Wolf: Power of the Primates
+			--BETA 159988,	-- Bark of the Wild (Dog)
+			--BETA 160017,	-- Blessing of Kongs (Gorilla)
+			--BETA 90363,	-- Embrace of the Shale Spider
+			--BETA 160077,	-- Strength of the Earth (Worm)
+			--BETA 115921,	-- Legacy of the Emperor
+			--BETA 116781,	-- Legacy of the White Tiger
+			--BETA 20217,	-- Blessing of Kings
 		},
 		Stamina = {
-			469,	-- Commanding Shout
-			90364,	-- Qiraji Fortitude
-			166928,	-- Blood Pact
-			111922,	-- Runescroll of Fortitude III
-			21562,	-- Power Word: Fortitude
+			--BETA 21562,	-- Power Word: Fortitude
+			--BETA 160199,	-- Lone Wolf: Fortitude of the Bear
+			--BETA 50256,	-- Invigorating Roar (Bear)
+			--BETA 90364,	-- Qiraji Fortitude (Silithid)
+			--BETA 160003,	-- Savage Vigor (Rylak)
+			--BETA 160014,	-- Sturdiness (Goat)
+			--BETA 166928,	-- Blood Pact
+			--BETA 469,	-- Commanding Shout
+			--BETA 111922,	-- Runescroll of Fortitude III
 		}
 	}
 
 	-- Caster buffs
 	function ReminderCasterBuffs()
 		Spell5Buff = {	-- Spell Power
-			109773,	-- Dark Intent
-			126309,	-- Still Water
-			128433,	-- Serpent's Swiftness
-			61316,	-- Dalaran Brilliance
-			1459,	-- Arcane Brilliance
+			--BETA 1459,	-- Arcane Brilliance
+			--BETA 61316,	-- Dalaran Brilliance
+			--BETA 160205,	-- Lone Wolf: Wisdom of the Serpent
+			--BETA 126309,	-- Still Water (Water Strider)
+			--BETA 128433,	-- Serpent's Cunning (Serpent)
+			--BETA 90364,	-- Qiraji Fortitude (Silithid)
+			--BETA 109773,	-- Dark Intent
 		}
 	end
 
 	-- Physical buffs
 	function ReminderPhysicalBuffs()
 		Spell5Buff = {	-- Attack Power
-			6673,	-- Battle Shout
-			19506,	-- Trueshot Aura
-			57330,	-- Horn of Winter
+			--BETA 57330,	-- Horn of Winter
+			--BETA 19506,	-- Trueshot Aura
+			--BETA 6673,	-- Battle Shout
 		}
 
 	Spell6Buff = {	-- Haste
-		49868,	-- Mind Quickening
-		135678,	-- Energizing Spores
-		113742,	-- Swiftblade's Cunning
-		128432,	-- Cackling Howl
-		55610,	-- Unholy Aura
-		116956,	-- Grace of Air
+		--BETA 116956,	-- Grace of Air
+		--BETA 55610,	-- Unholy Aura
+		--BETA 160203,	-- Lone Wolf: Haste of the Hyena
+		--BETA 128432,	-- Cackling Howl (Hyena)
+		--BETA 135678,	-- Energizing Spores (Sporebat)
+		--BETA 160003,	-- Savage Vigor (Rylak)
+		--BETA 49868,	-- Mind Quickening
+		--BETA 113742,	-- Swiftblade's Cunning
 	}
 end
 

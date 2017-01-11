@@ -15,10 +15,10 @@ for i= 1, 12 do
 	b:SetFrameLevel(15)
 
 	if i == 1 then
-		b:SetPoint("TOPLEFT", bar, buttonspacing,-buttonspacing)
+		b:SetPoint("TOPRIGHT", bar, -buttonspacing,-buttonspacing)
 	elseif i == (Qulight.actionbar.mainbarWidth+1) then
 		b:SetPoint("TOP", UIParent, "BOTTOM", 0, -20)
 	else
-		b:SetPoint("LEFT", b2, "RIGHT", buttonspacing, 0)
+		b:SetPoint("TOP", b2, "BOTTOM", 0, -buttonspacing)
 	end
 end
