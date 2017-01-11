@@ -1,8 +1,8 @@
 ## Interface: 70100
-## Title: Aurora
+## Title: |cff1784d1Aurora|r
 ## Notes: Minimalistic window theme.
 ## Author: Haleth/Lightsword
-## Version: 7.1.0
+## Version: 7.1.5
 ## SavedVariables: AuroraConfig
 ## RequiredDeps: QulightUI
 
@@ -21,30 +21,31 @@ AddOns\Blizzard_Collections.lua
 AddOns\Blizzard_DeathRecap.lua
 AddOns\Blizzard_DebugTools.lua
 AddOns\Blizzard_EncounterJournal.lua
+AddOns\Blizzard_GarrisonTemplates.lua
 AddOns\Blizzard_GarrisonUI.lua
 AddOns\Blizzard_GMSurveyUI.lua
 AddOns\Blizzard_GuildBankUI.lua
 AddOns\Blizzard_GuildControlUI.lua
 AddOns\Blizzard_GuildUI.lua
 AddOns\Blizzard_InspectUI.lua
-AddOns\Blizzard_ItemAlterationUI.lua
 AddOns\Blizzard_ItemSocketingUI.lua
 AddOns\Blizzard_ItemUpgradeUI.lua
 AddOns\Blizzard_LookingForGuildUI.lua
 AddOns\Blizzard_MacroUI.lua
 AddOns\Blizzard_PVPUI.lua
 AddOns\Blizzard_QuestChoice.lua
+AddOns\Blizzard_RaidUI.lua
 AddOns\Blizzard_TalentUI.lua
 AddOns\Blizzard_TimeManager.lua
 AddOns\Blizzard_TradeSkillUI.lua
 AddOns\Blizzard_TrainerUI.lua
 AddOns\Blizzard_VoidStorageUI.lua
-AddOns\Blizzard_GarrisonTemplates
-AddOns\Recount.lua
 
 FrameXML\AlertFrames.lua
 FrameXML\BankFrame.lua
+FrameXML\ChannelFrame.lua
 FrameXML\CharacterFrame.lua
+FrameXML\ChatConfigFrame.lua
 FrameXML\Constants.lua
 FrameXML\ContainerFrame.lua
 FrameXML\DressUpFrames.lua
@@ -67,12 +68,13 @@ FrameXML\NavigationBar.lua
 FrameXML\PaperDollFrame.lua
 FrameXML\ProductChoiceFrame.lua
 FrameXML\PVEFrame.lua
-FrameXML\QuickJoin.lua
 FrameXML\QuestFrame.lua
 FrameXML\QuestInfo.lua
 FrameXML\QuestMapFrame.lua
 FrameXML\QueueStatusFrame.lua
+FrameXML\QuickJoin.lua
 FrameXML\RaidFinder.lua
+FrameXML\RaidFrame.lua
 FrameXML\RecruitAFriendFrame.lua
 FrameXML\RolePoll.lua
 FrameXML\ScenarioFinder.lua

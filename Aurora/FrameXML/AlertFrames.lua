@@ -4,11 +4,8 @@ local _, private = ...
 local _G = _G
 --local select, pairs = _G.select, _G.pairs
 
--- [[ WoW API ]]
-local CreateFrame = _G.CreateFrame
-
 -- [[ Core ]]
-local F, C = unpack(select(2, ...))
+local F, C = _G.unpack(private.Aurora)
 
 _G.tinsert(C.themes["Aurora"], function()
 	local OnShow = {}
@@ -63,7 +60,7 @@ _G.tinsert(C.themes["Aurora"], function()
 		end
 	end
 
-	if not C.is71 then
+	--[=[ Broken in 7.1 
 	--[[ Dungeon completion rewards ]]
 	local DungeonCompletionAlertFrame = _G.DungeonCompletionAlertFrame
 	local bg = CreateFrame("Frame", nil, DungeonCompletionAlertFrame)
@@ -120,18 +117,22 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.GuildChallengeAlertFrameGlow:SetTexture("")
 	_G.GuildChallengeAlertFrameShine:SetTexture("")
 	_G.GuildChallengeAlertFrameEmblemBorder:SetTexture("")
-	end
+	]=]
 
     _G.hooksecurefunc(_G.AlertFrame, "AddAlertFrame", function(self, frame)
     	local frameName = frame:GetName()
     	if frameName then
     		local alertName = frameName:match("(%w+)AlertFrame")
+    		private.debug("alertName", alertName)
     		if OnShow[alertName] then OnShow[alertName](frame) end
     	else
     		-- QueueAlertFrames are created dynamicly and do not have names
     		if frame.Unlocked then
     			-- Achievement alert
     			if frame.Unlocked:GetText() == _G.ACHIEVEMENT_PROGRESSED then
+    				private.debug("AchievementCriteria")
+    			else
+    				private.debug("AchievementUnlocked")
     				OnShow.Achievement(frame)
     			end
     		end

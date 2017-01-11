@@ -1,16 +1,22 @@
-local F, C = unpack(select(2, ...))
+local _, private = ...
 
-tinsert(C.themes["Aurora"], function()
-	F.ReskinPortraitFrame(AddonList, true)
-	F.Reskin(AddonListEnableAllButton)
-	F.Reskin(AddonListDisableAllButton)
-	F.Reskin(AddonListCancelButton)
-	F.Reskin(AddonListOkayButton)
-	F.ReskinCheck(AddonListForceLoad)
-	F.ReskinDropDown(AddonCharacterDropDown)
-	F.ReskinScroll(AddonListScrollFrameScrollBar)
+-- [[ Lua Globals ]]
+local _G = _G
 
-	AddonCharacterDropDown:SetWidth(170)
+-- [[ Core ]]
+local F, C = _G.unpack(private.Aurora)
+
+_G.tinsert(C.themes["Aurora"], function()
+	F.ReskinPortraitFrame(_G.AddonList, true)
+	F.Reskin(_G.AddonListEnableAllButton)
+	F.Reskin(_G.AddonListDisableAllButton)
+	F.Reskin(_G.AddonListCancelButton)
+	F.Reskin(_G.AddonListOkayButton)
+	F.ReskinCheck(_G.AddonListForceLoad)
+	F.ReskinDropDown(_G.AddonCharacterDropDown)
+	F.ReskinScroll(_G.AddonListScrollFrameScrollBar)
+
+	_G.AddonCharacterDropDown:SetWidth(170)
 
 	_G.hooksecurefunc("AddonList_Update", function()
 		for i = 1, _G.MAX_ADDONS_DISPLAYED do

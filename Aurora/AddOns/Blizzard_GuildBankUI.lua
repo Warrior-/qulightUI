@@ -1,36 +1,44 @@
-local F, C = unpack(select(2, ...))
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+local select = _G.select
+
+-- [[ Core ]]
+local F, C = _G.unpack(private.Aurora)
 
 C.themes["Blizzard_GuildBankUI"] = function()
+	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:DisableDrawLayer("BACKGROUND")
 	GuildBankFrame:DisableDrawLayer("BORDER")
 
 	GuildBankFrame.TopLeftCorner:Hide()
 	GuildBankFrame.TopRightCorner:Hide()
 	GuildBankFrame.TopBorder:Hide()
-	GuildBankTabTitleBackground:SetTexture("")
-	GuildBankTabTitleBackgroundLeft:SetTexture("")
-	GuildBankTabTitleBackgroundRight:SetTexture("")
-	GuildBankTabLimitBackground:SetTexture("")
-	GuildBankTabLimitBackgroundLeft:SetTexture("")
-	GuildBankTabLimitBackgroundRight:SetTexture("")
-	GuildBankEmblemFrame:Hide()
-	GuildBankMoneyFrameBackgroundLeft:Hide()
-	GuildBankMoneyFrameBackgroundMiddle:Hide()
-	GuildBankMoneyFrameBackgroundRight:Hide()
+	_G.GuildBankTabTitleBackground:SetTexture("")
+	_G.GuildBankTabTitleBackgroundLeft:SetTexture("")
+	_G.GuildBankTabTitleBackgroundRight:SetTexture("")
+	_G.GuildBankTabLimitBackground:SetTexture("")
+	_G.GuildBankTabLimitBackgroundLeft:SetTexture("")
+	_G.GuildBankTabLimitBackgroundRight:SetTexture("")
+	_G.GuildBankEmblemFrame:Hide()
+	_G.GuildBankMoneyFrameBackgroundLeft:Hide()
+	_G.GuildBankMoneyFrameBackgroundMiddle:Hide()
+	_G.GuildBankMoneyFrameBackgroundRight:Hide()
 	for i = 1, 2 do
-		select(i, GuildBankTransactionsScrollFrame:GetRegions()):Hide()
-		select(i, GuildBankInfoScrollFrame:GetRegions()):Hide()
+		select(i, _G.GuildBankTransactionsScrollFrame:GetRegions()):Hide()
+		select(i, _G.GuildBankInfoScrollFrame:GetRegions()):Hide()
 	end
 
 	F.SetBD(GuildBankFrame)
-	F.Reskin(GuildBankFrameWithdrawButton)
-	F.Reskin(GuildBankFrameDepositButton)
-	F.Reskin(GuildBankFramePurchaseButton)
-	F.Reskin(GuildBankInfoSaveButton)
+	F.Reskin(_G.GuildBankFrameWithdrawButton)
+	F.Reskin(_G.GuildBankFrameDepositButton)
+	F.Reskin(_G.GuildBankFramePurchaseButton)
+	F.Reskin(_G.GuildBankInfoSaveButton)
 	F.ReskinClose(GuildBankFrame.CloseButton)
-	F.ReskinScroll(GuildBankTransactionsScrollFrameScrollBar)
-	F.ReskinScroll(GuildBankInfoScrollFrameScrollBar)
-	F.ReskinInput(GuildItemSearchBox)
+	F.ReskinScroll(_G.GuildBankTransactionsScrollFrameScrollBar)
+	F.ReskinScroll(_G.GuildBankInfoScrollFrameScrollBar)
+	F.ReskinInput(_G.GuildItemSearchBox)
 
 	for i = 1, 4 do
 		local tab = _G["GuildBankFrameTab"..i]
@@ -41,11 +49,12 @@ C.themes["Blizzard_GuildBankUI"] = function()
 		end
 	end
 
-	GuildBankFrameWithdrawButton:SetPoint("RIGHT", GuildBankFrameDepositButton, "LEFT", -1, 0)
 
-	for i = 1, NUM_GUILDBANK_COLUMNS do
+	_G.GuildBankFrameWithdrawButton:SetPoint("RIGHT", _G.GuildBankFrameDepositButton, "LEFT", -1, 0)
+
+	for i = 1, _G.NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn"..i]:GetRegions():Hide()
-		for j = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
+		for j = 1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local bu = _G["GuildBankColumn"..i.."Button"..j]
 			local border = bu.IconBorder
 			local searchOverlay = bu.searchOverlay
@@ -93,16 +102,16 @@ C.themes["Blizzard_GuildBankUI"] = function()
 		select(i, GuildBankPopupFrame.BorderBox:GetRegions()):Hide()
 	end
 
-	GuildBankPopupNameLeft:Hide()
-	GuildBankPopupNameMiddle:Hide()
-	GuildBankPopupNameRight:Hide()
-	F.CreateBD(GuildBankPopupEditBox, .25)
-	F.Reskin(GuildBankPopupCancelButton)
-	F.Reskin(GuildBankPopupOkayButton)
+	_G.GuildBankPopupNameLeft:Hide()
+	_G.GuildBankPopupNameMiddle:Hide()
+	_G.GuildBankPopupNameRight:Hide()
+	F.CreateBD(_G.GuildBankPopupEditBox, .25)
+	F.Reskin(_G.GuildBankPopupCancelButton)
+	F.Reskin(_G.GuildBankPopupOkayButton)
 
-	GuildBankPopupScrollFrameTop:Hide()
-	GuildBankPopupScrollFrameMiddle:Hide()
-	GuildBankPopupScrollFrameBottom:Hide()
-	F.ReskinScroll(GuildBankPopupScrollFrameScrollBar)
-	GuildBankPopupScrollFrame:SetHeight(400)
+	_G.GuildBankPopupScrollFrameTop:Hide()
+	_G.GuildBankPopupScrollFrameMiddle:Hide()
+	_G.GuildBankPopupScrollFrameBottom:Hide()
+	F.ReskinScroll(_G.GuildBankPopupScrollFrameScrollBar)
+	_G.GuildBankPopupScrollFrame:SetHeight(400)
 end

@@ -459,7 +459,6 @@ frame:SetScript("OnEvent", function(self, event, addon)
 	end
 end)
 
-
 local function SkinIt(bar)	
 	local _, originalPoint, _, _, _ = bar:GetPoint()
 	

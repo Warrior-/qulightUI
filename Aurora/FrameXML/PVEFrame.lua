@@ -2,24 +2,27 @@ local _, private = ...
 
 -- [[ Lua Globals ]]
 local _G = _G
-local select = _G.select
 
 -- [[ WoW API ]]
 local hooksecurefunc = _G.hooksecurefunc
 
 -- [[ Core ]]
-local F, C = unpack(select(2, ...))
+local F, C = _G.unpack(private.Aurora)
 
 _G.tinsert(C.themes["Aurora"], function()
 	local r, g, b = C.r, C.g, C.b
 
 	_G.PVEFrame:DisableDrawLayer("ARTWORK")
 	_G.PVEFrameLeftInset:DisableDrawLayer("BORDER")
-	_G.PVEFrameBlueBg:Hide()
 	_G.PVEFrameLeftInsetBg:Hide()
+	_G.PVEFrameBlueBg:Hide()
+	_G.PVEFrameBlueBg.Show = F.dummy
+	_G.PVEFrameTopFiligree:Hide();
+	_G.PVEFrameTopFiligree.Show = F.dummy
+	_G.PVEFrameBottomFiligree:Hide();
+	_G.PVEFrameBottomFiligree.Show = F.dummy
 	_G.PVEFrame.shadows:Hide()
-	select(24, _G.PVEFrame:GetRegions()):Hide()
-	select(25, _G.PVEFrame:GetRegions()):Hide()
+	_G.PVEFrame.shadows.Show = F.dummy
 
 	_G.PVEFrameTab2:SetPoint("LEFT", _G.PVEFrameTab1, "RIGHT", -15, 0)
 	_G.PVEFrameTab3:SetPoint("LEFT", _G.PVEFrameTab2, "RIGHT", -15, 0)

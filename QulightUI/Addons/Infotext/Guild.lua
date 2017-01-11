@@ -142,7 +142,7 @@ Stat:SetScript("OnMouseUp", function(self, btn)
 
 	for i = 1, #guildTable do
 		if (guildTable[i][7] and (guildTable[i][1] ~= UnitName("player") and guildTable[i][1] ~= UnitName("player").."-"..GetRealmName())) then
-			local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[guildTable[i][9]], GetCreatureDifficultyColor(guildTable[i][3])
+			local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[guildTable[i][9]], GetQuestDifficultyColor(guildTable[i][3])
 
 			if UnitInParty(guildTable[i][1]) or UnitInRaid(guildTable[i][1]) then
 				grouped = "|cffaaaaaa*|r"
@@ -221,7 +221,7 @@ Stat:SetScript("OnEnter", function(self)
 				end
 				
 				if GetRealZoneText() == zone then zonec = activezone else zonec = inactivezone end
-				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class], GetCreatureDifficultyColor(level)
+				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class], GetQuestDifficultyColor(level)
 				
 				if isMobile then zone = "" end
 				

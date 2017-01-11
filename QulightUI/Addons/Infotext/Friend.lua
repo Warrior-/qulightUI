@@ -265,8 +265,8 @@ Stat:SetScript("OnMouseDown", function(self, btn)
 					menuCountInvites = menuCountInvites + 1
 					menuCountWhispers = menuCountWhispers + 1
 
-					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetCreatureDifficultyColor(info[2])
-					classc = classc or GetCreatureDifficultyColor(info[2]);
+					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
+					classc = classc or GetQuestDifficultyColor(info[2]);
 
 					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1],notCheckable=true, func = inviteClick}
 					menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1],notCheckable=true, func = whisperClick}
@@ -283,8 +283,8 @@ Stat:SetScript("OnMouseDown", function(self, btn)
 					menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
 
 					if info[6] == wowString and UnitFactionGroup("player") == info[12] then
-						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetCreatureDifficultyColor(info[16])
-						classc = classc or GetCreatureDifficultyColor(info[16])
+						classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[14]], GetQuestDifficultyColor(info[16])
+						classc = classc or GetQuestDifficultyColor(info[16])
 
 						if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 						menuCountInvites = menuCountInvites + 1
@@ -330,9 +330,9 @@ Stat:SetScript("OnEnter", function(self)
 			info = friendTable[i]
 			if info[5] then
 				if GetZoneText(GetCurrentMapAreaID()) == info[4] then zonec = activezone else zonec = inactivezone end
-				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetCreatureDifficultyColor(info[2])
+				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 
-				classc = classc or GetCreatureDifficultyColor(info[2])
+				classc = classc or GetQuestDifficultyColor(info[2])
 
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then grouped = 1 else grouped = 2 end
 				GameTooltip:AddDoubleLine(format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],info[1],groupedTable[grouped]," "..info[6]),info[4],classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
@@ -353,7 +353,7 @@ Stat:SetScript("OnEnter", function(self)
 							if (info[7] == true) then status = 1 elseif (info[8] == true) then status = 2 else status = 3 end
 							classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[13]]
 							if info[15] ~= '' then
-								levelc = GetCreatureDifficultyColor(info[15])
+								levelc = GetQuestDifficultyColor(info[15])
 							else
 								levelc = RAID_CLASS_COLORS["PRIEST"]
 								classc = RAID_CLASS_COLORS["PRIEST"]

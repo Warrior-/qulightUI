@@ -8,7 +8,7 @@ local tinsert, pairs = _G.tinsert, _G.pairs
 local hooksecurefunc = _G.hooksecurefunc
 
 -- [[ Core ]]
-local F, C = unpack(select(2, ...))
+local F, C = _G.unpack(private.Aurora)
 
 _G.tinsert(C.themes["Aurora"], function()
 	for i = 1, 9 do

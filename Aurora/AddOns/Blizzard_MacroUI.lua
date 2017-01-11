@@ -1,32 +1,40 @@
-local F, C = unpack(select(2, ...))
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+local select = _G.select
+
+-- [[ Core ]]
+local F, C = _G.unpack(private.Aurora)
 
 C.themes["Blizzard_MacroUI"] = function()
-	select(18, MacroFrame:GetRegions()):Hide()
-	MacroHorizontalBarLeft:Hide()
-	select(21, MacroFrame:GetRegions()):Hide()
+	select(18, _G.MacroFrame:GetRegions()):Hide()
+	_G.MacroHorizontalBarLeft:Hide()
+	select(21, _G.MacroFrame:GetRegions()):Hide()
 
 	for i = 1, 6 do
-		select(i, MacroFrameTab1:GetRegions()):Hide()
-		select(i, MacroFrameTab2:GetRegions()):Hide()
-		select(i, MacroFrameTab1:GetRegions()).Show = F.dummy
-		select(i, MacroFrameTab2:GetRegions()).Show = F.dummy
+		select(i, _G.MacroFrameTab1:GetRegions()):Hide()
+		select(i, _G.MacroFrameTab2:GetRegions()):Hide()
+		select(i, _G.MacroFrameTab1:GetRegions()).Show = F.dummy
+		select(i, _G.MacroFrameTab2:GetRegions()).Show = F.dummy
 	end
-	MacroFrameTextBackground:SetBackdrop(nil)
-	select(2, MacroFrameSelectedMacroButton:GetRegions()):Hide()
-	MacroFrameSelectedMacroBackground:SetAlpha(0)
-	MacroButtonScrollFrameTop:Hide()
-	MacroButtonScrollFrameMiddle:Hide()
-	MacroButtonScrollFrameBottom:Hide()
+	_G.MacroFrameTextBackground:SetBackdrop(nil)
+	select(2, _G.MacroFrameSelectedMacroButton:GetRegions()):Hide()
+	_G.MacroFrameSelectedMacroBackground:SetAlpha(0)
+	_G.MacroButtonScrollFrameTop:Hide()
+	_G.MacroButtonScrollFrameMiddle:Hide()
+	_G.MacroButtonScrollFrameBottom:Hide()
 
-	MacroFrameSelectedMacroButton:SetPoint("TOPLEFT", MacroFrameSelectedMacroBackground, "TOPLEFT", 12, -16)
-	MacroFrameSelectedMacroButtonIcon:SetPoint("TOPLEFT", 1, -1)
-	MacroFrameSelectedMacroButtonIcon:SetPoint("BOTTOMRIGHT", -1, 1)
-	MacroFrameSelectedMacroButtonIcon:SetTexCoord(.08, .92, .08, .92)
+	_G.MacroFrameSelectedMacroButton:SetPoint("TOPLEFT", _G.MacroFrameSelectedMacroBackground, "TOPLEFT", 12, -16)
+	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("TOPLEFT", 1, -1)
+	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("BOTTOMRIGHT", -1, 1)
+	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(.08, .92, .08, .92)
 
-	MacroNewButton:ClearAllPoints()
-	MacroNewButton:SetPoint("RIGHT", MacroExitButton, "LEFT", -1, 0)
 
-	for i = 1, MAX_ACCOUNT_MACROS do
+	_G.MacroNewButton:ClearAllPoints()
+	_G.MacroNewButton:SetPoint("RIGHT", _G.MacroExitButton, "LEFT", -1, 0)
+
+	for i = 1, _G.MAX_ACCOUNT_MACROS do
 		local bu = _G["MacroButton"..i]
 		local ic = _G["MacroButton"..i.."Icon"]
 
@@ -40,17 +48,18 @@ C.themes["Blizzard_MacroUI"] = function()
 		F.CreateBD(bu, .25)
 	end
 
-	F.ReskinPortraitFrame(MacroFrame, true)
-	F.CreateBD(MacroFrameScrollFrame, .25)
-	F.CreateBD(MacroFrameSelectedMacroButton, .25)
-	F.Reskin(MacroDeleteButton)
-	F.Reskin(MacroNewButton)
-	F.Reskin(MacroExitButton)
-	F.Reskin(MacroEditButton)
-	F.Reskin(MacroSaveButton)
-	F.Reskin(MacroCancelButton)
-	F.ReskinScroll(MacroButtonScrollFrameScrollBar)
-	F.ReskinScroll(MacroFrameScrollFrameScrollBar)
+	F.ReskinPortraitFrame(_G.MacroFrame, true)
+	F.CreateBD(_G.MacroFrameScrollFrame, .25)
+	F.CreateBD(_G.MacroFrameSelectedMacroButton, .25)
+	F.Reskin(_G.MacroDeleteButton)
+	F.Reskin(_G.MacroNewButton)
+	F.Reskin(_G.MacroExitButton)
+	F.Reskin(_G.MacroEditButton)
+	F.Reskin(_G.MacroSaveButton)
+	F.Reskin(_G.MacroCancelButton)
+	F.ReskinScroll(_G.MacroButtonScrollFrameScrollBar)
+	F.ReskinScroll(_G.MacroFrameScrollFrameScrollBar)
+
 
 	local MacroPopupFrame = _G.MacroPopupFrame
 	MacroPopupFrame:SetPoint("TOPLEFT", _G.MacroFrame, "TOPRIGHT", 3, -30)
@@ -61,16 +70,16 @@ C.themes["Blizzard_MacroUI"] = function()
 		select(i, MacroPopupFrame.BorderBox:GetRegions()):Hide()
 	end
 
-	MacroPopupNameLeft:Hide()
-	MacroPopupNameMiddle:Hide()
-	MacroPopupNameRight:Hide()
-	F.CreateBD(MacroPopupEditBox, .25)
-	F.Reskin(MacroPopupCancelButton)
-	F.Reskin(MacroPopupOkayButton)
+	_G.MacroPopupNameLeft:Hide()
+	_G.MacroPopupNameMiddle:Hide()
+	_G.MacroPopupNameRight:Hide()
+	F.CreateBD(_G.MacroPopupEditBox, .25)
+	F.Reskin(_G.MacroPopupCancelButton)
+	F.Reskin(_G.MacroPopupOkayButton)
 
-	MacroPopupScrollFrameTop:Hide()
-	MacroPopupScrollFrameMiddle:Hide()
-	MacroPopupScrollFrameBottom:Hide()
-	F.ReskinScroll(MacroPopupScrollFrameScrollBar)
-	MacroPopupScrollFrame:SetHeight(400)
+	_G.MacroPopupScrollFrameTop:Hide()
+	_G.MacroPopupScrollFrameMiddle:Hide()
+	_G.MacroPopupScrollFrameBottom:Hide()
+	F.ReskinScroll(_G.MacroPopupScrollFrameScrollBar)
+	_G.MacroPopupScrollFrame:SetHeight(400)
 end

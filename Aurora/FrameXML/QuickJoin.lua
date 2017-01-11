@@ -4,10 +4,9 @@ local _, private = ...
 local _G = _G
 
 -- [[ Core ]]
-local F, C = unpack(select(2, ...))
+local F, C = _G.unpack(private.Aurora)
 
 _G.tinsert(C.themes["Aurora"], function()
-  
     local QuickJoinFrame = _G.QuickJoinFrame
     _G.QuickJoinScrollFrameTop:Hide()
     _G.QuickJoinScrollFrameMiddle:Hide()

@@ -8,7 +8,7 @@ local pairs = _G.pairs
 local hooksecurefunc = _G.hooksecurefunc
 
 -- [[ Core ]]
-local F, C = unpack(select(2, ...))
+local F, C = _G.unpack(private.Aurora)
 
 _G.tinsert(C.themes["Aurora"], function()
 	local function styleRewardButton(button)
@@ -33,7 +33,7 @@ _G.tinsert(C.themes["Aurora"], function()
 		button.bg2 = _G.CreateFrame("Frame", nil, button)
 		button.bg2:SetPoint("TOPLEFT", na, "TOPLEFT", 10, 0)
 		button.bg2:SetPoint("BOTTOMRIGHT", na, "BOTTOMRIGHT")
-		F.CreateBD(button.bg2, 0)
+		F.CreateBDborder(button.bg2, 0)
 	end
 
 	hooksecurefunc("LFDQueueFrameRandom_UpdateFrame", function()

@@ -5,7 +5,7 @@ local _G = _G
 local next, select = _G.next, _G.select
 
 -- [[ Core ]]
-local F, C = unpack(select(2, ...))
+local F, C = _G.unpack(private.Aurora)
 
 _G.tinsert(C.themes["Aurora"], function()
     F.ReskinPortraitFrame(_G.FriendsFrame, true)
@@ -191,5 +191,4 @@ _G.tinsert(C.themes["Aurora"], function()
     local send, cancel = _G.BattleTagInviteFrame:GetChildren()
     F.Reskin(send)
     F.Reskin(cancel)
-
 end)

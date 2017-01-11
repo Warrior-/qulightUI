@@ -8,13 +8,14 @@ local _G = _G
 local hooksecurefunc = _G.hooksecurefunc
 
 -- [[ Core ]]
-local F, C = unpack(select(2, ...))
+local F, C = _G.unpack(private.Aurora)
 
 _G.tinsert(C.themes["Aurora"], function()
 	F.ReskinPortraitFrame(_G.QuestFrame, true)
 	--[[ QuestFrame ]]
 
 	hooksecurefunc("QuestFrame_SetMaterial", function(frame, material)
+		private.debug("QuestFrame_SetMaterial", material)
 		if material ~= "Parchment" then
 			local name = frame:GetName()
 			_G[name.."MaterialTopLeft"]:Hide()
@@ -84,8 +85,6 @@ _G.tinsert(C.themes["Aurora"], function()
 	F.Reskin(_G.QuestFrameDeclineButton)
 	F.Reskin(_G.QuestFrameDetailPanel.IgnoreButton)
 	F.Reskin(_G.QuestFrameDetailPanel.UnignoreButton)
-	F.Reskin(_G.QuestFrameProgressPanel.IgnoreButton)
-	F.Reskin(QuestFrameProgressPanel.UnignoreButton)
 	F.Reskin(_G.QuestFrameAcceptButton)
 
 	_G.QuestDetailScrollFrame:SetWidth(302) -- else these buttons get cut off

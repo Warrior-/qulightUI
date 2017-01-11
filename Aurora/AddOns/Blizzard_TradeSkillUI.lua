@@ -1,4 +1,13 @@
-local F, C = unpack(select(2, ...))
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+
+-- [[ WoW API ]]
+local hooksecurefunc, CreateFrame = _G.hooksecurefunc, _G.CreateFrame
+
+-- [[ Core ]]
+local F, C = _G.unpack(private.Aurora)
 
 local function updateCollapsedState(button)
 	if button.tradeSkillInfo and button.tradeSkillInfo.collapsed then
@@ -9,6 +18,7 @@ local function updateCollapsedState(button)
 end
 
 C.themes["Blizzard_TradeSkillUI"] = function()
+	local TradeSkillFrame = _G.TradeSkillFrame
 	F.ReskinPortraitFrame(TradeSkillFrame)
 
 	local rankFrame = TradeSkillFrame.RankFrame

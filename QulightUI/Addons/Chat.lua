@@ -431,27 +431,41 @@ Fane:RegisterEvent("ADDON_LOADED")
 -----------------------------------------------------------------------------
 -- Copy Chat (by Shestak)
 -----------------------------------------------------------------------------
+local function FadeIn(f)
+	UIFrameFadeIn(f, 0.4, f:GetAlpha(), 1)
+end
+
+local function FadeOut(f)
+	UIFrameFadeOut(f, 0.8, f:GetAlpha(), 0)
+end
 
 local lines = {}
 local frame = nil
 local editBox = nil
 local isf = nil
+local sizes = {
+	":14:14",
+	":15:15",
+	":16:16",
+	":12:20",
+	":14"
+}
 
-local function CreateCopyFrame()
-	frame = CreateFrame("Frame", "ChatCopyFrame", UIParent)
+local function CreatCopyFrame()
+	frame = CreateFrame("Frame", "CopyFrame", UIParent)
 	CreateStyle(frame, 2)
 	frame:SetWidth(440)
 	frame:SetHeight(250)
-	frame:SetScale(1)
 	frame:SetPoint("BOTTOM", ChatBackground, "TOP", 0, 2)
-	frame:Hide()
 	frame:SetFrameStrata("DIALOG")
+	tinsert(UISpecialFrames, "CopyFrame")
+	frame:Hide()
 
-	local scrollArea = CreateFrame("ScrollFrame", "ChatCopyScroll", frame, "UIPanelScrollFrameTemplate")
+	local scrollArea = CreateFrame("ScrollFrame", "CopyScroll", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
 	scrollArea:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
 
-	editBox = CreateFrame("EditBox", "ChatCopyEditBox", frame)
+	editBox = CreateFrame("EditBox", "CopyBox", frame)
 	editBox:SetMultiLine(true)
 	editBox:SetMaxLetters(99999)
 	editBox:EnableMouse(true)
@@ -463,53 +477,53 @@ local function CreateCopyFrame()
 
 	scrollArea:SetScrollChild(editBox)
 
-	local close = CreateFrame("Button", "CopyCloseButton", frame, "UIPanelCloseButton")
-	close:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
-	close:GetNormalTexture():SetDesaturated(1)
+	editBox:SetScript("OnTextSet", function(self)
+		local text = self:GetText()
 
+		for _, size in pairs(sizes) do
+			if string.find(text, size) and not string.find(text, size.."]") then
+				self:SetText(string.gsub(text, size, ":12:12"))
+			end
+		end
+	end)
+
+	local close = CreateFrame("Button", "CopyCloseButton", frame, "UIPanelCloseButton")
+	scrollArea:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -27, 8)
 	isf = true
 end
 
-local function GetLines(...)
-	local ct = 1
-	for i = select("#", ...), 1, -1 do
-		local region = select(i, ...)
-		if region:GetObjectType() == "FontString" then
-			lines[ct] = tostring(region:GetText())
-			ct = ct + 1
-		end
-	end
-	return ct - 1
+local scrollDown = function()
+	CopyScroll:SetVerticalScroll((CopyScroll:GetVerticalScrollRange()) or 0)
 end
 
 local function Copy(cf)
-	local _, size = cf:GetFont()
-	FCF_SetChatWindowFontSize(cf, cf, 0.01)
-	local lineCt = GetLines(cf:GetRegions())
-	local text = table.concat(lines, "\n", 1, lineCt)
-	FCF_SetChatWindowFontSize(cf, cf, size)
-	if not isf then CreateCopyFrame() end
+	local text = ""
+	for i = 1, cf:GetNumMessages() do
+		text = text..cf:GetMessageInfo(i).."\n"
+	end
+	text = text:gsub("|[Tt]Interface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d):0|[Tt]", "{rt%1}")
+	text = text:gsub("|[Tt][^|]+|[Tt]", "")
+	if not isf then CreatCopyFrame() end
 	if frame:IsShown() then frame:Hide() return end
 	frame:Show()
 	editBox:SetText(text)
 end
 
-copyicon = "Interface\\AddOns\\QulightUI\\Root\\Media\\copy"
-
 for i = 1, NUM_CHAT_WINDOWS do
-	local cf = _G[format("ChatFrame%d",  i)]
+	local cf = _G[format("ChatFrame%d", i)]
 	local button = CreateFrame("Button", format("ButtonCF%d", i), cf)
 	button:SetPoint("TOPRIGHT", 5, 0)
-	button:SetHeight(20)
-	button:SetWidth(20)
-	button:SetNormalTexture(copyicon)
+	button:SetSize(20, 20)
 	button:SetAlpha(0)
 	CreateStyle(button, 2)
+	button:SetBackdropBorderColor(1, 1, 1)
 
-	
-	
-	
-	button:SetScript("OnMouseUp", function(self)
+	local buttontexture = button:CreateTexture(nil, "BORDER")
+	buttontexture:SetPoint("CENTER")
+	buttontexture:SetTexture("Interface\\BUTTONS\\UI-GuildButton-PublicNote-Up")
+	buttontexture:SetSize(16, 16)
+
+button:SetScript("OnMouseUp", function(self)
 		Copy(cf)
 	end)
 	button:SetScript("OnEnter", function() 
@@ -517,20 +531,9 @@ for i = 1, NUM_CHAT_WINDOWS do
 	end)
 	button:SetScript("OnLeave", function() button:SetAlpha(0) end)
 
-end
-
-for i=1, NUM_CHAT_WINDOWS do
-	local editbox = _G["ChatFrame"..i.."EditBox"]
-	editbox:HookScript("OnTextChanged", function(self)
-		local text = self:GetText()
-		
-		local new, found = gsub(text, "|Kf(%S+)|k(%S+)%s(%S+)k:%s", "%2 %3: ")
-		
-		if found > 0 then
-			new = new:gsub('|', '')
-			self:SetText(new)
-		end
-	end)
+	SlashCmdList.COPY_CHAT = function()
+		Copy(_G["ChatFrame1"])
+	end
 end
 
 local gsub = gsub

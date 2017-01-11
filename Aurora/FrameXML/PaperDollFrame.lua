@@ -5,7 +5,7 @@ local _G = _G
 local select, next = _G.select, _G.next
 
 -- [[ Core ]]
-local F, C = unpack(select(2, ...))
+local F, C = _G.unpack(private.Aurora)
 
 _G.tinsert(C.themes["Aurora"], function()
 	local r, g, b = C.r, C.g, C.b
@@ -97,7 +97,7 @@ _G.tinsert(C.themes["Aurora"], function()
 
 	-- [[ Sidebar tabs ]]
 	F.Reskin(_G.PaperDollEquipmentManagerPaneSaveSet)
- 
+
 	_G.PaperDollSidebarTabs:GetRegions():Hide()
 	select(2, _G.PaperDollSidebarTabs:GetRegions()):Hide()
 	for i = 1, #_G.PAPERDOLL_SIDEBARS do
@@ -175,7 +175,7 @@ _G.tinsert(C.themes["Aurora"], function()
 	_G.GearManagerDialogPopupScrollFrameBottom:Hide()
 	F.ReskinScroll(_G.GearManagerDialogPopupScrollFrameScrollBar)
 	_G.GearManagerDialogPopupScrollFrame:SetHeight(400)
---	private.SkinIconArray("GearManagerDialogPopupButton", _G.NUM_GEARSET_ICONS_PER_ROW, _G.NUM_GEARSET_ICON_ROWS)
+	private.SkinIconArray("GearManagerDialogPopupButton", _G.NUM_GEARSET_ICONS_PER_ROW, _G.NUM_GEARSET_ICON_ROWS)
 
 	local sets = false
 	_G.PaperDollSidebarTab3:HookScript("OnClick", function()

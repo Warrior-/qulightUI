@@ -1,8 +1,14 @@
-local F, C = unpack(select(2, ...))
+local _, private = ...
+
+-- [[ Lua Globals ]]
+local _G = _G
+
+-- [[ Core ]]
+local F, C = _G.unpack(private.Aurora)
 
 C.themes["Blizzard_BattlefieldMinimap"] = function()
-	F.SetBD(BattlefieldMinimap, -1, 1, -5, 3)
-	BattlefieldMinimapCorner:Hide()
-	BattlefieldMinimapBackground:Hide()
-	BattlefieldMinimapCloseButton:Hide()
+	F.SetBD(_G.BattlefieldMinimap, -1, 1, -5, 3)
+	_G.BattlefieldMinimapCorner:Hide()
+	_G.BattlefieldMinimapBackground:Hide()
+	_G.BattlefieldMinimapCloseButton:Hide()
 end
