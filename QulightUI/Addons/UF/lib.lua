@@ -294,18 +294,24 @@ do
 		local s = 0
 
 		if cpoints.numMax ~= numMax then
-			if numMax == 8 then
+			if numMax == 10 then
 				cpoints[6]:Show()
 				cpoints[7]:Show()
 				cpoints[8]:Show()
+				cpoints[9]:Show()
+				cpoints[10]:Show()
 			elseif numMax == 6 then
 				cpoints[6]:Show()
 				cpoints[7]:Hide()
 				cpoints[8]:Hide()
+				cpoints[9]:Hide()
+				cpoints[10]:Hide()
 			else
 				cpoints[6]:Hide()
 				cpoints[7]:Hide()
 				cpoints[8]:Hide()
+				cpoints[9]:Hide()
+				cpoints[10]:Hide()
 			end
 
 			for i = 1, numMax do
@@ -1091,36 +1097,53 @@ end
 addEclipseBar = function(self)
 	if playerClass ~= "DRUID" then return end
 	
-	local eclipseBar = CreateFrame('Frame', nil, self)
-	eclipseBar:SetPoint("TOPLEFT", self, "TOPLEFT", 3,-3)
-	eclipseBar:SetSize((self:GetWidth()-120), 6)
-	eclipseBar:SetFrameLevel(6)
+	local bars = CreateFrame("Frame", nil, self)
+	bars:SetPoint("TOPLEFT", self, "TOPLEFT",4,-3)
+	bars:SetWidth(120)
+	bars:SetHeight(6)
+	bars:SetFrameLevel(6)
+	bars:SetBackdropBorderColor(0,0,0,0)
+	bars:SetBackdropColor(0,0,0,0)
+		
+	for i = 1, 10 do					
+		bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, bars)
+		bars[i]:SetHeight(6)					
+		bars[i]:SetStatusBarTexture(Qulight["media"].texture)
+		bars[i]:GetStatusBarTexture():SetHorizTile(false)
+							
+		if i == 1 then
+			bars[i]:SetPoint("LEFT", bars)
+		else
+			bars[i]:SetPoint("LEFT", bars[i-1], "RIGHT", 1, 0)
+		end
+		bars[i]:SetAlpha(0.15)
+		bars[i]:SetWidth(((self:GetWidth()-100) - 4)/5)
+	end
+		
+	bars[1]:SetStatusBarColor(0.69, 0.31, 0.31)		
+	bars[2]:SetStatusBarColor(0.69, 0.31, 0.31)
+	bars[3]:SetStatusBarColor(0.65, 0.63, 0.35)
+	bars[4]:SetStatusBarColor(0.65, 0.63, 0.35)
+	bars[5]:SetStatusBarColor(0.33, 0.59, 0.33)
+	bars[6]:SetStatusBarColor(0.33, 0.59, 0.33)
+	bars[7]:SetStatusBarColor(0.26, 0.55, 0.31)
+	bars[8]:SetStatusBarColor(0.26, 0.55, 0.31)
+	bars[9]:SetStatusBarColor(0.26, 0.55, 0.31)
+	bars[10]:SetStatusBarColor(0.26, 0.55, 0.31)
+		
+	self.CPoints = bars
+	if playerClass == "DRUID" then
+		self:RegisterEvent("UPDATE_SHAPESHIFT_FORM", ComboDisplay)
+	end
+	self.CPoints.Override = ComboDisplayOld
+		
+	bars.FrameBackdrop = CreateFrame("Frame", nil, bars[1])
 	
-	local h = CreateFrame("Frame", nil, eclipseBar)
-	h:SetFrameLevel(0)
-	h:SetPoint("TOPLEFT",-5,5)
-	h:SetPoint("BOTTOMRIGHT",5,-5)
-	CreateStyle(h, -1)
-	
-	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
-	lunarBar:SetSize((self:GetWidth()-120), 6)
-	lunarBar:SetStatusBarTexture(Qulight["media"].texture)
-	lunarBar:SetStatusBarColor(0, 0, 1)
-	eclipseBar.LunarBar = lunarBar
-	
-	local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT', 0, 0)
-	solarBar:SetSize((self:GetWidth()-120), 6)
-	solarBar:SetStatusBarTexture(Qulight["media"].texture)
-	solarBar:SetStatusBarColor(1, 3/5, 0)
-	eclipseBar.SolarBar = solarBar
-	
-	local eclipseBarText = solarBar:CreateFontString(nil, 'OVERLAY')
-	eclipseBarText:SetPoint("CENTER", eclipseBar, "CENTER", 0, 0)	
-	eclipseBarText:SetFont(Qulight["media"].font, 9, "OUTLINE")
-	self:Tag(eclipseBarText, '[pereclipse]%')
-	self.EclipseBar = eclipseBar
+	CreateStyle(bars.FrameBackdrop, 2, 5, .9, 0.6)
+	bars.FrameBackdrop:SetBackdropBorderColor(.2,.2,.2,1)
+	bars.FrameBackdrop:SetPoint("TOPLEFT", bars, "TOPLEFT", -2, 2)
+	bars.FrameBackdrop:SetPoint("BOTTOMRIGHT", bars, "BOTTOMRIGHT", 2, -2)
+	bars.FrameBackdrop:SetFrameLevel(6)
 end
 genHolyPower = function(self)
 	if playerClass ~= "PALADIN" then return end
@@ -1296,7 +1319,7 @@ genCPoints = function(self)
 	bars:SetBackdropBorderColor(0,0,0,0)
 	bars:SetBackdropColor(0,0,0,0)
 		
-	for i = 1, 8 do					
+	for i = 1, 10 do					
 		bars[i] = CreateFrame("StatusBar", self:GetName().."_Combo"..i, bars)
 		bars[i]:SetHeight(6)					
 		bars[i]:SetStatusBarTexture(Qulight["media"].texture)
@@ -1319,6 +1342,8 @@ genCPoints = function(self)
 	bars[6]:SetStatusBarColor(0.33, 0.59, 0.33)
 	bars[7]:SetStatusBarColor(0.26, 0.55, 0.31)
 	bars[8]:SetStatusBarColor(0.26, 0.55, 0.31)
+	bars[9]:SetStatusBarColor(0.26, 0.55, 0.31)
+	bars[10]:SetStatusBarColor(0.26, 0.55, 0.31)
 		
 	self.CPoints = bars
 	if playerClass == "DRUID" then
