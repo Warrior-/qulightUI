@@ -878,8 +878,8 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		if not AuroraConfig.acknowledgedSplashScreen then
 			if shouldSkipSplashScreen then
 				AuroraConfig.acknowledgedSplashScreen = true
-			else
-				_G.AuroraSplashScreen:Show()
+--			else
+--				_G.AuroraSplashScreen:Show()
 			end
 		end
 
