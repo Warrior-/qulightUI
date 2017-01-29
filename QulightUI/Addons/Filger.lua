@@ -14,11 +14,11 @@ AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -115)
 CreateAnchor(AnchorT_BUFF_ICON, "Move T_BUFF_ICON", 37, 37)
 
 AnchorP_PROC_ICON = CreateFrame("Frame","Move_P_PROC_ICON",UIParent)
-AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -213, -159)
+AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -211, -227)
 CreateAnchor(AnchorP_PROC_ICON, "Move P_PROC_ICON", 37, 37)
 
 AnchorT_DEBUFF_ICON = CreateFrame("Frame","Move_T_DEBUFF_ICON",UIParent)
-AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -159)
+AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 211, -227)
 CreateAnchor(AnchorT_DEBUFF_ICON, "Move T_DEBUFF_ICON", 37, 37)
 
 AnchorT_SPECIAL_P_BUFF_ICON = CreateFrame("Frame","Move_SPECIAL_P_BUFF_ICON",UIParent)
@@ -1646,8 +1646,6 @@ Filger_Spells = {
 			{spellID = 104773, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Soul Harvest
 			{spellID = 196098, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Mana Tap
-			{spellID = 196104, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Soul Swap
 			{spellID = 86211, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Dark Regeneration
@@ -1658,6 +1656,7 @@ Filger_Spells = {
 			{spellID = 108416, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Healthstone
 			{spellID = 6262, unitID = "player", caster = "player", filter = "BUFF"},
+			
 		},
 		{
 			Name = "P_PROC_ICON",
@@ -1709,6 +1708,10 @@ Filger_Spells = {
 			-- Enchants
 			-- Mark of the Claw (Crit and Haste)
 			{spellID = 190909, unitID = "player", caster = "all", filter = "BUFF"},
+			
+			{spellID = 216708, unitID = "player", caster = "all", filter = "BUFF"},
+			{spellID = 216695, unitID = "player", caster = "all", filter = "BUFF"},
+			
 		},
 		{
 			Name = "T_DEBUFF_ICON",
@@ -1726,6 +1729,12 @@ Filger_Spells = {
 			-- Trinket Effects
 			-- Mark of Doom [Prophecy of Fear]
 			{spellID = 184073, unitID = "target", caster = "player", filter = "DEBUFF"},
+			
+			{spellID = 63106, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 980, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 146739, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 233490, unitID = "target", caster = "player", filter = "DEBUFF"},
+			{spellID = 27243, unitID = "target", caster = "player", filter = "DEBUFF"},
 		},
 		{
 			Name = "PVE/PVP_CC",
@@ -1742,6 +1751,9 @@ Filger_Spells = {
 			{spellID = 710, unitID = "focus", caster = "player", filter = "DEBUFF"},
 			-- Fear
 			{spellID = 118699, unitID = "focus", caster = "player", filter = "DEBUFF"},
+		
+			
+			
 		},
 	},
 	["WARRIOR"] = {

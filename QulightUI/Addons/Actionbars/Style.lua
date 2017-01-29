@@ -19,7 +19,7 @@ function StyleButton(self)
 	local Btname = _G[name.."Name"]
 	local normal  = _G[name.."NormalTexture"]
 	local BtnBG = _G[name..'FloatingBG']
- 
+	
 	Flash:SetTexture("")
 	Button:SetNormalTexture("")
  
@@ -38,8 +38,10 @@ function StyleButton(self)
 	Count:SetFont(Qulight["media"].font, 12, "OUTLINE")
 
 	if Btname then
-		Btname:SetText("")
-		Btname:Hide()
+		Btname:ClearAllPoints()
+		Btname:SetPoint("BOTTOM", 0, 0)
+		Btname:SetFont(Qulight["media"].font, 12, "OUTLINE")
+		Btname:SetWidth(Qulight["actionbar"].buttonsize-1)
 	end
  
 	if not _G[name.."Panel"] then
@@ -188,7 +190,7 @@ function StyleActionBarButton(self)
 	local normal  = _G[name.."NormalTexture"]
 	local BtnBG = _G[name..'FloatingBG']
  
-	Flash:SetTexture("")
+	Flash:SetTexture("Interface\\Buttons\\WHITE8x8")
 	Button:SetNormalTexture("")
  
 	if Border then
@@ -206,8 +208,10 @@ function StyleActionBarButton(self)
 	Count:SetFont(Qulight["media"].pxfont, 10, "OUTLINE")
 
 	if Btname then
-		Btname:SetText("")
-		Btname:Hide()
+		Btname:ClearAllPoints()
+		Btname:SetPoint("BOTTOM", 0, 0)
+		Btname:SetFont(Qulight["media"].pxfont, 10, "OUTLINE")
+		Btname:SetWidth(Qulight["actionbar"].buttonsize)
 	end
  
 	if not _G[name.."Panel"] then

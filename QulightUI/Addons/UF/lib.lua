@@ -786,7 +786,7 @@ gen_bigcastbar = function(f)
     if f.mystyle == "player" then
 		s:SetHeight(Qulight["unitframes"].heightbigcastbar)
 		s:SetWidth(Qulight["unitframes"].widthbigcastbar)
-		s:SetPoint("BOTTOM", Anchorplayercastbar, 14, 0)
+		s:SetPoint("BOTTOM", Anchorplayercastbar, 15, -5)
     elseif f.mystyle == "target" then
 	    s:SetHeight(18)
 		s:SetWidth(f:GetWidth()-23)

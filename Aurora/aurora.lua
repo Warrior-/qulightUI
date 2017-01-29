@@ -149,7 +149,7 @@ F.CreateBD = function(f, a)
 		edgeFile = C.media.backdrop,
 		edgeSize = 1,
 	})
-	f:SetBackdropColor(0, 0, 0, 0.8)
+	f:SetBackdropColor(.08,.08,.08, 0.9)
 	f:SetBackdropBorderColor(0, 0, 0)
 
 	if not a then _G.tinsert(C.frames, f) end
@@ -1334,7 +1334,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 					statusbar:SetStatusBarTexture(C.media.backdrop)
 
 					if not statusbar.reskinned then
-						F.CreateBD(statusbar, .25)
 						statusbar.reskinned = true
 					end
 

@@ -114,7 +114,7 @@ anchor:SetFrameStrata("TOOLTIP")
 anchor:SetFrameLevel(20)
 anchor:SetClampedToScreen(true)
 anchor:SetAlpha(0)
-anchor:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 235)
+anchor:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 218)
  
 AnchorTooltips = CreateFrame("Frame","Move_Tooltip",UIParent)
 if Qulight["general"].centerpanel then
