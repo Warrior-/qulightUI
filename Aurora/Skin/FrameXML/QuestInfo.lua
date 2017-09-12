@@ -7,8 +7,9 @@ local next = _G.next
 local hooksecurefunc = _G.hooksecurefunc
 
 -- [[ Core ]]
-local F, C = _G.unpack(private.Aurora)
-local Skin = private.Aurora.Skin
+local Aurora = private.Aurora
+local F, C = _G.unpack(Aurora)
+local Base, Skin = Aurora.Base, Aurora.Skin
 
 function private.FrameXML.QuestInfo()
     local r, g, b = C.r, C.g, C.b
@@ -126,15 +127,8 @@ function private.FrameXML.QuestInfo()
                         Skin.SmallItemButtonTemplate(spellReward)
                     else
                         Skin.LargeItemButtonTemplate(spellReward)
-                    end
-                    if private.is730 then
-                        local border = _G.select(3, spellReward:GetRegions())
-                        border:Hide()
-                    else
-                        local border = _G.select(4, spellReward:GetRegions())
-                        border:Hide()
-                    end
-                    if not isMapQuest then
+
+                        _G.select(3, spellReward:GetRegions()):Hide() --border
                         spellReward.Icon:SetPoint("TOPLEFT", 0, 0)
                         spellReward:SetHitRectInsets(0,0,0,0)
                         spellReward:SetSize(147, 41)
@@ -189,7 +183,7 @@ function private.FrameXML.QuestInfo()
 
     local function clearHighlight()
         for _, button in next, QuestInfoRewardsFrame.RewardButtons do
-            button.bg:SetBackdropColor(0, 0, 0, .25)
+            Base.SetBackdropColor(button._auroraNameBG, Aurora.frameColor:GetRGBA())
         end
     end
     local function setHighlight(self)
@@ -197,7 +191,7 @@ function private.FrameXML.QuestInfo()
 
         local _, point = self:GetPoint()
         if point then
-            point.bg:SetBackdropColor(r, g, b, .2)
+            Base.SetBackdropColor(point._auroraNameBG, Aurora.highlightColor:GetRGBA())
         end
     end
 

@@ -44,6 +44,20 @@ Aurora.buttonColor = buttonColor
 local frameColor = CreateColor(0, 0, 0, 0.2)
 Aurora.frameColor = frameColor
 
+Aurora.classIcons = { -- adjusted for borderless icons
+    ["WARRIOR"]     = {0.01953125, 0.234375, 0.01953125, 0.234375},
+    ["MAGE"]        = {0.26953125, 0.48046875, 0.01953125, 0.234375},
+    ["ROGUE"]       = {0.515625, 0.7265625, 0.01953125, 0.234375},
+    ["DRUID"]       = {0.76171875, 0.97265625, 0.01953125, 0.234375},
+    ["HUNTER"]      = {0.01953125, 0.234375, 0.26953125, 0.484375},
+    ["SHAMAN"]      = {0.26953125, 0.48046875, 0.26953125, 0.484375},
+    ["PRIEST"]      = {0.515625, 0.7265625, 0.26953125, 0.484375},
+    ["WARLOCK"]     = {0.76171875, 0.97265625, 0.26953125, 0.484375},
+    ["PALADIN"]     = {0.01953125, 0.234375, 0.51953125, 0.734375},
+    ["DEATHKNIGHT"] = {0.26953125, 0.48046875, 0.51953125, 0.734375},
+    ["MONK"]        = {0.515625, 0.7265625, 0.51953125, 0.734375},
+    ["DEMONHUNTER"] = {0.76171875, 0.97265625, 0.51953125, 0.734375},
+}
 
 local backdrop = {
     edgeSize = 1,
@@ -121,6 +135,7 @@ do -- Base.SetBackdrop
                     bd.bg:SetVertTile(options.tile)
                 end
             else
+                options.bgFile = [[Interface\Buttons\WHITE8x8]]
                 bd.bg:SetColorTexture(0, 0, 1)
             end
 
@@ -151,6 +166,7 @@ do -- Base.SetBackdrop
                     bd[corner]:SetTexCoord(info.coords[1], info.coords[2], info.coords[3], info.coords[4])
                 end
             else
+                options.edgeFile = [[Interface\Buttons\WHITE8x8]]
                 for side, info in next, sides do
                     bd[side]:SetColorTexture(1, 0, 0)
                     bd[side]:SetTexCoord(0, 1, 0, 1)
@@ -278,7 +294,10 @@ do -- Base.SetFont
         if _G.type(fontObj) == "string" then fontObj = _G[fontObj] end
         if not fontObj then return end
 
-        fontObj:SetFont(fontPath, fontSize, fontStyle)
+        if not private.disabled.fonts then
+            fontObj:SetFont(fontPath, fontSize, fontStyle)
+        end
+
         if _G.type(fontColor) == "table" then
             fontObj:SetTextColor(fontColor[1], fontColor[2], fontColor[3], fontColor[4])
         elseif fontColor then
@@ -318,10 +337,10 @@ do -- Base.SetHighlight
     local function OnEnter(button, isBackground)
         if button:IsEnabled() then
             if isBackground then
-                Base.SetBackdropColor(button, highlightColor:GetRGBA())
+                Base.SetBackdropColor(button, highlightColor:GetRGB())
             else
                 for _, texture in next, button._auroraHighlight do
-                    button._auroraSetColor(texture, highlightColor:GetRGBA())
+                    button._auroraSetColor(texture, highlightColor:GetRGB())
                 end
             end
         end

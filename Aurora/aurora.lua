@@ -1,7 +1,21 @@
-local _, private = ...
+local ADDON_NAME, private = ...
 
 -- [[ Lua Globals ]]
-local next = _G.next
+-- luacheck: globals next type
+
+if ADDON_NAME == "Aurora" then
+    for i = 1, _G.GetNumAddOns() do
+        local meta = _G.GetAddOnMetadata(i, "X-Aurora-Host")
+        if meta then
+            local name, _, _, enabled = _G.GetAddOnInfo(i)
+            if enabled then
+                private.host = name
+                private.OnLoad = meta
+                return
+            end
+        end
+    end
+end
 
 -- [[ Core ]]
 local Aurora = private.Aurora
@@ -18,21 +32,6 @@ splash:SetSize(400, 300)
 splash:Hide()
 
 C.frames = {}
-C.classicons = { -- adjusted for borderless icons
-	["WARRIOR"]     = {0.01953125, 0.234375, 0.01953125, 0.234375},
-	["MAGE"]        = {0.26953125, 0.48046875, 0.01953125, 0.234375},
-	["ROGUE"]       = {0.515625, 0.7265625, 0.01953125, 0.234375},
-	["DRUID"]       = {0.76171875, 0.97265625, 0.01953125, 0.234375},
-	["HUNTER"]      = {0.01953125, 0.234375, 0.26953125, 0.484375},
-	["SHAMAN"]      = {0.26953125, 0.48046875, 0.26953125, 0.484375},
-	["PRIEST"]      = {0.515625, 0.7265625, 0.26953125, 0.484375},
-	["WARLOCK"]     = {0.76171875, 0.97265625, 0.26953125, 0.484375},
-	["PALADIN"]     = {0.01953125, 0.234375, 0.51953125, 0.734375},
-	["DEATHKNIGHT"] = {0.26953125, 0.48046875, 0.51953125, 0.734375},
-	["MONK"]        = {0.515625, 0.7265625, 0.51953125, 0.734375},
-	["DEMONHUNTER"] = {0.76171875, 0.97265625, 0.51953125, 0.734375},
-}
-
 C.media = {
 	["arrowUp"] = "Interface\\AddOns\\Aurora\\media\\arrow-up-active",
 	["arrowDown"] = "Interface\\AddOns\\Aurora\\media\\arrow-down-active",
@@ -54,12 +53,16 @@ C.defaults = {
 	["bags"] = true,
 	["buttonGradientColour"] = {0, 0, 0, .3},
 	["buttonSolidColour"] = {.35, .35, .35, .35},
-	
-	["useButtonGradientColour"] = true,
-	["chatBubbleNames"] = true,
+	["buttonsHaveGradient"] = true,
 	["chatBubbles"] = true,
+        ["chatBubbleNames"] = true,
+	["enableFont"] = true,
+	["loot"] = true,
 	["useCustomColour"] = false,
-		["customColour"] = {r = 1, g = 1, b = 1},
+        ["customColour"] = {r = 1, g = 1, b = 1},
+	["customClassColors"] = false,
+	["tooltips"] = true
+
 }
 
 function private.OnLoad()
@@ -94,19 +97,20 @@ function private.OnLoad()
 
     -- Setup colors
     function private.updateHighlightColor()
+        local r, g, b
         if AuroraConfig.useCustomColour then
-            Aurora.highlightColor:SetRGB(AuroraConfig.customColour.r, AuroraConfig.customColour.g, AuroraConfig.customColour.b)
+            r, g, b = AuroraConfig.customColour.r, AuroraConfig.customColour.g, AuroraConfig.customColour.b
         else
-            Aurora.highlightColor:SetRGB(_G.CUSTOM_CLASS_COLORS[private.charClass.token]:GetRGB())
+            r, g, b = _G.CUSTOM_CLASS_COLORS[private.charClass.token]:GetRGB()
         end
+
+        C.r, C.g, C.b = r, g, b -- deprecated
+        Aurora.highlightColor:SetRGBA(r, g, b, Aurora.frameColor.a)
     end
     function private.classColorsInit()
         for classToken, color in next, AuroraConfig.customClassColors do
             _G.CUSTOM_CLASS_COLORS[classToken]:SetRGB(color.r, color.g, color.b)
         end
-
-        private.updateHighlightColor()
-        C.r, C.g, C.b = Aurora.highlightColor:GetRGB()
     end
     function private.classColorsHaveChanged()
         for i = 1, #_G.CLASS_SORT_ORDER do
@@ -149,7 +153,13 @@ function private.OnLoad()
     end
 
     -- Create API hooks
-    function Aurora.Base.Post.SetBackdrop(frame, r, g, b, a)
+    local Base, Hook = Aurora.Base, Aurora.Hook
+    function Hook.GameTooltip_OnHide(gametooltip)
+        local color = Aurora.frameColor
+        Base.SetBackdropColor(gametooltip, color.r, color.g, color.b, AuroraConfig.alpha)
+    end
+
+    function Base.Post.SetBackdrop(frame, r, g, b, a)
         if AuroraConfig.buttonsHaveGradient and Aurora.buttonColor:IsEqualTo(r, g, b, a) then
             Aurora.Base.SetTexture(frame:GetBackdropTexture("bg"), "gradientUp")
             Aurora.Base.SetBackdropColor(frame, r, g, b, a)
@@ -163,7 +173,7 @@ function private.OnLoad()
     function private.FrameXML.Post.CharacterFrame()
         _G.CharacterStatsPane.ItemLevelFrame:SetPoint("TOP", 0, -12)
         _G.CharacterStatsPane.ItemLevelFrame.Background:Hide()
---        _G.CharacterStatsPane.ItemLevelFrame.Value:SetFontObject("SystemFont_Outline_WTF2")
+        --_G.CharacterStatsPane.ItemLevelFrame.Value:SetFontObject("SystemFont_Outline_WTF2")
 
         _G.hooksecurefunc("PaperDollFrame_UpdateStats", function()
             if ( _G.UnitLevel("player") >= _G.MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY ) then
@@ -171,5 +181,22 @@ function private.OnLoad()
                 _G.CharacterStatsPane.AttributesCategory:SetPoint("TOP", 0, -40)
             end
         end)
+    end
+
+    -- Disable skins as per user settings
+    private.disabled.fonts = not AuroraConfig.enableFont
+    private.disabled.tooltips = not AuroraConfig.tooltips
+    if not AuroraConfig.chatBubbles then
+        private.FrameXML.ChatBubbles = nil
+    end
+    if not AuroraConfig.chatBubbleNames then
+        Hook.UpdateChatBubble = private.nop
+    end
+    if not AuroraConfig.bags then
+        private.FrameXML.BankFrame = nil
+        private.FrameXML.ContainerFrame = nil
+    end
+    if not AuroraConfig.loot then
+        private.FrameXML.LootFrame = nil
     end
 end

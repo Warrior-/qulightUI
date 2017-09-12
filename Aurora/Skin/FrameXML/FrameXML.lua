@@ -226,10 +226,12 @@ private.FrameXML = private.CreateAPI(FrameXML)
 private.SharedXML = private.CreateAPI({})
 
 --[==[ Some boilerplate stuff for new files
---[[ Lua Globals ]]
-local next = _G.next
+local _, private = ...
 
--- [[ Core ]]
+--[[ Lua Globals ]]
+-- luacheck: globals
+
+--[[ Core ]]
 local Aurora = private.Aurora
 local Base, Hook, Skin = Aurora.Base, Aurora.Hook, Aurora.Skin
 

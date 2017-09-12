@@ -7,6 +7,12 @@ private.API_MAJOR, private.API_MINOR = 8, 0
 local xpac, major, minor = _G.strsplit(".", _G.GetBuildInfo())
 private.is730 = tonumber(xpac) == 7 and (tonumber(major) >= 3 and tonumber(minor) >= 0)
 
+private.host = ADDON_NAME
+private.disabled = {
+    tooltips = false,
+    fonts = false,
+}
+
 local classLocale, class, classID = _G.UnitClass("player")
 private.charClass = {
     locale = classLocale,
@@ -14,6 +20,7 @@ private.charClass = {
     id = classID,
 }
 
+function private.nop() end
 local debug do
     if _G.LibStub then
         local debugger
@@ -66,8 +73,8 @@ do -- private.CreateAPI
 end
 do -- private.FindUsage
     function private.FindUsage(table, func)
-        hooksecurefunc(table, func, function()
-            error("Found usage")
+        _G.hooksecurefunc(table, func, function()
+            _G.error("Found usage")
         end)
     end
 end
@@ -84,10 +91,16 @@ _G.Aurora = Aurora
 local eventFrame = _G.CreateFrame("Frame")
 eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:SetScript("OnEvent", function(self, event, addonName)
-    if addonName == ADDON_NAME then
+    if addonName == private.host then
         -- Setup function for the host addon
-        if private.OnLoad then
+        if private.host ~= ADDON_NAME then
+            _G[private.OnLoad](private)
+        else
             private.OnLoad()
+        end
+
+        if _G.AuroraConfig then
+            Aurora[2].buttonsHaveGradient = _G.AuroraConfig.buttonsHaveGradient
         end
 
         -- Skin FrameXML

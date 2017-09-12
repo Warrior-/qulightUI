@@ -122,18 +122,20 @@ do --[[ SharedXML\SharedUIPanelTemplates.xml ]]
         button:SetPushedTexture("")
 
         local dis = button:GetDisabledTexture()
-        dis:SetColorTexture(0, 0, 0, .4)
-        dis:SetDrawLayer("OVERLAY")
-        dis:SetAllPoints()
+        if dis then
+            dis:SetColorTexture(0, 0, 0, .4)
+            dis:SetDrawLayer("OVERLAY")
+            dis:SetAllPoints()
+        end
 
         Base.SetBackdrop(button, Aurora.buttonColor:GetRGBA())
 
         button._auroraHighlight = {}
-        local lineOfs = private.is730 and 4 or 2.5
+        local lineOfs = 4
         for i = 1, 2 do
             local line = button:CreateLine()
             line:SetColorTexture(1, 1, 1)
-            line:SetThickness(private.is730 and 0.7 or 0.5)
+            line:SetThickness(0.7)
             if i == 1 then
                 line:SetStartPoint("TOPLEFT", lineOfs, -lineOfs)
                 line:SetEndPoint("BOTTOMRIGHT", -lineOfs, lineOfs)
@@ -206,6 +208,22 @@ do --[[ SharedXML\SharedUIPanelTemplates.xml ]]
         _G[name.."BtnCornerRight"]:SetTexture("")
         _G[name.."ButtonBottomBorder"]:SetTexture("")
         Skin.InsetFrameTemplate(frame.Inset)
+    end
+
+    function Skin.TooltipBorderedFrameTemplate(frame)
+        frame.BorderTopLeft:Hide()
+        frame.BorderTopRight:Hide()
+
+        frame.BorderBottomLeft:Hide()
+        frame.BorderBottomRight:Hide()
+
+        frame.BorderTop:Hide()
+        frame.BorderBottom:Hide()
+        frame.BorderLeft:Hide()
+        frame.BorderRight:Hide()
+
+        frame.Background:Hide()
+        Base.SetBackdrop(frame)
     end
 
     function Skin.UIPanelScrollBarButton(button)
