@@ -35,7 +35,7 @@ local function SetTooltip(self)
 	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -5)
 	GameTooltip:AddLine(COMBAT_XP_GAIN.." "..format(LEVEL_GAINED, UnitLevel("player")))
 	GameTooltip:AddLine(" ")
-	GameTooltip:AddLine(string.format(XP..": %d / %d (%d%% - %d/%d)", min, max, min/max * 100, bars - (bars * (max - min) / max), bars))
+	GameTooltip:AddLine(string.format(XP..": %d / %d (%d%% - %d/%d)", min, max, min / max * 100, bar - (bar * (max - min) / max), bar))
 	GameTooltip:AddLine(string.format(LEVEL_ABBR..": %d (%d%% - %d/%d)", max - min, (max - min) / max * 100, 1 + bars * (max - min) / max, bars))
 
 	if(self.rested) then

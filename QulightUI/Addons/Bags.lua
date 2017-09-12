@@ -498,9 +498,9 @@ function Stuffing:CreateBagFrame(w)
 	f:SetScript("OnMouseUp", f.StopMovingOrSizing)
 
 	if w == "Bank" then
-		f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 3, 177)
+		f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 3, 190)
 	else
-		f:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 177)
+		f:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -3, 190)
 	end
 
 	if w == "Bank" then
