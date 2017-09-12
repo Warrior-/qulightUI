@@ -1,7 +1,6 @@
 local _, private = ...
 
 -- [[ Lua Globals ]]
-local _G = _G
 local select = _G.select
 
 -- [[ WoW API ]]
@@ -233,7 +232,7 @@ C.themes["Blizzard_AuctionUI"] = function()
 	F.ReskinCheck(_G.ExactMatchCheckButton)
 	F.ReskinCheck(_G.IsUsableCheckButton)
 	F.ReskinCheck(_G.ShowOnPlayerCheckButton)
-	
+
 	_G.BrowseNameText:ClearAllPoints()
 	_G.BrowseNameText:SetPoint("TOPLEFT", _G.AuctionFrameBrowse, "TOPLEFT", 80, -38)
 	_G.BrowseLevelText:ClearAllPoints()
@@ -242,7 +241,7 @@ C.themes["Blizzard_AuctionUI"] = function()
 	_G.BrowseDropDownName:SetPoint("TOPLEFT", _G.AuctionFrameBrowse, "TOPLEFT", 310, -40)
 	_G.BrowseDropDown:ClearAllPoints()
 	_G.BrowseDropDown:SetPoint("TOPLEFT", _G.AuctionFrameBrowse, "TOPLEFT", 290, -48)
-	
+
 	_G.BrowsePrevPageButton:SetPoint("TOPLEFT", 660, -60)
 	_G.BrowseNextPageButton:SetPoint("TOPRIGHT", 67, -60)
 	_G.BrowsePrevPageButton:GetRegions():SetPoint("LEFT", _G.BrowsePrevPageButton, "RIGHT", 2, 0)

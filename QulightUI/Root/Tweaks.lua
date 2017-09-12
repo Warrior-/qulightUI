@@ -275,7 +275,7 @@ PVPReadyDialog.enterButton:SetPoint("BOTTOM", PVPReadyDialog, "BOTTOM", 0, 25)
 ----------------------------------------------------------------------------------------
 --	Custom Lag Tolerance(by Elv22)
 ----------------------------------------------------------------------------------------
-
+--[[
 	local customlag = CreateFrame("Frame")
 	local int = 5
 	local _, _, latencyHome = GetNetStats()
@@ -291,7 +291,7 @@ PVPReadyDialog.enterButton:SetPoint("BOTTOM", PVPReadyDialog, "BOTTOM", 0, 25)
 	end
 	customlag:SetScript("OnUpdate", LatencyUpdate)
 	LatencyUpdate(customlag, 10)
-
+--]]
 
 ----------------------------------------------------------------------------------------
 --	Auto select current event boss from LFD tool(EventBossAutoSelect by Nathanyel)

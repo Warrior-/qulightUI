@@ -14,11 +14,11 @@ AnchorT_BUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -115)
 CreateAnchor(AnchorT_BUFF_ICON, "Move T_BUFF_ICON", 37, 37)
 
 AnchorP_PROC_ICON = CreateFrame("Frame","Move_P_PROC_ICON",UIParent)
-AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -211, -227)
+AnchorP_PROC_ICON:SetPoint("RIGHT", UIParent, "CENTER", -213, -159)
 CreateAnchor(AnchorP_PROC_ICON, "Move P_PROC_ICON", 37, 37)
 
 AnchorT_DEBUFF_ICON = CreateFrame("Frame","Move_T_DEBUFF_ICON",UIParent)
-AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 211, -227)
+AnchorT_DEBUFF_ICON:SetPoint("LEFT", UIParent, "CENTER", 213, -159)
 CreateAnchor(AnchorT_DEBUFF_ICON, "Move T_DEBUFF_ICON", 37, 37)
 
 AnchorT_SPECIAL_P_BUFF_ICON = CreateFrame("Frame","Move_SPECIAL_P_BUFF_ICON",UIParent)
@@ -1656,7 +1656,7 @@ Filger_Spells = {
 			{spellID = 108416, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Healthstone
 			{spellID = 6262, unitID = "player", caster = "player", filter = "BUFF"},
-			
+
 		},
 		{
 			Name = "P_PROC_ICON",
@@ -1751,9 +1751,9 @@ Filger_Spells = {
 			{spellID = 710, unitID = "focus", caster = "player", filter = "DEBUFF"},
 			-- Fear
 			{spellID = 118699, unitID = "focus", caster = "player", filter = "DEBUFF"},
-		
-			
-			
+
+
+
 		},
 	},
 	["WARRIOR"] = {

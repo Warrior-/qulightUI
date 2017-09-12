@@ -1191,7 +1191,7 @@ local function Shared(self, unit)
 		self.Power.bg.multiplier = 0.2
 		end
 	end		
-	
+
 	-- Agro border
 	if Qulight.raidframes.aggro_border == true then
 		table.insert(self.__elements, UpdateThreat)

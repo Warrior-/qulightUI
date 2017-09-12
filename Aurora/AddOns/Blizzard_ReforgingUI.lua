@@ -1,4 +1,3 @@
-
 local F, C = unpack(select(2, ...))
 
 C.modules["Blizzard_ReforgingUI"] = function()

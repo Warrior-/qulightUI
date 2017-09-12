@@ -786,7 +786,7 @@ gen_bigcastbar = function(f)
     if f.mystyle == "player" then
 		s:SetHeight(Qulight["unitframes"].heightbigcastbar)
 		s:SetWidth(Qulight["unitframes"].widthbigcastbar)
-		s:SetPoint("BOTTOM", Anchorplayercastbar, 15, -5)
+		s:SetPoint("BOTTOM", Anchorplayercastbar, 14, 0)
     elseif f.mystyle == "target" then
 	    s:SetHeight(18)
 		s:SetWidth(f:GetWidth()-23)
@@ -1513,6 +1513,30 @@ Reputation = function(self)
 	self.Reputation = Reputation
 	end
 end
+ArtifactPower = function(self)
+	if Qulight["unitframes"].ArtifactPowerbar then 
+	local ArtifactPower = CreateFrame('StatusBar', nil, self)
+	local PlayerLevel = UnitLevel("player")
+	local ShowArtifact = HasArtifactEquipped()
+	ArtifactPower:EnableMouse(true)
+	ArtifactPower:SetPoint('TOPRIGHT', ChatBackground, 'TOPRIGHT', 25, 0)
+	ArtifactPower:SetSize(6, 168)
+	ArtifactPower:SetOrientation("Vertical")
+	ArtifactPower:SetStatusBarTexture(Qulight["media"].texture)
+	ArtifactPower.offAlpha = 0
+
+	local h = CreateFrame("Frame", nil, ArtifactPower)
+	h:SetFrameLevel(1)
+	h:SetPoint("TOPLEFT",-5,5)
+	h:SetPoint("BOTTOMRIGHT",5,-5)
+	CreateStyle(h, -1)
+
+	ArtifactPower.Tooltip = true
+	self.ArtifactPower = ArtifactPower
+	end
+end
+
+
 -----------------------------
 -- STYLE FUNCTIONS
 -----------------------------

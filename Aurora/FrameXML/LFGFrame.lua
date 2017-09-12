@@ -1,7 +1,6 @@
 local _, private = ...
 
 -- [[ Lua Globals ]]
-local _G = _G
 local pairs = _G.pairs
 
 -- [[ WoW API ]]
@@ -33,7 +32,7 @@ _G.tinsert(C.themes["Aurora"], function()
 		button.bg2 = _G.CreateFrame("Frame", nil, button)
 		button.bg2:SetPoint("TOPLEFT", na, "TOPLEFT", 10, 0)
 		button.bg2:SetPoint("BOTTOMRIGHT", na, "BOTTOMRIGHT")
-		F.CreateBDborder(button.bg2, 0)
+		F.CreateBD(button.bg2, 0)
 	end
 
 	hooksecurefunc("LFDQueueFrameRandom_UpdateFrame", function()

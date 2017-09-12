@@ -1,8 +1,8 @@
 local ADDON_NAME, private = ...
 
 -- [[ Lua Globals ]]
-local _G = _G
-local select, tostring, pairs = _G.select, _G.tostring, _G.pairs
+local select, tostring = _G.select, _G.tostring
+local next = _G.next
 
 -- [[ WoW API ]]
 local CreateFrame = _G.CreateFrame
@@ -98,6 +98,7 @@ C.defaults = {
 C.frames = {}
 
 C.TOC = select(4, _G.GetBuildInfo())
+C.is72 = C.TOC > 70100 or _G.GetBuildInfo() == "7.2.0"
 
 -- [[ Cached variables ]]
 
@@ -236,21 +237,30 @@ F.Reskin = function(f, noHighlight)
 	end
 end
 
-F.ReskinTab = function(f)
-	f:DisableDrawLayer("BACKGROUND")
+F.ReskinTab = function(f, numTabs)
+	if numTabs then
+		for i = 1, numTabs do
+			for j = 1, 6 do
+				select(j, _G[f..i]:GetRegions()):Hide()
+				select(j, _G[f..i]:GetRegions()).Show = F.dummy
+			end
+		end
+	else
+		f:DisableDrawLayer("BACKGROUND")
 
-	local bg = CreateFrame("Frame", nil, f)
-	bg:SetPoint("TOPLEFT", 9, -3)
-	bg:SetPoint("BOTTOMRIGHT", -9, 0)
-	bg:SetFrameLevel(f:GetFrameLevel()-1)
-	F.CreateBD(bg)
-	F.CreateSD(bg)
+		local bg = CreateFrame("Frame", nil, f)
+		bg:SetPoint("TOPLEFT", 9, -3)
+		bg:SetPoint("BOTTOMRIGHT", -9, 0)
+		bg:SetFrameLevel(f:GetFrameLevel()-1)
+		F.CreateBD(bg)
+		F.CreateSD(bg)
 		
-	f:SetHighlightTexture(C.media.backdrop)
-	local hl = f:GetHighlightTexture()
-	hl:SetPoint("TOPLEFT", 10, -4)
-	hl:SetPoint("BOTTOMRIGHT", -10, 1)
-	hl:SetVertexColor(red, green, blue, .25)
+		f:SetHighlightTexture(C.media.backdrop)
+		local hl = f:GetHighlightTexture()
+		hl:SetPoint("TOPLEFT", 10, -4)
+		hl:SetPoint("BOTTOMRIGHT", -10, 1)
+		hl:SetVertexColor(red, green, blue, .25)
+	end
 end
 
 local function colourScroll(f)
@@ -699,6 +709,20 @@ F.ReskinColourSwatch = function(f)
 	bg:SetColorTexture(0, 0, 0)
 	bg:SetPoint("TOPLEFT", 2, -2)
 	bg:SetPoint("BOTTOMRIGHT", -2, 2)
+end
+
+F.ReskinStretchButton = function(f)
+	f.TopLeft:Hide()
+	f.TopRight:Hide()
+	f.BottomLeft:Hide()
+	f.BottomRight:Hide()
+	f.TopMiddle:Hide()
+	f.MiddleLeft:Hide()
+	f.MiddleRight:Hide()
+	f.BottomMiddle:Hide()
+	f.MiddleMiddle:Hide()
+
+	F.Reskin(f)
 end
 
 F.ReskinFilterButton = function(f)

@@ -1,7 +1,6 @@
 local _, private = ...
 
 -- [[ Lua Globals ]]
-local _G = _G
 local select, pairs = _G.select, _G.pairs
 
 -- [[ WoW API ]]
@@ -258,10 +257,5 @@ C.themes["Blizzard_GuildUI"] = function()
 	F.ReskinRadio(_G.GuildRecruitmentLevelAnyButton)
 	F.ReskinRadio(_G.GuildRecruitmentLevelMaxButton)
 
-	for i = 1, 3 do
-		for j = 1, 6 do
-			select(j, _G["GuildInfoFrameTab"..i]:GetRegions()):Hide()
-			select(j, _G["GuildInfoFrameTab"..i]:GetRegions()).Show = F.dummy
-		end
-	end
+	F.ReskinTab("GuildInfoFrameTab", 3)
 end

@@ -1,7 +1,6 @@
 local _, private = ...
 
 -- [[ Lua Globals ]]
-local _G = _G
 local select, next = _G.select, _G.next
 
 -- [[ WoW API ]]
@@ -281,6 +280,7 @@ C.themes["Blizzard_AchievementUI"] = function()
 				local bg = CreateFrame("Frame", nil, bu)
 				bg:SetPoint("TOPLEFT", 2, -2)
 				bg:SetPoint("BOTTOMRIGHT", -2, 2)
+				F.CreateBD(bg, 0)
 
 				local ic = _G["AchievementFrameSummaryAchievement"..i.."IconTexture"]
 				ic:SetTexCoord(.08, .92, .08, .92)

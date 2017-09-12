@@ -1,7 +1,6 @@
 local _, private = ...
 
 -- [[ Lua Globals ]]
-local _G = _G
 local select = _G.select
 
 -- [[ Core ]]
@@ -52,21 +51,21 @@ C.themes["Blizzard_InspectUI"] = function()
 	-- PvP
 
 	_G.InspectPVPFrame.BG:Hide()
-	
+
 	for tier = 1, _G.MAX_PVP_TALENT_TIERS do
 		for column = 1, _G.MAX_PVP_TALENT_COLUMNS do
 			local bu = _G.InspectPVPFrame.Talents["Tier"..tier]["Talent"..column]
-			
+
 			bu.Slot:Hide()
 			bu.border:SetTexture("")
-			
-			bu.Icon:SetDrawLayer("ARTWORK")	
+
+			bu.Icon:SetDrawLayer("ARTWORK")
 			bu.Icon:SetTexCoord(.08, .92, .08, .92)
-					
+
 			F.CreateBG(bu.Icon)
 		end
 	end
-	
+
 	-- Talents
 
 	local inspectSpec = _G.InspectTalentFrame.InspectSpec

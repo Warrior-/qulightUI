@@ -8,7 +8,7 @@
 }
 Qulight["general"] = {
 	["AutoScale"] = true,  																-- mainly enabled for users that don't want to mess with the config file
-	["UiScale"] = 0.7,																	-- set your value (between 0.64 and 1) of your uiscale if autoscale is off
+	["UiScale"] = 0.75,																	-- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["MultisampleProtect"] = false,    													-- 1x antialazing
 	["AutoRepair"] = false,																-- auto repair
 	["AutoGreed"] = false,
@@ -89,8 +89,9 @@ Qulight["unitframes"] = {
 	["ArenaFrames"]  = true, 															-- show arena frame
 	["Reputationbar"] = true, 															-- show reputation bar
 	["Experiencebar"] = true, 															-- show experience bar
+	["ArtifactPowerbar"] = true,
 	["showPlayerAuras"] = false, 														-- use a custom player buffs/debuffs frame instead of blizzard's default.
-	["showPortrait"] = true,															-- show portraits
+	["showPortrait"] = false,															-- show portraits
 	["showRunebar"] = true, 															-- show dk rune bar
 	["showHolybar"] = true, 															-- show paladin HolyPower bar
 	["showEclipsebar"] = true, 															-- show druid eclipse bar

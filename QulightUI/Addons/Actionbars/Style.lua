@@ -19,7 +19,7 @@ function StyleButton(self)
 	local Btname = _G[name.."Name"]
 	local normal  = _G[name.."NormalTexture"]
 	local BtnBG = _G[name..'FloatingBG']
-	
+ 
 	Flash:SetTexture("")
 	Button:SetNormalTexture("")
  
