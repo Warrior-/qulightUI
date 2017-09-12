@@ -18,6 +18,8 @@ C.themes["Blizzard_AuctionUI"] = function()
 		F.ReskinTab(_G["AuctionFrameTab"..i])
 	end
 
+	local moneyBG = private.Skin.SmallMoneyFrameTemplate(_G.AuctionFrameMoneyFrame, true)
+	moneyBG:SetPoint("BOTTOMLEFT", _G.AuctionFrame, 18, 17)
 	F.ReskinClose(_G.AuctionFrameCloseButton, "TOPRIGHT", _G.AuctionFrame, "TOPRIGHT", -4, -15)
 
 	local function SkinSort(sortButtons)
@@ -72,20 +74,6 @@ C.themes["Blizzard_AuctionUI"] = function()
 				button:SetPoint("BOTTOMRIGHT", 66, 15)
 			else
 				button:SetPoint("RIGHT", buttons[i - 1], "LEFT", -1, 0)
-			end
-		end
-	end
-	local SkinPrice do
-		local money = {"gold", "silver", "copper"}
-		function SkinPrice(price)
-			for i = 1, #money do
-				local bid = price[money[i]]
-				F.ReskinInput(bid)
-				if i > 1 then
-					bid:SetPoint("LEFT", price[money[i - 1]], "RIGHT", 6, 0)
-					bid:SetWidth(35)
-					bid.texture:SetPoint("RIGHT", -4, 0)
-				end
 			end
 		end
 	end
@@ -150,14 +138,14 @@ C.themes["Blizzard_AuctionUI"] = function()
 	_G.BrowseNextPageButton:SetPoint("TOPRIGHT", 67, -60)
 
 	SkinButtons({_G.BrowseCloseButton, _G.BrowseBuyoutButton, _G.BrowseBidButton}, true)
-	SkinPrice(_G.BrowseBidPrice)
+	F.ReskinMoneyInput(_G.BrowseBidPrice)
 	F.ReskinCheck(_G.ExactMatchCheckButton)
 
 	--[[ Bid ]]--
     SkinSort({"BidQualitySort", "BidLevelSort", "BidDurationSort", "BidBuyoutSort", "BidStatusSort", "BidBidSort"})
 	SkinScroll(_G.BidScrollFrame)
 	SkinList("BidButton", 6, _G.NUM_BIDS_TO_DISPLAY)
-	SkinPrice(_G.BidBidPrice)
+	F.ReskinMoneyInput(_G.BidBidPrice)
 	SkinButtons({_G.BidCloseButton, _G.BidBuyoutButton, _G.BidBidButton}, true)
 
 	--[[ Auctions ]]--
@@ -172,10 +160,8 @@ C.themes["Blizzard_AuctionUI"] = function()
 	nameBG:SetPoint("TOPLEFT", _G.AuctionsItemButton, "TOPRIGHT", 3, 1)
 	nameBG:SetPoint("BOTTOMRIGHT", nameFrame)
 	_G.AuctionsItemButton:HookScript("OnEvent", function(self, event, ...)
-		print("AuctionsItemButton", self, event, ...)
 		local icon = _G.AuctionsItemButton:GetNormalTexture()
 		if icon then
-			print("Normal", icon)
 			icon:SetTexCoord(.08, .92, .08, .92)
 		end
 	end)
@@ -185,8 +171,8 @@ C.themes["Blizzard_AuctionUI"] = function()
 	F.ReskinInput(_G.AuctionsNumStacksEntry)
 	F.Reskin(_G.AuctionsNumStacksMaxButton)
 	F.ReskinDropDown(_G.PriceDropDown)
-	SkinPrice(_G.StartPrice)
-	SkinPrice(_G.BuyoutPrice)
+	F.ReskinMoneyInput(_G.StartPrice)
+	F.ReskinMoneyInput(_G.BuyoutPrice)
 	F.ReskinDropDown(_G.DurationDropDown)
 	SkinButtons({_G.AuctionsCloseButton, _G.AuctionsCancelAuctionButton})
 	F.Reskin(_G.AuctionsCreateAuctionButton)

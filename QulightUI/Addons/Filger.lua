@@ -281,6 +281,13 @@ Filger_Spells = {
 			{spellID = 214342, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Valarjar's Path (Primary stat, Use) [Horn of Valor]
 			{spellID = 215956, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Jacin's Ruse
+			{spellID = 224149, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Concordance of the Legionfall
+			{spellID = 242584, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Demon Soul
+			{spellID = 163073, unitID = "player", caster = "player", filter = "BUFF"},
+
 
 			-- Enchants
 			-- Mark of the Claw (Crit and Haste)

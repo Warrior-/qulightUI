@@ -341,7 +341,7 @@ local function OnEvent(self, event, arg1, arg2)
 		specpass == true and rolepass == true and not (UnitInVehicle("player") and self.hasTexture) then
 			for _, buff in pairs(group.spells) do
 				local name = GetSpellInfo(buff)
-				local _, _, icon, _, _, _, _, unitCaster, _, _, _ = UnitBuff("player", name)
+				local _, _, icon = UnitBuff("player", name)
 				if personal and personal == true then
 					if (name and icon and unitCaster == "player") then
 						self:Hide()
