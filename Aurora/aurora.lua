@@ -601,36 +601,61 @@ end
 
 local function colourExpandOrCollapse(f)
 	if f:IsEnabled() then
-		f.plus:SetVertexColor(red, green, blue)
-		f.minus:SetVertexColor(red, green, blue)
+		f._auroraBG.plus:SetVertexColor(red, green, blue)
+		f._auroraBG.minus:SetVertexColor(red, green, blue)
 	end
 end
 
 local function clearExpandOrCollapse(f)
-	f.plus:SetVertexColor(1, 1, 1)
-	f.minus:SetVertexColor(1, 1, 1)
+	f._auroraBG.plus:SetVertexColor(1, 1, 1)
+	f._auroraBG.minus:SetVertexColor(1, 1, 1)
 end
 
 F.colourExpandOrCollapse = colourExpandOrCollapse
 F.clearExpandOrCollapse = clearExpandOrCollapse
 
+local function Hook_SetNormalTexture(self, texture)
+	if self.settingTexture then return end
+	self.settingTexture = true
+	self:SetNormalTexture("")
+
+	if texture and texture ~= "" then
+		if texture:find("Plus") then
+			self._auroraBG.plus:Show()
+		elseif texture:find("Minus") then
+			self._auroraBG.plus:Hide()
+		end
+		self._auroraBG:Show()
+	else
+		self._auroraBG:Hide()
+	end
+	self.settingTexture = nil
+end
+
 F.ReskinExpandOrCollapse = function(f)
-	f:SetSize(13, 13)
+	f:SetHighlightTexture("")
+	f:SetPushedTexture("")
 
-	F.Reskin(f, true)
-	f.SetNormalTexture = F.dummy
+	local bg = CreateFrame("Frame", nil, f)
+	F.CreateBD(bg, .0)
+	F.CreateGradient(bg)
+	bg:SetSize(13, 13)
+	bg:SetPoint("TOPLEFT", f:GetNormalTexture(), 0, -2)
+	f._auroraBG = bg
 
-	f.minus = f:CreateTexture(nil, "OVERLAY")
-	f.minus:SetSize(7, 1)
-	f.minus:SetPoint("CENTER")
-	f.minus:SetTexture(C.media.backdrop)
-	f.minus:SetVertexColor(1, 1, 1)
+	_G.hooksecurefunc(f, "SetNormalTexture", Hook_SetNormalTexture)
 
-	f.plus = f:CreateTexture(nil, "OVERLAY")
-	f.plus:SetSize(1, 7)
-	f.plus:SetPoint("CENTER")
-	f.plus:SetTexture(C.media.backdrop)
-	f.plus:SetVertexColor(1, 1, 1)
+	bg.minus = bg:CreateTexture(nil, "OVERLAY")
+	bg.minus:SetSize(7, 1)
+	bg.minus:SetPoint("CENTER")
+	bg.minus:SetTexture(C.media.backdrop)
+	bg.minus:SetVertexColor(1, 1, 1)
+
+	bg.plus = bg:CreateTexture(nil, "OVERLAY")
+	bg.plus:SetSize(1, 7)
+	bg.plus:SetPoint("CENTER")
+	bg.plus:SetTexture(C.media.backdrop)
+	bg.plus:SetVertexColor(1, 1, 1)
 
 	f:HookScript("OnEnter", colourExpandOrCollapse)
 	f:HookScript("OnLeave", clearExpandOrCollapse)
@@ -656,7 +681,7 @@ F.ReskinPortraitFrame = function(f, isButtonFrame)
 	f.Bg:SetAlpha(0)
 	_G[name.."TitleBg"]:SetAlpha(0)
 	f.portrait:SetAlpha(0)
-	f.portraitFrame:SetAlpha(0)
+	_G[name.."PortraitFrame"]:SetAlpha(0)
 	_G[name.."TopRightCorner"]:SetAlpha(0)
 	f.topLeftCorner:SetAlpha(0)
 	f.topBorderBar:SetAlpha(0)
@@ -664,7 +689,7 @@ F.ReskinPortraitFrame = function(f, isButtonFrame)
 	_G[name.."BotLeftCorner"]:SetAlpha(0)
 	_G[name.."BotRightCorner"]:SetAlpha(0)
 	_G[name.."BottomBorder"]:SetAlpha(0)
-	f.leftBorderBar:SetAlpha(0)
+	_G[name.."LeftBorder"]:SetAlpha(0)
 	_G[name.."RightBorder"]:SetAlpha(0)
 
 	F.ReskinClose(f.CloseButton)
@@ -820,11 +845,10 @@ F.ReskinTooltip = function(f)
 end
 
 F.ReskinItemFrame = function(frame)
-	local name = frame:GetName()
-	local icon = frame.Icon or _G[name.."IconTexture"]
+	local icon = frame.Icon
 	frame._auroraBG = F.ReskinIcon(icon)
 
-	local nameFrame = frame.NameFrame or _G[name.."NameFrame"]
+	local nameFrame = frame.NameFrame
 	nameFrame:SetAlpha(0)
 
 	local bg = CreateFrame("Frame", nil, frame)
@@ -1005,7 +1029,7 @@ SetSkin:SetScript("OnEvent", function(self, event, addon)
 			F.CreateSDalpha(FrameBD)
 		end
 
-		-- Dropdown lists
+		-- [[ Dropdown lists ]]
 
 		hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
 			for i = 1, _G.UIDROPDOWNMENU_MAXLEVELS do
@@ -1359,26 +1383,6 @@ SetSkin:SetScript("OnEvent", function(self, event, addon)
 			F.ReskinExpandOrCollapse(bu)
 		end
 
-		hooksecurefunc("ReputationFrame_Update", function()
-			local numFactions = _G.GetNumFactions()
-			local factionIndex, factionButton
-			local factionOffset = _G.FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
-
-			for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-				factionIndex = factionOffset + i
-				factionButton = _G["ReputationBar"..i.."ExpandOrCollapseButton"]
-
-				if factionIndex <= numFactions then
-					local _, _, _, _, _, _, _, _, _, isCollapsed = _G.GetFactionInfo(factionIndex)
-					if isCollapsed then
-						factionButton.plus:Show()
-					else
-						factionButton.plus:Hide()
-					end
-				end
-			end
-		end)
-
 		F.CreateBD(_G.ReputationDetailFrame)
 		F.ReskinClose(_G.ReputationDetailCloseButton)
 		F.ReskinCheck(_G.ReputationDetailAtWarCheckBox)
@@ -1449,68 +1453,6 @@ SetSkin:SetScript("OnEvent", function(self, event, addon)
 				buttonIndex = buttonIndex + 1
 			end
 		end)
-
-		-- Trade Frame
-
-		_G.TradePlayerEnchantInset:DisableDrawLayer("BORDER")
-		_G.TradePlayerItemsInset:DisableDrawLayer("BORDER")
-		_G.TradeRecipientEnchantInset:DisableDrawLayer("BORDER")
-		_G.TradeRecipientItemsInset:DisableDrawLayer("BORDER")
-		_G.TradePlayerInputMoneyInset:DisableDrawLayer("BORDER")
-		_G.TradeRecipientMoneyInset:DisableDrawLayer("BORDER")
-		_G.TradeRecipientBG:Hide()
-		_G.TradePlayerEnchantInsetBg:Hide()
-		_G.TradePlayerItemsInsetBg:Hide()
-		_G.TradePlayerInputMoneyInsetBg:Hide()
-		_G.TradeRecipientEnchantInsetBg:Hide()
-		_G.TradeRecipientItemsInsetBg:Hide()
-		_G.TradeRecipientMoneyBg:Hide()
-		_G.TradeRecipientPortraitFrame:Hide()
-		_G.TradeRecipientBotLeftCorner:Hide()
-		_G.TradeRecipientLeftBorder:Hide()
-		select(4, _G.TradePlayerItem7:GetRegions()):Hide()
-		select(4, _G.TradeRecipientItem7:GetRegions()):Hide()
-		_G.TradeFramePlayerPortrait:Hide()
-		_G.TradeFrameRecipientPortrait:Hide()
-
-		F.ReskinPortraitFrame(_G.TradeFrame, true)
-		F.Reskin(_G.TradeFrameTradeButton)
-		F.Reskin(_G.TradeFrameCancelButton)
-		F.ReskinInput(_G.TradePlayerInputMoneyFrameGold)
-		F.ReskinInput(_G.TradePlayerInputMoneyFrameSilver)
-		F.ReskinInput(_G.TradePlayerInputMoneyFrameCopper)
-
-		_G.TradePlayerInputMoneyFrameSilver:SetPoint("LEFT", _G.TradePlayerInputMoneyFrameGold, "RIGHT", 1, 0)
-		_G.TradePlayerInputMoneyFrameCopper:SetPoint("LEFT", _G.TradePlayerInputMoneyFrameSilver, "RIGHT", 1, 0)
-
-		for i = 1, _G.MAX_TRADE_ITEMS do
-			local bu1 = _G["TradePlayerItem"..i.."ItemButton"]
-			local bu2 = _G["TradeRecipientItem"..i.."ItemButton"]
-
-			_G["TradePlayerItem"..i.."SlotTexture"]:Hide()
-			_G["TradePlayerItem"..i.."NameFrame"]:Hide()
-			_G["TradeRecipientItem"..i.."SlotTexture"]:Hide()
-			_G["TradeRecipientItem"..i.."NameFrame"]:Hide()
-
-			bu1:SetNormalTexture("")
-			bu1:SetPushedTexture("")
-			bu1.icon:SetTexCoord(.08, .92, .08, .92)
-			bu2:SetNormalTexture("")
-			bu2:SetPushedTexture("")
-			bu2.icon:SetTexCoord(.08, .92, .08, .92)
-
-			local bg1 = CreateFrame("Frame", nil, bu1)
-			bg1:SetPoint("TOPLEFT", -1, 1)
-			bg1:SetPoint("BOTTOMRIGHT", 1, -1)
-			bg1:SetFrameLevel(bu1:GetFrameLevel()-1)
-			F.CreateBD(bg1, .25)
-
-			local bg2 = CreateFrame("Frame", nil, bu2)
-			bg2:SetPoint("TOPLEFT", -1, 1)
-			bg2:SetPoint("BOTTOMRIGHT", 1, -1)
-			bg2:SetFrameLevel(bu2:GetFrameLevel()-1)
-			F.CreateBD(bg2, .25)
-		end
 
 		-- Tutorial Frame
 

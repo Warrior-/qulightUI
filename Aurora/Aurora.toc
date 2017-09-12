@@ -2,7 +2,7 @@
 ## Title: |cff1784d1Aurora|r
 ## Notes: Minimalistic window theme.
 ## Author: Haleth/Lightsword, Gethe
-## Version: 7.2.5.0
+## Version: 7.2.5.1
 ## SavedVariables: AuroraConfig
 ## RequiredDeps: QulightUI
 
@@ -32,6 +32,7 @@ FrameXML\PaperDollFrame.lua
 FrameXML\QuestFrame.lua
 FrameXML\QuestInfo.lua
 FrameXML\MerchantFrame.lua
+FrameXML\TradeFrame.lua
 FrameXML\ContainerFrame.lua
 FrameXML\LootFrame.lua
 FrameXML\TaxiFrame.lua
