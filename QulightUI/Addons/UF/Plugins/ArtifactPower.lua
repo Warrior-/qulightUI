@@ -4,6 +4,8 @@
 local _, ns = ...
 local oUF = ns.oUF or oUF
 
+if not oUF then return end
+
 local function ShowTooltip(element)
 	element:SetAlpha(element.onAlpha)
 	GameTooltip:SetOwner(element)
@@ -27,8 +29,8 @@ local function Update(self, event, unit)
 
 	local show = HasArtifactEquipped() and not UnitHasVehicleUI("player")
 	if (show) then
-		local _, _, name, _, totalPower, traitsLearned = C_ArtifactUI.GetEquippedArtifactInfo()
-		local numTraitsLearnable, power, powerForNextTrait = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(traitsLearned, totalPower);
+		local _, _, name, _, totalPower, traitsLearned, _, _, _, _, _, _, tier = C_ArtifactUI.GetEquippedArtifactInfo()
+		local numTraitsLearnable, power, powerForNextTrait = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(traitsLearned, totalPower, tier)
 
 		element:SetMinMaxValues(0, powerForNextTrait)
 		element:SetValue(power)
@@ -39,16 +41,10 @@ local function Update(self, event, unit)
 		element.totalPower = totalPower
 		element.numTraitsLearnable = numTraitsLearnable
 		element.traitsLearned = traitsLearned
+		element.tier = tier
 
 		element:Show()
 	else
-		element.name = nil
-		element.power = nil
-		element.powerForNextTrait = nil
-		element.totalPower = nil
-		element.numTraitsLearnable = nil
-		element.traitsLearned = nil
-
 		element:Hide()
 	end
 
@@ -100,4 +96,4 @@ local function Disable(self)
 	element:Hide()
 end
 
-oUF:AddElement("ArtifactPower", Update, Enable, Disable)
+oUF:AddElement("ArtifactPower", Path, Enable, Disable)

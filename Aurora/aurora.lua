@@ -11,7 +11,7 @@ local hooksecurefunc = _G.hooksecurefunc
 -- [[ Core ]]
 
 -- for custom APIs (see docs online)
-local LATEST_API_VERSION = "6.0"
+local LATEST_API_VERSION = "7.0"
 
 -- see F.AddPlugin
 local AURORA_LOADED = false
@@ -90,15 +90,22 @@ C.defaults = {
 	["buttonSolidColour"] = {.35, .35, .35, .35},
 	
 	["useButtonGradientColour"] = true,
+	["chatBubbleNames"] = true,
 	["chatBubbles"] = true,
 	["useCustomColour"] = false,
 		["customColour"] = {r = 1, g = 1, b = 1},
 }
 
+C.backdrop = {
+	bgFile = C.media.backdrop,
+	edgeFile = C.media.backdrop,
+	edgeSize = 1,
+}
+
 C.frames = {}
 
 C.TOC = select(4, _G.GetBuildInfo())
-C.is72 = C.TOC > 70100 or _G.GetBuildInfo() == "7.2.0"
+C.is725 = _G.GetBuildInfo() == "7.2.5"
 
 -- [[ Cached variables ]]
 
@@ -145,11 +152,7 @@ F.CreateSDalpha = function(parent, size, r, g, b, alpha, offset)
 end
 
 F.CreateBD = function(f, a)
-	f:SetBackdrop({
-		bgFile = C.media.backdrop,
-		edgeFile = C.media.backdrop,
-		edgeSize = 1,
-	})
+	f:SetBackdrop(C.backdrop)
 	f:SetBackdropColor(.08,.08,.08, 0.9)
 	f:SetBackdropBorderColor(0, 0, 0)
 
@@ -201,15 +204,17 @@ local function colourButton(f)
 	if useButtonGradientColour then
 		f:SetBackdropColor(red, green, blue, .3)
 	else
-		f.tex:SetVertexColor(red / 4, green / 4, blue / 4, 1)
+		f._auroraTex:SetVertexColor(red / 4, green / 4, blue / 4)
 	end
+
+	f:SetBackdropBorderColor(red, green, blue)
 end
 
 local function clearButton(f)
 	if useButtonGradientColour then
 		f:SetBackdropColor(0, 0, 0, 0)
 	else
-		f.tex:SetVertexColor(buttonR, buttonG, buttonB, buttonA)
+		f._auroraTex:SetVertexColor(buttonR, buttonG, buttonB, buttonA)
 	end
 
 	f:SetBackdropBorderColor(0, 0, 0)
@@ -229,7 +234,7 @@ F.Reskin = function(f, noHighlight)
 
 	F.CreateBD(f, .0)
 	
-	f.tex = F.CreateGradient(f)
+	f._auroraTex = F.CreateGradient(f)
 
 	if not noHighlight then
 		f:HookScript("OnEnter", colourButton)
@@ -263,15 +268,6 @@ F.ReskinTab = function(f, numTabs)
 	end
 end
 
-local function colourScroll(f)
-	if f:IsEnabled() then
-		f.tex:SetVertexColor(red, green, blue)
-	end
-end
-
-local function clearScroll(f)
-	f.tex:SetVertexColor(1, 1, 1)
-end
 
 F.ReskinScroll = function(f, parent)
 	local frame = f:GetName()
@@ -301,69 +297,57 @@ F.ReskinScroll = function(f, parent)
 	local up = (f.ScrollUpButton or f.UpButton) or _G[(frame or parent).."ScrollUpButton"]
 	local down = (f.ScrollDownButton or f.DownButton) or _G[(frame or parent).."ScrollDownButton"]
 
-	up:SetWidth(17)
-	down:SetWidth(17)
-
-	F.Reskin(up, true)
-	F.Reskin(down, true)
-
-	up:SetDisabledTexture(C.media.backdrop)
-	local dis1 = up:GetDisabledTexture()
-	dis1:SetVertexColor(0, 0, 0, .4)
-	dis1:SetDrawLayer("OVERLAY")
-
-	down:SetDisabledTexture(C.media.backdrop)
-	local dis2 = down:GetDisabledTexture()
-	dis2:SetVertexColor(0, 0, 0, .4)
-	dis2:SetDrawLayer("OVERLAY")
-
-	local uptex = up:CreateTexture(nil, "ARTWORK")
-	uptex:SetTexture(C.media.arrowUp)
-	uptex:SetSize(8, 8)
-	uptex:SetPoint("CENTER")
-	uptex:SetVertexColor(1, 1, 1)
-	up.tex = uptex
-
-	local downtex = down:CreateTexture(nil, "ARTWORK")
-	downtex:SetTexture(C.media.arrowDown)
-	downtex:SetSize(8, 8)
-	downtex:SetPoint("CENTER")
-	downtex:SetVertexColor(1, 1, 1)
-	down.tex = downtex
-
-	up:HookScript("OnEnter", colourScroll)
-	up:HookScript("OnLeave", clearScroll)
-	down:HookScript("OnEnter", colourScroll)
-	down:HookScript("OnLeave", clearScroll)
+	F.ReskinArrow(up, "Up")
+	F.ReskinArrow(down, "Down")
+	up:SetSize(17, 17)
+	down:SetSize(17, 17)
 end
 
 local function colourArrow(f)
 	if f:IsEnabled() then
-		f.tex:SetVertexColor(red, green, blue)
+		f._auroraArrow:SetVertexColor(red, green, blue)
 	end
 end
 
 local function clearArrow(f)
-	f.tex:SetVertexColor(1, 1, 1)
+	f._auroraArrow:SetVertexColor(1, 1, 1)
 end
 
 F.colourArrow = colourArrow
 F.clearArrow = clearArrow
 
-F.ReskinDropDown = function(f)
+F.CreateArrow = function(f, direction)
+	local tex = f:CreateTexture(nil, "ARTWORK", nil, 7)
+	tex:SetTexture(C.media["arrow"..direction])
+	tex:SetSize(8, 8)
+	tex:SetPoint("CENTER")
+	f._auroraArrow = tex
+
+	f:HookScript("OnEnter", colourArrow)
+	f:HookScript("OnLeave", clearArrow)
+end
+
+F.ReskinArrow = function(f, direction)
+	f:SetSize(18, 18)
+	F.Reskin(f, true)
+
+	f:SetDisabledTexture(C.media.backdrop)
+	local dis = f:GetDisabledTexture()
+	dis:SetVertexColor(0, 0, 0, .3)
+	dis:SetDrawLayer("OVERLAY")
+
+	F.CreateArrow(f, direction)
+end
+
+F.ReskinDropDown = function(f, borderless)
 	local frame = f:GetName()
 
-	local left = _G[frame.."Left"]
-	local middle = _G[frame.."Middle"]
-	local right = _G[frame.."Right"]
-
-	if left then left:SetAlpha(0) end
-	if middle then middle:SetAlpha(0) end
-	if right then right:SetAlpha(0) end
+	local button = f.Button or _G[frame.."Button"]
+	F.ReskinArrow(button, "Down")
+	button:ClearAllPoints()
 
 	local bg = CreateFrame("Frame", nil, f)
-	bg:SetPoint("TOPLEFT", 20, -4)
-	bg:SetPoint("BOTTOMRIGHT", -14, 8)
+	bg:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", 1, 0)
 	bg:SetFrameLevel(f:GetFrameLevel()-1)
 	F.CreateBD(bg, 0)
 
@@ -371,27 +355,21 @@ F.ReskinDropDown = function(f)
 	gradient:SetPoint("TOPLEFT", bg, 1, -1)
 	gradient:SetPoint("BOTTOMRIGHT", bg, -1, 1)
 
-	local down = _G[frame.."Button"]
-	down:SetSize(20, 20)
-	down:ClearAllPoints()
-	down:SetPoint("TOPRIGHT", bg)
-	F.Reskin(down, true)
+	if borderless then
+		button:SetPoint("TOPRIGHT", 0, -6)
+		bg:SetPoint("TOPLEFT", 0, -6)
+	else
+		local left = _G[frame.."Left"]
+		local middle = _G[frame.."Middle"]
+		local right = _G[frame.."Right"]
 
-	down:SetDisabledTexture(C.media.backdrop)
-	local dis = down:GetDisabledTexture()
-	dis:SetVertexColor(0, 0, 0, .4)
-	dis:SetDrawLayer("OVERLAY")
-	dis:SetAllPoints()
+		left:SetAlpha(0)
+		middle:SetAlpha(0)
+		right:SetAlpha(0)
 
-	local tex = down:CreateTexture(nil, "ARTWORK")
-	tex:SetTexture(C.media.arrowDown)
-	tex:SetSize(8, 8)
-	tex:SetPoint("CENTER")
-	tex:SetVertexColor(1, 1, 1)
-	down.tex = tex
-
-	down:HookScript("OnEnter", colourArrow)
-	down:HookScript("OnLeave", clearArrow)
+		button:SetPoint("TOPRIGHT", right, -19, -21)
+		bg:SetPoint("TOPLEFT", 20, -4)
+	end
 end
 
 local function colourClose(f)
@@ -488,14 +466,7 @@ F.ReskinArrow = function(f, direction)
 	dis:SetVertexColor(0, 0, 0, .3)
 	dis:SetDrawLayer("OVERLAY")
 
-	local tex = f:CreateTexture(nil, "ARTWORK")
-	tex:SetTexture("Interface\\AddOns\\Aurora\\media\\arrow-"..direction.."-active")
-	tex:SetSize(8, 8)
-	tex:SetPoint("CENTER")
-	f.tex = tex
-
-	f:HookScript("OnEnter", colourArrow)
-	f:HookScript("OnLeave", clearArrow)
+	F.CreateArrow(f, direction)
 end
 
 F.ReskinCheck = function(f, isTriState)
@@ -725,21 +696,12 @@ F.ReskinStretchButton = function(f)
 	F.Reskin(f)
 end
 
-F.ReskinFilterButton = function(f)
-	f.TopLeft:Hide()
-	f.TopRight:Hide()
-	f.BottomLeft:Hide()
-	f.BottomRight:Hide()
-	f.TopMiddle:Hide()
-	f.MiddleLeft:Hide()
-	f.MiddleRight:Hide()
-	f.BottomMiddle:Hide()
-	f.MiddleMiddle:Hide()
+F.ReskinFilterButton = function(f, direction)
+	F.ReskinStretchButton(f)
 
-	F.Reskin(f)
-	f.Icon:SetTexture(C.media.arrowRight)
+	direction = direction or "Right"
+	f.Icon:SetTexture(C.media["arrow"..direction])
 
-	f.Text:SetPoint("CENTER")
 	f.Icon:SetPoint("RIGHT", f, "RIGHT", -5, 0)
 	f.Icon:SetSize(8, 8)
 end
@@ -791,7 +753,34 @@ end
 
 F.ReskinIcon = function(icon)
 	icon:SetTexCoord(.08, .92, .08, .92)
-	return F.CreateBG(icon)
+	return F.CreateBDFrame(icon)
+end
+local getBackdrop = function()
+	return C.backdrop
+end
+local getBackdropColor = function()
+	return 0, 0, 0, .6
+end
+local getBackdropBorderColor = function()
+	return 0, 0, 0
+end
+F.ReskinTooltip = function(f)
+	f:SetBackdrop(nil)
+
+	local bg
+	if f.BackdropFrame then
+		bg = f.BackdropFrame
+	else
+		bg = _G.CreateFrame("Frame", nil, f)
+		bg:SetFrameLevel(f:GetFrameLevel()-1)
+	end
+	bg:SetPoint("TOPLEFT")
+	bg:SetPoint("BOTTOMRIGHT")
+	F.CreateBD(bg, .6)
+
+	f.GetBackdrop = getBackdrop
+	f.GetBackdropColor = getBackdropColor
+	f.GetBackdropBorderColor = getBackdropBorderColor
 end
 
 -- [[ Variable and module handling ]]
@@ -1523,6 +1512,34 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		F.ReskinPortraitFrame(_G.GossipFrame, true)
 		F.Reskin(_G.GossipFrameGreetingGoodbyeButton)
 		F.ReskinScroll(_G.GossipGreetingScrollFrameScrollBar)
+		hooksecurefunc("GossipFrameAvailableQuestsUpdate", function(...)
+			local numAvailQuestsData = select("#", ...)
+			local buttonIndex = (_G.GossipFrame.buttonIndex - 1) - (numAvailQuestsData / 7)
+			for i = 1, numAvailQuestsData, 7 do
+				local titleText, _, isTrivial = select(i, ...)
+				local titleButton = _G["GossipTitleButton" .. buttonIndex]
+				if isTrivial then
+					titleButton:SetFormattedText(_G.AURORA_TRIVIAL_QUEST_DISPLAY, titleText);
+				else
+					titleButton:SetFormattedText(_G.AURORA_NORMAL_QUEST_DISPLAY, titleText);
+				end
+				buttonIndex = buttonIndex + 1
+			end
+		end)
+		hooksecurefunc("GossipFrameActiveQuestsUpdate", function(...)
+			local numActiveQuestsData = select("#", ...)
+			local buttonIndex = (_G.GossipFrame.buttonIndex - 1) - (numActiveQuestsData / 6)
+			for i = 1, numActiveQuestsData, 6 do
+				local titleText, _, isTrivial = select(i, ...)
+				local titleButton = _G["GossipTitleButton" .. buttonIndex]
+				if isTrivial then
+					titleButton:SetFormattedText(_G.AURORA_TRIVIAL_QUEST_DISPLAY, titleText);
+				else
+					titleButton:SetFormattedText(_G.AURORA_NORMAL_QUEST_DISPLAY, titleText);
+				end
+				buttonIndex = buttonIndex + 1
+			end
+		end)
 
 		-- Help frame
 
@@ -1682,59 +1699,6 @@ Skin:SetScript("OnEvent", function(self, event, addon)
 		tutOkay:SetBackdropColor(0, 0, 0, .25)
 		tutPrev:SetBackdropColor(0, 0, 0, .25)
 		tutNext:SetBackdropColor(0, 0, 0, .25)
-
-		-- Master looter frame
-
-		local MasterLooterFrame = _G.MasterLooterFrame
-		for i = 1, 9 do
-			select(i, MasterLooterFrame:GetRegions()):Hide()
-		end
-
-		MasterLooterFrame.Item.NameBorderLeft:Hide()
-		MasterLooterFrame.Item.NameBorderRight:Hide()
-		MasterLooterFrame.Item.NameBorderMid:Hide()
-		MasterLooterFrame.Item.IconBorder:Hide()
-
-		MasterLooterFrame.Item.Icon:SetTexCoord(.08, .92, .08, .92)
-		MasterLooterFrame.Item.Icon:SetDrawLayer("ARTWORK")
-		MasterLooterFrame.Item.bg = F.CreateBG(MasterLooterFrame.Item.Icon)
-
-		MasterLooterFrame:HookScript("OnShow", function(MLFrame)
-			MLFrame.Item.bg:SetVertexColor(MLFrame.Item.IconBorder:GetVertexColor())
-			_G.LootFrame:SetAlpha(.4)
-		end)
-
-		MasterLooterFrame:HookScript("OnHide", function(MLFrame)
-			_G.LootFrame:SetAlpha(1)
-		end)
-
-		F.CreateBD(MasterLooterFrame)
-		F.ReskinClose(select(3, MasterLooterFrame:GetChildren()))
-
-		hooksecurefunc("MasterLooterFrame_UpdatePlayers", function()
-			for i = 1, _G.MAX_RAID_MEMBERS do
-				local playerFrame = MasterLooterFrame["player"..i]
-				if playerFrame then
-					if not playerFrame.styled then
-						playerFrame.Bg:SetPoint("TOPLEFT", 1, -1)
-						playerFrame.Bg:SetPoint("BOTTOMRIGHT", -1, 1)
-						playerFrame.Highlight:SetPoint("TOPLEFT", 1, -1)
-						playerFrame.Highlight:SetPoint("BOTTOMRIGHT", -1, 1)
-
-						playerFrame.Highlight:SetTexture(C.media.backdrop)
-
-						F.CreateBD(playerFrame, 0)
-
-						playerFrame.styled = true
-					end
-					local colour = C.classcolours[select(2, _G.UnitClass(playerFrame.Name:GetText()))]
-					playerFrame.Name:SetTextColor(colour.r, colour.g, colour.b)
-					playerFrame.Highlight:SetVertexColor(colour.r, colour.g, colour.b, .2)
-				else
-					break
-				end
-			end
-		end)
 
 		-- Tabard frame
 

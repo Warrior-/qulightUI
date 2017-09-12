@@ -1497,7 +1497,6 @@ Reputation = function(self)
 	Reputation:SetStatusBarTexture(Qulight["media"].texture)
 	Reputation:SetWidth(6)
 	Reputation:SetHeight(168)
-	
 	Reputation:SetPoint('RIGHT', ChatBackground, 'RIGHT', 8, 0)
 	Reputation:SetFrameLevel(2)
 	Reputation:SetOrientation("VERTICAL")
@@ -1513,17 +1512,20 @@ Reputation = function(self)
 	self.Reputation = Reputation
 	end
 end
+
+
 ArtifactPower = function(self)
 	if Qulight["unitframes"].ArtifactPowerbar then 
 	local ArtifactPower = CreateFrame('StatusBar', nil, self)
-	local PlayerLevel = UnitLevel("player")
-	local ShowArtifact = HasArtifactEquipped()
-	ArtifactPower:EnableMouse(true)
-	ArtifactPower:SetPoint('TOPRIGHT', ChatBackground, 'TOPRIGHT', 25, 0)
-	ArtifactPower:SetSize(6, 168)
-	ArtifactPower:SetOrientation("Vertical")
 	ArtifactPower:SetStatusBarTexture(Qulight["media"].texture)
-	ArtifactPower.offAlpha = 0
+	ArtifactPower:SetPoint('RIGHT', ChatBackground, 'RIGHT', 18, 0)
+	ArtifactPower:SetStatusBarColor(.901, .8, .601)
+	ArtifactPower:EnableMouse(true)
+	ArtifactPower:SetWidth(6)
+	ArtifactPower:SetHeight(168)
+	ArtifactPower:SetOrientation("VERTICAL")
+	ArtifactPower:SetFrameLevel(2)
+
 
 	local h = CreateFrame("Frame", nil, ArtifactPower)
 	h:SetFrameLevel(1)
@@ -1531,11 +1533,10 @@ ArtifactPower = function(self)
 	h:SetPoint("BOTTOMRIGHT",5,-5)
 	CreateStyle(h, -1)
 
-	ArtifactPower.Tooltip = true
+
 	self.ArtifactPower = ArtifactPower
 	end
 end
-
 
 -----------------------------
 -- STYLE FUNCTIONS
@@ -1580,6 +1581,7 @@ local function CreatePlayerStyle(self, unit, isSingle)
 	Reputation(self)
 	AltPowerBar(self)
 	genHarmony(self)
+	ArtifactPower(self)
 	if Qulight["unitframes"].showPortrait then gen_portrait(self) end
 	if Qulight["unitframes"].showRunebar then genRunes(self) end
 	if Qulight["unitframes"].showHolybar then genHolyPower(self) end

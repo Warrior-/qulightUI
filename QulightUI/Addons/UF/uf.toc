@@ -12,3 +12,4 @@ Plugins\Experience.lua
 Plugins\TotemBar.lua
 Plugins\Reputation.lua
 Plugins\WarlockSpecBars.lua
+Plugins\ArtifactPower.lua

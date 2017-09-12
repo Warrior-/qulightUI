@@ -135,10 +135,16 @@ f:SetScript("OnEvent", function()
 		local c = 0
 		for b=0,4 do
 			for s=1,GetContainerNumSlots(b) do
-				local l = GetContainerItemLink(b, s)
-				if l then
-					local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
-					if select(3, GetItemInfo(l))==0 then
+				local l, ID = GetContainerItemLink(b, s), GetContainerItemID (b, s)
+				if (l and ID) then
+					local p = 0
+					local Mult1, Mult2 =select(11, GetItemInfo(l)), select(2, GetContainerItemInfo(b, s))
+
+					if (Mult1 and Mult2) then
+						p = Mult1 * Mult2
+					end
+
+					if select(3, GetItemInfo(l))==0 and p>0 then
 						UseContainerItem(b, s)
 						PickupMerchantItem()
 						c = c+p
@@ -275,23 +281,21 @@ PVPReadyDialog.enterButton:SetPoint("BOTTOM", PVPReadyDialog, "BOTTOM", 0, 25)
 ----------------------------------------------------------------------------------------
 --	Custom Lag Tolerance(by Elv22)
 ----------------------------------------------------------------------------------------
---[[
-	local customlag = CreateFrame("Frame")
-	local int = 5
-	local _, _, latencyHome = GetNetStats()
-	local LatencyUpdate = function(self, elapsed)
-		int = int - elapsed
-		if int < 0 then
-			if GetCVar("reducedLagTolerance") ~= tostring(1) then SetCVar("reducedLagTolerance", tostring(1)) end
-			if latencyHome ~= 0 and latencyHome <= 400 then
-				SetCVar("maxSpellStartRecoveryOffset", tostring(latencyHome))
-			end
-			int = 5
+
+local customlag = CreateFrame("Frame")
+local int = 5
+local _, _, _, lag = GetNetStats()
+local LatencyUpdate = function(self, elapsed)
+	int = int - elapsed
+	if int < 0 then
+		if lag ~= 0 and lag <= 400 then
+			SetCVar("SpellQueueWindow", tostring(lag))
 		end
+		int = 5
 	end
-	customlag:SetScript("OnUpdate", LatencyUpdate)
-	LatencyUpdate(customlag, 10)
---]]
+end
+customlag:SetScript("OnUpdate", LatencyUpdate)
+LatencyUpdate(customlag, 10)
 
 ----------------------------------------------------------------------------------------
 --	Auto select current event boss from LFD tool(EventBossAutoSelect by Nathanyel)
