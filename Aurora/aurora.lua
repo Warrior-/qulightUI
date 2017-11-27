@@ -50,18 +50,18 @@ C.defaults = {
 	["acknowledgedSplashScreen"] = false,
 
 	["alpha"] = 0.9,
-	["bags"] = true,
+	["bags"] = false,
 	["buttonGradientColour"] = {0, 0, 0, .3},
 	["buttonSolidColour"] = {.35, .35, .35, .35},
 	["buttonsHaveGradient"] = true,
 	["chatBubbles"] = true,
         ["chatBubbleNames"] = true,
-	["enableFont"] = true,
-	["loot"] = true,
+	["enableFont"] = false,
+	["loot"] = false,
 	["useCustomColour"] = false,
         ["customColour"] = {r = 1, g = 1, b = 1},
 	["customClassColors"] = false,
-	["tooltips"] = true
+	["tooltips"] = false
 
 }
 

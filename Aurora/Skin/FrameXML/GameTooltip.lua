@@ -73,11 +73,4 @@ do --[[ FrameXML\GameTooltip.xml ]]
 end
 
 function private.FrameXML.GameTooltip()
-    if private.disabled.tooltips then return end
-
-    _G.hooksecurefunc("GameTooltip_OnHide", Hook.GameTooltip_OnHide)
-
-    Skin.ShoppingTooltipTemplate(_G.ShoppingTooltip1)
-    Skin.ShoppingTooltipTemplate(_G.ShoppingTooltip2)
-    Skin.GameTooltipTemplate(_G.GameTooltip)
 end
