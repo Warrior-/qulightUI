@@ -6,11 +6,26 @@ local _, private = ...
 -- [[ Core ]]
 local Aurora = private.Aurora
 local Base, Hook, Skin = Aurora.Base, Aurora.Hook, Aurora.Skin
+local Color = Aurora.Color
 
 do --[[ FrameXML\GarrisonBaseUtils.lua ]]
     function Hook.GarrisonFollowerPortraitMixin_SetQuality(self, quality)
+        if not self._auroraPortraitBG then return end
         local color = _G.ITEM_QUALITY_COLORS[quality]
-        self:SetBackdropBorderColor(color.r, color.g, color.b)
+        self._auroraPortraitBG:SetBackdropBorderColor(color.r, color.g, color.b)
+        self._auroraLvlBG:SetBackdropBorderColor(color.r, color.g, color.b)
+    end
+    function Hook.GarrisonFollowerPortraitMixin_SetNoLevel(self)
+        if not self._auroraLvlBG then return end
+        self._auroraLvlBG:Hide()
+    end
+    function Hook.GarrisonFollowerPortraitMixin_SetLevel(self)
+        if not self._auroraLvlBG then return end
+        self._auroraLvlBG:Show()
+    end
+    function Hook.GarrisonFollowerPortraitMixin_SetILevel(self)
+        if not self._auroraLvlBG then return end
+        self._auroraLvlBG:Show()
     end
 end
 
@@ -20,35 +35,35 @@ do --[[ FrameXML\GarrisonBaseUtils.xml ]]
         border:SetPoint("TOPLEFT", icon, -8, 8)
         border:SetPoint("BOTTOMRIGHT", icon, 8, -8)
     end
-    function Skin.GarrisonFollowerPortraitTemplate(frame)
-        _G.hooksecurefunc(frame, "SetQuality", Hook.GarrisonFollowerPortraitMixin_SetQuality)
+    function Skin.GarrisonFollowerPortraitTemplate(Frame)
+        Frame.PortraitRing:Hide()
+        Frame.Portrait:SetPoint("CENTER", 0, 4)
+        Frame.PortraitRingQuality:SetTexture("")
 
-        local size = frame.Portrait:GetSize() + 2
-        frame:SetSize(size, size)
-        Base.SetBackdrop(frame, Aurora.frameColor.r, Aurora.frameColor.g, Aurora.frameColor.b, 1)
+        local portraitBG = _G.CreateFrame("Frame", nil, Frame)
+        portraitBG:SetFrameLevel(Frame:GetFrameLevel())
+        portraitBG:SetPoint("TOPLEFT", Frame.Portrait, -1, 1)
+        portraitBG:SetPoint("BOTTOMRIGHT", Frame.Portrait, 1, -1)
+        Base.SetBackdrop(portraitBG, Color.frame, 1)
+        Frame._auroraPortraitBG = portraitBG
 
-        frame.PortraitRing:Hide()
+        Frame.LevelBorder:SetAlpha(0)
+        local lvlBG = _G.CreateFrame("Frame", nil, Frame)
+        lvlBG:SetPoint("TOPLEFT", portraitBG, "BOTTOMLEFT", 0, 6)
+        lvlBG:SetPoint("BOTTOMRIGHT", portraitBG, 0, -10)
+        Base.SetBackdrop(lvlBG, Color.frame, 1)
+        Frame._auroraLvlBG = lvlBG
 
-        frame.Portrait:ClearAllPoints()
-        frame.Portrait:SetPoint("TOPLEFT", 1, -1)
+        Frame.Level:SetParent(lvlBG)
+        Frame.Level:SetPoint("CENTER", lvlBG)
 
-        frame.PortraitRingQuality:SetTexture("")
-        frame.LevelBorder:SetAlpha(0)
-
-        local lvlBG = frame:CreateTexture(nil, "BORDER")
-        lvlBG:SetColorTexture(0, 0, 0, 0.5)
-        lvlBG:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 1, 12)
-        lvlBG:SetPoint("BOTTOMRIGHT", frame, -1, 1)
-
-        local level = frame.Level
-        level:ClearAllPoints()
-        level:SetPoint("CENTER", lvlBG)
-
-        frame.PortraitRingCover:SetTexture("")
+        Frame.PortraitRingCover:SetTexture("")
     end
 end
 
 function private.FrameXML.GarrisonBaseUtils()
-    --[[
-    ]]
+    _G.hooksecurefunc(_G.GarrisonFollowerPortraitMixin, "SetQuality", Hook.GarrisonFollowerPortraitMixin_SetQuality)
+    _G.hooksecurefunc(_G.GarrisonFollowerPortraitMixin, "SetNoLevel", Hook.GarrisonFollowerPortraitMixin_SetNoLevel)
+    _G.hooksecurefunc(_G.GarrisonFollowerPortraitMixin, "SetLevel", Hook.GarrisonFollowerPortraitMixin_SetLevel)
+    _G.hooksecurefunc(_G.GarrisonFollowerPortraitMixin, "SetILevel", Hook.GarrisonFollowerPortraitMixin_SetILevel)
 end

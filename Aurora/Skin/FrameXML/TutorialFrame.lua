@@ -6,6 +6,7 @@ local next = _G.next
 -- [[ Core ]]
 local Aurora = private.Aurora
 local Base, Hook, Skin = Aurora.Base, Aurora.Hook, Aurora.Skin
+local Color = Aurora.Color
 
 do --[[ FrameXML\TutorialFrame.lua ]]
     local MAX_TUTORIAL_IMAGES = 3
@@ -68,7 +69,9 @@ end
 function private.FrameXML.TutorialFrame()
     _G.hooksecurefunc("TutorialFrame_Update", Hook.TutorialFrame_Update)
 
-    --[[ TutorialFrame ]]--
+    -------------------
+    -- TutorialFrame --
+    -------------------
     Base.SetBackdrop(_G.TutorialFrame)
     _G.TutorialFrameTop:SetAlpha(0)
     _G.TutorialFrameBottom:SetAlpha(0)
@@ -101,39 +104,26 @@ function private.FrameXML.TutorialFrame()
     _G.TutorialFrameOkayButton:SetNormalTexture("")
     _G.TutorialFrameOkayButton:SetPushedTexture("")
     _G.TutorialFrameOkayButton:SetHighlightTexture("")
-    Base.SetBackdrop(_G.TutorialFrameOkayButton, Aurora.buttonColor:GetRGBA())
+    Base.SetBackdrop(_G.TutorialFrameOkayButton, Color.button)
     Base.SetHighlight(_G.TutorialFrameOkayButton, "backdrop")
 
     for i, suffix in next, {"PrevButton", "NextButton"} do
         local button = _G["TutorialFrame"..suffix]
-        button:SetSize(18, 18)
-        button:SetNormalTexture("")
-        button:SetPushedTexture("")
-        button:SetHighlightTexture("")
-
-        local arrow = button:CreateTexture(nil, "ARTWORK")
-        arrow:SetPoint("TOPLEFT", 6, -5)
-        arrow:SetPoint("BOTTOMRIGHT", -6, 5)
-
-        local disabled = button:GetDisabledTexture()
-        disabled:SetColorTexture(0, 0, 0, .3)
-        disabled:SetDrawLayer("OVERLAY")
-
-        Base.SetBackdrop(button, Aurora.buttonColor:GetRGBA())
-        Base.SetHighlight(button, "backdrop")
         if i == 1 then
+            Skin.NavButtonPrevious(button)
             button:SetPoint("BOTTOMLEFT", 30, 10)
             button:GetRegions():SetPoint("LEFT", button, "RIGHT", 3, 0)
-            Base.SetTexture(arrow, "arrowLeft")
         else
+            Skin.NavButtonNext(button)
             button:SetPoint("BOTTOMRIGHT", -132, 10)
             button:GetRegions():SetPoint("RIGHT", button, "LEFT", -3, 0)
-            Base.SetTexture(arrow, "arrowRight")
         end
     end
 
 
-    --[[ TutorialFrameAlertButton ]]--
+    ------------------------------
+    -- TutorialFrameAlertButton --
+    ------------------------------
     local mask = _G.TutorialFrameAlertButton:CreateMaskTexture(nil, "BORDER")
     mask:SetTexture([[Interface\PetBattles\BattleBar-AbilityBadge-Neutral]], "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetPoint("CENTER", 3, 3)
@@ -143,6 +133,8 @@ function private.FrameXML.TutorialFrame()
     _G.TutorialFrameAlertButton:GetHighlightTexture():AddMaskTexture(mask)
 
 
-    --[[ TutorialFrameAlertButtonBadge ]]--
+    -----------------------------------
+    -- TutorialFrameAlertButtonBadge --
+    -----------------------------------
     -- Not used
 end

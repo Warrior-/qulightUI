@@ -117,7 +117,7 @@ oUF.Tags.Events["DiffColor"] = "UNIT_LEVEL"
 oUF.Tags["PetNameColor"] = function(unit)
 	return string.format("|cff%02x%02x%02x", color.r * 255, color.g * 255, color.b * 255)
 end
-oUF.Tags.Events["PetNameColor"] = "UNIT_POWER"
+oUF.Tags.Events["PetNameColor"] = "UNIT_POWER_UPDATE"
 
 oUF.Tags.Methods['GetNameColor'] = function(u, r)
 	local _, class = UnitClass(u)
@@ -133,7 +133,7 @@ oUF.Tags.Methods['GetNameColor'] = function(u, r)
 		return hex(1, 1, 1)
 	end
 end
-oUF.Tags.Events['GetNameColor'] = 'UNIT_REACTION UNIT_HEALTH UNIT_HAPPINESS'
+oUF.Tags.Events['GetNameColor'] = 'UNIT_HEALTH'
 
 oUF.Tags["NameArena"] = function(unit)
 	local name = UnitName(unit)
@@ -178,7 +178,7 @@ oUF.Tags["AltPower"] = function(unit)
 		return ("%s%%"):format(math.floor(min / max * 100 + 0.5))
 	end
 end
-oUF.Tags.Events["AltPower"] = "UNIT_POWER"
+oUF.Tags.Events["AltPower"] = "UNIT_POWER_UPDATE"
 
 oUF.Tags["IncHeal"] = function(unit)
 	local incheal = UnitGetIncomingHeals(unit) or 0
@@ -211,5 +211,5 @@ if Tclass == "WARLOCK" then
 			return ("%s%%"):format(math.floor(min / max * 100 + 0.5))
 		end
 	end
-	oUF.Tags.Events["DemonicFury"] = "UNIT_POWER PLAYER_TALENT_UPDATE"
+	oUF.Tags.Events["DemonicFury"] = "UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE"
 end

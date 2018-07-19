@@ -174,7 +174,7 @@ function GetMinimapShape() return "SQUARE" end
 --[[ Hiding ugly things	]]
 local dummy = function() end
 local frames = {
-    "MiniMapVoiceChatFrame",
+--    "MiniMapVoiceChatFrame",
     "MiniMapWorldMapButton",
     "MinimapZoneTextButton",
     "MiniMapMailBorder",
@@ -261,11 +261,11 @@ GameTimeFrame:SetScript("OnEvent", function(self, event, addon)
 	
 end)
 
-if CalendarGetNumPendingInvites() ~= 0 then
-		clockTime:SetTextColor(.67,.35,.35)
-	else
-		clockTime:SetTextColor(color.r, color.g, color.b)
-end
+--if CalendarGetNumPendingInvites() ~= 0 then
+--		clockTime:SetTextColor(.67,.35,.35)
+--	else
+--		clockTime:SetTextColor(color.r, color.g, color.b)
+--end
 	
 local config = {
 ["showPicomenu"] = true,
@@ -492,32 +492,40 @@ local ela = 0
 local coord_Update = function(self,t)
 	ela = ela - t
 	if ela > 0 then return end
-	local x,y = GetPlayerMapPosition("player")
-	local xt,yt
 
-	if not GetPlayerMapPosition("player") then
-		x = 0
-		y = 0
+	local UnitMap = C_Map.GetBestMapForUnit("player")
+	local X, Y = 0, 0
+	
+	if UnitMap then
+		local GetPlayerMapPosition = C_Map.GetPlayerMapPosition(UnitMap, "player")
+		
+		if GetPlayerMapPosition then
+			X, Y = C_Map.GetPlayerMapPosition(UnitMap, "player"):GetXY()
+		end
 	end
+	
+	local XT, YT
 
-	x = math.floor(100 * x)
-	y = math.floor(100 * y)
+	X = math.floor(100 * X)
+	Y = math.floor(100 * Y)
 
-	if x == 0 and y == 0 then
+	if (X == 0 and Y == 0) then
 		m_coord_text:SetText("?, ?")
 	else
-		if x < 10 then
-			xt = "0"..x
+		if X < 10 then
+			XT = "0"..X
 		else
-			xt = x
+			XT = C
 		end
-		if y < 10 then
-			yt = "0"..y
+		if Y < 10 then
+			YT = "0"..Y
 		else
-			yt = y
+			YT = Y
 		end
-		m_coord_text:SetText(xt..","..yt)
+		if XT and YT then
+		m_coord_text:SetText(XT..","..YT)
+		end
 	end
-	ela = .5
+	ela = 2
 end
 m_coord:SetScript("OnUpdate",coord_Update)

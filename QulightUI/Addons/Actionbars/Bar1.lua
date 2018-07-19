@@ -96,6 +96,6 @@ bar:SetScript("OnEvent", function(self, event, unit, ...)
 			end
 		end
 	else
-		MainMenuBar_OnEvent(self, event, ...)
+		--MainMenuBar_OnEvent(self, event, ...)
 	end
 end)

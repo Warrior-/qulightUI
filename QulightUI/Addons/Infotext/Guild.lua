@@ -257,10 +257,10 @@ end
 Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
 
-Stat:RegisterEvent("GUILD_ROSTER_SHOW")
+--Stat:RegisterEvent("GUILD_ROSTER_SHOW")
 Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 Stat:RegisterEvent("GUILD_ROSTER_UPDATE")
-Stat:RegisterEvent("GUILD_XP_UPDATE")
+--Stat:RegisterEvent("GUILD_XP_UPDATE")
 Stat:RegisterEvent("PLAYER_GUILD_UPDATE")
 Stat:RegisterEvent("GUILD_MOTD")
 Stat:RegisterEvent("CHAT_MSG_SYSTEM")

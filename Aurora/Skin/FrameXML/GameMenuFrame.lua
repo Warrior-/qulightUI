@@ -21,7 +21,6 @@ function private.FrameXML.GameMenuFrame()
         "Keybindings",
         "Macros",
         "Addons",
-	"QulightUI",
 
         "Logout",
         "Quit",

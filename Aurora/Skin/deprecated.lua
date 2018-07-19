@@ -1,12 +1,60 @@
 local ADDON_NAME, private = ...
 
+--[[ Lua Globals ]]
+-- luacheck: globals type
+
+--[[ Core ]]
 local Aurora = private.Aurora
 local Base, Skin = Aurora.Base, Aurora.Skin
+local Color = Aurora.Color
 
+--[[ ALPHA 0.2 ]]--
+do -- private.CreateAPI
+    local function CreateAPI(api)
+        api.Pre = {}
+        api.Post = {}
+        return api
+    end
+    private.CreateAPI = CreateAPI
+    Aurora.Base = CreateAPI(Aurora.Base)
+    Aurora.Scale = CreateAPI(Aurora.Scale)
+    Aurora.Hook = CreateAPI(Aurora.Hook)
+    Aurora.Skin = CreateAPI(Aurora.Skin)
+    Aurora.Color = CreateAPI(Aurora.Color)
+end
+
+local newSetBackdrop = Base.SetBackdrop
+Base.SetBackdrop = nil
+function Base.SetBackdrop(frame, red, green, blue, alpha)
+    if red == nil or type(red) == "table" then
+        return newSetBackdrop(frame, red, green)
+    else
+        newSetBackdrop(frame, Color.Create(red, green, blue), alpha)
+    end
+end
+
+local newSetBackdropColor = Base.SetBackdropColor
+Base.SetBackdropColor = nil
+function Base.SetBackdropColor(frame, red, green, blue, alpha)
+    if red == nil or type(red) == "table" then
+        return newSetBackdropColor(frame, red, green)
+    else
+        newSetBackdropColor(frame, Color.Create(red, green, blue), alpha)
+    end
+end
+
+--[[ ALPHA 0.1 ]]--
+Base.CreateColor = Color.Create
+Aurora.highlightColor = Color.highlight
+Aurora.buttonColor = Color.button
+Aurora.frameColor = Color.frame
+
+--[[ Legacy API ]]--
 local F, C = {}, {}
 Aurora[1] = F
 Aurora[2] = C
 
+C.r, C.g, C.b = _G.CUSTOM_CLASS_COLORS[private.charClass.token]:GetRGB()
 C.classcolours = _G.CUSTOM_CLASS_COLORS
 C.backdrop = private.backdrop
 C.media = {
@@ -14,9 +62,9 @@ C.media = {
     ["arrowDown"] = [[Interface\AddOns\Aurora\media\arrow-down-active]],
     ["arrowLeft"] = [[Interface\AddOns\Aurora\media\arrow-left-active]],
     ["arrowRight"] = [[Interface\AddOns\Aurora\media\arrow-right-active]],
-    ["backdrop"] = Qulight["media"].texture,
+    ["backdrop"] = [[Interface\ChatFrame\ChatFrameBackground]],
     ["checked"] = [[Interface\AddOns\Aurora\media\CheckButtonHilight]],
-    ["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=],
+    ["font"] = private.font.normal,
     ["gradient"] = [[Interface\AddOns\Aurora\media\gradient]],
     ["roleIcons"] = [[Interface\AddOns\Aurora\media\UI-LFG-ICON-ROLES]],
 }
@@ -38,13 +86,13 @@ end
 F.dummy = function() end
 
 F.CreateBD = function(frame, alpha)
-    local r, g, b, a
+    local color, a
     if alpha then
-        r, g, b = Aurora.frameColor:GetRGB()
+        color = Color.frame
         a = alpha
     end
 
-    Base.SetBackdrop(frame, r, g, b, a)
+    Base.SetBackdrop(frame, color, a)
 end
 
 F.CreateBG = function(frame)
@@ -66,7 +114,7 @@ F.CreateGradient = function(f)
         if C.buttonsHaveGradient then
             tex = f:GetBackdropTexture("bg")
             Aurora.Base.SetTexture(tex, "gradientUp")
-            f:SetBackdropColor(Aurora.buttonColor:GetRGBA())
+            f:SetBackdropColor(Color.button:GetRGBA())
         end
     else
         tex = f:CreateTexture(nil, "BORDER")
@@ -77,7 +125,7 @@ F.CreateGradient = function(f)
         else
             tex:SetTexture(C.media.backdrop)
         end
-        tex:SetVertexColor(Aurora.buttonColor:GetRGBA())
+        tex:SetVertexColor(Color.button:GetRGBA())
     end
     return tex
 end
@@ -106,7 +154,7 @@ F.Reskin = function(f, noHighlight)
     if f.LeftSeparator then f.LeftSeparator:Hide() end
     if f.RightSeparator then f.RightSeparator:Hide() end
 
-    Base.SetBackdrop(f, Aurora.buttonColor:GetRGBA())
+    Base.SetBackdrop(f, Color.button)
     if not noHighlight then
         Base.SetHighlight(f, "backdrop")
     end
@@ -122,6 +170,7 @@ F.ReskinTab = function(f, numTabs)
         end
     else
         f:DisableDrawLayer("BACKGROUND")
+        f:SetHighlightTexture("")
 
         local bg = _G.CreateFrame("Frame", nil, f)
         bg:SetPoint("TOPLEFT", 8, -3)
@@ -129,12 +178,8 @@ F.ReskinTab = function(f, numTabs)
         bg:SetFrameLevel(f:GetFrameLevel()-1)
         Base.SetBackdrop(bg)
 
-        local red, green, blue = Aurora.highlightColor:GetRGB()
-        f:SetHighlightTexture(C.media.backdrop)
-        local hl = f:GetHighlightTexture()
-        hl:SetPoint("TOPLEFT", 9, -4)
-        hl:SetPoint("BOTTOMRIGHT", -9, 1)
-        hl:SetVertexColor(red, green, blue, .25)
+        f._auroraBDFrame = bg
+        Base.SetHighlight(f, "backdrop")
     end
 end
 
@@ -157,7 +202,7 @@ F.ReskinScroll = function(f, parent)
     bu.bg = _G.CreateFrame("Frame", nil, f)
     bu.bg:SetPoint("TOPLEFT", bu, 0, -2)
     bu.bg:SetPoint("BOTTOMRIGHT", bu, 0, 4)
-    Base.SetBackdrop(bu.bg, Aurora.buttonColor:GetRGBA())
+    Base.SetBackdrop(bu.bg, Color.button)
 
     local up = (f.ScrollUpButton or f.UpButton) or _G[(frame or parent).."ScrollUpButton"]
     local down = (f.ScrollDownButton or f.DownButton) or _G[(frame or parent).."ScrollDownButton"]
@@ -176,7 +221,7 @@ F.ReskinDropDown = function(f, borderless)
     local bg = _G.CreateFrame("Frame", nil, f)
     bg:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", 1, 0)
     bg:SetFrameLevel(f:GetFrameLevel()-1)
-    Base.SetBackdrop(bg, Aurora.buttonColor:GetRGBA())
+    Base.SetBackdrop(bg, Color.button)
 
     if borderless then
         button:SetPoint("TOPRIGHT", 0, -6)
@@ -210,23 +255,14 @@ F.ReskinInput = function(f, height, width)
     bd:SetPoint("TOPLEFT", -2, 0)
     bd:SetPoint("BOTTOMRIGHT")
     bd:SetFrameLevel(f:GetFrameLevel()-1)
-    Base.SetBackdrop(bd, Aurora.frameColor:GetRGBA())
+    Base.SetBackdrop(bd, Color.frame)
 
     if height then f:SetHeight(height) end
     if width then f:SetWidth(width) end
 end
 
-local money = {"gold", "silver", "copper"}
 F.ReskinMoneyInput = function(f)
-    for i = 1, #money do
-        local input = f[money[i]]
-        F.ReskinInput(input)
-        if i > 1 then
-            input:SetPoint("LEFT", f[money[i - 1]], "RIGHT", 6, 0)
-            input:SetWidth(35)
-            input.texture:SetPoint("RIGHT", -4, 0)
-        end
-    end
+    Skin.MoneyInputFrameTemplate(f)
 end
 
 F.CreateArrow = function(f, direction)
@@ -256,7 +292,7 @@ F.ReskinArrow = function(f, direction)
 end
 
 F.ReskinCheck = function(f, isTriState)
-    local red, green, blue = Aurora.highlightColor:GetRGB()
+    local red, green, blue = Color.highlight:GetRGB()
 
     f:SetNormalTexture("")
     f:SetPushedTexture("")
@@ -270,7 +306,7 @@ F.ReskinCheck = function(f, isTriState)
     bd:SetPoint("TOPLEFT", 4, -4)
     bd:SetPoint("BOTTOMRIGHT", -4, 4)
     bd:SetFrameLevel(f:GetFrameLevel()-1)
-    Base.SetBackdrop(bd, Aurora.frameColor:GetRGBA())
+    Base.SetBackdrop(bd, Color.frame)
 
     local ch = f:GetCheckedTexture()
     ch:SetDesaturated(true)
@@ -297,7 +333,7 @@ F.ReskinCheck = function(f, isTriState)
 end
 
 F.ReskinRadio = function(f)
-    local red, green, blue = Aurora.highlightColor:GetRGB()
+    local red, green, blue = Color.highlight:GetRGB()
 
     f:SetNormalTexture("")
     f:SetHighlightTexture("")
@@ -313,7 +349,7 @@ F.ReskinRadio = function(f)
     bd:SetPoint("BOTTOMRIGHT", -3, 3)
     bd:SetFrameLevel(f:GetFrameLevel()-1)
 
-    Base.SetBackdrop(bd, Aurora.frameColor:GetRGBA())
+    Base.SetBackdrop(bd, Color.frame)
     Base.SetHighlight(bd, "backdrop")
 end
 
@@ -326,7 +362,7 @@ F.ReskinSlider = function(f, isVert)
     bd:SetPoint("BOTTOMRIGHT", -15, 3)
     bd:SetFrameStrata("BACKGROUND")
     bd:SetFrameLevel(f:GetFrameLevel()-1)
-    Base.SetBackdrop(bd, Aurora.frameColor:GetRGBA())
+    Base.SetBackdrop(bd, Color.frame)
 
     local slider = _G.select(4, f:GetRegions())
     slider:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
@@ -360,7 +396,7 @@ F.ReskinExpandOrCollapse = function(f)
     local bg = _G.CreateFrame("Frame", nil, f)
     bg:SetSize(13, 13)
     bg:SetPoint("TOPLEFT", f:GetNormalTexture(), 0, -2)
-    Base.SetBackdrop(bg, Aurora.buttonColor:GetRGBA())
+    Base.SetBackdrop(bg, Color.button)
     f._auroraBG = bg
 
     f._auroraHighlight = {}
@@ -398,7 +434,11 @@ F.ReskinPortraitFrame = function(f, isButtonFrame)
         f.CloseButton:SetDisabledTexture(C.media.backdrop) -- some frames that use this don't have a disabled texture
         Skin.ButtonFrameTemplate(f)
     else
-        Skin.PortraitFrameTemplate(f, not f.CloseButton)
+        if f.CloseButton then
+            Skin.PortraitFrameTemplate(f)
+        else
+            Skin.PortraitFrameTemplateNoCloseButton(f)
+        end
     end
 end
 
@@ -455,11 +495,11 @@ end
 F.ReskinFilterButton = function(f, direction)
     F.ReskinStretchButton(f)
 
-    direction = direction or "Right"
-    Base.SetTexture(f.Icon, "arrow"..direction)
-
     f.Icon:SetPoint("RIGHT", -7, 0)
     f.Icon:SetSize(4, 8)
+
+    direction = direction or "Right"
+    Base.SetTexture(f.Icon, "arrow"..direction)
 end
 
 F.ReskinNavBar = function(f)

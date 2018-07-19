@@ -46,11 +46,13 @@ _G.ERR_FRIEND_ONLINE_SS = "|Hplayer:%s|h[%s]|h ".."has come |cff298F00online|r."
 _G.ERR_FRIEND_OFFLINE_S = "[%s] ".."has gone |cffff0000offline|r."
 
 local function Kill(object)
+	if object then
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
 	end
 	object.Show = dummy
 	object:Hide()
+	end
 end
 dummy = function() return end
 

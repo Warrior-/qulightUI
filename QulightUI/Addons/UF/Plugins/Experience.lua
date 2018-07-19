@@ -27,19 +27,21 @@ local function GetXP(unit)
 end
 
 local function SetTooltip(self)
-	local unit = self:GetParent().unit
-	local min, max = GetXP(unit)
-
-	local bars = 20
+	local isHonor = IsWatchingHonorAsXP()
+	local cur = (isHonor and UnitHonor or UnitXP)('player')
+	local max = (isHonor and UnitHonorMax or UnitXPMax)('player')
+	local per = math.floor(cur / max * 100 + 0.5)
+	local bar = isHonor and 5 or 20
+	local rested = (isHonor and GetHonorExhaustion or GetXPExhaustion)() or 0
 
 	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -5)
 	GameTooltip:AddLine(COMBAT_XP_GAIN.." "..format(LEVEL_GAINED, UnitLevel("player")))
 	GameTooltip:AddLine(" ")
-	GameTooltip:AddLine(string.format(XP..": %d / %d (%d%% - %d/%d)", min, max, min / max * 100, bar - (bar * (max - min) / max), bar))
-	GameTooltip:AddLine(string.format(LEVEL_ABBR..": %d (%d%% - %d/%d)", max - min, (max - min) / max * 100, 1 + bars * (max - min) / max, bars))
+	GameTooltip:AddLine(string.format(XP..": %d / %d (%d%% - %d/%d)", cur, max, per, bar - (bar * (max - cur) / max), bar))
+	GameTooltip:AddLine(string.format(LEVEL_ABBR..": %d (%d%% - %d/%d)", max - cur, (max - cur) / max * 100, 1 + bar * (max - cur) / max, bar))
 
 	if(self.rested) then
-		GameTooltip:AddLine(string.format("|cff0090ff"..TUTORIAL_TITLE26..": +%d (%d%%)", self.rested, self.rested / max * 100))
+		GameTooltip:AddLine(string.format("|cff0090ff"..TUTORIAL_TITLE26..": +%d (%d%%)", rested, rested / max * 100))
 	end
 
 	GameTooltip:Show()

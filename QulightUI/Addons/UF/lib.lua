@@ -41,10 +41,10 @@ init = function(f)
     f:SetScript("OnEnter", UnitFrame_OnEnter)
     f:SetScript("OnLeave", UnitFrame_OnLeave)
 end
-UpdateReputationColor = function(self, event, unit, bar)
-	local name, id = GetWatchedFactionInfo()
-	bar:SetStatusBarColor(FACTION_BAR_COLORS[id].r, FACTION_BAR_COLORS[id].g, FACTION_BAR_COLORS[id].b)
-end
+--UpdateReputationColor = function(self, event, unit, bar)
+--	local name, id = GetWatchedFactionInfo()
+--	bar:SetStatusBarColor(FACTION_BAR_COLORS[id].r, FACTION_BAR_COLORS[id].g, FACTION_BAR_COLORS[id].b)
+--end
 gen_fontstring = function(f, name, size, outline)
     local fs = f:CreateFontString(nil, "OVERLAY")
     fs:SetFont(name, size, "OUTLINE")
@@ -344,77 +344,6 @@ do
 				if self.Debuffs then self.Debuffs:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", 2, 5) end
 			end
 		end
-	end
-
-	ComboDisplayOld = function(self, event, unit)
-		if powerType and powerType ~= 'COMBO_POINTS' then return end
-		if unit == "pet" then return end
-
-		local cpoints = self.CPoints
-		local cp
-		local numMax
-
-		if UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle") then
-			cp = GetComboPoints("vehicle", "target")
-			numMax = MAX_COMBO_POINTS
-		else
-			cp = GetComboPoints("player", "target")
-			numMax = UnitPowerMax("player", SPELL_POWER_COMBO_POINTS)
-			if numMax == 0 then
-				numMax = MAX_COMBO_POINTS
-			end
-		end
-
-		local spacing = select(4, cpoints[5]:GetPoint())
-		local w = cpoints:GetWidth()
-		local s = 0
-
-		if cpoints.numMax ~= numMax then
-			if numMax == 8 then
-				cpoints[6]:Show()
-				cpoints[7]:Show()
-				cpoints[8]:Show()
-			elseif numMax == 6 then
-				cpoints[6]:Show()
-				cpoints[7]:Hide()
-				cpoints[8]:Hide()
-			else
-				cpoints[6]:Hide()
-				cpoints[7]:Hide()
-				cpoints[8]:Hide()
-			end
-
-			for i = 1, numMax do
-				if i ~= numMax then
-					cpoints[i]:SetWidth(w / numMax - spacing)
-					s = s + (w / numMax)
-				else
-					cpoints[i]:SetWidth(w - s)
-				end
-			end
-
-			cpoints.numMax = numMax
-		end
-
-		for i = 1, numMax do
-			if i <= cp then
-				cpoints[i]:SetAlpha(1)
-			else
-				cpoints[i]:SetAlpha(0.2)
-			end
-		end
-
-		if cpoints[1]:GetAlpha() == 1 then
-			for i = 1, numMax do
-				cpoints:Show()
-				cpoints[i]:Show()
-			end
-		else
-			for i = 1, numMax do
-				cpoints:Hide()
-				cpoints[i]:Hide()
-			end
-		end	
 	end
 end
 
@@ -1362,7 +1291,7 @@ end
 genHarmony = function(self)
 	if myclass == "MONK" then
 				
-		local hb = CreateFrame("Frame", "Harmony", self)
+		local hb = CreateFrame("Frame", "HarmonyBar", self)
 		hb:SetPoint("TOPLEFT", self, "TOPLEFT",2,-2)
 		hb:SetWidth(120)
 		hb:SetHeight(6)

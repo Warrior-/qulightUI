@@ -103,7 +103,7 @@ local function SortAlphabeticName(a, b)
 		return a[1] < b[1]
 	end
 end
-
+--[[
 local localizedMapNames = {}
 local ZoneIDToContinentName = {
 	[473] = "Outland",
@@ -119,7 +119,7 @@ local function LocalizeZoneNames()
 	local localizedZoneName
 
 	for mapID, englishName in pairs(MapIdLookupTable) do
-		localizedZoneName = GetMapNameByID(mapID)
+		localizedZoneName = GetMapInfo(mapID)
 		if localizedZoneName then
 			-- Add combination of English and localized name to lookup table
 			if not localizedMapNames[englishName] then
@@ -129,14 +129,16 @@ local function LocalizeZoneNames()
 	end
 end
 LocalizeZoneNames()
-
+--]]
 --Add " (Outland)" to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
 --We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
 --which adds the " (Outland)" part unlike the GetRealZoneText() API.
 
 
 local function GetZoneText(zoneAreaID)
-	local zoneName = GetMapNameByID(zoneAreaID)
+	if not zoneAreaID then return end
+
+	local zoneName = GetMapInfo(zoneAreaID)
 	local continent = ZoneIDToContinentName[zoneAreaID]
 
 	if continent and continent == "Outland" then
@@ -380,12 +382,12 @@ end)
 
 Stat:RegisterEvent("BN_FRIEND_ACCOUNT_ONLINE")
 Stat:RegisterEvent("BN_FRIEND_ACCOUNT_OFFLINE")
-Stat:RegisterEvent("BN_FRIEND_TOON_ONLINE")
-Stat:RegisterEvent("BN_FRIEND_TOON_OFFLINE")
-Stat:RegisterEvent("BN_TOON_NAME_UPDATED")
+--Stat:RegisterEvent("BN_FRIEND_TOON_ONLINE")
+--Stat:RegisterEvent("BN_FRIEND_TOON_OFFLINE")
+--Stat:RegisterEvent("BN_TOON_NAME_UPDATED")
 Stat:RegisterEvent("FRIENDLIST_UPDATE")
 Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
-Stat:RegisterEvent("FRIENDLIST_SHOW")
+--Stat:RegisterEvent("FRIENDLIST_SHOW")
 Stat:RegisterEvent("IGNORELIST_UPDATE")
 Stat:RegisterEvent("MUTELIST_UPDATE")
 Stat:RegisterEvent("PLAYER_FLAGS_CHANGED")
@@ -394,7 +396,7 @@ Stat:RegisterEvent("BN_FRIEND_INFO_CHANGED")
 Stat:RegisterEvent("BN_FRIEND_INVITE_LIST_INITIALIZED")
 Stat:RegisterEvent("BN_FRIEND_INVITE_ADDED")
 Stat:RegisterEvent("BN_FRIEND_INVITE_REMOVED")
-Stat:RegisterEvent("BN_SELF_ONLINE")
+--Stat:RegisterEvent("BN_SELF_ONLINE")
 Stat:RegisterEvent("BN_BLOCK_LIST_UPDATED")
 Stat:RegisterEvent("BN_CONNECTED")
 Stat:RegisterEvent("BN_DISCONNECTED")

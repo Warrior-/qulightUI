@@ -1,13 +1,17 @@
 ## Interface: 70300
-## Title: |cff1784d1Aurora|r
+## Title: Aurora
 ## Notes: Minimalistic window theme.
 ## Author: Haleth/Lightsword, Gethe
-## Version: 7.3.0.3
+## Version: 8.0.1.4
+## LoadWith: Blizzard_CompactRaidFrames
+## OptionalDeps: Ace3, LibTextDump-1.0
 ## SavedVariables: AuroraConfig
 ## X-Website: http://www.wowinterface.com/downloads/info18589.html
-## RequiredDeps: QulightUI
+
+## X-Curse-Project-ID: 278735
+## X-WoWI-ID: 18589
 
 Skin\skin.xml
+
 aurora.lua
-
-
+gui.lua

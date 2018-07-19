@@ -6,6 +6,10 @@ local FrameXML = {
 
     -- add snippets independent of modules here
     "SharedXML.Util",
+    "SharedXML.AnchorUtil",
+    "SharedXML.EasingUtil",
+    "SharedXML.BindingUtil",
+    "SharedXML.FrameUtil",
     "SharedXML.Pools",
     "SharedXML.LoopingSoundEffect",
     "SharedXML.CircularBuffer",
@@ -13,6 +17,12 @@ local FrameXML = {
     "SharedXML.Vector2D",
     "SharedXML.Vector3D",
     "SharedXML.Spline",
+    "SharedXML.LayoutFrame",
+    "SharedXML.ManagedLayoutFrame",
+    "SharedXML.BulletPoint",
+    "SharedXML.TransformTree_TransformTree",
+    "SharedXML.KeyCommand",
+    "SharedXML.CustomBindingButtonMixin",
     "MixinUtil",
 
     -- intrinsics
@@ -26,6 +36,7 @@ local FrameXML = {
     "AnimatedStatusBar",
     "FlowContainer",
     "FrameLocks",
+    "PlayerMovementFrameFader",
 
 
     "SharedXML.SoundKitConstants",
@@ -34,17 +45,39 @@ local FrameXML = {
     "Fonts",
     "FontStyles",
 
+    "SharedXML.PropertyBindingMixin",
+    "SharedXML.PropertyButton",
+    "SharedXML.PropertyFontString",
+    "SharedXML.PropertySlider",
+    "QuestLogOwnerMixin",
+
+    "ObjectAPI_ContinuableContainer",
+    "ObjectAPI_ItemLocation",
+    "ObjectAPI_Item",
+    "ObjectAPI_Spell",
+    "ObjectAPI_PlayerLocation",
 
     -- add new modules below here
     "WorldFrame",
     "UIParent",
     "QuestUtils",
+    "MapUtil",
+    "AzeriteUtil",
+    "VehicleUtil",
+    "CurrencyContainer",
     -- IME needs to be loaded after UIParent
     "SharedXML.IME",
     "MoneyFrame",
     "MoneyInputFrame",
+    "SharedXML.SecureUIPanelTemplates",
     "SharedXML.SharedUIPanelTemplates",
     "SharedXML.SharedBasicControls",
+    "SharedXML.CustomBindingButtonTemplate",
+    "CustomBindingManager",
+    "CustomBindingHandler",
+    "GarrisonBaseUtils",
+    "FloatingGarrisonFollowerTooltip",
+    "GarrisonFollowerTooltip",
     "GameTooltip",
     "UIMenu",
     "UIDropDownMenu",
@@ -57,7 +90,6 @@ local FrameXML = {
     "DressUpFrames",
     "ItemButtonTemplate",
     "NavigationBar",
-    "SparkleFrame",
     "SharedXML.HybridScrollFrame",
     "GameMenuFrame",
     "CharacterFrameTemplates",
@@ -69,7 +101,6 @@ local FrameXML = {
     "OptionsFrameTemplates",
     "OptionsPanelTemplates",
     "UIOptions",
-    "QulightUI",
     "VideoOptionsFrame",
     "SharedXML.VideoOptionsPanels",
     "MacOptionsPanel",
@@ -78,9 +109,10 @@ local FrameXML = {
     "InterfaceOptionsFrame",
     "InterfaceOptionsPanels",
     "SharedXML.AddonList",
-    "GarrisonBaseUtils",
+    "AlertFrameIntrinsic",
     "AlertFrames",
     "AlertFrameSystems",
+    "SocialToast",
     "MirrorTimer",
     "CoinPickupFrame",
     "StackSplitFrame",
@@ -101,12 +133,15 @@ local FrameXML = {
     "CombatFeedback",
     "UnitPowerBarAlt",
     "CastingBarFrame",
+    "VoiceChatHeadsetButton",
+    "VoiceToggleButton",
+    "UnitPopupSlider",
+    "UnitPopupCustomControls",
     "UnitPopup",
-    "BNet",
     "HistoryKeeper",
     "ChatFrame",
     "FloatingChatFrame",
-    "VoiceChat",
+    "BNet",
     "ReadyCheck",
     "PlayerFrame",
     "PartyFrame",
@@ -136,12 +171,13 @@ local FrameXML = {
     "FriendsFrame",
     "QuickJoin",
     "RaidFrame",
-    "ChannelFrame",
     "PetActionBarFrame",
     "MultiCastActionBarFrame",
     "MainMenuBarBagButtons",
     "UnitPositionFrameTemplates",
+    "FogOfWarFrameTemplates",
     "WorldMapFrame",
+    "WarCampaignTemplates",
     "QuestMapFrame",
     "RaidWarning",
     "CinematicFrame",
@@ -156,6 +192,7 @@ local FrameXML = {
     "PetStable",
     "VehicleSeatIndicator",
     "DurabilityFrame",
+    "BattlegroundChatFilters",
     "WorldStateFrame",
     "PVEFrame",
     "LFGFrame",
@@ -202,18 +239,19 @@ local FrameXML = {
     "FloatingPetBattleTooltip",
     "QueueStatusFrame",
     "BattlePetTooltip",
-    "FloatingGarrisonFollowerTooltip",
-    "GarrisonFollowerTooltip",
     "StaticPopupSpecial",
     "LossOfControlFrame",
     "PVPHelper",
-    "MapBar",
     "ProductChoice",
     "ZoneAbility",
     "ArtifactToasts",
+    "AzeriteItemToasts",
+    "AzeriteIslandsToast",
+    "IslandsQueueFrame",
     "SharedXML.ModelPreviewFrame",
     "SplashFrame",
-    "SharedXML.LayoutFrame",
+    "QuestChoiceFrameMixin",
+    "AzeriteEmpoweredItemDataSource",
 
     -- Save off whatever we need available unmodified.
     "SecureCapsule",
@@ -233,7 +271,9 @@ local _, private = ...
 
 --[[ Core ]]
 local Aurora = private.Aurora
-local Base, Hook, Skin = Aurora.Base, Aurora.Hook, Aurora.Skin
+local Base, Scale = Aurora.Base, Aurora.Scale
+local Hook, Skin = Aurora.Hook, Aurora.Skin
+local Color = Aurora.Color
 
 do --[[ FrameXML\File.lua ]]
 end
@@ -242,11 +282,25 @@ do --[[ FrameXML\File.xml ]]
 end
 
 function private.FrameXML.File()
-    --[[
-    ]]
+    ----====####$$$$%%%%$$$$####====----
+    --              File              --
+    ----====####$$$$%%%%$$$$####====----
+
+    -------------
+    -- Section --
+    -------------
+
+    --[[ Scale ]]--
 end
 function private.SharedXML.File()
-    --[[
-    ]]
+    ----====####$$$$%%%%$$$$####====----
+    --              File              --
+    ----====####$$$$%%%%$$$$####====----
+
+    -------------
+    -- Section --
+    -------------
+
+    --[[ Scale ]]--
 end
 ]==]

@@ -8,9 +8,7 @@
 	<Script file="Root\Move.lua"/>
 	<Include file="Root\Libs\oUF\oUF.xml"/>
 	<Include file="Addons\Skins\load_addonskins.xml"/>
-	<Include file="Addons\UF\uf.xml"/>
-	<Include file="Addons\UF\template.xml"/>
-	<Include file="Addons\UF\Raid\load.xml"/>
+
 	
 	<Include file="Root\Libs\oGlow\oGlow.xml"/>
 	
@@ -24,6 +22,10 @@
 	<Script file="Root\Tweaks.lua"/>
 	<Script file="Root\Mirror.lua"/>
 	
+	<Include file="Addons\UF\uf.xml"/>
+
+	<Include file="Addons\UF\Raid\load.xml"/>
+
 	<Script file="Addons\Actionbars\Hide.lua"/>
 	<Script file="Addons\Actionbars\Bar1.lua"/>
 	<Script file="Addons\Actionbars\Bar2.lua"/>
@@ -34,12 +36,10 @@
 	<Script file="Addons\Actionbars\Bar7.lua"/>
 	<Script file="Addons\Actionbars\BarPet.lua"/>
 	<Script file="Addons\Actionbars\BarShift.lua"/>
-	<Script file="Addons\Actionbars\BarTotem.lua"/>
 	<Script file="Addons\Actionbars\Buttons.lua"/>	
 	<Script file="Addons\Actionbars\Style.lua"/>
 	<Script file="Addons\Actionbars\Others.lua"/>
 	<Script file="Addons\Actionbars\Range.lua"/>
-	<Script file="Addons\Actionbars\Extra.lua"/>
 	<Script file="Addons\Actionbars\Bind.lua"/>
 	
 	<Script file="Addons\Infotext\Positions.lua"/>
@@ -66,14 +66,11 @@
 	<Script file="Addons\ClassTimer.lua"/>
 	<Script file="Addons\Cooldown.lua"/>
 	<Script file="Addons\CooldownFlash.lua"/>
-	<Script file="Addons\Filger\Filger.lua"/>
-	<Script file="Addons\Filger\config.lua"/>
 	<Script file="Addons\Loot.lua"/>
 	<Script file="Addons\LootRoll.lua"/>
 	<Script file="Addons\Mail.lua"/>
 	<Script file="Addons\MarkBar.lua"/>
 	<Script file="Addons\Minimap.lua"/>
-	<Script file="Addons\Map.lua"/>
 	<Script file="Addons\NamePlates.lua"/>
 	<Script file="Addons\ObjectiveTracker.lua"/>
 	<Script file="Addons\RaidBuffReminder.lua"/>

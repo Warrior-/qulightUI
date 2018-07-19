@@ -108,7 +108,7 @@ oUF.Tags.Methods['power']  = function(u)
 		return SVal(max)
 	end
 end
-oUF.Tags.Events['power'] = 'UNIT_POWER'
+oUF.Tags.Events['power'] = 'UNIT_POWER_UPDATE'
 
 
 
@@ -126,7 +126,7 @@ oUF.Tags.Methods['color'] = function(u, r)
 		return hex(1, 1, 1)
 	end
 end
-oUF.Tags.Events['color'] = 'UNIT_REACTION UNIT_HEALTH UNIT_HAPPINESS'
+oUF.Tags.Events['color'] = 'UNIT_HEALTH'
 
 oUF.Tags.Methods["afk"] = function(unit) 
 	
@@ -201,4 +201,4 @@ oUF.Tags.Methods['altpower'] = function(unit)
 		return ("%s%%"):format(math.floor(cur/max*100+.5))
 	end
 end
-oUF.Tags.Events['altpower'] = 'UNIT_POWER'
+oUF.Tags.Events['altpower'] = 'UNIT_POWER_UPDATE'

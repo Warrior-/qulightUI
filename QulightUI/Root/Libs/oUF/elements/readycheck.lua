@@ -38,7 +38,7 @@ local Update = function(self, event)
 	if(event == 'READY_CHECK_FINISHED') then
 		if(element.status == 'waiting') then
 			element:SetTexture(element.notReadyTexture or READY_CHECK_NOT_READY_TEXTURE)
- 		end
+		end
 
 		element.Animation:Play()
 	end

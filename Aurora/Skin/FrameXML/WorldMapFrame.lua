@@ -7,13 +7,15 @@ local _, private = ...
 local F = _G.unpack(private.Aurora)
 local Skin = private.Aurora.Skin
 
-function private.FrameXML.WorldMapFrame()
-    if not private.disabled.tooltips then
-        Skin.ShoppingTooltipTemplate(_G.WorldMapCompareTooltip1)
-        Skin.ShoppingTooltipTemplate(_G.WorldMapCompareTooltip2)
-        Skin.GameTooltipTemplate(_G.WorldMapTooltip)
-        Skin.EmbeddedItemTooltip(_G.WorldMapTooltip.ItemTooltip)
+do --[[ FrameXML\WorldMapFrameTemplates.xml ]]
+    function Skin.WorldMapBountyBoardTemplate(Frame)
     end
+    function Skin.WorldMapActionButtonTemplate(Frame)
+    end
+end
+
+function private.FrameXML.WorldMapFrame()
+    if private.isPatch then return end
 
     local WorldMapFrame = _G.WorldMapFrame
     local BorderFrame = WorldMapFrame.BorderFrame
@@ -79,4 +81,11 @@ function private.FrameXML.WorldMapFrame()
     TrackingOptions.Background:Hide()
     TrackingOptions.IconOverlay:SetTexture("")
     TrackingOptions.Button.Border:Hide()
+
+    if not private.disabled.tooltips then
+        Skin.ShoppingTooltipTemplate(_G.WorldMapCompareTooltip1)
+        Skin.ShoppingTooltipTemplate(_G.WorldMapCompareTooltip2)
+        Skin.GameTooltipTemplate(_G.WorldMapTooltip)
+        Skin.InternalEmbeddedItemTooltipTemplate(_G.WorldMapTooltip.ItemTooltip)
+    end
 end

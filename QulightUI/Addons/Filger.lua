@@ -68,6 +68,8 @@ Filger_Spells = {
 			{spellID = 115018, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Unholy Blight
 			{spellID = 115989, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Pillar of Frost
+			{spellID = 51271, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Summon Gargoyle
 			{spellID = 49206, filter = "ICD", trigger = "NONE", duration = 40},
 		},
@@ -93,6 +95,8 @@ Filger_Spells = {
 			{spellID = 53365, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Dark Transformation
 			{spellID = 63560, unitID = "pet", caster = "player", filter = "BUFF"},
+			-- Concordance of the Legionfall
+			{spellID = 242584, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Trinkets
 			-- Alchemy Stones
@@ -173,6 +177,11 @@ Filger_Spells = {
 			Alpha = 1,
 			IconSize = 37,
 			Position = {"LEFT", AnchorT_DEBUFF_ICON},
+
+			-- Virulent Plague
+			{spellID = 191587, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Festering Wound
+			{spellID = 194310, unitID = "target", caster = "player", filter = "DEBUFF"},
 
 
 		},
@@ -362,6 +371,8 @@ Filger_Spells = {
 			{spellID = 52610, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Berserk
 			{spellID = 106951, unitID = "player", caster = "player", filter = "BUFF", absID = true},
+			-- Ashmane's Frenzy
+			{spellID = 210722, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Tiger's Fury
 			{spellID = 5217, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Celestial Alignment
@@ -2725,10 +2736,10 @@ local classcolor = RAID_CLASS_COLORS[class]
 function Filger:UnitBuff(unitID, inSpellID, spn, absID)
 	if absID then
 		for i = 1, 40, 1 do
-			local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitBuff(unitID, i)
+			local name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitBuff(unitID, i)
 			if not name then break end
 			if inSpellID == spellID then
-				return name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
+				return name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
 			end
 		end
 	else
@@ -2740,10 +2751,10 @@ end
 function Filger:UnitDebuff(unitID, inSpellID, spn, absID)
 	if absID then
 		for i = 1, 40, 1 do
-			local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitDebuff(unitID, i)
+			local name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitDebuff(unitID, i)
 			if not name then break end
 			if inSpellID == spellID then
-				return name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
+				return name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
 			end
 		end
 	else
@@ -2977,8 +2988,9 @@ function Filger:DisplayActives()
 	end
 end
 
-function Filger:OnEvent(event, unit)
-	if event == "SPELL_UPDATE_COOLDOWN" or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_FOCUS_CHANGED" or event == "PLAYER_ENTERING_WORLD" or event == "UNIT_AURA" and (unit == "target" or unit == "player" or unit == "pet" or unit == "focus") then
+function Filger:OnEvent(event, unit, _, _, _, spellID)
+	if event == "SPELL_UPDATE_COOLDOWN" or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_FOCUS_CHANGED" or event == "PLAYER_ENTERING_WORLD" or event == "UNIT_AURA" and (unit == "target" or unit == "player" or unit == "pet" or unit == "focus") or (event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player") then
+		local ptt = GetSpecialization()
 		local needUpdate = false
 		local id = self.Id
 
@@ -2988,31 +3000,39 @@ function Filger:OnEvent(event, unit)
 			local name, icon, count, duration, start, spid
 			spid = 0
 
-			if data.filter == "BUFF" then
+			if data.filter == "BUFF" and (not data.spec or data.spec == ptt) then
 				local caster, spn, expirationTime
 				spn, _, _ = GetSpellInfo(data.spellID)
-				name, _, icon, count, _, duration, expirationTime, caster, _, _, spid = Filger:UnitBuff(data.unitID, data.spellID, spn, data.absID)
-				if name and (data.caster ~= 1 and (caster == data.caster or data.caster == "all") or MyUnits[caster]) then
-					start = expirationTime - duration
-					found = true
+				if spn then
+					name, icon, count, _, duration, expirationTime, caster, _, _, spid = Filger:UnitBuff(data.unitID, data.spellID, data.spellID, true) -- BETA
+					if name and (data.caster ~= 1 and (caster == data.caster or data.caster == "all") or MyUnits[caster]) then
+						if not data.count or count >= data.count then
+							start = expirationTime - duration
+							found = true
+						end
 					end
-			elseif data.filter == "DEBUFF" then
+				end
+			elseif data.filter == "DEBUFF" and (not data.spec or data.spec == ptt) then
 				local caster, spn, expirationTime
 				spn, _, _ = GetSpellInfo(data.spellID)
-				name, _, icon, count, _, duration, expirationTime, caster, _, _, spid = Filger:UnitDebuff(data.unitID, data.spellID, spn, data.absID)
-				if name and (data.caster ~= 1 and (caster == data.caster or data.caster == "all") or MyUnits[caster]) then
-					start = expirationTime - duration
-					found = true
+				if spn then
+					name, icon, count, _, duration, expirationTime, caster, _, _, spid = Filger:UnitDebuff(data.unitID, data.spellID, data.spellID, true) -- BETA
+					if name and (data.caster ~= 1 and (caster == data.caster or data.caster == "all") or MyUnits[caster]) then
+						start = expirationTime - duration
+						found = true
+					end
 				end
-			elseif data.filter == "CD" then
+			elseif data.filter == "CD" and (not data.spec or data.spec == ptt) then
 				if data.spellID then
 					name, _, icon = GetSpellInfo(data.spellID)
-					if data.absID then
-						start, duration = GetSpellCooldown(data.spellID)
-					else
-						start, duration = GetSpellCooldown(name)
+					if name then
+						if data.absID then
+							start, duration = GetSpellCooldown(data.spellID)
+						else
+							start, duration = GetSpellCooldown(name)
+						end
+						spid = data.spellID
 					end
-					spid = data.spellID
 				elseif data.slotID then
 					spid = data.slotID
 					local slotLink = GetInventoryItemLink("player", data.slotID)
@@ -3024,15 +3044,24 @@ function Filger:OnEvent(event, unit)
 				if name and (duration or 0) > 1.5 then
 					found = true
 				end
-			elseif data.filter == "ICD" then
+			elseif data.filter == "ICD" and (not data.spec or data.spec == ptt) then
 				if data.trigger == "BUFF" then
 					local spn
 					spn, _, icon = GetSpellInfo(data.spellID)
-					name, _, _, _, _, _, _, _, _, _, spid = Filger:UnitBuff("player", data.spellID, spn, data.absID)
+					if spn then
+						name, _, _, _, _, _, _, _, _, spid = Filger:UnitBuff("player", data.spellID, data.spellID, true) -- BETA
+					end
 				elseif data.trigger == "DEBUFF" then
 					local spn
 					spn, _, icon = GetSpellInfo(data.spellID)
-					name, _, _, _, _, _, _, _, _, _, spid = Filger:UnitDebuff("player", data.spellID, spn, data.absID)
+					if spn then
+						name, _, _, _, _, _, _, _, _, spid = Filger:UnitDebuff("player", data.spellID, data.spellID, true) -- BETA
+					end
+				elseif data.trigger == "NONE" and event == "UNIT_SPELLCAST_SUCCEEDED" then
+					if spellID == data.spellID then
+						name, _, icon = GetSpellInfo(data.spellID)
+						spid = data.spellID
+					end
 				end
 				if name then
 					if data.slotID then
@@ -3050,6 +3079,9 @@ function Filger:OnEvent(event, unit)
 				if not self.actives[i] then
 					self.actives[i] = {data = data, name = name, icon = icon, count = count, start = start, duration = duration, spid = spid}
 					needUpdate = true
+					if T.class == "DEATHKNIGHT" and self.actives[i].duration == 10 and data.filter == "CD" then
+						self.actives[i] = nil
+					end
 				else
 					if data.filter ~= "ICD" and (self.actives[i].count ~= count or self.actives[i].start ~= start or self.actives[i].duration ~= duration) then
 						self.actives[i].count = count
@@ -3060,6 +3092,7 @@ function Filger:OnEvent(event, unit)
 				end
 			else
 				if data.filter ~= "ICD" and self.actives and self.actives[i] then
+					if event == "UNIT_SPELLCAST_SUCCEEDED" then return end
 					self.actives[i] = nil
 					needUpdate = true
 				end

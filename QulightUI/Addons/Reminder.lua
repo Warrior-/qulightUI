@@ -235,7 +235,7 @@ local function OnEvent(self, event, arg1, arg2)
 		end
 	end
 
-	local hasOffhandWeapon = OffhandHasWeapon()
+	--local hasOffhandWeapon = OffhandHasWeapon()
 	local hasMainHandEnchant, _, _, hasOffHandEnchant, _, _ = GetWeaponEnchantInfo()
 	if not group.weapon then
 		for _, buff in pairs(group.spells) do

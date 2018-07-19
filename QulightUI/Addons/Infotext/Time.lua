@@ -18,10 +18,9 @@ if Qulight["datatext"].Wowtime and Qulight["datatext"].Wowtime > 0 then
 	Text:SetFont(Qulight["media"].font, 10, "OVERLAY")
 	PP(Qulight["datatext"].Wowtime, Text)
 	Text:SetShadowColor(0,0,0,1)
-    Text:SetShadowOffset(0.5,-0.5)
+	Text:SetShadowOffset(0.5,-0.5)
 	local int = 1
 	local function Update(self, t)
-		local pendingCalendarInvites = CalendarGetNumPendingInvites()
 		int = int - t
 		if int < 0 then
 			if Qulight["datatext"].Localtime == true then
@@ -29,50 +28,26 @@ if Qulight["datatext"].Wowtime and Qulight["datatext"].Wowtime > 0 then
 				Hr = tonumber(date("%I"))
 				Min = date("%M")
 				if Qulight["datatext"].Time24 == true then
-					if pendingCalendarInvites > 0 then
-					Text:SetText("|cffFF0000"..Hr24..":"..Min)
-				else
 					Text:SetText(qColor..Hr24..":"..qColor..Min)
-				end
 			else
-				if Hr24>=12 then
-					if pendingCalendarInvites > 0 then
-						Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffpm|r")
-					else
-						Text:SetText(Hr..":"..Min.." |cffffffffpm|r")
-					end
+				if Hr24>=12 then					
+					Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffpm|r")
 				else
-					if pendingCalendarInvites > 0 then
-						Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffam|r")
-					else
-						Text:SetText(Hr..":"..Min.." |cffffffffam|r")
-					end
+					Text:SetText(Hr..":"..Min.." |cffffffffam|r")
 				end
 			end
 		else
 			local Hr, Min = GetGameTime()
 			if Min<10 then Min = "0"..Min end
-			if Qulight["datatext"].Time24 == true then
-				if pendingCalendarInvites > 0 then			
-					Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffff|r")
-				else
-					Text:SetText(Hr..":"..Min.." |cffffffff|r")
-				end
+			if Qulight["datatext"].Time24 == true then		
+				Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffff|r")
 			else
 				if Hr>=12 then
 					if Hr>12 then Hr = Hr-12 end
-					if pendingCalendarInvites > 0 then
-						Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffpm|r")
-					else
-						Text:SetText(Hr..":"..Min.." |cffffffffpm|r")
-					end
+					Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffpm|r")
 				else
 					if Hr == 0 then Hr = 12 end
-					if pendingCalendarInvites > 0 then
-						Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffam|r")
-					else
-						Text:SetText(Hr..":"..Min.." |cffffffffam|r")
-					end
+					Text:SetText("|cffFF0000"..Hr..":"..Min.." |cffffffffam|r")
 				end
 			end
 		end

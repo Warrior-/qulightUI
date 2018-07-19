@@ -6,6 +6,7 @@ local next = _G.next
 -- [[ Core ]]
 local Aurora = private.Aurora
 local Base, Hook, Skin = Aurora.Base, Aurora.Hook, Aurora.Skin
+local Color = Aurora.Color
 
 do --[[ FrameXML\ReputationFrame.lua ]]
     function Hook.ReputationFrame_OnShow(self)
@@ -29,7 +30,8 @@ do --[[ FrameXML\ReputationFrame.lua ]]
             local factionRow = _G[factionRowName]
             local factionButton = _G[factionRowName.."ExpandOrCollapseButton"]
             local factionBackground = _G[factionRowName.."Background"]
-            local _, _, _, _, _, _, atWarWith = _G.GetFactionInfo(factionRow.index)
+
+            if not factionRow.index then return end
 
             if factionRow.isCollapsed then
                 factionButton:SetNormalTexture("Interface\\Buttons\\UI-PlusButton-Up")
@@ -37,16 +39,17 @@ do --[[ FrameXML\ReputationFrame.lua ]]
                 factionButton:SetNormalTexture("Interface\\Buttons\\UI-MinusButton-Up")
             end
 
+            local _, _, _, _, _, _, atWarWith = _G.GetFactionInfo(factionRow.index)
             if atWarWith then
                 factionBackground:SetColorTexture(0.6, 0.2, 0.2)
             else
-                factionBackground:SetColorTexture(Aurora.buttonColor:GetRGB())
+                factionBackground:SetColorTexture(Color.button:GetRGB())
             end
 
             if factionRow.index == _G.GetSelectedFaction() then
                 if ( _G.ReputationDetailFrame:IsShown() ) then
                     for _, texture in next, factionRow._auroraHighlight do
-                        texture:SetColorTexture(Aurora.highlightColor:GetRGB())
+                        texture:SetColorTexture(Color.highlight:GetRGB())
                     end
                 end
             else
@@ -67,58 +70,58 @@ do --[[ FrameXML\ReputationFrame.xml ]]
         end
     end
 
-    function Skin.ReputationBarTemplate(button)
-        local factionRowName = button:GetName()
+    function Skin.ReputationBarTemplate(Button)
+        local factionRowName = Button:GetName()
 
         local background = _G[factionRowName.."Background"]
-        background:SetColorTexture(Aurora.buttonColor:GetRGB())
+        background:SetColorTexture(Color.button:GetRGB())
         background:SetPoint("TOPRIGHT")
         background:SetHeight(20)
 
         do -- highlight
-            button._auroraHighlight = {}
-            local left = button:CreateTexture(nil, "ARTWORK", nil, 3)
-            left:SetColorTexture(Aurora.frameColor:GetRGB())
+            Button._auroraHighlight = {}
+            local left = Button:CreateTexture(nil, "ARTWORK", nil, 3)
+            left:SetColorTexture(Color.frame:GetRGB())
             left:SetPoint("TOPLEFT")
             left:SetPoint("BOTTOMLEFT")
             left:SetWidth(1)
-            _G.tinsert(button._auroraHighlight, left)
+            _G.tinsert(Button._auroraHighlight, left)
 
-            local right = button:CreateTexture(nil, "ARTWORK", nil, 3)
-            right:SetColorTexture(Aurora.frameColor:GetRGB())
+            local right = Button:CreateTexture(nil, "ARTWORK", nil, 3)
+            right:SetColorTexture(Color.frame:GetRGB())
             right:SetPoint("TOPRIGHT")
             right:SetPoint("BOTTOMRIGHT")
             right:SetWidth(1)
-            _G.tinsert(button._auroraHighlight, right)
+            _G.tinsert(Button._auroraHighlight, right)
 
-            local top = button:CreateTexture(nil, "ARTWORK", nil, 3)
-            top:SetColorTexture(Aurora.frameColor:GetRGB())
+            local top = Button:CreateTexture(nil, "ARTWORK", nil, 3)
+            top:SetColorTexture(Color.frame:GetRGB())
             top:SetPoint("TOPLEFT")
             top:SetPoint("TOPRIGHT")
             top:SetHeight(1)
-            _G.tinsert(button._auroraHighlight, top)
+            _G.tinsert(Button._auroraHighlight, top)
 
-            local bottom = button:CreateTexture(nil, "ARTWORK", nil, 3)
-            bottom:SetColorTexture(Aurora.frameColor:GetRGB())
+            local bottom = Button:CreateTexture(nil, "ARTWORK", nil, 3)
+            bottom:SetColorTexture(Color.frame:GetRGB())
             bottom:SetPoint("BOTTOMLEFT")
             bottom:SetPoint("BOTTOMRIGHT")
             bottom:SetHeight(1)
-            _G.tinsert(button._auroraHighlight, bottom)
+            _G.tinsert(Button._auroraHighlight, bottom)
 
-            Base.SetHighlight(button, "color", nil, OnLeave)
+            Base.SetHighlight(Button, "color", nil, OnLeave)
         end
 
         Skin.ExpandOrCollapse(_G[factionRowName.."ExpandOrCollapseButton"])
 
         local statusName = factionRowName.."ReputationBar"
-        local statusbar = _G[statusName]
-        statusbar:ClearAllPoints()
-        statusbar:SetPoint("TOPRIGHT", -2, -2)
-        statusbar:SetPoint("BOTTOMLEFT", button, "BOTTOMRIGHT", -102, 2)
+        local statusBar = _G[statusName]
+        statusBar:ClearAllPoints()
+        statusBar:SetPoint("TOPRIGHT", -2, -2)
+        statusBar:SetPoint("BOTTOMLEFT", Button, "BOTTOMRIGHT", -102, 2)
         _G[statusName.."LeftTexture"]:Hide()
 
         local statusBG = _G[statusName.."RightTexture"]
-        statusBG:SetColorTexture(Aurora.frameColor:GetRGB())
+        statusBG:SetColorTexture(Color.frame:GetRGB())
         statusBG:SetDrawLayer("BACKGROUND", -3)
         statusBG:ClearAllPoints()
         statusBG:SetPoint("TOPLEFT")
@@ -130,7 +133,7 @@ do --[[ FrameXML\ReputationFrame.xml ]]
         _G[statusName.."Highlight2"]:SetAlpha(0)
         _G[statusName.."Highlight1"]:SetAlpha(0)
 
-        Base.SetTexture(statusbar:GetStatusBarTexture(), "gradientUp")
+        Base.SetTexture(statusBar:GetStatusBarTexture(), "gradientUp")
     end
 end
 
@@ -139,11 +142,9 @@ function private.FrameXML.ReputationFrame()
     _G.hooksecurefunc("ReputationFrame_SetRowType", Hook.ReputationFrame_SetRowType)
     _G.hooksecurefunc("ReputationFrame_Update", Hook.ReputationFrame_Update)
 
-    --[[ ReputationParagonTooltipStatusBar ]]--
-    Skin.TooltipProgressBarTemplate(_G.ReputationParagonTooltipStatusBar)
-
-
-    --[[ ReputationFrame ]]--
+    ---------------------
+    -- ReputationFrame --
+    ---------------------
     Skin.ReputationBarTemplate(_G.ReputationBar1)
     for i = 2, _G.NUM_FACTIONS_DISPLAYED do
         local factionRow = _G["ReputationBar"..i]
@@ -163,9 +164,11 @@ function private.FrameXML.ReputationFrame()
     bottom:Hide()
 
 
-    --[[ ReputationDetailFrame ]]--
+    ---------------------------
+    -- ReputationDetailFrame --
+    ---------------------------
     _G.ReputationDetailFrame:SetPoint("TOPLEFT", _G.ReputationFrame, "TOPRIGHT", 1, -28)
-    Base.SetBackdrop(_G.ReputationDetailFrame, Aurora.frameColor:GetRGBA())
+    Base.SetBackdrop(_G.ReputationDetailFrame, Color.frame)
 
     _G.ReputationDetailFactionName:SetPoint("TOPLEFT", 10, -10)
     _G.ReputationDetailFactionName:SetPoint("TOPRIGHT", -10, -10)
@@ -175,10 +178,10 @@ function private.FrameXML.ReputationFrame()
     local detailBG = _G.select(3, _G.ReputationDetailFrame:GetRegions())
     detailBG:SetPoint("TOPLEFT", 1, -1)
     detailBG:SetPoint("BOTTOMRIGHT", _G.ReputationDetailFrame, "TOPRIGHT", -1, -142)
-    detailBG:SetColorTexture(Aurora.buttonColor:GetRGB())
+    detailBG:SetColorTexture(Color.button:GetRGB())
     _G.ReputationDetailCorner:Hide()
 
-    _G.ReputationDetailDivider:SetColorTexture(Aurora.frameColor:GetRGB())
+    _G.ReputationDetailDivider:SetColorTexture(Color.frame:GetRGB())
     _G.ReputationDetailDivider:ClearAllPoints()
     _G.ReputationDetailDivider:SetPoint("BOTTOMLEFT", detailBG)
     _G.ReputationDetailDivider:SetPoint("BOTTOMRIGHT", detailBG)
@@ -186,19 +189,19 @@ function private.FrameXML.ReputationFrame()
 
     Skin.UIPanelCloseButton(_G.ReputationDetailCloseButton)
     Skin.OptionsSmallCheckButtonTemplate(_G.ReputationDetailAtWarCheckBox) -- BlizzWTF: doesn't use the template, but it should
-    _G.ReputationDetailAtWarCheckBox:SetPoint("TOPLEFT", detailBG, "BOTTOMLEFT", 8, -8)
+    _G.ReputationDetailAtWarCheckBox:SetPoint("TOPLEFT", detailBG, "BOTTOMLEFT", 10, -6)
     Skin.OptionsSmallCheckButtonTemplate(_G.ReputationDetailInactiveCheckBox)
-    _G.ReputationDetailInactiveCheckBox:SetPoint("LEFT", _G.ReputationDetailAtWarCheckBox, "RIGHT", 50, 0)
     Skin.OptionsSmallCheckButtonTemplate(_G.ReputationDetailMainScreenCheckBox)
-    _G.ReputationDetailMainScreenCheckBox:SetPoint("TOPLEFT", _G.ReputationDetailAtWarCheckBox, "BOTTOMLEFT", 0, -6)
     Skin.OptionsSmallCheckButtonTemplate(_G.ReputationDetailLFGBonusReputationCheckBox)
-    _G.ReputationDetailLFGBonusReputationCheckBox:SetPoint("TOPLEFT", _G.ReputationDetailMainScreenCheckBox, "BOTTOMLEFT", 0, -6)
 
 
-    --[[ ReputationWatchBar ]]--
+    if not private.disabled.mainmenubar and not private.isPatch then
+        Skin.MainMenuBarWatchBarTemplate(_G.ReputationWatchBar)
+    end
 
-    if not private.disabled.tooltips then
+    if not private.isPatch and not private.disabled.tooltips then
+        Skin.TooltipProgressBarTemplate(_G.ReputationParagonTooltipStatusBar)
         Skin.GameTooltipTemplate(_G.ReputationParagonTooltip)
-        Skin.EmbeddedItemTooltip(_G.ReputationParagonTooltip.ItemTooltip)
+        Skin.InternalEmbeddedItemTooltipTemplate(_G.ReputationParagonTooltip.ItemTooltip)
     end
 end

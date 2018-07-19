@@ -6,7 +6,15 @@ local next, select = _G.next, _G.select
 -- [[ Core ]]
 local Aurora = private.Aurora
 local Base = Aurora.Base
+local Skin = Aurora.Skin
 local F, C = _G.unpack(private.Aurora)
+
+do --[[ FrameXML\FriendsFrame.xml ]]
+    function Skin.FriendsFrameTabTemplate(Button)
+        Skin.CharacterFrameTabButtonTemplate(Button)
+        Button._auroraTabResize = true
+    end
+end
 
 function private.FrameXML.FriendsFrame()
     if not private.disabled.tooltips then
@@ -19,7 +27,8 @@ function private.FrameXML.FriendsFrame()
     --F.ReskinDropDown(_G.FriendsDropDown)
     --F.ReskinDropDown(_G.TravelPassDropDown)
 
-    for i = 1, 4 do
+    local numTabs = private.isPatch and 3 or 4
+    for i = 1, numTabs do
         local name = "FriendsFrameTab"..i
         local tab = _G[name]
         F.ReskinTab(tab)

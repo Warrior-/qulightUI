@@ -249,13 +249,13 @@ ForceWarning:SetScript("OnEvent", function(self, event)
 		for i = 1, GetMaxBattlefieldID() do
 			local status = GetBattlefieldStatus(i)
 			if status == "confirm" then
-				PlaySound("PVPTHROUGHQUEUE", "Master")
+				PlaySound(SOUNDKIT.PVP_THROUGH_QUEUE, "Master")
 				break
 			end
 			i = i + 1
 		end
 	elseif event == "PET_BATTLE_QUEUE_PROPOSE_MATCH" then
-		PlaySound("PVPTHROUGHQUEUE", "Master")
+		PlaySound(SOUNDKIT.PVP_THROUGH_QUEUE, "Master")
 	elseif event == "LFG_PROPOSAL_SHOW" then
 		PlaySound("ReadyCheck", "Master")
 	elseif event == "RESURRECT_REQUEST" then

@@ -1,29 +1,3 @@
---[[ Element: Alternative Power Bar
-
- Handles visibility and updating of the alternative power bar.
-
- This bar is used to display encounter/quest related power information, such as
- the number of hour glass uses left on the end boss in End Time.
-
- Widget
-
- AltPowerBar - A StatusBar to represent alternative power.
-
- Examples
-
-   -- Position and size
-   local AltPowerBar = CreateFrame('StatusBar', nil, self)
-   AltPowerBar:SetHeight(20)
-   AltPowerBar:SetPoint('BOTTOM')
-   AltPowerBar:SetPoint('LEFT')
-   AltPowerBar:SetPoint('RIGHT')
-   
-   -- Register with oUF
-   self.AltPowerBar = AltPowerBar
-
- Callbacks
-]]
-
 local parent, ns = ...
 local oUF = ns.oUF
 
@@ -51,14 +25,6 @@ local UpdatePower = function(self, event, unit, powerType)
 
 	local altpowerbar = self.AltPowerBar
 
-	--[[ :PreUpdate()
-
-	 Called before the element has been updated.
-
-	 Arguments
-
-	 self - The AltPowerBar element.
-	 ]]
 	if(altpowerbar.PreUpdate) then
 		altpowerbar:PreUpdate()
 	end
@@ -82,6 +48,7 @@ local UpdatePower = function(self, event, unit, powerType)
 		altpowerbar:SetStatusBarColor(r, g, b)
 	end
 
+
 	if(altpowerbar.PostUpdate) then
 		return altpowerbar:PostUpdate(min, cur, max)
 	end
@@ -90,7 +57,6 @@ end
 local Path = function(self, ...)
 	return (self.AltPowerBar.Override or UpdatePower)(self, ...)
 end
-
 
 local ForceUpdate = function(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit, 'ALTERNATE')
@@ -102,13 +68,13 @@ local Toggler = function(self, event, unit)
 
 	local barType, _, _, _, _, hideFromOthers, showOnRaid = UnitAlternatePowerInfo(unit)
 	if(barType and (showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not hideFromOthers or unit == 'player' or self.realUnit == 'player')) then
-		self:RegisterEvent('UNIT_POWER', Path)
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 		ForceUpdate(altpowerbar)
 		altpowerbar:Show()
 	else
-		self:UnregisterEvent('UNIT_POWER', Path)
+		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 		altpowerbar:Hide()

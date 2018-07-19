@@ -3,6 +3,7 @@ local _, private = ...
 -- [[ Core ]]
 local Aurora = private.Aurora
 local Base, Hook, Skin = Aurora.Base, Aurora.Hook, Aurora.Skin
+local Color = Aurora.Color
 
 do --[[ FrameXML\CinematicFrame.lua ]]
     function Hook.CinematicFrameCloseDialog_OnShow(self)
@@ -11,14 +12,14 @@ do --[[ FrameXML\CinematicFrame.lua ]]
 end
 
 do --[[ FrameXML\CinematicFrame.xml ]]
-    function Skin.CinematicDialogButtonTemplate(button)
-        button:SetNormalTexture("")
-        button:SetPushedTexture("")
-        button:SetDisabledTexture("")
-        button:SetHighlightTexture("")
+    function Skin.CinematicDialogButtonTemplate(Button)
+        Button:SetNormalTexture("")
+        Button:SetPushedTexture("")
+        Button:SetDisabledTexture("")
+        Button:SetHighlightTexture("")
 
-        Base.SetBackdrop(button, Aurora.buttonColor:GetRGBA())
-        Base.SetHighlight(button, "backdrop")
+        Base.SetBackdrop(Button, Color.button)
+        Base.SetHighlight(Button, "backdrop")
     end
 end
 

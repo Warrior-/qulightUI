@@ -113,6 +113,7 @@ Qulight["buffdebuff"] = {
 	["spacing"] = 3, 																	-- spacing between icons(buffs)
 	["timeYoffset"] = -2, 																-- verticall offset value for time text field
 	["BUFFS_PER_ROW"] = 15,
+	["color_type"] = true
 }
 Qulight["addonskins"] = {
 	["DBM"] = true, 																	-- Deadly Boss Mod skinning

@@ -2,7 +2,7 @@ local _, private = ...
 
 -- [[ Core ]]
 local Aurora = private.Aurora
-local Base, Hook, Skin = Aurora.Base, Aurora.Hook, Aurora.Skin
+local Hook, Skin = Aurora.Hook, Aurora.Skin
 
 do --[[ SharedXML\HybridScrollFrame.lua ]]
     function Hook.HybridScrollFrame_CreateButtons(self, buttonTemplate, initialOffsetX, initialOffsetY, initialPoint, initialRelative, offsetX, offsetY, point, relativePoint)
@@ -20,67 +20,80 @@ do --[[ SharedXML\HybridScrollFrame.lua ]]
 end
 
 do --[[ SharedXML\HybridScrollFrame.xml ]]
-    function Skin.HybridScrollBarTemplate(slider)
-        local name = slider:GetName()
+    function Skin.HybridScrollBarBackgroundTemplate(Slider)
+        local parent = Slider:GetParent()
+        Slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
+        Slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
 
-        local parent = slider:GetParent()
-        slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
-        slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
+        Slider.trackBG:SetAlpha(0)
 
-        slider.trackBG:SetAlpha(0)
+        Slider.ScrollBarTop:Hide()
+        Slider.ScrollBarMiddle:Hide()
+        Slider.ScrollBarBottom:Hide()
 
-        slider.ScrollBarTop:Hide()
-        slider.ScrollBarMiddle:Hide()
-        slider.ScrollBarBottom:Hide()
+        Skin.ScrollBarThumb(Slider.thumbTexture)
 
-        local upButton = _G[name.."ScrollUpButton"]
-        upButton:SetPoint("BOTTOM", slider, "TOP")
+        --[[ Scale ]]--
+        Slider:SetSize(Slider:GetSize())
+    end
+
+    function Skin.HybridScrollBarTemplate(Slider)
+        Skin.HybridScrollBarBackgroundTemplate(Slider)
+
+        local parent = Slider:GetParent()
+        parent.scrollUp:SetPoint("BOTTOM", Slider, "TOP")
+        Skin.UIPanelScrollUpButtonTemplate(parent.scrollUp)
+
+        parent.scrollDown:SetPoint("TOP", Slider, "BOTTOM")
+        Skin.UIPanelScrollDownButtonTemplate(parent.scrollDown)
+    end
+    function Skin.HybridScrollBarTrimTemplate(Slider)
+        local parent = Slider:GetParent()
+        Slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
+        Slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
+
+        Slider.trackBG:SetAlpha(0)
+
+        Slider.Top:Hide()
+        Slider.Bottom:Hide()
+        Slider.Middle:Hide()
+
+        local upButton = Slider.UpButton
+        upButton:SetPoint("BOTTOM", Slider, "TOP")
         Skin.UIPanelScrollUpButtonTemplate(upButton)
 
-        local downButton = _G[name.."ScrollDownButton"]
-        downButton:SetPoint("TOP", slider, "BOTTOM")
+        local downButton = Slider.DownButton
+        downButton:SetPoint("TOP", Slider, "BOTTOM")
         Skin.UIPanelScrollDownButtonTemplate(downButton)
 
-        slider.thumbTexture:SetAlpha(0)
-        slider.thumbTexture:SetWidth(17)
+        Skin.ScrollBarThumb(Slider.thumbTexture)
 
-        local thumb = _G.CreateFrame("Frame", nil, slider)
-        thumb:SetPoint("TOPLEFT", slider.thumbTexture, 0, -2)
-        thumb:SetPoint("BOTTOMRIGHT", slider.thumbTexture, 0, 2)
-        Base.SetBackdrop(thumb, Aurora.buttonColor:GetRGBA())
-        slider._auroraThumb = thumb
+        --[[ Scale ]]--
+        Slider:SetSize(Slider:GetSize())
     end
-    function Skin.HybridScrollBarTrimTemplate(slider)
-        local parent = slider:GetParent()
-        slider:SetPoint("TOPLEFT", parent, "TOPRIGHT", 0, -17)
-        slider:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 0, 17)
+    function Skin.MinimalHybridScrollBarTemplate(Slider)
+        local parent = Slider:GetParent()
+        Slider.trackBG:SetAlpha(0)
 
-        slider.trackBG:SetAlpha(0)
+        --Slider.scrollUp:SetPoint("BOTTOM", Slider, "TOP")
+        Skin.UIPanelScrollUpButtonTemplate(parent.scrollUp)
 
-        slider.Top:Hide()
-        slider.Bottom:Hide()
-        slider.Middle:Hide()
+        --Slider.scrollDown:SetPoint("TOP", Slider, "BOTTOM")
+        Skin.UIPanelScrollDownButtonTemplate(parent.scrollDown)
 
-        local upButton = slider.UpButton
-        upButton:SetPoint("BOTTOM", slider, "TOP")
-        Skin.UIPanelScrollUpButtonTemplate(upButton)
+        Skin.ScrollBarThumb(Slider.thumbTexture)
 
-        local downButton = slider.DownButton
-        downButton:SetPoint("TOP", slider, "BOTTOM")
-        Skin.UIPanelScrollDownButtonTemplate(downButton)
-
-        slider.thumbTexture:SetAlpha(0)
-        slider.thumbTexture:SetWidth(17)
-
-        local thumb = _G.CreateFrame("Frame", nil, slider)
-        thumb:SetPoint("TOPLEFT", slider.thumbTexture, 0, -2)
-        thumb:SetPoint("BOTTOMRIGHT", slider.thumbTexture, 0, 2)
-        Base.SetBackdrop(thumb, Aurora.buttonColor:GetRGBA())
-        slider._auroraThumb = thumb
+        --[[ Scale ]]--
+        Slider:SetSize(Slider:GetSize())
     end
-    function Skin.BasicHybridScrollFrameTemplate(scrollframe)
-        local name = scrollframe:GetName()
+    -- HybridScrollFrameTemplate -- Has no visible parts
+    function Skin.BasicHybridScrollFrameTemplate(ScrollFrame)
+        local name = ScrollFrame:GetName()
         Skin.HybridScrollBarTemplate(_G[name.."ScrollBar"])
+    end
+    function Skin.MinimalHybridScrollFrameTemplate(ScrollFrame)
+        local name = ScrollFrame:GetName()
+        Skin.MinimalHybridScrollBarTemplate(_G[name.."ScrollBar"])
     end
 end
 

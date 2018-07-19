@@ -1,12 +1,20 @@
 local _, private = ...
 
 -- [[ Lua Globals ]]
-local select = _G.select
+-- luacheck: globals select
 
 -- [[ Core ]]
 local Aurora = private.Aurora
-local _, C = _G.unpack(Aurora)
 local Base, Hook, Skin = Aurora.Base, Aurora.Hook, Aurora.Skin
+local Color = Aurora.Color
+
+--[[ do FrameXML\AzeritePaperDollItemOverlay.lua
+end ]]
+do --[[ FrameXML\AzeritePaperDollItemOverlay.xml ]]
+    function Skin.PaperDollAzeriteItemOverlayTemplate(Frame)
+        Frame.RankFrame.Label:SetPoint("CENTER", Frame.RankFrame.Texture, 0, 0)
+    end
+end
 
 do --[[ FrameXML\PaperDollFrame.lua ]]
     function Hook.PaperDollFrame_SetLevel()
@@ -41,45 +49,68 @@ do --[[ FrameXML\PaperDollFrame.lua ]]
 end
 
 do --[[ FrameXML\PaperDollFrame.xml ]]
-    function Skin.PaperDollItemSlotButtonTemplate(button)
-        Skin.ItemButtonTemplate(button)
-        _G[button:GetName().."Frame"]:Hide()
+    function Skin.PaperDollItemSlotButtonTemplate(Button)
+        Skin.ItemButtonTemplate(Button)
+        if private.isPatch then
+            Skin.PaperDollAzeriteItemOverlayTemplate(Button)
+        end
+        _G[Button:GetName().."Frame"]:Hide()
+
+        Skin.EquipmentFlyoutPopoutButtonTemplate(Button.popoutButton)
+        if Button.verticalFlyout then
+            Button.popoutButton:SetPoint("TOP", Button, "BOTTOM")
+            Button.popoutButton:SetSize(38, 8)
+            Base.SetTexture(Button.popoutButton._auroraArrow, "arrowDown")
+        else
+            Button.popoutButton:SetPoint("LEFT", Button, "RIGHT")
+            Button.popoutButton:SetSize(8, 38)
+        end
     end
-    function Skin.PlayerTitleButtonTemplate(button)
-        button.BgTop:SetTexture("")
-        button.BgBottom:SetTexture("")
-        button.BgMiddle:SetTexture("")
-
-        button.SelectedBar:SetColorTexture(1, 1, 0, 0.3)
-        button:GetHighlightTexture():SetColorTexture(0, 0, 1, 0.2)
+    function Skin.PaperDollItemSlotButtonLeftTemplate(Button)
+        Skin.PaperDollItemSlotButtonTemplate(Button)
     end
-    function Skin.GearSetButtonTemplate(button)
-        button.BgTop:SetTexture("")
-        button.BgBottom:SetTexture("")
-        button.BgMiddle:SetTexture("")
-
-        button.HighlightBar:SetColorTexture(0, 0, 1, 0.3)
-        button.SelectedBar:SetColorTexture(1, 1, 0, 0.3)
-
-        Base.CropIcon(button.icon, button)
+    function Skin.PaperDollItemSlotButtonRightTemplate(Button)
+        Skin.PaperDollItemSlotButtonTemplate(Button)
     end
-    function Skin.GearSetPopupButtonTemplate(checkbutton)
-        Skin.SimplePopupButtonTemplate(checkbutton)
-        Base.CropIcon(_G[checkbutton:GetName().."Icon"], checkbutton)
-        checkbutton:SetCheckedTexture(C.media.checked)
+    function Skin.PaperDollItemSlotButtonBottomTemplate(Button)
+        Skin.PaperDollItemSlotButtonTemplate(Button)
     end
-    function Skin.PaperDollSidebarTabTemplate(button)
-        button.TabBg:SetAlpha(0)
-        button.Hider:SetTexture("")
+    function Skin.PlayerTitleButtonTemplate(Button)
+        Button.BgTop:SetTexture("")
+        Button.BgBottom:SetTexture("")
+        Button.BgMiddle:SetTexture("")
 
-        button.Icon:ClearAllPoints()
-        button.Icon:SetPoint("TOPLEFT", 1, -1)
-        button.Icon:SetPoint("BOTTOMRIGHT", -1, 1)
+        Button.SelectedBar:SetColorTexture(1, 1, 0, 0.3)
+        Button:GetHighlightTexture():SetColorTexture(0, 0, 1, 0.2)
+    end
+    function Skin.GearSetButtonTemplate(Button)
+        Button.BgTop:SetTexture("")
+        Button.BgBottom:SetTexture("")
+        Button.BgMiddle:SetTexture("")
 
-        button.Highlight:SetTexture("")
+        Button.HighlightBar:SetColorTexture(0, 0, 1, 0.3)
+        Button.SelectedBar:SetColorTexture(1, 1, 0, 0.3)
 
-        Base.SetBackdrop(button, Aurora.buttonColor:GetRGB())
-        Base.SetHighlight(button, "backdrop")
+        Base.CropIcon(Button.icon, Button)
+    end
+    function Skin.GearSetPopupButtonTemplate(CheckButton)
+        Skin.SimplePopupButtonTemplate(CheckButton)
+        Base.CropIcon(_G[CheckButton:GetName().."Icon"])
+        Base.CropIcon(CheckButton:GetHighlightTexture())
+        Base.CropIcon(CheckButton:GetCheckedTexture())
+    end
+    function Skin.PaperDollSidebarTabTemplate(Button)
+        Button.TabBg:SetAlpha(0)
+        Button.Hider:SetTexture("")
+
+        Button.Icon:ClearAllPoints()
+        Button.Icon:SetPoint("TOPLEFT", 1, -1)
+        Button.Icon:SetPoint("BOTTOMRIGHT", -1, 1)
+
+        Button.Highlight:SetTexture("")
+
+        Base.SetBackdrop(Button, Color.button)
+        Base.SetHighlight(Button, "backdrop")
     end
 end
 
@@ -146,28 +177,54 @@ function private.FrameXML.PaperDollFrame()
     _G.PaperDollInnerBorderBottom2:Hide()
 
 
-    local slots = {
-        "Head", "Neck", "Shoulder", "Back", "Chest", "Shirt", "Tabard", "Wrist",
-        "Hands", "Waist", "Legs", "Feet", "Finger0", "Finger1", "Trinket0", "Trinket1",
-        "MainHand", "SecondaryHand",
+    local EquipmentSlots = {
+        "CharacterHeadSlot", "CharacterNeckSlot", "CharacterShoulderSlot", "CharacterBackSlot", "CharacterChestSlot", "CharacterShirtSlot", "CharacterTabardSlot", "CharacterWristSlot",
+        "CharacterHandsSlot", "CharacterWaistSlot", "CharacterLegsSlot", "CharacterFeetSlot", "CharacterFinger0Slot", "CharacterFinger1Slot", "CharacterTrinket0Slot", "CharacterTrinket1Slot"
+    }
+    local WeaponSlots = {
+        "CharacterMainHandSlot", "CharacterSecondaryHandSlot"
     }
 
-    for i = 1, #slots do
-        local name = "Character"..slots[i].."Slot"
-        local button = _G[name]
-        Skin.PaperDollItemSlotButtonTemplate(button)
+    local prevSlot
+    for i = 1, #EquipmentSlots do
+        local button = _G[EquipmentSlots[i]]
 
-        if i > 16 then
-            -- weapons
-            _G.select(11, button:GetRegions()):Hide()
-            if i == 17 then
-                -- main hand
-                button:SetPoint("BOTTOMLEFT", 130, 8)
+        if not private.isPatch then
+            button.IsLeftSide = i <= 8
+        end
+
+        if i % 8 == 1 then
+            if button.IsLeftSide then
+                button:SetPoint("TOPLEFT", _G.CharacterFrameInset, 4, -11)
+            else
+                button:SetPoint("TOPRIGHT", _G.CharacterFrameInset, -4, -11)
             end
-        elseif i % 8 == 1 then -- luacheck: ignore
-            -- healm and gloves
         else
-            button:SetPoint("TOPLEFT", _G["Character"..slots[i - 1].."Slot"], "BOTTOMLEFT", 0, -9)
+            button:SetPoint("TOPLEFT", prevSlot, "BOTTOMLEFT", 0, -6)
+        end
+
+        if button.IsLeftSide then
+            Skin.PaperDollItemSlotButtonLeftTemplate(button)
+        elseif button.IsLeftSide == false then
+            Skin.PaperDollItemSlotButtonRightTemplate(button)
+        end
+
+        prevSlot = button
+    end
+
+    for i = 1, #WeaponSlots do
+        local button = _G[WeaponSlots[i]]
+
+        if i == 1 then
+            -- main hand
+            button:SetPoint("BOTTOMLEFT", 130, 8)
+        end
+
+        Skin.PaperDollItemSlotButtonBottomTemplate(button)
+        if private.isPatch then
+            _G.select(13, button:GetRegions()):Hide()
+        else
+            _G.select(11, button:GetRegions()):Hide()
         end
     end
 

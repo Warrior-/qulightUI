@@ -1,4 +1,4 @@
-local ADDON_NAME, private = ...
+local _, private = ...
 
 -- [[ Lua Globals ]]
 -- luacheck: globals next type
@@ -37,8 +37,8 @@ C.media = {
 	["arrowDown"] = "Interface\\AddOns\\Aurora\\media\\arrow-down-active",
 	["arrowLeft"] = "Interface\\AddOns\\Aurora\\media\\arrow-left-active",
 	["arrowRight"] = "Interface\\AddOns\\Aurora\\media\\arrow-right-active",
-	["backdrop"] = Qulight["media"].texture,
-	["glow"] = Qulight["media"].glow,
+	["backdrop"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
+	["glow"] = "Interface\Addons\QulightUI\Root\Media\glowTex",
 	["blank"] = "Interface\\Buttons\\WHITE8x8",
 	["checked"] = "Interface\\AddOns\\Aurora\\media\\CheckButtonHilight",
 	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=],
@@ -61,8 +61,9 @@ C.defaults = {
 	["useCustomColour"] = false,
         ["customColour"] = {r = 1, g = 1, b = 1},
 	["customClassColors"] = false,
-	["tooltips"] = false
-
+	["tooltips"] = true,
+	customHighlight = {enabled = false, r = 1, g = 1, b = 1},
+    customClassColors = {}
 }
 
 function private.OnLoad()
@@ -72,6 +73,15 @@ function private.OnLoad()
 
     if AuroraConfig.useButtonGradientColour ~= nil then
         AuroraConfig.buttonsHaveGradient = AuroraConfig.useButtonGradientColour
+    end
+    if AuroraConfig.enableFont ~= nil then
+        AuroraConfig.fonts = AuroraConfig.enableFont
+    end
+    if AuroraConfig.customColour ~= nil then
+        AuroraConfig.customHighlight = AuroraConfig.customColour
+        if AuroraConfig.useCustomColour ~= nil then
+            AuroraConfig.customHighlight.enabled = AuroraConfig.useCustomColour
+        end
     end
 
     -- Remove deprecated or corrupt variables
@@ -96,38 +106,46 @@ function private.OnLoad()
     end
 
     -- Setup colors
+    local Color = Aurora.Color
+    local customClassColors = AuroraConfig.customClassColors
+    if not customClassColors[private.charClass.token] then
+        private.classColorsReset(customClassColors, true)
+    end
+
     function private.updateHighlightColor()
         local r, g, b
-        if AuroraConfig.useCustomColour then
-            r, g, b = AuroraConfig.customColour.r, AuroraConfig.customColour.g, AuroraConfig.customColour.b
+        if AuroraConfig.customHighlight.enabled then
+            r, g, b = AuroraConfig.customHighlight.r, AuroraConfig.customHighlight.g, AuroraConfig.customHighlight.b
         else
             r, g, b = _G.CUSTOM_CLASS_COLORS[private.charClass.token]:GetRGB()
         end
 
         C.r, C.g, C.b = r, g, b -- deprecated
-        Aurora.highlightColor:SetRGBA(r, g, b, Aurora.frameColor.a)
-    end
-    function private.classColorsInit()
-        for classToken, color in next, AuroraConfig.customClassColors do
-            _G.CUSTOM_CLASS_COLORS[classToken]:SetRGB(color.r, color.g, color.b)
-        end
+        Color.highlight:SetRGB(r, g, b)
     end
     function private.classColorsHaveChanged()
+        local hasChanged = false
         for i = 1, #_G.CLASS_SORT_ORDER do
             local classToken = _G.CLASS_SORT_ORDER[i]
             local color = _G.CUSTOM_CLASS_COLORS[classToken]
-            local cache = AuroraConfig.customClassColors[classToken]
+            local cache = customClassColors[classToken]
 
             if not color:IsEqualTo(cache) then
                 --print("Change found in", classToken)
                 color:SetRGB(cache.r, cache.g, cache.b)
-                return true
+                hasChanged = true
             end
+        end
+        return hasChanged
+    end
+    function private.classColorsInit()
+        if private.classColorsHaveChanged() or AuroraConfig.customHighlight.enabled then
+            private.updateHighlightColor()
         end
     end
     _G.CUSTOM_CLASS_COLORS:RegisterCallback(function()
         for classToken, color in next, _G.CUSTOM_CLASS_COLORS do
-            local ccc = AuroraConfig.customClassColors[classToken]
+            local ccc = customClassColors[classToken]
             ccc.r = color.r
             ccc.g = color.g
             ccc.b = color.b
@@ -138,13 +156,8 @@ function private.OnLoad()
         private.updateHighlightColor()
     end)
 
-    if not AuroraConfig.customClassColors or not AuroraConfig.customClassColors[private.charClass.token].colorStr then
-        AuroraConfig.customClassColors = {}
-        private.classColorsReset(AuroraConfig.customClassColors, true)
-    end
-
     if AuroraConfig.buttonsHaveGradient then
-        Aurora.buttonColor:SetRGBA(.3, .3, .3, 0.7)
+        Color.button:SetRGB(.4, .4, .4)
     end
 
     -- Show splash screen for first time users
@@ -155,25 +168,24 @@ function private.OnLoad()
     -- Create API hooks
     local Base, Hook = Aurora.Base, Aurora.Hook
     function Hook.GameTooltip_OnHide(gametooltip)
-        local color = Aurora.frameColor
-        Base.SetBackdropColor(gametooltip, color.r, color.g, color.b, AuroraConfig.alpha)
+        Base.SetBackdropColor(gametooltip, Color.frame, AuroraConfig.alpha)
     end
 
-    function Base.Post.SetBackdrop(frame, r, g, b, a)
-        if AuroraConfig.buttonsHaveGradient and Aurora.buttonColor:IsEqualTo(r, g, b, a) then
-            Aurora.Base.SetTexture(frame:GetBackdropTexture("bg"), "gradientUp")
-            Aurora.Base.SetBackdropColor(frame, r, g, b, a)
-        elseif not a then
-            r, g, b = Aurora.frameColor:GetRGB()
-            frame:SetBackdropColor(r, g, b, AuroraConfig.alpha)
-            _G.tinsert(C.frames, frame)
+    _G.hooksecurefunc(Base, "SetBackdrop", function(frame, color, alpha, ...)
+        if not alpha then
+            if AuroraConfig.buttonsHaveGradient and Color.button:IsEqualTo(color) then
+                Aurora.Base.SetTexture(frame:GetBackdropTexture("bg"), "gradientUp")
+                Aurora.Base.SetBackdropColor(frame, color)
+            elseif not color then
+                frame:SetBackdropColor(Color.frame, AuroraConfig.alpha)
+                _G.tinsert(C.frames, frame)
+            end
         end
-    end
-
-    function private.FrameXML.Post.CharacterFrame()
+    end)
+    _G.hooksecurefunc(private.FrameXML, "CharacterFrame", function()
         _G.CharacterStatsPane.ItemLevelFrame:SetPoint("TOP", 0, -12)
         _G.CharacterStatsPane.ItemLevelFrame.Background:Hide()
-        --_G.CharacterStatsPane.ItemLevelFrame.Value:SetFontObject("SystemFont_Outline_WTF2")
+        _G.CharacterStatsPane.ItemLevelFrame.Value:SetFontObject("SystemFont_Outline_WTF2")
 
         _G.hooksecurefunc("PaperDollFrame_UpdateStats", function()
             if ( _G.UnitLevel("player") >= _G.MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY ) then
@@ -181,22 +193,24 @@ function private.OnLoad()
                 _G.CharacterStatsPane.AttributesCategory:SetPoint("TOP", 0, -40)
             end
         end)
-    end
+    end)
 
     -- Disable skins as per user settings
-    private.disabled.fonts = not AuroraConfig.enableFont
+    private.disabled.bags = not AuroraConfig.bags
+    private.disabled.fonts = not AuroraConfig.fonts
     private.disabled.tooltips = not AuroraConfig.tooltips
+    private.disabled.mainmenubar = not AuroraConfig.mainmenubar
     if not AuroraConfig.chatBubbles then
         private.FrameXML.ChatBubbles = nil
     end
     if not AuroraConfig.chatBubbleNames then
         Hook.UpdateChatBubble = private.nop
     end
-    if not AuroraConfig.bags then
-        private.FrameXML.BankFrame = nil
-        private.FrameXML.ContainerFrame = nil
-    end
     if not AuroraConfig.loot then
         private.FrameXML.LootFrame = nil
+    end
+
+    function private.AddOns.Aurora()
+        private.SetupGUI()
     end
 end

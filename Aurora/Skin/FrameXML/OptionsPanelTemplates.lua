@@ -3,34 +3,59 @@ local _, private = ...
 -- [[ Core ]]
 local Aurora = private.Aurora
 local Base, Skin = Aurora.Base, Aurora.Skin
+local Color = Aurora.Color
 
 do --[[ FrameXML\OptionsPanelTemplates.xml ]]
-    function Skin.OptionsBaseCheckButtonTemplate(checkbutton)
-        checkbutton:SetSize(18, 18)
+    function Skin.OptionsButtonTemplate(Button)
+        Skin.UIPanelButtonTemplate(Button)
+    end
+    function Skin.OptionsBaseCheckButtonTemplate(CheckButton)
+        CheckButton:SetNormalTexture("")
+        CheckButton:SetPushedTexture("")
+        CheckButton:SetHighlightTexture("")
 
-        checkbutton:SetNormalTexture("")
-        checkbutton:SetPushedTexture("")
-        checkbutton:SetHighlightTexture("")
+        local bd = _G.CreateFrame("Frame", nil, CheckButton)
+        bd:SetPoint("TOPLEFT", 6, -6)
+        bd:SetPoint("BOTTOMRIGHT", -6, 6)
+        bd:SetFrameLevel(CheckButton:GetFrameLevel())
+        Base.SetBackdrop(bd, Color.frame)
+        bd:SetBackdropBorderColor(Color.button)
 
-        local check = checkbutton:GetCheckedTexture()
+        local check = CheckButton:GetCheckedTexture()
         check:ClearAllPoints()
-        check:SetPoint("CENTER")
+        check:SetPoint("TOPLEFT", -1, 1)
+        check:SetPoint("BOTTOMRIGHT", 1, -1)
         check:SetDesaturated(true)
-        check:SetVertexColor(Aurora.highlightColor:GetRGB())
+        check:SetVertexColor(Color.highlight:GetRGB())
 
-        Base.SetBackdrop(checkbutton)
-        Base.SetHighlight(checkbutton, "backdrop")
+        local disabled = CheckButton:GetDisabledCheckedTexture()
+        disabled:SetAllPoints(check)
+
+        CheckButton._auroraBDFrame = bd
+        Base.SetHighlight(CheckButton, "backdrop")
+
+        --[[ Scale ]]--
+        CheckButton:SetSize(CheckButton:GetSize())
     end
 
-    function Skin.OptionsCheckButtonTemplate(checkbutton)
-        Skin.OptionsBaseCheckButtonTemplate(checkbutton)
-        local name = checkbutton:GetName()
-        _G[name.."Text"]:SetPoint("LEFT", checkbutton, "RIGHT", 3, 0)
+    function Skin.OptionsCheckButtonTemplate(CheckButton)
+        Skin.OptionsBaseCheckButtonTemplate(CheckButton)
+        CheckButton.Text = _G[CheckButton:GetName().."Text"]
+        CheckButton.Text:SetPoint("LEFT", CheckButton, "RIGHT", 3, 0)
     end
-    function Skin.OptionsSmallCheckButtonTemplate(checkbutton)
-        Skin.OptionsBaseCheckButtonTemplate(checkbutton)
-        local name = checkbutton:GetName()
-        _G[name.."Text"]:SetPoint("LEFT", checkbutton, "RIGHT", 3, 0)
+    function Skin.OptionsSmallCheckButtonTemplate(CheckButton)
+        Skin.OptionsBaseCheckButtonTemplate(CheckButton)
+        CheckButton.Text = _G[CheckButton:GetName().."Text"]
+        CheckButton.Text:SetPoint("LEFT", CheckButton, "RIGHT", 3, 0)
+    end
+    function Skin.OptionsSliderTemplate(Slider)
+        Skin.HorizontalSliderTemplate(Slider)
+    end
+    function Skin.OptionsDropdownTemplate(Frame)
+        Skin.UIDropDownMenuTemplate(Frame)
+    end
+    function Skin.OptionsBoxTemplate(Frame)
+        Base.SetBackdrop(Frame, Color.frame)
     end
 end
 

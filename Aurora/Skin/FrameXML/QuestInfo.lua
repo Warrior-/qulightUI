@@ -8,12 +8,11 @@ local hooksecurefunc = _G.hooksecurefunc
 
 -- [[ Core ]]
 local Aurora = private.Aurora
-local F, C = _G.unpack(Aurora)
+local F = _G.unpack(Aurora)
 local Base, Skin = Aurora.Base, Aurora.Skin
+local Color = Aurora.Color
 
 function private.FrameXML.QuestInfo()
-    local r, g, b = C.r, C.g, C.b
-
     local function restyleSpellButton(bu)
         local name = bu:GetName()
         local icon = bu.Icon
@@ -183,7 +182,7 @@ function private.FrameXML.QuestInfo()
 
     local function clearHighlight()
         for _, button in next, QuestInfoRewardsFrame.RewardButtons do
-            Base.SetBackdropColor(button._auroraNameBG, Aurora.frameColor:GetRGBA())
+            Base.SetBackdropColor(button._auroraNameBG, Color.frame)
         end
     end
     local function setHighlight(self)
@@ -191,7 +190,7 @@ function private.FrameXML.QuestInfo()
 
         local _, point = self:GetPoint()
         if point then
-            Base.SetBackdropColor(point._auroraNameBG, Aurora.highlightColor:GetRGBA())
+            Base.SetBackdropColor(point._auroraNameBG, Color.highlight, 0.3)
         end
     end
 
@@ -225,7 +224,18 @@ function private.FrameXML.QuestInfo()
     SkinQuestText(_G.QuestInfoObjectivesHeader, true)
     SkinQuestText(_G.QuestInfoDescriptionText)
 
-    --[[ QuestInfoSealFrame ]]
-    _G.QuestInfoSealFrame.Text:SetShadowColor(0.2, 0.2, 0.2)
+    --[=[ QuestInfoSealFrame ]=]
+    local mask = _G.QuestInfoSealFrame:CreateMaskTexture(nil, "BACKGROUND")
+    mask:SetTexture([[Interface/SpellBook/UI-SpellbookPanel-Tab-Highlight]], "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetTexCoord(0, 0.5, 0, 0.5)
+    mask:SetPoint("TOPLEFT", _G.QuestInfoSealFrame.Text, -44, 46)
+    mask:SetPoint("BOTTOMRIGHT", _G.QuestInfoSealFrame.Text, 30, -50)
+
+    local bg = _G.QuestInfoSealFrame:CreateTexture(nil, "BACKGROUND")
+    bg:SetColorTexture(Color.white.r, Color.white.g, Color.white.b, 0.25)
+    bg:SetAllPoints(mask)
+    bg:AddMaskTexture(mask)
+
+    _G.QuestInfoSealFrame.Text:SetShadowColor(Color.grayDark:GetRGB())
     _G.QuestInfoSealFrame.Text:SetShadowOffset(0.6, -0.6)
 end
