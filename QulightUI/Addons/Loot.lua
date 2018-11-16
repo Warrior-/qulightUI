@@ -226,8 +226,8 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 	if(items > 0) then
 		for i=1, items do
 			local slot = addon.slots[i] or createSlot(i)
-			local texture, item, quantity, quality, locked = GetLootSlotInfo(i)
-			
+			local texture, item, quantity, currencyid, quality, locked = GetLootSlotInfo(i)
+
 			if texture then
 				local color = ITEM_QUALITY_COLORS[quality]
 
@@ -265,7 +265,7 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 
 		slot.name:SetText(L.loot_empty)
 		slot.name:SetTextColor(color.r, color.g, color.b)
-		slot.icon:SetColorTexture[[Interface\Icons\INV_Misc_Herb_AncientLichen]]
+		--slot.icon:SetColorTexture[[Interface\Icons\INV_Misc_Herb_AncientLichen]]
 
 		items = 1
 		w = math.max(w, slot.name:GetStringWidth())

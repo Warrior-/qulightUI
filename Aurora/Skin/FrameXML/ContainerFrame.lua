@@ -62,6 +62,9 @@ do --[[ FrameXML\ContainerFrame.xml ]]
         bd:SetAlpha(0.75)
         Base.CropIcon(bd)
         Base.CropIcon(_G[name.."IconQuestTexture"])
+        Base.CropIcon(Button.NewItemTexture)
+        Button.BattlepayItemTexture:SetTexCoord(0.203125, 0.78125, 0.203125, 0.78125)
+        Button.BattlepayItemTexture:SetAllPoints()
     end
 
     function Skin.ContainerFrameTemplate(Frame)
@@ -123,9 +126,7 @@ function private.FrameXML.ContainerFrame()
     _G.hooksecurefunc("ContainerFrame_Update", Hook.ContainerFrame_Update)
 
     Skin.ContainerFrameHelpBoxTemplate(_G.ArtifactRelicHelpBox)
-    if private.isPatch then
-        Skin.ContainerFrameHelpBoxTemplate(_G.AzeriteItemInBagHelpBox)
-    end
+    Skin.ContainerFrameHelpBoxTemplate(_G.AzeriteItemInBagHelpBox)
 
     for i = 1, 12 do
         Skin.ContainerFrameTemplate(_G["ContainerFrame"..i])

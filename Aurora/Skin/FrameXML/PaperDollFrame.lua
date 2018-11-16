@@ -51,9 +51,7 @@ end
 do --[[ FrameXML\PaperDollFrame.xml ]]
     function Skin.PaperDollItemSlotButtonTemplate(Button)
         Skin.ItemButtonTemplate(Button)
-        if private.isPatch then
-            Skin.PaperDollAzeriteItemOverlayTemplate(Button)
-        end
+        Skin.PaperDollAzeriteItemOverlayTemplate(Button)
         _G[Button:GetName().."Frame"]:Hide()
 
         Skin.EquipmentFlyoutPopoutButtonTemplate(Button.popoutButton)
@@ -117,14 +115,19 @@ end
 function private.FrameXML.PaperDollFrame()
     _G.hooksecurefunc("PaperDollFrame_SetLevel", Hook.PaperDollFrame_SetLevel)
 
+    local CharacterFrame = _G.CharacterFrame
     local classBG = _G.PaperDollFrame:CreateTexture(nil, "BORDER")
     classBG:SetAtlas("dressingroom-background-"..private.charClass.token)
-    classBG:SetPoint("TOPLEFT", _G.CharacterFrame)
-    classBG:SetPoint("BOTTOMRIGHT", _G.CharacterFrameInset, 4, -4)
+    classBG:SetPoint("TOPLEFT", CharacterFrame)
+    classBG:SetPoint("BOTTOMRIGHT", CharacterFrame.Inset, 4, -4)
     classBG:SetAlpha(0.5)
 
     _G.PaperDollSidebarTabs:ClearAllPoints()
-    _G.PaperDollSidebarTabs:SetPoint("BOTTOM", _G.CharacterFrameInsetRight, "TOP", 0, -3)
+    if private.isPatch then
+        _G.PaperDollSidebarTabs:SetPoint("BOTTOM", CharacterFrame.InsetRight, "TOP", 0, -3)
+    else
+        _G.PaperDollSidebarTabs:SetPoint("BOTTOM", _G.CharacterFrameInsetRight, "TOP", 0, -3)
+    end
     _G.PaperDollSidebarTabs.DecorLeft:Hide()
     _G.PaperDollSidebarTabs.DecorRight:Hide()
 
@@ -135,7 +138,11 @@ function private.FrameXML.PaperDollFrame()
 
 
     Hook.HybridScrollFrame_CreateButtons(_G.PaperDollTitlesPane, "PlayerTitleButtonTemplate") -- Called here since the original is called OnLoad
-    _G.PaperDollTitlesPane:SetPoint("BOTTOMRIGHT", _G.CharacterFrameInsetRight, -4, 4)
+    if private.isPatch then
+        _G.PaperDollTitlesPane:SetPoint("BOTTOMRIGHT", CharacterFrame.InsetRight, -4, 4)
+    else
+        _G.PaperDollTitlesPane:SetPoint("BOTTOMRIGHT", _G.CharacterFrameInsetRight, -4, 4)
+    end
     Skin.HybridScrollBarTemplate(_G.PaperDollTitlesPane.scrollBar)
     _G.PaperDollTitlesPane.scrollBar:ClearAllPoints()
     _G.PaperDollTitlesPane.scrollBar:SetPoint("TOPRIGHT", 2, -19)
@@ -144,7 +151,11 @@ function private.FrameXML.PaperDollFrame()
 
     local PaperDollEquipmentManagerPane = _G.PaperDollEquipmentManagerPane
     Hook.HybridScrollFrame_CreateButtons(PaperDollEquipmentManagerPane, "GearSetButtonTemplate") -- Called here since the original is called OnLoad
-    PaperDollEquipmentManagerPane:SetPoint("BOTTOMRIGHT", _G.CharacterFrameInsetRight, -4, 4)
+    if private.isPatch then
+        PaperDollEquipmentManagerPane:SetPoint("BOTTOMRIGHT", CharacterFrame.InsetRight, -4, 4)
+    else
+        PaperDollEquipmentManagerPane:SetPoint("BOTTOMRIGHT", _G.CharacterFrameInsetRight, -4, 4)
+    end
 
     Skin.UIPanelButtonTemplate(PaperDollEquipmentManagerPane.EquipSet)
     PaperDollEquipmentManagerPane.EquipSet.ButtonBackground:Hide()
@@ -156,8 +167,8 @@ function private.FrameXML.PaperDollFrame()
     PaperDollEquipmentManagerPane.scrollBar:SetPoint("BOTTOMRIGHT", 2, 15)
 
 
-    _G.CharacterModelFrame:SetPoint("TOPLEFT", _G.CharacterFrameInset, 45, -10)
-    _G.CharacterModelFrame:SetPoint("BOTTOMRIGHT", _G.CharacterFrameInset, -45, 30)
+    _G.CharacterModelFrame:SetPoint("TOPLEFT", CharacterFrame.Inset, 45, -10)
+    _G.CharacterModelFrame:SetPoint("BOTTOMRIGHT", CharacterFrame.Inset, -45, 30)
 
     _G.CharacterModelFrameBackgroundTopLeft:Hide()
     _G.CharacterModelFrameBackgroundTopRight:Hide()
@@ -189,15 +200,11 @@ function private.FrameXML.PaperDollFrame()
     for i = 1, #EquipmentSlots do
         local button = _G[EquipmentSlots[i]]
 
-        if not private.isPatch then
-            button.IsLeftSide = i <= 8
-        end
-
         if i % 8 == 1 then
             if button.IsLeftSide then
-                button:SetPoint("TOPLEFT", _G.CharacterFrameInset, 4, -11)
+                button:SetPoint("TOPLEFT", CharacterFrame.Inset, 4, -11)
             else
-                button:SetPoint("TOPRIGHT", _G.CharacterFrameInset, -4, -11)
+                button:SetPoint("TOPRIGHT", CharacterFrame.Inset, -4, -11)
             end
         else
             button:SetPoint("TOPLEFT", prevSlot, "BOTTOMLEFT", 0, -6)
@@ -221,11 +228,7 @@ function private.FrameXML.PaperDollFrame()
         end
 
         Skin.PaperDollItemSlotButtonBottomTemplate(button)
-        if private.isPatch then
-            _G.select(13, button:GetRegions()):Hide()
-        else
-            _G.select(11, button:GetRegions()):Hide()
-        end
+        _G.select(13, button:GetRegions()):Hide()
     end
 
 

@@ -1257,6 +1257,11 @@ local function UnitGear(unit)
 								end
 							end
 							level = _getRealItemLevel(i, unit, itemLink, true) or level
+							if level and ScannedGUID and UnitGUID then
+								if level >= 900 and ScannedGUID ~= UnitGUID('player') then
+									level = level + 15
+								end
+							end	
 						elseif quality == 7 then
 							level = _getRealItemLevel(i, unit, itemLink) or level
 							boa = boa + 1
@@ -1280,8 +1285,10 @@ local function UnitGear(unit)
 						if i == 17 then
 							if SpecDB[currentGUID] == furySpec then
 								if (wslot ~= "INVTYPE_2HWEAPON") and (slot == "INVTYPE_2HWEAPON") then
-									if (level > wlvl) then
-										level = level * 2 - wlvl
+									if level and wlvl then
+										if (level > wlvl) then
+											level = level * 2 - wlvl
+										end
 									end
 								elseif (wslot == "INVTYPE_2HWEAPON") then
 									if (level > wlvl) then
@@ -1635,7 +1642,7 @@ GameTooltip:HookScript("OnTooltipSetSpell", function(self)
 end)
 
 hooksecurefunc(GameTooltip, "SetUnitAura", function(self, ...)
-	local id = select(11, UnitAura(...))
+	local id = select(10, UnitAura(...))
 	if id then addLine(self, id) end
 	if debuginfo == true and id and IsModifierKeyDown() then print(UnitAura(...)..": "..id) end
 end)

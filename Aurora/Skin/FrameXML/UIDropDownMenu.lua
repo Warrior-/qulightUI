@@ -14,7 +14,7 @@ do --[[ FrameXML\UIDropDownMenu.lua ]]
         Scale.RawSetWidth(self, self.maxWidth + Scale.Value(25))
     end
 
-    local skinnedLevels, skinnedButtons = 2, 8 -- mirrors for UIDROPDOWNMENU_MAXLEVELS and UIDROPDOWNMENU_MAXBUTTONS
+    local skinnedLevels, skinnedButtons = 2, private.isPatch and 1 or 8 -- mirrors for UIDROPDOWNMENU_MAXLEVELS and UIDROPDOWNMENU_MAXBUTTONS
     function Hook.UIDropDownMenu_CreateFrames(level, index)
         while level > skinnedLevels do
             -- New list frames have been created, skin them!
@@ -23,7 +23,7 @@ do --[[ FrameXML\UIDropDownMenu.lua ]]
             Skin.UIDropDownListTemplate(listFrameName)
             for i = _G.UIDROPDOWNMENU_MINBUTTONS + 1, skinnedButtons do
                 -- If skinnedButtons is more than the default, we need to skin those too for the new list
-                Skin.UIDropDownMenuButtonTemplate(listFrameName, listFrameName.."Button"..i)
+                Skin.UIDropDownMenuButtonTemplate(_G[listFrameName.."Button"..i])
             end
         end
 
@@ -31,7 +31,7 @@ do --[[ FrameXML\UIDropDownMenu.lua ]]
             skinnedButtons = skinnedButtons + 1
             for i = 1, skinnedLevels do
                 local listFrameName = "DropDownList"..i
-                Skin.UIDropDownMenuButtonTemplate(listFrameName, listFrameName.."Button"..skinnedButtons)
+                Skin.UIDropDownMenuButtonTemplate(_G[listFrameName.."Button"..skinnedButtons])
             end
         end
     end
@@ -46,6 +46,8 @@ do --[[ FrameXML\UIDropDownMenu.lua ]]
         local menuButton = _G[menuButtonName]
 
         local checkBox = menuButton._auroraCheckBox
+        if not checkBox then return end
+
         if not info.notCheckable then
             local check = checkBox.check
             local hasCustomIcon = false
@@ -62,9 +64,9 @@ do --[[ FrameXML\UIDropDownMenu.lua ]]
                 hasCustomIcon = true
 
                 if info.customCheckIconAtlas then
-                    check:SetAtlas(info.customCheckIconAtlas);
+                    check:SetAtlas(info.customCheckIconAtlas)
                 else
-                    check:SetTexture(info.customCheckIconTexture);
+                    check:SetTexture(info.customCheckIconTexture)
                 end
             elseif info.isNotRadio then
                 checkBox:SetSize(12, 12)
@@ -114,11 +116,11 @@ do --[[ FrameXML\UIDropDownMenu.lua ]]
 end
 
 do --[[ FrameXML\UIDropDownMenuTemplates.xml ]]
-    function Skin.UIDropDownMenuButtonTemplate(listFrameName, menuButtonName)
-        local listFrame = _G[listFrameName]
-        local menuButton = _G[menuButtonName]
+    function Skin.UIDropDownMenuButtonTemplate(Button)
+        local listFrame = Button:GetParent()
+        local name = Button:GetName()
 
-        local highlight = _G[menuButtonName.."Highlight"]
+        local highlight = _G[name.."Highlight"]
         highlight:ClearAllPoints()
         highlight:SetPoint("LEFT", listFrame, 1, 0)
         highlight:SetPoint("RIGHT", listFrame, -1, 0)
@@ -126,70 +128,52 @@ do --[[ FrameXML\UIDropDownMenuTemplates.xml ]]
         highlight:SetPoint("BOTTOM", 0, 0)
         highlight:SetColorTexture(Color.highlight.r, Color.highlight.g, Color.highlight.b, .2)
 
-        local checkBox = _G.CreateFrame("Frame", nil, menuButton)
-        checkBox:SetFrameLevel(menuButton:GetFrameLevel())
+        local checkBox = _G.CreateFrame("Frame", nil, Button)
+        checkBox:SetFrameLevel(Button:GetFrameLevel())
         Base.SetBackdrop(checkBox, Color.button)
-        menuButton._auroraCheckBox = checkBox
+        Button._auroraCheckBox = checkBox
 
-        local check = _G[menuButtonName.."Check"]
+        local check = _G[name.."Check"]
         check:SetDesaturated(true)
         check:SetVertexColor(Color.highlight:GetRGB())
         check:ClearAllPoints()
         check:SetPoint("CENTER", checkBox)
         checkBox.check = check
 
-        local arrow = _G[menuButtonName.."ExpandArrow"]
+        local arrow = _G[name.."ExpandArrow"]
         Base.SetTexture(arrow:GetNormalTexture(), "arrowRight")
         arrow:SetSize(7, 8)
         arrow:SetPoint("RIGHT", -2, 0)
 
-        menuButton:HookScript("OnClick", Hook.UIDropDownMenuButton_OnClick)
+        Button:HookScript("OnClick", Hook.UIDropDownMenuButton_OnClick)
     end
-    function Skin.UIDropDownListTemplate(listFrameName)
-        Base.SetBackdrop(_G[listFrameName.."Backdrop"])
-        Base.SetBackdrop(_G[listFrameName.."MenuBackdrop"])
-        for i = 1, _G.UIDROPDOWNMENU_MINBUTTONS do
-            Skin.UIDropDownMenuButtonTemplate(listFrameName, listFrameName.."Button"..i)
+    function Skin.UIDropDownListTemplate(Button)
+        local name = Button:GetName()
+        Base.SetBackdrop(_G[name.."Backdrop"])
+        Base.SetBackdrop(_G[name.."MenuBackdrop"])
+        if private.isPatch then
+            Skin.UIDropDownMenuButtonTemplate(_G[name.."Button1"])
+        else
+            for i = 1, _G.UIDROPDOWNMENU_MINBUTTONS do
+                Skin.UIDropDownMenuButtonTemplate(_G[name.."Button"..i])
+            end
         end
     end
     function Skin.UIDropDownMenuTemplate(Frame)
-        local name = Frame:GetName()
-
-        local left, middle, right
-        if private.isPatch then
-            left = Frame.Left
-            middle = Frame.Middle
-            right = Frame.Right
-        else
-            left = _G[name.."Left"]
-            middle = _G[name.."Middle"]
-            right = _G[name.."Right"]
-        end
-        left:SetAlpha(0)
-        middle:SetAlpha(0)
-        right:SetAlpha(0)
+        Frame.Left:SetAlpha(0)
+        Frame.Middle:SetAlpha(0)
+        Frame.Right:SetAlpha(0)
 
         local button = Frame.Button
         button:SetSize(20, 20)
         button:ClearAllPoints()
-        button:SetPoint("TOPRIGHT", right, -19, -21)
+        button:SetPoint("TOPRIGHT", Frame.Right, -19, -21)
 
-        if private.isPatch then
-            button.NormalTexture:SetTexture("")
-            button.PushedTexture:SetTexture("")
-            button.HighlightTexture:SetTexture("")
-        else
-            button:SetNormalTexture("")
-            button:SetPushedTexture("")
-            button:SetHighlightTexture("")
-        end
+        button.NormalTexture:SetTexture("")
+        button.PushedTexture:SetTexture("")
+        button.HighlightTexture:SetTexture("")
 
-        local disabled
-        if private.isPatch then
-            disabled = button.DisabledTexture
-        else
-            disabled = button:GetDisabledTexture()
-        end
+        local disabled = button.DisabledTexture
         disabled:SetAllPoints(button)
         disabled:SetColorTexture(0, 0, 0, .3)
         disabled:SetDrawLayer("OVERLAY")
@@ -204,8 +188,8 @@ do --[[ FrameXML\UIDropDownMenuTemplates.xml ]]
         Base.SetHighlight(button, "texture")
 
         local bg = _G.CreateFrame("Frame", nil, Frame)
-        bg:SetPoint("TOPLEFT", left, 20, -21)
-        bg:SetPoint("BOTTOMRIGHT", right, -19, 23)
+        bg:SetPoint("TOPLEFT", Frame.Left, 20, -21)
+        bg:SetPoint("BOTTOMRIGHT", Frame.Right, -19, 23)
         bg:SetFrameLevel(Frame:GetFrameLevel())
         Base.SetBackdrop(bg, Color.button)
 
@@ -213,17 +197,17 @@ do --[[ FrameXML\UIDropDownMenuTemplates.xml ]]
         --[[Scale]]
         if not Frame.noResize then
             Frame:SetWidth(40)
-            middle:SetWidth(115)
+            Frame.Middle:SetWidth(115)
         end
         Frame:SetHeight(32)
 
-        left:SetSize(25, 64)
-        left:SetPoint("TOPLEFT", 0, 17)
-        middle:SetHeight(64)
-        right:SetSize(25, 64)
+        Frame.Left:SetSize(25, 64)
+        Frame.Left:SetPoint("TOPLEFT", 0, 17)
+        Frame.Middle:SetHeight(64)
+        Frame.Right:SetSize(25, 64)
 
         Frame.Text:SetSize(0, 10)
-        Frame.Text:SetPoint("RIGHT", right, -43, 2)
+        Frame.Text:SetPoint("RIGHT", Frame.Right, -43, 2)
     end
 end
 
@@ -233,6 +217,6 @@ function private.FrameXML.UIDropDownMenu()
     _G.hooksecurefunc("UIDropDownMenu_AddButton", Hook.UIDropDownMenu_AddButton)
     _G.hooksecurefunc("UIDropDownMenu_SetIconImage", Hook.UIDropDownMenu_SetIconImage)
 
-    Skin.UIDropDownListTemplate("DropDownList1")
-    Skin.UIDropDownListTemplate("DropDownList2")
+    Skin.UIDropDownListTemplate(_G.DropDownList1)
+    Skin.UIDropDownListTemplate(_G.DropDownList2)
 end

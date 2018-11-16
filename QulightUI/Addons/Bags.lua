@@ -183,6 +183,8 @@ function Stuffing:SlotUpdate(b)
 	end
 
 --added to find upgrade items
+	b.frame.Azerite:Hide()
+
 	if b.frame.UpgradeIcon then
 		b.frame.UpgradeIcon:SetPoint("TOPLEFT", Qulight.bags.buttonsize/1.7, -Qulight.bags.buttonsize/1.7)
 		b.frame.UpgradeIcon:SetSize(Qulight.bags.buttonsize/2.7, Qulight.bags.buttonsize/2.7)
@@ -197,6 +199,11 @@ function Stuffing:SlotUpdate(b)
 	if clink then
 		--b.name, _, b.rarity, b.ilvl, b.level, b.type, b.subtype, _, b.equip = GetItemInfo(clink)
 		b.name, _, b.rarity, b.ilvl, b.level, _, _, _, _, _, _, b.itemClassID, b.itemSubClassID = GetItemInfo(clink)
+
+		if b.frame.Azerite and C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID(clink) then
+			b.frame.Azerite:Show()
+		end
+
 		if not b.frame.lock and b.rarity and b.rarity > 1 and not (isQuestItem or questId) then
 			b.frame:SetBackdropBorderColor(GetItemQualityColor(b.rarity))
 		elseif isQuestItem or questId then
@@ -476,7 +483,6 @@ function Stuffing:SlotNew(bag, slot)
 	if not ret.frame then
 		ret.frame = CreateFrame("Button", "StuffingBag"..bag.."_"..slot, self.bags[bag], tpl)
 		--ret.frame:StyleButton()
-		--ret.frame:SetTemplate("Default")
 		ret.frame:SetNormalTexture(nil)
 
 		local t = _G[ret.frame:GetName().."IconTexture"]
@@ -495,6 +501,13 @@ function Stuffing:SlotNew(bag, slot)
 		ilvldisplay:SetPoint("TOPLEFT", 1, -1)
 		ilvldisplay:SetText("")
 		ilvldisplay:Hide()
+
+		ret.frame.Azerite = ret.frame:CreateTexture(nil, "OVERLAY")
+		ret.frame.Azerite:SetAtlas("AzeriteIconFrame")
+		ret.frame.Azerite:SetTexCoord(0, 1, 0, 1)
+		ret.frame.Azerite:SetPoint("TOPLEFT", ret.frame, 1, -1)
+		ret.frame.Azerite:SetPoint("BOTTOMRIGHT", ret.frame, -1, 1)
+		ret.frame.Azerite:Hide()
 		
 		--sort of working
 		--ilvldisplay = ret.frame:CreateFontString(nil,"OVERLAY")

@@ -331,7 +331,7 @@ Stat:SetScript("OnEnter", function(self)
 		for i = 1, #friendTable do
 			info = friendTable[i]
 			if info[5] then
-				if GetZoneText(GetCurrentMapAreaID()) == info[4] then zonec = activezone else zonec = inactivezone end
+				if GetZoneText == info[4] then zonec = activezone else zonec = inactivezone end
 				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 
 				classc = classc or GetQuestDifficultyColor(info[2])
@@ -364,7 +364,7 @@ Stat:SetScript("OnEnter", function(self)
 							if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 							GameTooltip:AddDoubleLine(format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[15],classc.r*255,classc.g*255,classc.b*255,info[3],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2],238,238,238,238,238,238)
 							if IsShiftKeyDown() then
-								if GetZoneText(GetCurrentMapAreaID()) == info[14] then zonec = activezone else zonec = inactivezone end
+								if GetZoneText == info[14] then zonec = activezone else zonec = inactivezone end
 								if GetRealmName() == info[10] then realmc = activezone else realmc = inactivezone end
 								GameTooltip:AddDoubleLine(info[14], info[10], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
 							end
@@ -376,6 +376,70 @@ Stat:SetScript("OnEnter", function(self)
 			end
 		end
 	end
+
+	if BNTotalOnline > 0 then
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine("["..BATTLETAG.."]------------------------ "..battleNetString.." ------------------------["..NAME.."]")
+
+		local status = 0
+
+		for i = 1, #BNTable do
+			if BNTable[i][7] then
+				if BNTable[i][6] == wowString then
+					onWoW = onWoW + 1
+
+					local Client = "World of Warcraft"
+					local isBattleTag = BNTable[i][17]
+
+					if onWoW == 1 then
+						GameTooltip:AddLine(" ")
+						GameTooltip:AddLine(Client)
+					end
+
+					if (BNTable[i][8] == true) then
+						status = 1
+					elseif (BNTable[i][9] == true) then
+						status = 2
+					else
+						status = 3
+					end
+
+					classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[BNTable[i][14]]
+					levelc = GetQuestDifficultyColor(BNTable[i][16])
+
+					if not classc then
+						classc = {r=1, g=1, b=1}
+					end
+
+					if UnitInParty(BNTable[i][4]) or UnitInRaid(BNTable[i][4]) then
+						grouped = 1
+					else
+						grouped = 2
+					end
+
+						GameTooltip:AddDoubleLine(format(clientLevelNameString, BNTable[i][3],levelc.r*255,levelc.g*255,levelc.b*255,BNTable[i][16],classc.r*255,classc.g*255,classc.b*255,BNTable[i][4],groupedTable[grouped], 255, 0, 0, statusTable[status]),isBattleTag == false and BNTable[i][2],238,238,238,238,238,238)
+
+						if IsShiftKeyDown() then
+							if GetRealZoneText() == BNTable[i][15] then
+								zonec = activezone
+							else
+								zonec = inactivezone
+							end
+
+							if GetRealmName() == BNTable[i][11] then
+								realmc = activezone
+							else
+								realmc = inactivezone
+							end
+
+							GameTooltip:AddDoubleLine("  "..BNTable[i][15], BNTable[i][11], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+						end
+					end
+				end
+			end
+
+		end
+
 
 	GameTooltip:Show()
 end)

@@ -11,6 +11,7 @@ local CanDispel = {
 	PRIEST = {Magic = false, Disease = false},
 	SHAMAN = {Magic = false, Curse = true}
 }
+
 local class = select(2, UnitClass("player"))
 local dispellist = CanDispel[class] or {}
 local origColors = {}

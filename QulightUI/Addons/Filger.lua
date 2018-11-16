@@ -48,6 +48,14 @@ Filger_Spells = {
 			IconSize = 37,
 			Position = {"RIGHT", AnchorBUFF_ICON},
 
+			-- Empower Rune Weapon
+			{spellID = 47568, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Death's Advance
+			{spellID = 48265, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Remorseless Winter
+			{spellID = 196770, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Hungering Rune Weapon
+			{spellID = 207127, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Bone Shield
 			{spellID = 195181, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Vampiric Blood
@@ -59,7 +67,7 @@ Filger_Spells = {
 			-- Dancing Rune Weapon
 			{spellID = 81256, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Lichborne
-			{spellID = 49039, unitID = "player", caster = "player", filter = "BUFF"},
+			--BETA {spellID = 49039, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Rune Tap
 			{spellID = 194679, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Pillar of Frost
@@ -68,10 +76,8 @@ Filger_Spells = {
 			{spellID = 115018, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Unholy Blight
 			{spellID = 115989, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Pillar of Frost
-			{spellID = 51271, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Summon Gargoyle
-			{spellID = 49206, filter = "ICD", trigger = "NONE", duration = 40},
+			{spellID = 49206, filter = "ICD", trigger = "NONE", duration = 30},
 		},
 		{
 			Name = "P_PROC_ICON",
@@ -83,6 +89,8 @@ Filger_Spells = {
 			Position = {"RIGHT", AnchorP_PROC_ICON},
 
 			-- Buffs
+			-- Icy Talons
+			{spellID = 194879, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Crimson Scourge
 			{spellID = 81141, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Freezing Fog
@@ -95,8 +103,6 @@ Filger_Spells = {
 			{spellID = 53365, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Dark Transformation
 			{spellID = 63560, unitID = "pet", caster = "player", filter = "BUFF"},
-			-- Concordance of the Legionfall
-			{spellID = 242584, unitID = "player", caster = "player", filter = "BUFF"},
 
 			-- Trinkets
 			-- Alchemy Stones
@@ -115,6 +121,8 @@ Filger_Spells = {
 			-- Rapid Adaptation (Versatility, Use)
 			{spellID = 170397, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Tanking
+			-- Cunning of the Deceiver (Special, Proc) [Shifting Cosmic Sliver]
+			{spellID = 242628, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Living Carapace (Damage Reduction, Use) [Animated Exoskeleton]
 			{spellID = 225033, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Vampiric Aura (Leech, Use) [Fang of Tichcondrius]
@@ -178,10 +186,18 @@ Filger_Spells = {
 			IconSize = 37,
 			Position = {"LEFT", AnchorT_DEBUFF_ICON},
 
-			-- Virulent Plague
-			{spellID = 191587, unitID = "target", caster = "player", filter = "DEBUFF"},
 			-- Festering Wound
 			{spellID = 194310, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Virulent Plague
+			{spellID = 191587, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Blood Plague
+			{spellID = 55078, unitID = "target", caster = "player", filter = "DEBUFF"},
+			-- Frost Fever
+			{spellID = 55095, unitID = "target", caster = "player", filter = "DEBUFF"},
+
+			-- Trinket Effects
+			-- Fel Burn [Empty Drinking Horn]
+			{spellID = 184256, unitID = "target", caster = "player", filter = "DEBUFF"},
 
 
 		},
@@ -198,21 +214,23 @@ Filger_Spells = {
 
 			-- Metamorphosis
 			{spellID = 187827, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Chaos Blades
-			{spellID = 211048, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Empower Wards
-			{spellID = 218256, unitID = "player", caster = "player", filter = "BUFF"},
+			--BETA {spellID = 218256, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Darkness
 			{spellID = 196718, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Immolation Aura
-			{spellID = 178470, unitID = "player", caster = "player", filter = "BUFF"},
+			{spellID = 178740, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Demon Spikes
 			{spellID = 203720, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Soul Barrier (Talent)
+			-- Soul Barrier
 			{spellID = 227225, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Netherwalk (Talent)
+			-- Blur
+			{spellID = 212800, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Chaos Blades
+			--BETA {spellID = 211048, unitID = "player", caster = "player", filter = "BUFF"},
+			-- Netherwalk
 			{spellID = 196555, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Nether Bond (Talent)
+			-- Nether Bond
 			{spellID = 207810, unitID = "player", caster = "player", filter = "BUFF"},
 		},
 		{
@@ -249,6 +267,8 @@ Filger_Spells = {
 			-- Rapid Adaptation (Versatility, Use)
 			{spellID = 170397, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Tanking
+			-- Cunning of the Deceiver (Special, Proc) [Shifting Cosmic Sliver]
+			{spellID = 242628, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Living Carapace (Damage Reduction, Use) [Animated Exoskeleton]
 			{spellID = 225033, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Vampiric Aura (Leech, Use) [Fang of Tichcondrius]
@@ -290,13 +310,6 @@ Filger_Spells = {
 			{spellID = 214342, unitID = "player", caster = "player", filter = "BUFF"},
 			-- Valarjar's Path (Primary stat, Use) [Horn of Valor]
 			{spellID = 215956, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Jacin's Ruse
-			{spellID = 224149, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Concordance of the Legionfall
-			{spellID = 242584, unitID = "player", caster = "player", filter = "BUFF"},
-			-- Demon Soul
-			{spellID = 163073, unitID = "player", caster = "player", filter = "BUFF"},
-
 
 			-- Enchants
 			-- Mark of the Claw (Crit and Haste)
@@ -2733,34 +2746,21 @@ local MyUnits = {player = true, vehicle = true, pet = true}
 local class = select(2, UnitClass("player"))
 local classcolor = RAID_CLASS_COLORS[class]
 
-function Filger:UnitBuff(unitID, inSpellID, spn, absID)
+function Filger:UnitAura(unitID, inSpellID, spell, filter, absID)
 	if absID then
-		for i = 1, 40, 1 do
-			local name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitBuff(unitID, i)
+		for i = 1, 40 do
+			local name, icon, count, _, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unitID, i, filter)
 			if not name then break end
-			if inSpellID == spellID then
-				return name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
+			if spellID == inSpellID then
+				return name, spellID, icon, count, duration, expirationTime, unitCaster
 			end
 		end
 	else
-		return UnitBuff(unitID, spn)
-	end
-	return nil
-end
-
-function Filger:UnitDebuff(unitID, inSpellID, spn, absID)
-	if absID then
-		for i = 1, 40, 1 do
-			local name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitDebuff(unitID, i)
-			if not name then break end
-			if inSpellID == spellID then
-				return name, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
-			end
+		local name, icon, count, _, duration, expirationTime, unitCaster, _, _, spellID = AuraUtil.FindAuraByName(spell, unitID, filter)
+		if name then
+			return name, spellID, icon, count, duration, expirationTime, unitCaster
 		end
-	else
-		return UnitDebuff(unitID, spn)
 	end
-	return nil
 end
 
 function Filger:UpdateCD()
@@ -2988,115 +2988,120 @@ function Filger:DisplayActives()
 	end
 end
 
-function Filger:OnEvent(event, unit, _, _, _, spellID)
-	if event == "SPELL_UPDATE_COOLDOWN" or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_FOCUS_CHANGED" or event == "PLAYER_ENTERING_WORLD" or event == "UNIT_AURA" and (unit == "target" or unit == "player" or unit == "pet" or unit == "focus") or (event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player") then
+function Filger:OnEvent(event, unit, _, spellID)
+	if event == "PLAYER_ENTERING_WORLD" or event == "SPELL_UPDATE_COOLDOWN"
+	or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_FOCUS_CHANGED"
+	or event == "UNIT_AURA" and (unit == "player" or unit == "target" or unit == "pet" or unit == "focus")
+	or (event == "UNIT_SPELLCAST_SUCCEEDED" and unit == "player") then
 		local ptt = GetSpecialization()
 		local needUpdate = false
 		local id = self.Id
 
 		for i = 1, #Filger_Spells[class][id], 1 do
 			local data = Filger_Spells[class][id][i]
-			local found = false
-			local name, icon, count, duration, start, spid
-			spid = 0
+			if (event == "UNIT_AURA" and data.unitID == unit) or event ~= "UNIT_AURA" then
+				local found = false
+				local name, icon, count, duration, start, spid
+				spid = 0
 
-			if data.filter == "BUFF" and (not data.spec or data.spec == ptt) then
-				local caster, spn, expirationTime
-				spn, _, _ = GetSpellInfo(data.spellID)
-				if spn then
-					name, icon, count, _, duration, expirationTime, caster, _, _, spid = Filger:UnitBuff(data.unitID, data.spellID, data.spellID, true) -- BETA
-					if name and (data.caster ~= 1 and (caster == data.caster or data.caster == "all") or MyUnits[caster]) then
-						if not data.count or count >= data.count then
+				if data.filter == "BUFF" and (not data.spec or data.spec == ptt) then
+					local caster, spell, expirationTime
+					spell = GetSpellInfo(data.spellID)
+					if spell then
+						name, spid, icon, count, duration, expirationTime, caster = Filger:UnitAura(data.unitID, data.spellID, spell, "HELPFUL", data.absID)
+						if name and (data.caster ~= 1 and (caster == data.caster or data.caster == "all") or MyUnits[caster]) then
+							if not data.count or count >= data.count then
+								start = expirationTime - duration
+								found = true
+							end
+						end
+					end
+				elseif data.filter == "DEBUFF" and (not data.spec or data.spec == ptt) then
+					local caster, spell, expirationTime
+					spell = GetSpellInfo(data.spellID)
+					if spell then
+						name, spid, icon, count, duration, expirationTime, caster = Filger:UnitAura(data.unitID, data.spellID, spell, "HARMFUL", data.absID)
+						if name and (data.caster ~= 1 and (caster == data.caster or data.caster == "all") or MyUnits[caster]) then
 							start = expirationTime - duration
 							found = true
 						end
 					end
-				end
-			elseif data.filter == "DEBUFF" and (not data.spec or data.spec == ptt) then
-				local caster, spn, expirationTime
-				spn, _, _ = GetSpellInfo(data.spellID)
-				if spn then
-					name, icon, count, _, duration, expirationTime, caster, _, _, spid = Filger:UnitDebuff(data.unitID, data.spellID, data.spellID, true) -- BETA
-					if name and (data.caster ~= 1 and (caster == data.caster or data.caster == "all") or MyUnits[caster]) then
-						start = expirationTime - duration
+				elseif data.filter == "CD" and (not data.spec or data.spec == ptt) then
+					if data.spellID then
+						name, _, icon = GetSpellInfo(data.spellID)
+						if name then
+							if data.absID then
+								start, duration = GetSpellCooldown(data.spellID)
+							else
+								start, duration = GetSpellCooldown(name)
+							end
+							spid = data.spellID
+						end
+					elseif data.slotID then
+						spid = data.slotID
+						local slotLink = GetInventoryItemLink("player", data.slotID)
+						if slotLink then
+							name, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
+							start, duration = GetInventoryItemCooldown("player", data.slotID)
+						end
+					end
+					if name and (duration or 0) > 1.5 then
+						found = true
+					end
+				elseif data.filter == "ICD" and (not data.spec or data.spec == ptt) then
+					if data.trigger == "BUFF" then
+						local spell
+						spell, _, icon = GetSpellInfo(data.spellID)
+						if spell then
+							name, spid = Filger:UnitAura(data.unitID, data.spellID, spell, "HELPFUL", data.absID)
+						end
+					elseif data.trigger == "DEBUFF" then
+						local spell
+						spell, _, icon = GetSpellInfo(data.spellID)
+						if spell then
+							name, spid = Filger:UnitAura("player", data.spellID, spell, "HARMFUL", data.absID)
+						end
+					elseif data.trigger == "NONE" and event == "UNIT_SPELLCAST_SUCCEEDED" then
+						if spellID == data.spellID then
+							name, _, icon = GetSpellInfo(data.spellID)
+							spid = data.spellID
+						end
+					end
+					if name then
+						if data.slotID then
+							local slotLink = GetInventoryItemLink("player", data.slotID)
+							_, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
+						end
+						duration = data.duration
+						start = GetTime()
 						found = true
 					end
 				end
-			elseif data.filter == "CD" and (not data.spec or data.spec == ptt) then
-				if data.spellID then
-					name, _, icon = GetSpellInfo(data.spellID)
-					if name then
-						if data.absID then
-							start, duration = GetSpellCooldown(data.spellID)
-						else
-							start, duration = GetSpellCooldown(name)
-						end
-						spid = data.spellID
-					end
-				elseif data.slotID then
-					spid = data.slotID
-					local slotLink = GetInventoryItemLink("player", data.slotID)
-					if slotLink then
-						name, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
-						start, duration = GetInventoryItemCooldown("player", data.slotID)
-					end
-				end
-				if name and (duration or 0) > 1.5 then
-					found = true
-				end
-			elseif data.filter == "ICD" and (not data.spec or data.spec == ptt) then
-				if data.trigger == "BUFF" then
-					local spn
-					spn, _, icon = GetSpellInfo(data.spellID)
-					if spn then
-						name, _, _, _, _, _, _, _, _, spid = Filger:UnitBuff("player", data.spellID, data.spellID, true) -- BETA
-					end
-				elseif data.trigger == "DEBUFF" then
-					local spn
-					spn, _, icon = GetSpellInfo(data.spellID)
-					if spn then
-						name, _, _, _, _, _, _, _, _, spid = Filger:UnitDebuff("player", data.spellID, data.spellID, true) -- BETA
-					end
-				elseif data.trigger == "NONE" and event == "UNIT_SPELLCAST_SUCCEEDED" then
-					if spellID == data.spellID then
-						name, _, icon = GetSpellInfo(data.spellID)
-						spid = data.spellID
-					end
-				end
-				if name then
-					if data.slotID then
-						local slotLink = GetInventoryItemLink("player", data.slotID)
-						_, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
-					end
-					duration = data.duration
-					start = GetTime()
-					found = true
-				end
-			end
 
-			if found then
-				if not self.actives then self.actives = {} end
-				if not self.actives[i] then
-					self.actives[i] = {data = data, name = name, icon = icon, count = count, start = start, duration = duration, spid = spid}
-					needUpdate = true
-					if T.class == "DEATHKNIGHT" and self.actives[i].duration == 10 and data.filter == "CD" then
-						self.actives[i] = nil
+				if found then
+					if not self.actives then self.actives = {} end
+					if not self.actives[i] then
+						self.actives[i] = {data = data, name = name, icon = icon, count = count, start = start, duration = duration, spid = spid}
+						needUpdate = true
+						if class == "DEATHKNIGHT" and self.actives[i].duration == 10 and data.filter == "CD" then
+							self.actives[i] = nil
+						end
+					else
+						if data.filter ~= "ICD" and (self.actives[i].count ~= count or self.actives[i].start ~= start or self.actives[i].duration ~= duration) then
+							self.actives[i].count = count
+							self.actives[i].start = start
+							self.actives[i].duration = duration
+							needUpdate = true
+						end
 					end
 				else
-					if data.filter ~= "ICD" and (self.actives[i].count ~= count or self.actives[i].start ~= start or self.actives[i].duration ~= duration) then
-						self.actives[i].count = count
-						self.actives[i].start = start
-						self.actives[i].duration = duration
+					if data.filter ~= "ICD" and self.actives and self.actives[i] then
+						if event == "UNIT_SPELLCAST_SUCCEEDED" then return end
+						self.actives[i] = nil
 						needUpdate = true
 					end
 				end
-			else
-				if data.filter ~= "ICD" and self.actives and self.actives[i] then
-					if event == "UNIT_SPELLCAST_SUCCEEDED" then return end
-					self.actives[i] = nil
-					needUpdate = true
-				end
-			end
+			end	
 		end
 
 		if needUpdate and self.actives then
@@ -3104,6 +3109,7 @@ function Filger:OnEvent(event, unit, _, _, _, spellID)
 		end
 	end
 end
+
 
 class = select(2, UnitClass("player"))
 
@@ -3213,6 +3219,9 @@ if Filger_Spells and Filger_Spells[class] then
 				local data = Filger_Spells[class][i][j]
 				if data.filter == "CD" then
 					frame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+					break
+				elseif data.trigger == "NONE" then
+					frame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 					break
 				end
 			end

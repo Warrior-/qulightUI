@@ -3,6 +3,7 @@ local cast = ns.cast
 local _, playerClass = UnitClass("player")
 local cast = CreateFrame("Frame")  
 local oUF = ns.oUF or oUF
+UIParentLoadAddOn('Blizzard_DebugTools')
 oUF.colors.runes = {{0.87, 0.12, 0.23};{0.40, 0.95, 0.20};{0.14, 0.50, 1};{.70, .21, 0.94};}
 --------------------------------------------------------------------------------------
 highlight_texture = "Interface\\AddOns\\QulightUI\\Root\\Media\\raidbg"
@@ -270,7 +271,7 @@ do
 		end
 	end
 			
-	ComboDisplay = function(self, event, unit)
+		ComboDisplay = function(self, event, unit)
 		if powerType and powerType ~= 'COMBO_POINTS' then return end
 		if(unit == 'pet') then return end
 		
@@ -345,13 +346,84 @@ do
 			end
 		end
 	end
+
+	ComboDisplayOld = function(self, event, unit)
+		if powerType and powerType ~= 'COMBO_POINTS' then return end
+		if unit == "pet" then return end
+
+		local cpoints = self.CPoints
+		local cp
+		local numMax
+
+		if UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle") then
+			cp = GetComboPoints("vehicle", "target")
+			numMax = Enum.PowerType.ComboPoints
+		else
+			cp = GetComboPoints("player", "target")
+			numMax = UnitPowerMax("player", Enum.PowerType.ComboPoints)
+			if numMax == 0 then
+				numMax = Enum.PowerType.ComboPoints
+			end
+		end
+
+		local spacing = select(4, cpoints[5]:GetPoint())
+		local w = cpoints:GetWidth()
+		local s = 0
+
+		if cpoints.numMax ~= numMax then
+			if numMax == 8 then
+				cpoints[6]:Show()
+				cpoints[7]:Show()
+				cpoints[8]:Show()
+			elseif numMax == 6 then
+				cpoints[6]:Show()
+				cpoints[7]:Hide()
+				cpoints[8]:Hide()
+			else
+				cpoints[6]:Hide()
+				cpoints[7]:Hide()
+				cpoints[8]:Hide()
+			end
+
+			for i = 1, numMax do
+				if i ~= numMax then
+					cpoints[i]:SetWidth(w / numMax - spacing)
+					s = s + (w / numMax)
+				else
+					cpoints[i]:SetWidth(w - s)
+				end
+			end
+
+			cpoints.numMax = numMax
+		end
+
+		for i = 1, numMax do
+			if i <= cp then
+				cpoints[i]:SetAlpha(1)
+			else
+				cpoints[i]:SetAlpha(0.2)
+			end
+		end
+
+		if cpoints[1]:GetAlpha() == 1 then
+			for i = 1, numMax do
+				cpoints:Show()
+				cpoints[i]:Show()
+			end
+		else
+			for i = 1, numMax do
+				cpoints:Hide()
+				cpoints[i]:Hide()
+			end
+		end	
+	end
 end
 
 function AltPowerBarOnToggle(self)
 	local unit = self:GetParent().unit or self:GetParent():GetParent().unit					
 end
 function AltPowerBarPostUpdate(self, min, cur, max)
-	local perc = math.floor((cur/max)*100)
+	local perc = (cur and max and max > 0) and floor((cur/max)*100) or 0
 	if perc < 35 then
 		self:SetStatusBarColor(0, 1, 0)
 	elseif perc < 70 then
@@ -366,9 +438,10 @@ gen_hpbar = function(f)
     local s = CreateFrame("StatusBar", nil, f)
     s:SetStatusBarTexture(Qulight["media"].texture)
 	s:GetStatusBarTexture():SetHorizTile(true)
-	s.Smooth = true
+	--s.Smooth = true
+	s:SetAllPoints(f)
 	fixStatusbar(s)
-	s:SetHeight(retVal(f,42,28,34,22))
+	--s:SetHeight(retVal(f,42,28,34,22))
 	if not Qulight["unitframes"].HealthcolorClass then
 	s:SetStatusBarColor(.09,.09,.09,1) -- HealthBar Transparensy
 	end
@@ -388,16 +461,20 @@ gen_hpbar = function(f)
     local b = s:CreateTexture(nil, "BACKGROUND")
     b:SetTexture(Qulight["media"].texture)
 	b:SetVertexColor(.5,.5,.5,.9)
+	b:ClearAllPoints()
     b:SetAllPoints(s)
+	b.multiplier = .5
+	s.bg = b
+	s.frequentUpdates = true
 	f.Health = s
 end
 gen_hpstrings = function(f)
 	-- Change Font and Coord name on unitframe
-    local name = gen_fontstring(f.Health, Qulight["media"].font, 10, retVal(f,17,12,12,15), "OUTLINE")
+    local name = gen_fontstring(f.Health, Qulight["media"].font, 12, retVal(f,17,12,12,15), "OUTLINE")
     name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,2,1,1,1), retVal(f,-19,-11,-15,-10))
     name:SetJustifyH("LEFT")
 	-- Change Font and Coord health on unitframe
-    local hpval = gen_fontstring(f.Health, Qulight["media"].font, 9, retVal(f,17,12,10,12), "OUTLINE")
+    local hpval = gen_fontstring(f.Health, Qulight["media"].font, 11, retVal(f,17,12,10,12), "OUTLINE")
     hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", retVal(f,0,-3,-1,-3), retVal(f,-7,-11,-15,-9))
     hpval.frequentUpdates = 0.1
 	
@@ -413,7 +490,7 @@ gen_hpstrings = function(f)
 	f:Tag(hpval, retVal(f,"[hp][color]","","[hp][color]","[hp][color]"))
 	
 	local per = f.Health:CreateFontString(nil, "OVERLAY")
-	per:SetPoint("RIGHT", 0, retVal(f, 4, 4, -3, -3))
+	per:SetPoint("RIGHT", 0, retVal(f, 0, 0, -3, -3))
 	per:SetFont(Qulight["media"].font, 9, "OUTLINE")
 	f:Tag(per, retVal(f,'[color][power] | [perpp]%','[hp]','','' ))		
 end
@@ -422,17 +499,17 @@ gen_ppbar = function(f)
     s:SetStatusBarTexture(Qulight["media"].texture)
 	s:GetStatusBarTexture():SetHorizTile(true)
 	fixStatusbar(s)
-	s.Smooth = true
+	--s.Smooth = true
 	s:SetHeight(retVal(f,4,4,4,4))
 	s:SetFrameLevel(4)
     s:SetPoint("BOTTOM",UIParent,"BOTTOM",0,1)
 	
 	if f.mystyle == "player" then
-		s:SetPoint("BOTTOM",f,"BOTTOM", 0, 0)
+		s:SetPoint("BOTTOM",f,"BOTTOM", 0, 4)
 		s:SetWidth(212)
 	end
 	if f.mystyle == "target" then
-		s:SetPoint("BOTTOM",f,"BOTTOM", 0, 0)
+		s:SetPoint("BOTTOM",f,"BOTTOM", 0, 4)
 		s:SetWidth(212)
 	end
 	if f.mystyle == "focus" then
@@ -525,12 +602,20 @@ gen_InfoIcons = function(f)
     local h = CreateFrame("Frame",nil,f)
     h:SetAllPoints(f)
     h:SetFrameLevel(10)
-    if f.mystyle == 'player' then
+    if f.mystyle=="player" or f.mystyle=="target" then
       f.Combat = h:CreateTexture(nil, 'OVERLAY')
       f.Combat:SetSize(12,12)
-      f.Combat:SetPoint('BOTTOMRIGHT', -4, 5)
+      f.Combat:SetPoint('TOP', -4, 5)
       f.Combat:SetTexture('Interface\\CharacterFrame\\UI-StateIcon')
       f.Combat:SetTexCoord(0.58, 0.90, 0.08, 0.41)
+	  f:SetScript("OnUpdate", function(self)
+	  local unit = self.unit
+	  if unit and UnitAffectingCombat(unit) then
+			self.Combat:Show()
+		else
+			self.Combat:Hide()
+		end
+		end)
     end
   
     li = h:CreateTexture(nil, "OVERLAY")
@@ -556,7 +641,8 @@ addQuestIcon = function(self)
 	local qicon = self.Health:CreateTexture(nil, 'OVERLAY')
 	qicon:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, 8)
 	qicon:SetSize(12, 12)
-	self.QuestIcon = qicon
+	qicon:SetTexture[[Interface\TargetingFrame\PortraitQuestBadge]]
+	self.QuestIndicator = qicon
 end
 gen_RaidMark = function(f)
     local h = CreateFrame("Frame", nil, f)
@@ -871,7 +957,7 @@ local postCreateIcon = function(element, button)
 	button.icon:SetDrawLayer("ARTWORK")
 end
 local postUpdateIcon = function(element, unit, button, index)
-	local _, _, _, _, _, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, button.filter)
+	local _, _, _, _, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, button.filter)
 	
 	if duration and duration > 0 then
 		button.time:Show()
@@ -1387,8 +1473,8 @@ AltPowerBar = function(self)
 	AltPowerBar:HookScript("OnShow", AltPowerBarOnToggle)
 	AltPowerBar:HookScript("OnHide", AltPowerBarOnToggle)
 
-	self.AltPowerBar = AltPowerBar		
-	self.AltPowerBar.PostUpdate = AltPowerBarPostUpdate
+	self.AlternativePower = AltPowerBar		
+	self.AlternativePower.PostUpdate = AltPowerBarPostUpdate
 end
 Experience = function(self)
 	if Qulight["unitframes"].Experiencebar then 
@@ -1396,6 +1482,7 @@ Experience = function(self)
 	Experience:SetStatusBarTexture(Qulight["media"].texture)
 	Experience:SetStatusBarColor(0, 0.7, 1)
 	Experience:SetPoint('LEFT', ChatPanelRight, 'LEFT', -8, 0)
+	Experience:EnableMouse(true)
 	Experience:SetWidth(6)
 	Experience:SetHeight(168)
 	Experience:SetFrameLevel(2)
@@ -1424,6 +1511,7 @@ Reputation = function(self)
 	if Qulight["unitframes"].Reputationbar then 
 	local Reputation = CreateFrame('StatusBar', nil, self)
 	Reputation:SetStatusBarTexture(Qulight["media"].texture)
+	Reputation:EnableMouse(true)
 	Reputation:SetWidth(6)
 	Reputation:SetHeight(168)
 	Reputation:SetPoint('RIGHT', ChatBackground, 'RIGHT', 8, 0)
@@ -1436,8 +1524,7 @@ Reputation = function(self)
 	h:SetPoint("BOTTOMRIGHT",5,-5)
 	CreateStyle(h, -1)
 	
-	Reputation.PostUpdate = UpdateReputationColor
-	Reputation.Tooltip = true
+	Reputation.colorStanding = true
 	self.Reputation = Reputation
 	end
 end
@@ -1516,6 +1603,19 @@ local function CreatePlayerStyle(self, unit, isSingle)
 	if Qulight["unitframes"].showHolybar then genHolyPower(self) end
 	if Qulight["unitframes"].showShardbar then genShards(self) end
 	if Qulight["unitframes"].showEclipsebar then addEclipseBar(self) end
+	self:RegisterEvent("PLAYER_FLAGS_CHANGED", function(self) self.Health:ForceUpdate() end)
+	if unit == "player" then self:RegisterEvent("PLAYER_ENTERING_WORLD", function(self) self.Health:ForceUpdate() end) end
+	if unit == "pet" then
+		self.elapsed = 0
+		self:SetScript("OnUpdate", function(self, elapsed)
+			if self.elapsed > 2.5 then
+				self:UpdateAllElements()
+				self.elapsed = 0
+			else
+				self.elapsed = self.elapsed + elapsed
+			end
+		end)
+	end
 end
 local function CreateTargetStyle(self, unit, isSingle)
 	self.mystyle = "target"
@@ -1527,8 +1627,9 @@ local function CreateTargetStyle(self, unit, isSingle)
 	gen_highlight(self)
 	gen_ppbar(self)
 	gen_RaidMark(self)
+	gen_InfoIcons(self)
 	
-	self.Health.frequentUpdates = false
+	self.Health.frequentUpdates = true
 	if Qulight["unitframes"].HealthcolorClass then
 	self.Health.colorClass = true
 	end
@@ -1549,7 +1650,9 @@ local function CreateTargetStyle(self, unit, isSingle)
 	
 	addQuestIcon(self)
 	createAuras(self)
+	if UnitPower('player',4) then
 	genCPoints(self)
+	end
 	if Qulight["unitframes"].showPortrait then gen_portrait(self) end	
 end
 local function CreateFocusStyle(self, unit, isSingle)
@@ -1718,14 +1821,14 @@ oUF:RegisterStyle("oUF_Arena", CreateArenaStyle)
 if not Qulight["unitframes"].enable == true then return end
 oUF:Factory(function(self)
 	self:SetActiveStyle("Player")
-	local player = self:Spawn("player", "oUF_Player")
+	local player = self:Spawn("player", "PlayerFrame")
 	player:SetPoint("BOTTOM", Anchorplayer)
 	self:SetActiveStyle("Target")
-	local target = self:Spawn("Target", "oUF_Target")
+	local target = self:Spawn("Target", "TargetFrame")
 	target:SetPoint("BOTTOM", Anchortarget)
 	if Qulight["unitframes"].showtot then
 		self:SetActiveStyle("ToT")
-		local targettarget = self:Spawn("targettarget", "oUF_tot")
+		local targettarget = self:Spawn("targettarget", "TargetTargetFrame")
 		targettarget:SetPoint("BOTTOM", Anchortot)
 	end
 	if Qulight["unitframes"].showpet then

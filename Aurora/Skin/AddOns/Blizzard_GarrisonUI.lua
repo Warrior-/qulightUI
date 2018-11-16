@@ -74,13 +74,8 @@ do --[[ AddOns\Blizzard_GarrisonUI.xml ]]
             Button._auroraTabResize = true
         end
         function Skin.BaseLandingPageFollowerListTemplate(Frame)
-            if private.isPatch then
-                Frame.FollowerHeaderBar:Hide()
-                Frame.FollowerScrollFrame:Hide()
-            else
-                Frame:GetRegions():Hide()
-                Frame.FollowerHeaderBar:Hide()
-            end
+            Frame.FollowerHeaderBar:Hide()
+            Frame.FollowerScrollFrame:Hide()
             Skin.SearchBoxTemplate(Frame.SearchBox)
             Skin.MinimalHybridScrollBarTemplate(Frame.listScroll.scrollBar)
         end
@@ -542,7 +537,6 @@ function private.AddOns.Blizzard_GarrisonUI()
 
 
 
-    if not private.isPatch then return end
     ----====####$$$$%%%%%$$$$####====----
     --   Blizzard_OrderHallMissionUI   --
     ----====####$$$$%%%%%$$$$####====----
@@ -660,19 +654,19 @@ function private.AddOns.Blizzard_GarrisonUI()
     --      Blizzard_BFAMissionUI      --
     ----====####$$$$%%%%%$$$$####====----
     local BFAMissionFrame = _G.BFAMissionFrame
+    _G.hooksecurefunc(BFAMissionFrame, "SetupTabs", Hook.OrderHallMission_SetupTabs)
     Skin.GarrisonMissionFrameTemplate(BFAMissionFrame)
     Skin.GarrisonUITemplate(BFAMissionFrame)
-    BFAMissionFrame.CloseButtonBorder:Hide()
+    if private.isPatch then
+        BFAMissionFrame.OverlayElements.CloseButtonBorder:Hide()
+    else
+        BFAMissionFrame.CloseButtonBorder:Hide()
+    end
     BFAMissionFrame.TitleScroll:Hide()
 
     Skin.OrderHallFrameTabButtonTemplate(BFAMissionFrame.Tab1)
     Skin.OrderHallFrameTabButtonTemplate(BFAMissionFrame.Tab2)
     Skin.OrderHallFrameTabButtonTemplate(BFAMissionFrame.Tab3)
-    Util.PositionRelative("TOPLEFT", BFAMissionFrame, "BOTTOMLEFT", 20, -1, 1, "Right", {
-        BFAMissionFrame.Tab1,
-        BFAMissionFrame.Tab2,
-        BFAMissionFrame.Tab3,
-    })
 
     ------------------
     -- FollowerList --

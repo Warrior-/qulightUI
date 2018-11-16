@@ -6,7 +6,6 @@ local oUF = ns.oUF
 
 local total = 0
 local delay = 0.01
-local class = select(2, UnitClass("player"))
 
 -- In the order, fire, earth, water, air
 local colors = {
@@ -59,12 +58,12 @@ local function UpdateSlot(self, slot)
 			totem[slot]:SetScript("OnUpdate", nil)
 			totem[slot]:SetValue(0)
 		end
-		if class ~= "SHAMAN" then
+		if T.class ~= "SHAMAN" then
 			totem[slot]:Show()
 		end
 	else
 		totem[slot]:SetValue(0)
-		if class ~= "SHAMAN" then
+		if T.class ~= "SHAMAN" then
 			totem[slot]:Hide()
 		end
 	end

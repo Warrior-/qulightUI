@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------------------------
 --	Based on oUF_RaidDebuffs(by Yleaf)
 ----------------------------------------------------------------------------------------
-local _, ns = ...
+local T, ns = ...
 local oUF = ns.oUF
 
 local class = select(2, UnitClass("player"))
@@ -16,7 +16,7 @@ local DispellColor = {
 	["Curse"]	= {0.6, 0, 1},
 	["Disease"]	= {0.6, 0.4, 0},
 	["Poison"]	= {0, 0.6, 0},
-	["none"]	= {},
+	["none"]	= {0.4,0.4,0.4},
 }
 
 if Qulight["buffdebuff"].color_type == true then
@@ -142,7 +142,7 @@ local UpdateDebuffFrame = function(rd)
 			end
 		end
 
-		if spellId and RaidDebuffsReverse[spellId] then
+		if spellId and T.RaidDebuffsReverse[spellId] then
 			rd.reverse = true
 		else
 			rd.reverse = nil
@@ -226,20 +226,21 @@ local Update = function(self, event, unit)
 				end
 			end
 
-			local prio = rd.Debuffs and rd.Debuffs[rd.MatchBySpellName and name or spellId]
-			local prioPvP
-			prioPvP = rd.Debuffs [rd.MatchBySpellName and name or spellId]
-
-			if not RaidDebuffsIgnore[spellId] and (prio and (prio > rd.priority) or prioPvP and (prioPvP > rd.priority)) then
-				if (prio and not prioPvP) or ((prio and prioPvP) and prio > prioPvP) then
-					rd.priority = prio
-				else
-					rd.priority = prioPvP
-				end
-				rd.index = i
-				rd.type = "Custom"
-				rd.filter = filter
-			end
+			--local prio = rd.Debuffs and rd.Debuffs[rd.MatchBySpellName and name or spellId]
+			--local prioPvP
+			--if C.raidframe.plugins_pvp_debuffs == true then
+				--prioPvP = rd.Debuffs and T.PvPDebuffs[rd.MatchBySpellName and name or spellId]
+			--end
+			--if not T.RaidDebuffsIgnore[spellId] and (prio and (prio > rd.priority) or prioPvP and (prioPvP > rd.priority)) then
+				--if (prio and not prioPvP) or ((prio and prioPvP) and prio > prioPvP) then
+					--rd.priority = prio
+				--else
+					--rd.priority = prioPvP
+				--end
+				--rd.index = i
+				--rd.type = "Custom"
+				--rd.filter = filter
+			--end
 		end
 	end
 

@@ -63,7 +63,7 @@ local function combat(self, event, unit, eventType, flags, amount, dtype)
 	if unit == "vehicle" then return end
 	local FeedbackText = self.CombatFeedbackText
 	local fColors = FeedbackText.colors
-	local font, fontHeight, fontFlags = Qulight["media"].font, Qulight["media"].fontsize, Qulight["media"].glow
+	local font, fontHeight, fontFlags = C.font.combat_text_font, C.font.combat_text_font_size, C.font.combat_text_font_style
 	local text, arg
 	color = fColors and fColors.STANDARD or colors.STANDARD
 	if eventType == "IMMUNE" and not FeedbackText.ignoreImmune then

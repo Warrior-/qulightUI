@@ -95,15 +95,11 @@ do -- Base API
             if options then
                 if not frame._auroraBackdrop then
                     if bgTextures then
-                        bgTextures.bg:ClearAllPoints()
-                        bgTextures.l:ClearAllPoints()
-                        bgTextures.r:ClearAllPoints()
-                        bgTextures.t:ClearAllPoints()
-                        bgTextures.b:ClearAllPoints()
-                        bgTextures.tl:ClearAllPoints()
-                        bgTextures.tr:ClearAllPoints()
-                        bgTextures.bl:ClearAllPoints()
-                        bgTextures.br:ClearAllPoints()
+                        for _, tex in next, bgTextures do
+                            if type(tex) == "table" then
+                                tex:ClearAllPoints()
+                            end
+                        end
                     end
 
                     frame._auroraBackdrop = bgTextures or {
@@ -124,22 +120,18 @@ do -- Base API
                     }
                 end
                 local bd = frame._auroraBackdrop
-                bd.options = options
 
-                if options.bgFile then
-                    --[[ The tile size is fixed at the original texture size, so this option is DOA.
-                    if options.tileSize then
-                        bd.bg:SetSize(options.tileSize, options.tileSize)
-                    end]]
-                    if Base.IsTextureRegistered(options.bgFile) then
-                        Base.SetTexture(bd.bg, options.bgFile)
-                    else
-                        bd.bg:SetTexture(options.bgFile, "REPEAT", "REPEAT")
-                        bd.bg:SetHorizTile(options.tile)
-                        bd.bg:SetVertTile(options.tile)
-                    end
+                --[[ The tile size is fixed at the original texture size, so this option is DOA.
+                if options.tileSize then
+                    bd.bg:SetSize(options.tileSize, options.tileSize)
+                end]]
+                options.bgFile = options.bgFile or [[Interface\Buttons\WHITE8x8]]
+                if Base.IsTextureRegistered(options.bgFile) then
+                    Base.SetTexture(bd.bg, options.bgFile)
                 else
-                    bd.bg:SetColorTexture(0, 0, 1)
+                    bd.bg:SetTexture(options.bgFile, "REPEAT", "REPEAT")
+                    bd.bg:SetHorizTile(options.tile)
+                    bd.bg:SetVertTile(options.tile)
                 end
 
                 local insets = options.insets
@@ -152,30 +144,19 @@ do -- Base API
                 end
 
 
-                if options.edgeFile then
-                    for side, info in next, sides do
-                        bd[side]:SetTexture(options.edgeFile)
-                        if info.tileH then
-                            bd[side]:SetTexCoord(info.l, info.b, info.r, info.b, info.l, info.t, info.r, info.t)
-                        else
-                            bd[side]:SetTexCoord(info.l, info.r, info.t, info.b)
-                        end
+                options.edgeFile = options.edgeFile or [[Interface\Buttons\WHITE8x8]]
+                for side, info in next, sides do
+                    bd[side]:SetTexture(options.edgeFile)
+                    if info.tileH then
+                        bd[side]:SetTexCoord(info.l, info.b, info.r, info.b, info.l, info.t, info.r, info.t)
+                    else
+                        bd[side]:SetTexCoord(info.l, info.r, info.t, info.b)
                     end
+                end
 
-                    for corner, info in next, corners do
-                        bd[corner]:SetTexture(options.edgeFile)
-                        bd[corner]:SetTexCoord(info.l, info.r, info.t, info.b)
-                    end
-                else
-                    for side, info in next, sides do
-                        bd[side]:SetColorTexture(1, 0, 0)
-                        bd[side]:SetTexCoord(0, 1, 0, 1)
-                    end
-
-                    for corner, info in next, corners do
-                        bd[corner]:SetColorTexture(0, 1, 0)
-                        bd[corner]:SetTexCoord(0, 1, 0, 1)
-                    end
+                for corner, info in next, corners do
+                    bd[corner]:SetTexture(options.edgeFile)
+                    bd[corner]:SetTexCoord(info.l, info.r, info.t, info.b)
                 end
 
                 bd.l:SetPoint("TOPLEFT", bd.tl, "BOTTOMLEFT")
@@ -193,9 +174,23 @@ do -- Base API
                 if options.edgeSize then
                     for corner, info in next, corners do
                         bd[corner]:SetSize(options.edgeSize, options.edgeSize)
-                        bd[corner]:SetPoint(info.point, frame)
+                        if insets then
+                            if info.point == "TOPLEFT" then
+                                bd[corner]:SetPoint(info.point, bd.bg, -insets.left, insets.top)
+                            elseif info.point == "TOPRIGHT" then
+                                bd[corner]:SetPoint(info.point, bd.bg, insets.right, insets.top)
+                            elseif info.point == "BOTTOMLEFT" then
+                                bd[corner]:SetPoint(info.point, bd.bg, -insets.left, -insets.bottom)
+                            elseif info.point == "BOTTOMRIGHT" then
+                                bd[corner]:SetPoint(info.point, bd.bg, insets.left, -insets.bottom)
+                            end
+                        else
+                            bd[corner]:SetPoint(info.point, bd.bg)
+                        end
                     end
                 end
+
+                bd.options = options
             else
                 if frame._auroraBackdrop then
                     local bd = frame._auroraBackdrop
@@ -215,10 +210,10 @@ do -- Base API
             if frame._auroraBackdrop then
                 local options = frame._auroraBackdrop.options
                 return {
-                    bgFile = options.bgFile or [[Interface\Buttons\WHITE8x8]],
+                    bgFile = options.bgFile,
                     tile = options.tile,
                     insets = options.insets,
-                    edgeFile = options.edgeFile or [[Interface\Buttons\WHITE8x8]],
+                    edgeFile = options.edgeFile,
                     edgeSize = options.edgeSize,
                 }
             end
@@ -235,11 +230,7 @@ do -- Base API
 
                 local tex = bd.bg:GetTexture()
                 if tex then
-                    if tex:find("Color%-") then
-                        bd.bg:SetColorTexture(red, green, blue, alpha)
-                    else
-                        bd.bg:SetVertexColor(red, green, blue, alpha)
-                    end
+                    bd.bg:SetVertexColor(red, green, blue, alpha)
                 else
                     private.debug("SetBackdropColor no texture", frame:GetName(), tex)
                 end
@@ -263,22 +254,12 @@ do -- Base API
 
                 local tex = bd.t:GetTexture()
                 if tex then
-                    if tex:find("Color%-") then
-                        for side, info in next, sides do
-                            bd[side]:SetColorTexture(red, green, blue, alpha)
-                        end
+                    for side, info in next, sides do
+                        bd[side]:SetVertexColor(red, green, blue, alpha)
+                    end
 
-                        for corner, info in next, corners do
-                            bd[corner]:SetColorTexture(red, green, blue, alpha)
-                        end
-                    else
-                        for side, info in next, sides do
-                            bd[side]:SetVertexColor(red, green, blue, alpha)
-                        end
-
-                        for corner, info in next, corners do
-                            bd[corner]:SetVertexColor(red, green, blue, alpha)
-                        end
+                    for corner, info in next, corners do
+                        bd[corner]:SetVertexColor(red, green, blue, alpha)
                     end
                 else
                     private.debug("SetBackdropBorderColor no texture", frame:GetName(), tex)
@@ -546,7 +527,6 @@ do -- Base API
             return not not snapshots[textureName]
         end
 
-        local useSnapshots = true
         function Base.SetTexture(texture, textureName, useTextureSize)
             _G.assert(type(texture) == "table" and texture.GetObjectType, "texture widget expected, got "..type(texture))
             _G.assert(texture:GetObjectType() == "Texture", "texture widget expected, got "..texture:GetObjectType())
@@ -554,45 +534,43 @@ do -- Base API
             local snapshot = snapshots[textureName]
             _G.assert(snapshot, textureName .. " is not a registered texture.")
 
-            if useSnapshots then
-                if not snapshot.id or not SnapshotFrame:IsSnapshotValid(snapshot.id) then
-                    snapshot.create(textureFrame)
-                    local width, height = textureFrame:GetSize()
-
-                    SnapshotFrame:Show()
-                    local id = SnapshotFrame:TakeSnapshot()
-                    SnapshotFrame:Hide()
-                    textureFrame:ReleaseAll()
-
-                    local snapshotWidth, snapshotHeight = SnapshotFrame:GetSize()
-
-                    snapshot.id = id
-                    snapshot.width = width
-                    snapshot.height = height
-                    snapshot.x = width / snapshotWidth
-                    snapshot.y = height / snapshotHeight
-
-                    if not snapshot.id then
-                        private.debug("No snapshots")
-                        useSnapshots = false
-                        return snapshot.create(texture:GetParent(), texture)
-                    end
-                end
+            if snapshot.create then
+                snapshot.create(texture:GetParent(), texture)
+            else
                 if useTextureSize then
                     texture:SetSize(snapshot.width, snapshot.height)
                 end
                 SnapshotFrame:ApplySnapshot(texture, snapshot.id)
                 texture:SetTexCoord(0, snapshot.x, 0, snapshot.y)
-            else
-                snapshot.create(texture:GetParent(), texture)
             end
         end
 
         function Base.RegisterTexture(textureName, createFunc)
-            snapshots[textureName] = {
-                create = createFunc
-            }
+            _G.assert(not snapshots[textureName], textureName .. " is already registered.")
+            private.debug("RegisterTexture", textureName)
             SnapshotFrame:SetMaxSnapshots(SnapshotFrame:GetMaxSnapshots() + 1)
+
+            createFunc(textureFrame)
+            local width, height = textureFrame:GetSize()
+
+            SnapshotFrame:Show()
+            local id = SnapshotFrame:TakeSnapshot()
+            SnapshotFrame:Hide()
+            textureFrame:ReleaseAll()
+
+            local snapshotWidth, snapshotHeight = SnapshotFrame:GetSize()
+            snapshots[textureName] = {
+                id = id,
+                width = width,
+                height = height,
+                x = width / snapshotWidth,
+                y = height / snapshotHeight,
+            }
+
+            if not id then
+                private.debug(textureName, "failed")
+                snapshots[textureName].create = createFunc
+            end
         end
     end
 end
@@ -911,7 +889,7 @@ do -- Color API
     end
 
     function Color.Create(r, g, b, a)
-        local color = _G.Mixin({}, _G.ColorMixin, colorMeta)
+        local color = _G.CreateFromMixins(_G.ColorMixin, colorMeta)
         color:OnLoad(r, g, b, a)
         return color
     end
@@ -929,11 +907,12 @@ do -- Color API
     Color.grayLight = Color.Create(0.75, 0.75, 0.75)
     Color.white = Color.Create(1, 1, 1)
 
-    do -- CUSTOM_CLASS_COLORS
-        local classColors = {}
+    if not _G.CUSTOM_CLASS_COLORS then
+        -- https://github.com/phanx-wow/ClassColors/wiki
+        local meta = {}
 
         local callbacks, numCallbacks = {}, 0
-        function classColors:RegisterCallback(method, handler)
+        function meta:RegisterCallback(method, handler)
             --print("CUSTOM_CLASS_COLORS:RegisterCallback", method, handler)
             assert(type(method) == "string" or type(method) == "function", "Bad argument #1 to :RegisterCallback (string or function expected)")
             if type(method) == "string" then
@@ -945,7 +924,7 @@ do -- Color API
             callbacks[method] = handler or true
             numCallbacks = numCallbacks + 1
         end
-        function classColors:UnregisterCallback(method, handler)
+        function meta:UnregisterCallback(method, handler)
             --print("CUSTOM_CLASS_COLORS:UnregisterCallback", method, handler)
             assert(type(method) == "string" or type(method) == "function", "Bad argument #1 to :UnregisterCallback (string or function expected)")
             if type(method) == "string" then
@@ -968,7 +947,7 @@ do -- Color API
             end
         end
 
-        function classColors:NotifyChanges()
+        function meta:NotifyChanges()
             --print("CUSTOM_CLASS_COLORS:NotifyChanges", private.classColorsHaveChanged)
             if not private.classColorsHaveChanged then
                 -- We can't determine if the colors have changed, dispatch just in case.
@@ -985,40 +964,39 @@ do -- Color API
         for token, class in next, _G.LOCALIZED_CLASS_NAMES_FEMALE do
             classTokens[class] = token
         end
-        function classColors:GetClassToken(className)
+        function meta:GetClassToken(className)
             return className and classTokens[className]
         end
 
         function private.classColorsReset(colors, noMeta)
             local colorTable = colors or _G.CUSTOM_CLASS_COLORS
             for class, color in next, _G.RAID_CLASS_COLORS do
-                if noMeta then
-                    if colorTable[class] then
+                if colorTable[class] then
+                    if noMeta then
                         colorTable[class].r = color.r
                         colorTable[class].g = color.g
                         colorTable[class].b = color.b
                         colorTable[class].colorStr = color.colorStr
                     else
-                        colorTable[class] = {
-                            r = color.r,
-                            g = color.g,
-                            b = color.b,
-                            colorStr = color.colorStr
-                        }
+                        colorTable[class]:SetRGB(color.r, color.g, color.b)
                     end
                 else
-                    if colorTable[class] and colorTable[class].SetRGB then
-                        colorTable[class]:SetRGB(color.r, color.g, color.b)
-                    else
-                        colorTable[class] = _G.setmetatable({}, {
-                            __index = Color.Create(color.r, color.g, color.b)
+                    colorTable[class] = {
+                        r = color.r,
+                        g = color.g,
+                        b = color.b,
+                        colorStr = color.colorStr
+                    }
+                    if not noMeta then
+                        colorTable[class] = _G.setmetatable(colorTable[class], {
+                            __index = _G.CreateFromMixins(_G.ColorMixin, colorMeta)
                         })
                     end
                 end
             end
 
             if colors then
-                classColors:NotifyChanges()
+                meta:NotifyChanges()
             else
                 DispatchCallbacks()
             end
@@ -1030,7 +1008,7 @@ do -- Color API
         _G.CUSTOM_CLASS_COLORS = {}
         private.classColorsReset()
 
-        _G.setmetatable(_G.CUSTOM_CLASS_COLORS, {__index = classColors})
+        _G.setmetatable(_G.CUSTOM_CLASS_COLORS, {__index = meta})
     end
 
 
@@ -1085,6 +1063,11 @@ do -- Util API
         _G.hooksecurefunc(table, func, function()
             _G.error("Found usage")
         end)
+    end
+    function Util.Mixin(table, hook)
+        for name, func in next, hook do
+            _G.hooksecurefunc(table, name, func)
+        end
     end
     function Util.TestHook(table, func, name)
         _G.hooksecurefunc(table, func, function(...)

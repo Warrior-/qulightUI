@@ -12,6 +12,9 @@ local Color = Aurora.Color
 local F = _G.unpack(Aurora)
 
 do --[[ AddOns\Blizzard_QuestChoice.xml ]]
+    function Skin.QuestChoiceOptionButtonTemplate(Button)
+        Skin.UIPanelButtonTemplate(Button)
+    end
     function Skin.QuestChoiceItemTemplate(Button)
         Button._auroraIconBorder = F.ReskinIcon(Button.Icon)
         Button.Name:SetTextColor(1, 1, 1)
@@ -46,12 +49,8 @@ do --[[ AddOns\Blizzard_QuestChoice.xml ]]
         Button.Artwork:SetPoint("TOPLEFT", 13, -29)
         Button.Artwork:SetPoint("BOTTOMRIGHT", Button, "TOPRIGHT", -17, -100)
 
-        if private.isPatch then
-            Skin.UIPanelButtonTemplate(Button.OptionButtonsContainer.Buttons[1])
-            Skin.UIPanelButtonTemplate(Button.OptionButtonsContainer.Buttons[2])
-        else
-            Skin.UIPanelButtonTemplate(Button.OptionButton)
-        end
+        Skin.QuestChoiceOptionButtonTemplate(Button.OptionButtonsContainer.Buttons[1])
+        Skin.QuestChoiceOptionButtonTemplate(Button.OptionButtonsContainer.Buttons[2])
         Skin.QuestChoiceRewardsTemplate(Button.Rewards)
 
         Button.Header.Background:Hide()
@@ -61,11 +60,7 @@ do --[[ AddOns\Blizzard_QuestChoice.xml ]]
 
         --[[ Scale ]]--
         Button:SetSize(210, 268)
-        if private.isPatch then
-            Button.Rewards:SetPoint("BOTTOM", Button.OptionButtonsContainer, "TOP", 0, 5)
-        else
-            Button.Rewards:SetPoint("BOTTOM", Button.OptionButton, "TOP", 0, 5)
-        end
+        Button.Rewards:SetPoint("BOTTOM", Button.OptionButtonsContainer, "TOP", 0, 5)
         Button.Header:SetSize(256, 32)
         Button.Header:SetPoint("TOP", 10)
         Button.Header.Text:SetWidth(180)

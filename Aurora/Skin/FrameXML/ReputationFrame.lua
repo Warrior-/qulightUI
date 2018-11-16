@@ -155,8 +155,8 @@ function private.FrameXML.ReputationFrame()
     _G.ReputationFrameStandingLabel:ClearAllPoints()
     _G.ReputationFrameStandingLabel:SetPoint("TOPRIGHT", -75, -32)
 
-    _G.ReputationListScrollFrame:SetPoint("TOPLEFT", _G.CharacterFrameInset, 4, -4)
-    _G.ReputationListScrollFrame:SetPoint("BOTTOMRIGHT", _G.CharacterFrameInset, -23, 4)
+    _G.ReputationListScrollFrame:SetPoint("TOPLEFT", _G.CharacterFrame.Inset, 4, -4)
+    _G.ReputationListScrollFrame:SetPoint("BOTTOMRIGHT", _G.CharacterFrame.Inset, -23, 4)
 
     Skin.FauxScrollFrameTemplate(_G.ReputationListScrollFrame)
     local top, bottom = _G.ReputationListScrollFrame:GetRegions()
@@ -193,15 +193,4 @@ function private.FrameXML.ReputationFrame()
     Skin.OptionsSmallCheckButtonTemplate(_G.ReputationDetailInactiveCheckBox)
     Skin.OptionsSmallCheckButtonTemplate(_G.ReputationDetailMainScreenCheckBox)
     Skin.OptionsSmallCheckButtonTemplate(_G.ReputationDetailLFGBonusReputationCheckBox)
-
-
-    if not private.disabled.mainmenubar and not private.isPatch then
-        Skin.MainMenuBarWatchBarTemplate(_G.ReputationWatchBar)
-    end
-
-    if not private.isPatch and not private.disabled.tooltips then
-        Skin.TooltipProgressBarTemplate(_G.ReputationParagonTooltipStatusBar)
-        Skin.GameTooltipTemplate(_G.ReputationParagonTooltip)
-        Skin.InternalEmbeddedItemTooltipTemplate(_G.ReputationParagonTooltip.ItemTooltip)
-    end
 end

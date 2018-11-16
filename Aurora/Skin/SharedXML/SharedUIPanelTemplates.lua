@@ -1,13 +1,13 @@
 local _, private = ...
 
 --[[ Lua Globals ]]
--- luacheck: globals next tinsert
+-- luacheck: globals next tinsert type
 
 -- [[ Core ]]
 local Aurora = private.Aurora
 local Base, Scale = Aurora.Base, Aurora.Scale
 local Hook, Skin = Aurora.Hook, Aurora.Skin
-local Color, Util = Aurora.Color, Aurora.Util
+local Color = Aurora.Color
 
 do -- BlizzWTF: These are not templates, but they should be
     -- ExpandOrCollapse
@@ -15,6 +15,12 @@ do -- BlizzWTF: These are not templates, but they should be
         if self.settingTexture then return end
         self.settingTexture = true
         self:SetNormalTexture("")
+
+        if texture == 130838 then
+            texture = "Plus"
+        elseif texture == 130821 then
+            texture = "Minus"
+        end
 
         if texture and texture ~= "" then
             if texture:find("Plus") then
@@ -276,49 +282,89 @@ do --[[ SharedXML\SharedUIPanelTemplates.xml ]]
         CheckButton:SetSize(CheckButton:GetSize())
     end
 
-    function Skin.PortraitFrameTemplateNoCloseButton(Frame)
-        local name = Util.GetName(Frame)
+    function Skin.NineSlicePanelTemplate(Frame)
+        Base.CreateBackdrop(Frame, private.backdrop, {
+            tl = Frame.TopLeftCorner,
+            tr = Frame.TopRightCorner,
+            bl = Frame.BottomLeftCorner,
+            br = Frame.BottomRightCorner,
 
-        Frame.Bg:Hide()
+            t = Frame.TopEdge,
+            b = Frame.BottomEdge,
+            l = Frame.LeftEdge,
+            r = Frame.RightEdge,
+
+            bg = Frame.Center,
+        })
+    end
+    function Skin.InsetFrameTemplate(Frame)
+        if private.isPatch then
+            Frame.Bg:Hide()
+            for _, tex in next, Frame.NineSlice do
+                if type(tex) == "table" then
+                    tex:Hide()
+                end
+            end
+        else
+            Frame.Bg:Hide()
+
+            Frame.InsetBorderTopLeft:Hide()
+            Frame.InsetBorderTopRight:Hide()
+
+            Frame.InsetBorderBottomLeft:Hide()
+            Frame.InsetBorderBottomRight:Hide()
+
+            Frame.InsetBorderTop:Hide()
+            Frame.InsetBorderBottom:Hide()
+            Frame.InsetBorderLeft:Hide()
+            Frame.InsetBorderRight:Hide()
+        end
+    end
+
+    function Skin.SimplePanelTemplate(Frame)
+        Skin.InsetFrameTemplate(Frame.Inset)
+        Frame.NineSlice.Center = Frame.Bg
+        Skin.NineSlicePanelTemplate(Frame.NineSlice)
+        Base.SetBackdrop(Frame.NineSlice)
+    end
+
+    function Skin.PortraitFrameTemplateNoCloseButton(Frame)
         if private.isPatch then
             Frame.TitleBg:Hide()
+            Frame.portrait:SetAlpha(0)
+
+            local titleText = Frame.TitleText
+            titleText:ClearAllPoints()
+            titleText:SetPoint("TOPLEFT")
+            titleText:SetPoint("BOTTOMRIGHT", Frame, "TOPRIGHT", 0, -private.FRAME_TITLE_HEIGHT)
+
+            Frame.TopTileStreaks:SetTexture("")
+            Frame.NineSlice.Center = Frame.Bg
+            Skin.NineSlicePanelTemplate(Frame.NineSlice)
+            Base.SetBackdrop(Frame.NineSlice)
         else
-            _G[name.."TitleBg"]:Hide()
-        end
-        Frame.portrait:SetAlpha(0)
-        if private.isPatch then
+            Frame.Bg:Hide()
+            Frame.TitleBg:Hide()
+            Frame.portrait:SetAlpha(0)
             Frame.PortraitFrame:SetTexture("")
             Frame.TopRightCorner:Hide()
             Frame.TopLeftCorner:SetTexture("")
             Frame.TopBorder:SetTexture("")
-        else
-            Frame.portraitFrame:SetTexture("")
-            _G[name.."TopRightCorner"]:Hide()
-            Frame.topLeftCorner:Hide()
-            Frame.topBorderBar:SetTexture("")
-        end
 
-        local titleText = Frame.TitleText
-        titleText:ClearAllPoints()
-        titleText:SetPoint("TOPLEFT")
-        titleText:SetPoint("BOTTOMRIGHT", Frame, "TOPRIGHT", 0, -private.FRAME_TITLE_HEIGHT)
+            local titleText = Frame.TitleText
+            titleText:ClearAllPoints()
+            titleText:SetPoint("TOPLEFT")
+            titleText:SetPoint("BOTTOMRIGHT", Frame, "TOPRIGHT", 0, -private.FRAME_TITLE_HEIGHT)
 
-        Frame.TopTileStreaks:SetTexture("")
-        if private.isPatch then
+            Frame.TopTileStreaks:SetTexture("")
             Frame.BotLeftCorner:Hide()
             Frame.BotRightCorner:Hide()
             Frame.BottomBorder:Hide()
             Frame.LeftBorder:Hide()
             Frame.RightBorder:Hide()
-        else
-            _G[name.."BotLeftCorner"]:Hide()
-            _G[name.."BotRightCorner"]:Hide()
-            _G[name.."BottomBorder"]:Hide()
-            Frame.leftBorderBar:Hide()
-            _G[name.."RightBorder"]:Hide()
-        end
 
-        Base.SetBackdrop(Frame)
+            Base.SetBackdrop(Frame)
+        end
 
         --[[ Scale ]]--
         Frame:SetSize(Frame:GetSize())
@@ -328,28 +374,17 @@ do --[[ SharedXML\SharedUIPanelTemplates.xml ]]
         Skin.UIPanelCloseButton(Frame.CloseButton)
         Frame.CloseButton:SetPoint("TOPRIGHT", -5, -5)
     end
-    function Skin.InsetFrameTemplate(Frame)
-        Frame.Bg:Hide()
-
-        Frame.InsetBorderTopLeft:Hide()
-        Frame.InsetBorderTopRight:Hide()
-
-        Frame.InsetBorderBottomLeft:Hide()
-        Frame.InsetBorderBottomRight:Hide()
-
-        Frame.InsetBorderTop:Hide()
-        Frame.InsetBorderBottom:Hide()
-        Frame.InsetBorderLeft:Hide()
-        Frame.InsetBorderRight:Hide()
-    end
     function Skin.ButtonFrameTemplate(Frame)
         Skin.PortraitFrameTemplate(Frame)
-        local name = Frame:GetName()
-
-        _G[name.."BtnCornerLeft"]:SetTexture("")
-        _G[name.."BtnCornerRight"]:SetTexture("")
-        _G[name.."ButtonBottomBorder"]:SetTexture("")
         Skin.InsetFrameTemplate(Frame.Inset)
+
+        if not private.isPatch then
+            local name = Frame:GetName()
+
+            _G[name.."BtnCornerLeft"]:SetTexture("")
+            _G[name.."BtnCornerRight"]:SetTexture("")
+            _G[name.."ButtonBottomBorder"]:SetTexture("")
+        end
 
         --[[ Scale ]]--
         Frame.Inset:SetPoint("TOPLEFT", 4, -60)
@@ -453,13 +488,8 @@ do --[[ SharedXML\SharedUIPanelTemplates.xml ]]
     end
     function Skin.MinimalScrollBarTemplate(Slider)
         Slider.trackBG:Hide()
-        if private.isPatch then
-            Skin.UIPanelScrollUpButtonTemplate(Slider.ScrollUpButton)
-            Skin.UIPanelScrollDownButtonTemplate(Slider.ScrollDownButton)
-        else
-            Skin.UIPanelScrollUpButtonTemplate(_G[Slider:GetName().."ScrollUpButton"])
-            Skin.UIPanelScrollDownButtonTemplate(_G[Slider:GetName().."ScrollDownButton"])
-        end
+        Skin.UIPanelScrollUpButtonTemplate(Slider.ScrollUpButton)
+        Skin.UIPanelScrollDownButtonTemplate(Slider.ScrollDownButton)
 
         Skin.ScrollBarThumb(Slider:GetThumbTexture())
     end

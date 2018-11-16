@@ -21,14 +21,14 @@ do --[[ FrameXML\MailFrame.lua ]]
             local name = "MailItem"..i
             local item = _G[name]
             if index <= numItems then
-                local _, _, _, _, _, _, _, _, wasRead, _, _, _, _, firstItemQuantity, firstItemID = _G.GetInboxHeaderInfo(index)
+                local _, _, _, _, _, _, _, _, wasRead, _, _, _, _, firstItemQuantity, firstItemID, firstItemLink = _G.GetInboxHeaderInfo(index)
 
                 if not firstItemQuantity then
                     item.Button._auroraIconBorder:SetBackdropBorderColor(Color.frame, 1)
                 end
 
                 if wasRead then
-                    Hook.SetItemButtonQuality(item.Button, _G.GRAY_FONT_COLOR, firstItemID)
+                    Hook.SetItemButtonQuality(item.Button, _G.GRAY_FONT_COLOR, firstItemID, firstItemLink)
                 end
             else
                 item.Button._auroraIconBorder:SetBackdropBorderColor(Color.frame, 1)
@@ -159,24 +159,6 @@ do --[[ FrameXML\MailFrame.xml ]]
         _G[name.."ExpireTime"]:SetSize(100, 16)
         _G[name.."ExpireTime"]:SetPoint("TOPRIGHT", -4, -4)
     end
-    function Skin.SendMailInputBox(EditBox)
-        EditBox:SetHeight(22)
-
-        local name = EditBox:GetName()
-        _G[name.."Left"]:Hide()
-        _G[name.."Middle"]:Hide()
-        _G[name.."Right"]:Hide()
-
-        local bg = _G.CreateFrame("Frame", nil, EditBox)
-        bg:SetPoint("TOPLEFT", -8, -1)
-        bg:SetPoint("BOTTOMRIGHT", 8, 1)
-        bg:SetFrameLevel(EditBox:GetFrameLevel() - 1)
-        Base.SetBackdrop(bg, Color.frame)
-
-        --[[ Scale ]]--
-        EditBox:SetWidth(EditBox:GetWidth())
-        EditBox:GetRegions():SetPoint("RIGHT", EditBox, "LEFT", -12, 0)
-    end
     function Skin.SendMailAttachment(Button)
         Button:GetRegions():Hide()
 
@@ -203,6 +185,27 @@ do --[[ FrameXML\MailFrame.xml ]]
     function Skin.OpenMailAttachment(Button)
         Skin.ItemButtonTemplate(Button)
     end
+
+    --[[ Fake template ]]--
+    function Skin.SendMailInputBox(EditBox)
+        EditBox:SetHeight(22)
+
+        local name = EditBox:GetName()
+        _G[name.."Left"]:Hide()
+        _G[name.."Middle"]:Hide()
+        _G[name.."Right"]:Hide()
+
+        local bg = _G.CreateFrame("Frame", nil, EditBox)
+        bg:SetPoint("TOPLEFT", -8, -1)
+        bg:SetPoint("BOTTOMRIGHT", 8, 1)
+        bg:SetFrameLevel(EditBox:GetFrameLevel())
+        Base.SetBackdrop(bg, Color.frame)
+
+        --[[ Scale ]]--
+        EditBox:SetWidth(EditBox:GetWidth())
+        local _, _, label = EditBox:GetRegions()
+        label:SetPoint("RIGHT", EditBox, "LEFT", -12, 0)
+    end
 end
 
 
@@ -218,7 +221,11 @@ function private.FrameXML.MailFrame()
     Skin.ButtonFrameTemplate(_G.MailFrame)
 
     -- BlizzWTF: The portrait in the template is not being used.
-    _G.select(18, _G.MailFrame:GetRegions()):Hide()
+    if private.isPatch then
+        _G.select(6, _G.MailFrame:GetRegions()):Hide()
+    else
+        _G.select(18, _G.MailFrame:GetRegions()):Hide()
+    end
     _G.MailFrame.trialError:ClearAllPoints()
     _G.MailFrame.trialError:SetPoint("TOPLEFT", _G.MailFrame.TitleText, 50, -5)
     _G.MailFrame.trialError:SetPoint("BOTTOMRIGHT", _G.MailFrame.TitleText, -50, -6)
@@ -350,7 +357,11 @@ function private.FrameXML.MailFrame()
     _G.OpenMailTitleText:ClearAllPoints()
     _G.OpenMailTitleText:SetAllPoints(_G.OpenMailFrame.TitleText)
     _G.OpenMailHorizontalBarLeft:Hide()
-    select(25, _G.OpenMailFrame:GetRegions()):Hide() -- HorizontalBarRight
+    if private.isPatch then
+        select(13, _G.OpenMailFrame:GetRegions()):Hide() -- HorizontalBarRight
+    else
+        select(25, _G.OpenMailFrame:GetRegions()):Hide() -- HorizontalBarRight
+    end
 
     Skin.UIPanelButtonTemplate(_G.OpenMailReportSpamButton)
 

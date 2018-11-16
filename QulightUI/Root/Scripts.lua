@@ -11,16 +11,16 @@ SLASH_GETPARENT2 = "/parent"
 
 SlashCmdList["RELOADUI"] = function() ReloadUI() end
 SLASH_RELOADUI1 = "/rl"
-SLASH_RELOADUI2 = ".êä"
+SLASH_RELOADUI2 = ".ï¿½ï¿½"
 
 SlashCmdList["RCSLASH"] = function() DoReadyCheck() end
 SLASH_RCSLASH1 = "/rc"
-SLASH_RCSLASH2 = "/êñ"
+SLASH_RCSLASH2 = "/ï¿½ï¿½"
 
 SlashCmdList["TICKET"] = function() ToggleHelpFrame() end
 SLASH_TICKET1 = "/ticket"
 SLASH_TICKET2 = "/gm"
-SLASH_TICKET3 = "/ãì"
+SLASH_TICKET3 = "/ï¿½ï¿½"
 
 SLASH_FRAME1 = "/frame"
 SlashCmdList["FRAME"] = function(arg)
@@ -246,8 +246,10 @@ if Qulight["general"].autoinvite then
 		for i = 1, select(2, BNGetNumFriends()) do
 			local presenceID, _, _, _, _, _, client, isOnline = BNGetFriendInfo(i)
 			if client == "WoW" and isOnline then
-				local _, toonName, _, realmName = BNGetToonInfo(presenceID)
-				if name == toonName or name == toonName.."-"..realmName then
+				local _, toonName, _, realmName = BNGetGameAccountInfo(presenceID)
+				if realmName and toonName.."-"..realmName then
+					return true
+				elseif name == toonName then
 					return true
 				end
 			end
@@ -312,7 +314,7 @@ end)
 local coords = CreateFrame("Frame", "CoordsFrame", WorldMapFrame)
 coords:SetFrameLevel(90)
 coords.PlayerText = coords:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-coords.PlayerText:SetPoint("BOTTOMLEFT", WorldMapFrame.UIElementsFrame, "BOTTOMLEFT", 5, 5)
+coords.PlayerText:SetPoint("BOTTOMLEFT", WorldMapFrame.ScrollContainer, "BOTTOMLEFT", 5, 5)
 coords.PlayerText:SetJustifyH("LEFT")
 coords.PlayerText:SetText(UnitName("player")..": 0,0")
 coords.PlayerText:SetTextColor(1, 1, 1)
@@ -327,11 +329,14 @@ local int = 0
 WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
 	int = int + 1
 	if int >= 3 then
-		local x, y = GetPlayerMapPosition("player")
+		local UnitMap = C_Map.GetBestMapForUnit("player")
+		local x, y = 0, 0
 
-		if not GetPlayerMapPosition("player") then
-			x = 0
-			y = 0
+		if UnitMap then
+			local GetPlayerMapPosition = C_Map.GetPlayerMapPosition(UnitMap, "player")
+			if GetPlayerMapPosition then
+				x, y = GetPlayerMapPosition:GetXY()
+			end
 		end
 
 		x = math.floor(100 * x)
@@ -342,10 +347,10 @@ WorldMapFrame:HookScript("OnUpdate", function(self, elapsed)
 			coords.PlayerText:SetText(" ")
 		end
 
-		local scale = WorldMapDetailFrame:GetEffectiveScale()
-		local width = WorldMapDetailFrame:GetWidth()
-		local height = WorldMapDetailFrame:GetHeight()
-		local centerX, centerY = WorldMapDetailFrame:GetCenter()
+		local scale = WorldMapFrame.ScrollContainer:GetEffectiveScale()
+		local width = WorldMapFrame.ScrollContainer:GetWidth()
+		local height = WorldMapFrame.ScrollContainer:GetHeight()
+		local centerX, centerY = WorldMapFrame.ScrollContainer:GetCenter()
 		local x, y = GetCursorPosition()
 		local adjustedX = (x / scale - (centerX - (width/2))) / width
 		local adjustedY = (centerY + (height/2) - y / scale) / height

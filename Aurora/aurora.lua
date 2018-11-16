@@ -3,20 +3,6 @@ local _, private = ...
 -- [[ Lua Globals ]]
 -- luacheck: globals next type
 
-if ADDON_NAME == "Aurora" then
-    for i = 1, _G.GetNumAddOns() do
-        local meta = _G.GetAddOnMetadata(i, "X-Aurora-Host")
-        if meta then
-            local name, _, _, enabled = _G.GetAddOnInfo(i)
-            if enabled then
-                private.host = name
-                private.OnLoad = meta
-                return
-            end
-        end
-    end
-end
-
 -- [[ Core ]]
 local Aurora = private.Aurora
 local _, C = _G.unpack(Aurora)
@@ -24,46 +10,29 @@ local _, C = _G.unpack(Aurora)
 -- [[ Constants and settings ]]
 local AuroraConfig
 
--- [[ Splash screen ]]
-
-local splash = CreateFrame("Frame", "AuroraSplashScreen", _G.UIParent)
-splash:SetPoint("CENTER")
-splash:SetSize(400, 300)
-splash:Hide()
-
 C.frames = {}
-C.media = {
-	["arrowUp"] = "Interface\\AddOns\\Aurora\\media\\arrow-up-active",
-	["arrowDown"] = "Interface\\AddOns\\Aurora\\media\\arrow-down-active",
-	["arrowLeft"] = "Interface\\AddOns\\Aurora\\media\\arrow-left-active",
-	["arrowRight"] = "Interface\\AddOns\\Aurora\\media\\arrow-right-active",
-	["backdrop"] = "Interface\\AddOns\\QulightUI\\Root\\Media\\statusbar4",
-	["glow"] = "Interface\Addons\QulightUI\Root\Media\glowTex",
-	["blank"] = "Interface\\Buttons\\WHITE8x8",
-	["checked"] = "Interface\\AddOns\\Aurora\\media\\CheckButtonHilight",
-	["font"] = [=[Interface\Addons\QulightUI\Root\Media\qFont.ttf]=],
-	["gradient"] = "Interface\\AddOns\\Aurora\\media\\gradient",
-	["roleIcons"] = "Interface\\Addons\\Aurora\\media\\UI-LFG-ICON-ROLES",
-}
-
 C.defaults = {
-	["acknowledgedSplashScreen"] = false,
+    acknowledgedSplashScreen = false,
 
-	["alpha"] = 0.9,
-	["bags"] = false,
-	["buttonGradientColour"] = {0, 0, 0, .3},
-	["buttonSolidColour"] = {.35, .35, .35, .35},
-	["buttonsHaveGradient"] = true,
-	["chatBubbles"] = true,
-        ["chatBubbleNames"] = true,
-	["enableFont"] = false,
-	["loot"] = false,
-	["useCustomColour"] = false,
-        ["customColour"] = {r = 1, g = 1, b = 1},
-	["customClassColors"] = false,
-	["tooltips"] = true,
-	customHighlight = {enabled = false, r = 1, g = 1, b = 1},
-    customClassColors = {}
+    bags = true,
+    chat = true,
+    loot = true,
+    mainmenubar = false,
+    fonts = true,
+    tooltips = true,
+    chatBubbles = true,
+        chatBubbleNames = true,
+
+    buttonsHaveGradient = true,
+    customHighlight = {enabled = false, r = 1, g = 1, b = 1},
+    alpha = 0.5,
+
+    --[[
+        TODO: colorize - generate a monochrome color palette using the highlight
+            color which overrides the default frame, button, and font colors
+    ]]
+
+    customClassColors = {},
 }
 
 function private.OnLoad()
@@ -157,7 +126,7 @@ function private.OnLoad()
     end)
 
     if AuroraConfig.buttonsHaveGradient then
-        Color.button:SetRGB(.4, .4, .4)
+        Color.button:SetRGB(.3, .3, .3, .7)
     end
 
     -- Show splash screen for first time users
@@ -167,8 +136,8 @@ function private.OnLoad()
 
     -- Create API hooks
     local Base, Hook = Aurora.Base, Aurora.Hook
-    function Hook.GameTooltip_OnHide(gametooltip)
-        Base.SetBackdropColor(gametooltip, Color.frame, AuroraConfig.alpha)
+    function Hook.GameTooltip_SetBackdropStyle(self, style)
+        Base.SetBackdrop(self, Color.frame, AuroraConfig.alpha)
     end
 
     _G.hooksecurefunc(Base, "SetBackdrop", function(frame, color, alpha, ...)
@@ -197,6 +166,7 @@ function private.OnLoad()
 
     -- Disable skins as per user settings
     private.disabled.bags = not AuroraConfig.bags
+    private.disabled.chat = not AuroraConfig.chat
     private.disabled.fonts = not AuroraConfig.fonts
     private.disabled.tooltips = not AuroraConfig.tooltips
     private.disabled.mainmenubar = not AuroraConfig.mainmenubar

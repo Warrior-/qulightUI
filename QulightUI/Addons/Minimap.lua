@@ -515,8 +515,9 @@ local coord_Update = function(self,t)
 		if X < 10 then
 			XT = "0"..X
 		else
-			XT = C
+			XT = X
 		end
+
 		if Y < 10 then
 			YT = "0"..Y
 		else
@@ -526,6 +527,7 @@ local coord_Update = function(self,t)
 		m_coord_text:SetText(XT..","..YT)
 		end
 	end
+
 	ela = 2
 end
 m_coord:SetScript("OnUpdate",coord_Update)

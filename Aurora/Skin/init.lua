@@ -5,11 +5,12 @@ local ADDON_NAME, private = ...
 private.API_MAJOR, private.API_MINOR = 0, 3
 
 local xpac, major, minor = _G.strsplit(".", _G.GetBuildInfo())
-private.isPatch = tonumber(xpac) == 8 and (tonumber(major) >= 0 and tonumber(minor) >= 1)
+private.isPatch = tonumber(xpac) == 8 and (tonumber(major) >= 1 and tonumber(minor) >= 0)
 
 private.uiScale = 1
 private.disabled = {
     bags = false,
+    chat = false,
     fonts = false,
     tooltips = false,
     mainmenubar = false,
@@ -45,30 +46,32 @@ end
 
 function private.nop() end
 local debug do
-    if _G.LibStub then
-        local debugger
-        local LTD = _G.LibStub("LibTextDump-1.0", true)
-        function debug(...)
-            if not debugger then
-                if LTD then
-                    debugger = LTD:New(ADDON_NAME .." Debug Output", 640, 480)
-                    private.debugger = debugger
-                else
-                    return
+    if not private.debug then
+        if _G.LibStub then
+            local debugger
+            local LTD = _G.LibStub("LibTextDump-1.0", true)
+            function debug(...)
+                if not debugger then
+                    if LTD then
+                        debugger = LTD:New(ADDON_NAME .." Debug Output", 640, 480)
+                        private.debugger = debugger
+                    else
+                        return
+                    end
                 end
+                local time = _G.date("%H:%M:%S")
+                local text = ("[%s]"):format(time)
+                for i = 1, select("#", ...) do
+                    local arg = select(i, ...)
+                    text = text .. "     " .. tostring(arg)
+                end
+                debugger:AddLine(text)
             end
-            local time = _G.date("%H:%M:%S")
-            local text = ("[%s]"):format(time)
-            for i = 1, select("#", ...) do
-                local arg = select(i, ...)
-                text = text .. "     " .. tostring(arg)
-            end
-            debugger:AddLine(text)
+        else
+            debug = private.nop
         end
-    else
-        debug = private.nop
+        private.debug = debug
     end
-    private.debug = debug
 end
 
 local Aurora = {
@@ -115,10 +118,6 @@ eventFrame:SetScript("OnEvent", function(self, event, addonName)
                 if fileList[file] then
                     fileList[file]()
                 end
-            end
-
-            if not private.isPatch then
-                private.FrameXML.ChannelFrame()
             end
 
             -- Skin prior loaded AddOns

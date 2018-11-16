@@ -102,7 +102,7 @@ hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", function(self, 
 
 		bar.BarFrame:Hide()
 		--bar.BarGlow:Kill()
-		bar.IconBG:Kill()
+		--bar.IconBG:Kill()
 		bar:SetSize(200, 20)
 		bar:SetStatusBarTexture(Qulight["media"].texture)
 		bar:SetTemplate("Transparent")

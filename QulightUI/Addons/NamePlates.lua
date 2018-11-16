@@ -147,12 +147,12 @@ if Qulight["nameplate"].healer_icon == true then
 		["Horde"] = 1,
 		["Alliance"] = 0,
 	}
-	t.healers = {
-		[L_PLANNER_DRUID_4] = true,
-		[L_PLANNER_MONK_2] = true,
-		[L_PLANNER_PALADIN_1] = true,
-		[L_PLANNER_PRIEST_1] = true,
-	}
+	--t.healers = {
+		--[L_PLANNER_DRUID_4] = true,
+		--[L_PLANNER_MONK_2] = true,
+		--[L_PLANNER_PALADIN_1] = true,
+		--[L_PLANNER_PRIEST_1] = true,
+	--}
 
 	local lastCheck = 20
 	local function CheckHealers(self, elapsed)
@@ -163,7 +163,7 @@ if Qulight["nameplate"].healer_icon == true then
 			for i = 1, GetNumBattlefieldScores() do
 				local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i)
 				name = name:match("(.+)%-.+") or name
-				if name and t.healers[talentSpec] and t.factions[UnitFactionGroup("player")] == faction then
+				if name and UnitGroupRolesAssigned(name)== "HEALER" then
 					name = name:match("(.+)%-.+") or name
 					healList[name] = talentSpec
 				end

@@ -345,7 +345,7 @@ do
 		backdrop:SetScript("OnShow", OnShow)
 
 		local name = backdrop:CreateFontString(nil, "OVERLAY")
-		name:SetFont(C.font.unit_frames_font, C.font.unit_frames_font_size, C.font.unit_frames_font_style)
+		name:SetFont(Qulight["media"].font, Qulight["media"].fontsize, Qulight["media"].glow)
 		name:SetTextColor(1, 1, 1)
 		name:SetAllPoints(target)
 
@@ -378,7 +378,7 @@ do
 		backdrop:SetScript("OnDragStart", OnDragStart)
 		backdrop:SetScript("OnDragStop", OnDragStop)
 		backdrop:SetScript("OnEnter", function(self)
-			self.backdrop:SetBackdropBorderColor(r, g, b)
+			self.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end)
 		backdrop:SetScript("OnLeave", function(self)
 			self.backdrop:SetBackdropBorderColor(1, 0, 0)
@@ -403,3 +403,23 @@ StaticPopupDialogs.RESET_UF = {
 
 SlashCmdList.RESETUF = function() StaticPopup_Show("RESET_UF") end
 SLASH_RESETUF1 = "/resetuf"
+
+MoveUnitFrames = function(inp)
+	if InCombatLockdown() then return print("|cffffff00"..ERR_NOT_IN_COMBAT.."|r") end
+
+	if not _LOCK then
+		for k, obj in next, oUF.objects do
+			local style, identifier, isHeader = getObjectInformation(obj)
+			local backdrop = getBackdrop(obj, isHeader)
+			if backdrop then backdrop:Show() end
+		end
+
+		_LOCK = true
+	else
+		for k, bdrop in next, backdropPool do
+			bdrop:Hide()
+		end
+
+		_LOCK = nil
+	end
+end
